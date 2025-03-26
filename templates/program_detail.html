@@ -84,9 +84,11 @@
                         </div>
                     {% endif %}
                 {% else %}
-                    <a href="{% url 'program_register' program.id %}" class="btn btn-success btn-lg">
-                        <i class="fas fa-sign-in-alt me-1"></i> Register for this Program
-                    </a>
+                    {% if not user.is_staff and not user.is_superuser %}
+                        <a href="{% url 'program_register' program.id %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-sign-in-alt me-1"></i> Register for this Program
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 <div class="alert alert-info">
