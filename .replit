@@ -36,3 +36,12 @@ run = ["sh", "-c", "pip install django && python manage.py migrate && python man
 [[ports]]
 localPort = 5000
 externalPort = 80
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'agri_core',  # Your new app
+]
