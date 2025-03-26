@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Help - AgroStudies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h1 class="h3 mb-0">Registration Help Guide</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 class="h4 mb-4">How to Register as a Candidate</h2>
+                    
+                    <div class="accordion" id="helpAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fas fa-user-plus me-2"></i> Creating Your Account
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <ol class="list-group list-group-numbered">
+                                        <li class="list-group-item">Navigate to the <a href="{% url 'register' %}">Register</a> page.</li>
+                                        <li class="list-group-item">Fill in your username, first name, last name, email, and password.</li>
+                                        <li class="list-group-item">After registration, you'll be redirected to the login page.</li>
+                                        <li class="list-group-item">Log in with your newly created credentials.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fas fa-edit me-2"></i> Completing Your Profile
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <ol class="list-group list-group-numbered">
+                                        <li class="list-group-item">After logging in, go to your <a href="{% url 'profile' %}">Profile</a> page.</li>
+                                        <li class="list-group-item">Add your biography and location information.</li>
+                                        <li class="list-group-item">Update your profile information whenever needed.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="fas fa-graduation-cap me-2"></i> Browsing and Registering for Programs
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <ol class="list-group list-group-numbered">
+                                        <li class="list-group-item">Visit the <a href="{% url 'program_list' %}">Programs</a> page to see available agriculture programs.</li>
+                                        <li class="list-group-item">Click on a program to view its details.</li>
+                                        <li class="list-group-item">Use the "Register" button to apply for a program.</li>
+                                        <li class="list-group-item">Fill in any required notes or additional information.</li>
+                                        <li class="list-group-item">Submit your registration.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    <i class="fas fa-clipboard-check me-2"></i> Tracking Your Registrations
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    <ol class="list-group list-group-numbered">
+                                        <li class="list-group-item">Go to your <a href="{% url 'profile' %}">Profile</a> to view all your program registrations.</li>
+                                        <li class="list-group-item">Check the status of each registration (Pending, Approved, or Rejected).</li>
+                                        <li class="list-group-item">You can cancel a pending registration if needed.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <h3 class="h5 mb-3">Registration Process Guidelines</h3>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h4 class="h6 mb-3">Document Requirements</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Passport scan (colored, valid for at least 6 months after program end date)</li>
+                                    <li class="list-group-item">Signed Terms and Conditions form</li>
+                                    <li class="list-group-item">Health statements (Menora and Ayalon)</li>
+                                    <li class="list-group-item">Doctor's medical report</li>
+                                    <li class="list-group-item">Information and Rights document</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="h6 mb-3">Important Tips</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Ensure all personal information matches your passport exactly</li>
+                                    <li class="list-group-item">Submit all required documents in clear, legible format</li>
+                                    <li class="list-group-item">Check your application status regularly</li>
+                                    <li class="list-group-item">Respond promptly to any requests for additional information</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="h5 mb-0">Need Additional Help?</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>If you need further assistance with the registration process, please don't hesitate to contact us.</p>
+                            <a href="{% url 'contact' %}" class="btn btn-info w-100">Contact Support</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <img src="/static/images/registration-help.jpg" class="card-img-top" alt="Registration Help">
+                        <div class="card-body">
+                            <h5 class="card-title">Registration Process</h5>
+                            <p class="card-text">Our step-by-step registration process is designed to be straightforward and user-friendly.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Create an account</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Complete your profile</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Browse available programs</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Submit registration and documents</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Track your application status</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Candidates - AgroStudies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Candidates</h1>
+        <a href="{% url 'add_candidate' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Add student
+        </a>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-2">
+                    {{ form.country }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.university }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.specialization }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.status }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.passport }}
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-secondary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Candidates Table -->
+    <div class="card shadow">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>Passport</th>
+                        <th>Name</th>
+                        <th>University</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidate in page_obj %}
+                        <tr class="{% if candidate.status == 'New' %}table-info{% elif candidate.status == 'Fixed' %}table-primary{% elif candidate.status == 'Approved' %}table-success{% elif candidate.status == 'Rejected' %}table-danger{% elif candidate.status == 'Quit' %}table-warning{% endif %}">
+                            <td>
+                                <a href="{% url 'view_candidate' candidate.id %}" class="text-decoration-none">
+                                    {{ candidate.passport_number }}
+                                </a>
+                            </td>
+                            <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                            <td>{{ candidate.university.name }}</td>
+                            <td>
+                                <span class="badge bg-{{ status_colors|get_item:candidate.status }}">
+                                    {{ candidate.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if candidate.status == 'Draft' %}
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-outline-primary">Edit</a>
+                                        <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                {% elif candidate.status == 'Rejected' or candidate.status == 'New' %}
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-outline-primary">Edit</a>
+                                        <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                {% else %}
+                                    <a href="{% url 'view_candidate' candidate.id %}" class="btn btn-outline-info btn-sm">View</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                <p class="mb-0 text-muted">No candidates found</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ num }}</a>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
