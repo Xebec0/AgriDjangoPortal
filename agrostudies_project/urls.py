@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('core.urls')),  # Include URLs from the core app
 ]
 
-# Add static file serving in development
+# Add static and media file serving in development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

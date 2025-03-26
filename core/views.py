@@ -5,10 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
-from .models import Profile, AgricultureProgram, Registration
+from django.db.models import Q
+from django.http import HttpResponse
+from .models import Profile, AgricultureProgram, Registration, Candidate, University
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
-    ProgramRegistrationForm, AdminRegistrationForm
+    ProgramRegistrationForm, AdminRegistrationForm,
+    CandidateForm, CandidateSearchForm
 )
 
 
@@ -178,3 +181,192 @@ def cancel_registration(request, registration_id):
         return redirect('profile')
     
     return render(request, 'cancel_registration.html', {'registration': registration})
+
+
+@login_required
+def candidate_list(request):
+    """List all candidates with search and filter functionality"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidates = Candidate.objects.all().order_by('-created_at')
+    form = CandidateSearchForm(request.GET)
+    
+    # Apply filters
+    if form.is_valid():
+        # Filter by country (university's country)
+        country = form.cleaned_data.get('country')
+        if country:
+            candidates = candidates.filter(university__country=country)
+        
+        # Filter by university
+        university = form.cleaned_data.get('university')
+        if university:
+            candidates = candidates.filter(university__code=university)
+        
+        # Filter by specialization
+        specialization = form.cleaned_data.get('specialization')
+        if specialization:
+            candidates = candidates.filter(specialization=specialization)
+        
+        # Filter by status
+        status = form.cleaned_data.get('status')
+        if status:
+            candidates = candidates.filter(status=status)
+        
+        # Filter by passport number
+        passport = form.cleaned_data.get('passport')
+        if passport:
+            candidates = candidates.filter(passport_number__icontains=passport)
+    
+    # Pagination
+    paginator = Paginator(candidates, 15)  # Show 15 candidates per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'candidate_list.html', {
+        'page_obj': page_obj,
+        'form': form,
+        'status_colors': {
+            'Draft': 'secondary',
+            'New': 'info',
+            'Fixed': 'primary',
+            'Approved': 'success',
+            'Rejected': 'danger',
+            'Quit': 'warning'
+        }
+    })
+
+
+@login_required
+def add_candidate(request):
+    """Add a new candidate"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    if request.method == 'POST':
+        form = CandidateForm(request.POST, request.FILES)
+        if form.is_valid():
+            candidate = form.save(commit=False)
+            candidate.created_by = request.user
+            candidate.status = 'Draft'  # Set initial status
+            candidate.save()
+            messages.success(request, f'Candidate {candidate.first_name} {candidate.last_name} has been added successfully.')
+            return redirect('candidate_list')
+    else:
+        form = CandidateForm()
+    
+    return render(request, 'candidate_form.html', {
+        'form': form,
+        'title': 'Add New Candidate',
+        'button_text': 'Add Candidate'
+    })
+
+
+@login_required
+def edit_candidate(request, candidate_id):
+    """Edit existing candidate"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    if request.method == 'POST':
+        form = CandidateForm(request.POST, request.FILES, instance=candidate)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Candidate {candidate.first_name} {candidate.last_name} has been updated successfully.')
+            return redirect('candidate_list')
+    else:
+        form = CandidateForm(instance=candidate)
+    
+    return render(request, 'candidate_form.html', {
+        'form': form,
+        'candidate': candidate,
+        'title': f'Edit Candidate: {candidate.first_name} {candidate.last_name}',
+        'button_text': 'Update Candidate'
+    })
+
+
+@login_required
+def view_candidate(request, candidate_id):
+    """View candidate details"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    # Status colors for the badge
+    status_colors = {
+        'Draft': 'secondary',
+        'New': 'info',
+        'Fixed': 'primary',
+        'Approved': 'success',
+        'Rejected': 'danger',
+        'Quit': 'warning'
+    }
+    
+    return render(request, 'candidate_detail.html', {
+        'candidate': candidate,
+        'status_color': status_colors.get(candidate.status, 'secondary')
+    })
+
+
+@login_required
+def delete_candidate(request, candidate_id):
+    """Delete a candidate"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    if request.method == 'POST':
+        candidate_name = f"{candidate.first_name} {candidate.last_name}"
+        candidate.delete()
+        messages.success(request, f'Candidate {candidate_name} has been deleted successfully.')
+        return redirect('candidate_list')
+    
+    return render(request, 'candidate_confirm_delete.html', {'candidate': candidate})
+
+
+@login_required
+def change_candidate_status(request, candidate_id, status):
+    """Change candidate status"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    # Validate status
+    valid_statuses = ['Draft', 'New', 'Fixed', 'Approved', 'Rejected', 'Quit']
+    if status not in valid_statuses:
+        messages.error(request, 'Invalid status value.')
+        return redirect('view_candidate', candidate_id=candidate_id)
+    
+    candidate.status = status
+    candidate.save()
+    
+    messages.success(request, f'Status for {candidate.first_name} {candidate.last_name} has been changed to {status}.')
+    return redirect('view_candidate', candidate_id=candidate_id)
+
+
+def help_page(request):
+    """Registration help page"""
+    return render(request, 'help.html')
+
+
+def contact_page(request):
+    """Contact page"""
+    return render(request, 'contact.html')
