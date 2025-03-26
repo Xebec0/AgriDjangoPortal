@@ -1,0 +1,32 @@
+# Core Django dependencies
+Django>=4.2.0,<5.0.0
+python-dotenv>=1.0.0
+
+# For handling file uploads and image processing
+Pillow>=9.5.0
+
+# For improved development experience
+django-debug-toolbar>=4.2.0
+
+# For deployment
+gunicorn>=21.2.0
+whitenoise>=6.5.0
+
+# Database adapters (uncomment as needed)
+# psycopg2-binary>=2.9.6  # For PostgreSQL
+# mysqlclient>=2.1.1  # For MySQL
+
+# For REST API (if needed in the future)
+# djangorestframework>=3.14.0
+
+# For form improvements
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
+
+# Security enhancements
+django-csp>=3.7
+django-cors-headers>=4.2.0
+
+# For testing
+pytest>=7.3.1
+pytest-django>=4.5.2
