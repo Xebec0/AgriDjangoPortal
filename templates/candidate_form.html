@@ -2,373 +2,449 @@
 
 {% block title %}{{ title }} - AgroStudies{% endblock %}
 
+{% block extra_css %}
+<style>
+    .required-field label:after {
+        content: " *";
+        color: red;
+    }
+    
+    .form-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-section:last-child {
+        border-bottom: none;
+    }
+    
+    .form-section-title {
+        margin-bottom: 1.5rem;
+        color: #0275d8;
+    }
+    
+    .help-text {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+<div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">{{ title }}</h1>
-        <a href="{% url 'candidate_list' %}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to list
+        <h1 class="h3">{{ title }}</h1>
+        <a href="{% if candidate %}{% url 'view_candidate' candidate.id %}{% else %}{% url 'candidate_list' %}{% endif %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
         </a>
     </div>
 
     <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Candidate Information Form</h5>
+        </div>
         <div class="card-body">
-            <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <p class="text-muted mb-4">
+                <i class="fas fa-info-circle"></i> Fields marked with an asterisk (*) are required.
+            </p>
+            
+            <form method="post" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 
-                <!-- University Selection Section -->
-                <div class="mb-4">
-                    <h4 class="card-title mb-3">University Information</h4>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.university.id_for_label }}" class="form-label">University *</label>
-                            {{ form.university }}
-                            {% if form.university.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.university.errors.0 }}
-                                </div>
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-user me-2"></i> Personal Information
+                    </h4>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-danger">{{ form.first_name.errors }}</div>
                             {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.confirm_first_name.id_for_label }}" class="form-label">Confirm First Name</label>
+                            {{ form.confirm_first_name }}
+                            {% if form.confirm_first_name.errors %}
+                                <div class="text-danger">{{ form.confirm_first_name.errors }}</div>
+                            {% endif %}
+                            <div class="help-text">Confirmation must match the first name exactly.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Surname</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-danger">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.confirm_surname.id_for_label }}" class="form-label">Confirm Surname</label>
+                            {{ form.confirm_surname }}
+                            {% if form.confirm_surname.errors %}
+                                <div class="text-danger">{{ form.confirm_surname.errors }}</div>
+                            {% endif %}
+                            <div class="help-text">Confirmation must match the surname exactly.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.father_name.id_for_label }}" class="form-label">Father's Name</label>
+                            {{ form.father_name }}
+                            {% if form.father_name.errors %}
+                                <div class="text-danger">{{ form.father_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.mother_name.id_for_label }}" class="form-label">Mother's Name</label>
+                            {{ form.mother_name }}
+                            {% if form.mother_name.errors %}
+                                <div class="text-danger">{{ form.mother_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth</label>
+                            {{ form.date_of_birth }}
+                            {% if form.date_of_birth.errors %}
+                                <div class="text-danger">{{ form.date_of_birth.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.gender.id_for_label }}" class="form-label">Gender</label>
+                            {{ form.gender }}
+                            {% if form.gender.errors %}
+                                <div class="text-danger">{{ form.gender.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.nationality.id_for_label }}" class="form-label">Nationality</label>
+                            {{ form.nationality }}
+                            {% if form.nationality.errors %}
+                                <div class="text-danger">{{ form.nationality.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.country_of_birth.id_for_label }}" class="form-label">Country of Birth</label>
+                            {{ form.country_of_birth }}
+                            {% if form.country_of_birth.errors %}
+                                <div class="text-danger">{{ form.country_of_birth.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.religion.id_for_label }}" class="form-label">Religion</label>
+                            {{ form.religion }}
+                            {% if form.religion.errors %}
+                                <div class="text-danger">{{ form.religion.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                            <div class="help-text">Communication regarding application status will be sent to this address.</div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Passport Information Section -->
-                <div class="mb-4">
-                    <h4 class="card-title mb-3">Passport Information</h4>
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-passport me-2"></i> Passport Information
+                    </h4>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.passport_number.id_for_label }}" class="form-label">Passport Number *</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.passport_number.id_for_label }}" class="form-label">Passport Number</label>
                             {{ form.passport_number }}
                             {% if form.passport_number.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.passport_number.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.passport_number.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Use capital letters</small>
                         </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.confirm_passport.id_for_label }}" class="form-label">Confirm Passport Number *</label>
+                        
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.confirm_passport.id_for_label }}" class="form-label">Confirm Passport Number</label>
                             {{ form.confirm_passport }}
                             {% if form.confirm_passport.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.confirm_passport.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.confirm_passport.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Use capital letters</small>
+                            <div class="help-text">Confirmation must match the passport number exactly.</div>
                         </div>
                     </div>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.passport_issue_date.id_for_label }}" class="form-label">Date of Issue *</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.passport_issue_date.id_for_label }}" class="form-label">Passport Issue Date</label>
                             {{ form.passport_issue_date }}
                             {% if form.passport_issue_date.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.passport_issue_date.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.passport_issue_date.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Use following pattern: DD/MM/YYYY</small>
                         </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.passport_expiry_date.id_for_label }}" class="form-label">Date of Expiry *</label>
+                        
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.passport_expiry_date.id_for_label }}" class="form-label">Passport Expiry Date</label>
                             {{ form.passport_expiry_date }}
                             {% if form.passport_expiry_date.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.passport_expiry_date.errors.0 }}
+                                <div class="text-danger">{{ form.passport_expiry_date.errors }}</div>
+                            {% endif %}
+                            <div class="help-text">Passport must be valid for at least 6 months after program end date.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.passport_scan.id_for_label }}" class="form-label">Passport Scan (PDF)</label>
+                            {% if candidate and candidate.passport_scan %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Document uploaded</span>
+                                    <a href="{{ candidate.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
                                 </div>
                             {% endif %}
-                            <small class="text-muted">Use following pattern: DD/MM/YYYY</small>
+                            {{ form.passport_scan }}
+                            {% if form.passport_scan.errors %}
+                                <div class="text-danger">{{ form.passport_scan.errors }}</div>
+                            {% endif %}
+                            <div class="help-text">Upload a clear color scan of your passport's information page (PDF format, max 5MB).</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Name Section -->
-                <div class="mb-4">
-                    <h4 class="card-title mb-3">Personal Details</h4>
+                <!-- Academic Information Section -->
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-graduation-cap me-2"></i> Academic Information
+                    </h4>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name *</label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.first_name.errors.0 }}
-                                </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3 required-field">
+                            <label for="{{ form.university.id_for_label }}" class="form-label">University</label>
+                            {{ form.university }}
+                            {% if form.university.errors %}
+                                <div class="text-danger">{{ form.university.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">First letter + Capital letter</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.confirm_first_name.id_for_label }}" class="form-label">Confirm First Name *</label>
-                            {{ form.confirm_first_name }}
-                            {% if form.confirm_first_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.confirm_first_name.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">First letter + Capital letter</small>
                         </div>
                     </div>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Surname *</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.last_name.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">First letter + Capital letter</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.confirm_surname.id_for_label }}" class="form-label">Confirm Surname *</label>
-                            {{ form.confirm_surname }}
-                            {% if form.confirm_surname.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.confirm_surname.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">First letter + Capital letter</small>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.father_name.id_for_label }}" class="form-label">Name of Father</label>
-                            {{ form.father_name }}
-                            {% if form.father_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.father_name.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">First letter + Capital letter</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.mother_name.id_for_label }}" class="form-label">Name of Mother</label>
-                            {{ form.mother_name }}
-                            {% if form.mother_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.mother_name.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">First letter + Capital letter</small>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth *</label>
-                            {{ form.date_of_birth }}
-                            {% if form.date_of_birth.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.date_of_birth.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Use following pattern: DD/MM/YYYY</small>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="{{ form.country_of_birth.id_for_label }}" class="form-label">Country of Birth *</label>
-                            {{ form.country_of_birth }}
-                            {% if form.country_of_birth.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.country_of_birth.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Choose from list</small>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="{{ form.nationality.id_for_label }}" class="form-label">Nationality *</label>
-                            {{ form.nationality }}
-                            {% if form.nationality.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.nationality.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Choose from list</small>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="{{ form.religion.id_for_label }}" class="form-label">Religion</label>
-                            {{ form.religion }}
-                            {% if form.religion.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.religion.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Choose from list</small>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="{{ form.gender.id_for_label }}" class="form-label">Gender *</label>
-                            {{ form.gender }}
-                            {% if form.gender.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.gender.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Choose from list</small>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="{{ form.shoes_size.id_for_label }}" class="form-label">Shoes Size</label>
-                            {{ form.shoes_size }}
-                            {% if form.shoes_size.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.shoes_size.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Choose from list</small>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="{{ form.shirt_size.id_for_label }}" class="form-label">Shirt Size</label>
-                            {{ form.shirt_size }}
-                            {% if form.shirt_size.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.shirt_size.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Choose from list</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Education Section -->
-                <div class="mb-4">
-                    <h4 class="card-title mb-3">Education Information</h4>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.specialization.id_for_label }}" class="form-label">Specialization *</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3 required-field">
+                            <label for="{{ form.specialization.id_for_label }}" class="form-label">Primary Specialization</label>
                             {{ form.specialization }}
                             {% if form.specialization.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.specialization.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.specialization.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Choose from list</small>
                         </div>
-                        <div class="col-md-6">
+                        
+                        <div class="col-md-6 mb-3">
                             <label for="{{ form.secondary_specialization.id_for_label }}" class="form-label">Secondary Specialization</label>
                             {{ form.secondary_specialization }}
                             {% if form.secondary_specialization.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.secondary_specialization.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.secondary_specialization.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Choose from list</small>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Additional Info Section -->
-                <div class="mb-4">
-                    <h4 class="card-title mb-3">Additional Information</h4>
+                <!-- Additional Information Section -->
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-info-circle me-2"></i> Additional Information
+                    </h4>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.email.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">If the student doesn't have an email account, he has to open one and fill in the address</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.smokes.id_for_label }}" class="form-label">Smokes *</label>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.smokes.id_for_label }}" class="form-label">Smoking Habits</label>
                             {{ form.smokes }}
                             {% if form.smokes.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.smokes.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.smokes.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Choose from list</small>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.shirt_size.id_for_label }}" class="form-label">Shirt Size</label>
+                            {{ form.shirt_size }}
+                            {% if form.shirt_size.errors %}
+                                <div class="text-danger">{{ form.shirt_size.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.shoes_size.id_for_label }}" class="form-label">Shoes Size</label>
+                            {{ form.shoes_size }}
+                            {% if form.shoes_size.errors %}
+                                <div class="text-danger">{{ form.shoes_size.errors }}</div>
+                            {% endif %}
+                            <div class="help-text">European size standard</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Documents Section -->
-                <div class="mb-4">
-                    <h4 class="card-title mb-3">Upload Documents</h4>
+                <!-- Required Documents Section -->
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-file-alt me-2"></i> Required Documents
+                    </h4>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.passport_scan.id_for_label }}" class="form-label">Scanned Passport</label>
-                            {{ form.passport_scan }}
-                            {% if form.passport_scan.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.passport_scan.errors.0 }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.terms_and_conditions.id_for_label }}" class="form-label">Terms and Conditions</label>
+                            {% if candidate and candidate.terms_and_conditions %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Document uploaded</span>
+                                    <a href="{{ candidate.terms_and_conditions.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
                                 </div>
                             {% endif %}
-                            <small class="text-muted">Colored. Size up to 4M. Files with extensions: pdf, jpg, jpeg, png.</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.terms_and_conditions.id_for_label }}" class="form-label">Scanned Signed Terms and Conditions</label>
                             {{ form.terms_and_conditions }}
                             {% if form.terms_and_conditions.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.terms_and_conditions.errors.0 }}
+                                <div class="text-danger">{{ form.terms_and_conditions.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.health_statement_menora.id_for_label }}" class="form-label">Health Statement (Menora)</label>
+                            {% if candidate and candidate.health_statement_menora %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Document uploaded</span>
+                                    <a href="{{ candidate.health_statement_menora.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
                                 </div>
                             {% endif %}
-                            <small class="text-muted">Colored. Size up to 4M. Files with extensions: pdf, jpg, jpeg, png.</small>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.health_statement_menora.id_for_label }}" class="form-label">Scanned Health Statement (MENORA)</label>
                             {{ form.health_statement_menora }}
                             {% if form.health_statement_menora.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.health_statement_menora.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.health_statement_menora.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Colored. Size up to 4M. Files with extensions: pdf, jpg, jpeg, png.</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.health_statement_ayalon.id_for_label }}" class="form-label">Scanned Health Statement (AYALON)</label>
-                            {{ form.health_statement_ayalon }}
-                            {% if form.health_statement_ayalon.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.health_statement_ayalon.errors.0 }}
-                                </div>
-                            {% endif %}
-                            <small class="text-muted">Colored. Size up to 4M. Files with extensions: pdf, jpg, jpeg, png.</small>
                         </div>
                     </div>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="{{ form.medical_report.id_for_label }}" class="form-label">Scanned Doctor's Medical Report</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.health_statement_ayalon.id_for_label }}" class="form-label">Health Statement (Ayalon)</label>
+                            {% if candidate and candidate.health_statement_ayalon %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Document uploaded</span>
+                                    <a href="{{ candidate.health_statement_ayalon.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {{ form.health_statement_ayalon }}
+                            {% if form.health_statement_ayalon.errors %}
+                                <div class="text-danger">{{ form.health_statement_ayalon.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.medical_report.id_for_label }}" class="form-label">Medical Report</label>
+                            {% if candidate and candidate.medical_report %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Document uploaded</span>
+                                    <a href="{{ candidate.medical_report.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                </div>
+                            {% endif %}
                             {{ form.medical_report }}
                             {% if form.medical_report.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.medical_report.errors.0 }}
+                                <div class="text-danger">{{ form.medical_report.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.info_and_rights.id_for_label }}" class="form-label">Information and Rights</label>
+                            {% if candidate and candidate.info_and_rights %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">Document uploaded</span>
+                                    <a href="{{ candidate.info_and_rights.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
                                 </div>
                             {% endif %}
-                            <small class="text-muted">Colored. Size up to 4M. Files with extensions: pdf, jpg, jpeg, png.</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.info_and_rights.id_for_label }}" class="form-label">Scanned Info & Rights</label>
                             {{ form.info_and_rights }}
                             {% if form.info_and_rights.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.info_and_rights.errors.0 }}
-                                </div>
+                                <div class="text-danger">{{ form.info_and_rights.errors }}</div>
                             {% endif %}
-                            <small class="text-muted">Colored. Size up to 4M. Files with extensions: pdf, jpg, jpeg, png.</small>
                         </div>
                     </div>
                 </div>
                 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                    <a href="{% url 'candidate_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
-                    <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+                <!-- Submit Button -->
+                <div class="form-group text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        <i class="fas fa-save me-2"></i> {{ button_text }}
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        // Confirm matching fields
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            const firstName = document.getElementById('{{ form.first_name.id_for_label }}').value;
+            const confirmFirstName = document.getElementById('{{ form.confirm_first_name.id_for_label }}').value;
+            const lastName = document.getElementById('{{ form.last_name.id_for_label }}').value;
+            const confirmLastName = document.getElementById('{{ form.confirm_surname.id_for_label }}').value;
+            const passport = document.getElementById('{{ form.passport_number.id_for_label }}').value;
+            const confirmPassport = document.getElementById('{{ form.confirm_passport.id_for_label }}').value;
+            
+            let hasError = false;
+            
+            if (firstName !== confirmFirstName) {
+                alert('First name and confirmation do not match.');
+                hasError = true;
+            }
+            
+            if (lastName !== confirmLastName) {
+                alert('Surname and confirmation do not match.');
+                hasError = true;
+            }
+            
+            if (passport !== confirmPassport) {
+                alert('Passport number and confirmation do not match.');
+                hasError = true;
+            }
+            
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 {% endblock %}

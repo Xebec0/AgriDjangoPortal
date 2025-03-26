@@ -3,257 +3,262 @@
 {% block title %}{{ candidate.first_name }} {{ candidate.last_name }} - AgroStudies{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Candidate Details</h1>
+        <h1 class="h3">Candidate Details</h1>
         <div>
-            {% if candidate.status == 'Draft' or candidate.status == 'New' or candidate.status == 'Rejected' %}
-                <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-primary">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-                <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-danger">
-                    <i class="fas fa-trash"></i> Delete
-                </a>
-            {% endif %}
             <a href="{% url 'candidate_list' %}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back to list
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+            <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Delete
             </a>
         </div>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header bg-primary text-white">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{ candidate.first_name }} {{ candidate.last_name }}</h5>
-                <span class="badge bg-{{ status_color }} fs-6">{{ candidate.status }}</span>
+    <div class="row">
+        <!-- Personal Information -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Personal Information</h5>
+                    <span class="badge bg-{{ status_color }}">{{ candidate.status }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">First Name:</div>
+                        <div class="col-md-8">{{ candidate.first_name }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Last Name:</div>
+                        <div class="col-md-8">{{ candidate.last_name }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Father's Name:</div>
+                        <div class="col-md-8">{{ candidate.father_name|default:"Not provided" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Mother's Name:</div>
+                        <div class="col-md-8">{{ candidate.mother_name|default:"Not provided" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Date of Birth:</div>
+                        <div class="col-md-8">{{ candidate.date_of_birth|date:"F d, Y" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Country of Birth:</div>
+                        <div class="col-md-8">{{ candidate.country_of_birth }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Nationality:</div>
+                        <div class="col-md-8">{{ candidate.nationality }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Religion:</div>
+                        <div class="col-md-8">{{ candidate.religion|default:"Not provided" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Gender:</div>
+                        <div class="col-md-8">{{ candidate.gender }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Email:</div>
+                        <div class="col-md-8">
+                            {% if candidate.email %}
+                                <a href="mailto:{{ candidate.email }}">{{ candidate.email }}</a>
+                            {% else %}
+                                Not provided
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Passport Information -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Passport Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Passport Number:</div>
+                        <div class="col-md-8">{{ candidate.passport_number }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Issue Date:</div>
+                        <div class="col-md-8">{{ candidate.passport_issue_date|date:"F d, Y" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Expiry Date:</div>
+                        <div class="col-md-8">{{ candidate.passport_expiry_date|date:"F d, Y" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Passport Scan:</div>
+                        <div class="col-md-8">
+                            {% if candidate.passport_scan %}
+                                <a href="{{ candidate.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> View Document
+                                </a>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-body">
-            <!-- Status Actions -->
-            <div class="mb-4 p-3 bg-light rounded">
-                <h5 class="border-bottom pb-2 mb-3">Status Actions</h5>
-                <div class="btn-group" role="group">
-                    {% if candidate.status != 'New' %}
-                        <a href="{% url 'change_candidate_status' candidate.id 'New' %}" class="btn btn-info">Set as New</a>
-                    {% endif %}
-                    {% if candidate.status != 'Fixed' %}
-                        <a href="{% url 'change_candidate_status' candidate.id 'Fixed' %}" class="btn btn-primary">Set as Fixed</a>
-                    {% endif %}
-                    {% if candidate.status != 'Approved' %}
-                        <a href="{% url 'change_candidate_status' candidate.id 'Approved' %}" class="btn btn-success">Approve</a>
-                    {% endif %}
-                    {% if candidate.status != 'Rejected' %}
-                        <a href="{% url 'change_candidate_status' candidate.id 'Rejected' %}" class="btn btn-danger">Reject</a>
-                    {% endif %}
-                    {% if candidate.status != 'Quit' %}
-                        <a href="{% url 'change_candidate_status' candidate.id 'Quit' %}" class="btn btn-warning">Mark as Quit</a>
-                    {% endif %}
+        
+        <!-- Academic & Other Information -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Academic Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">University:</div>
+                        <div class="col-md-8">{{ candidate.university.name }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">University Code:</div>
+                        <div class="col-md-8">{{ candidate.university.code }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Country:</div>
+                        <div class="col-md-8">{{ candidate.university.country }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Specialization:</div>
+                        <div class="col-md-8">{{ candidate.specialization }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Secondary Specialization:</div>
+                        <div class="col-md-8">{{ candidate.secondary_specialization|default:"Not provided" }}</div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Personal Information -->
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="border-bottom pb-2 mb-3">Personal Information</h5>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th class="bg-light" style="width: 40%">First Name</th>
-                            <td>{{ candidate.first_name }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Last Name</th>
-                            <td>{{ candidate.last_name }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Father's Name</th>
-                            <td>{{ candidate.father_name|default:"Not specified" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Mother's Name</th>
-                            <td>{{ candidate.mother_name|default:"Not specified" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Date of Birth</th>
-                            <td>{{ candidate.date_of_birth }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Country of Birth</th>
-                            <td>{{ candidate.country_of_birth }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Nationality</th>
-                            <td>{{ candidate.nationality }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Religion</th>
-                            <td>{{ candidate.religion|default:"Not specified" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Gender</th>
-                            <td>{{ candidate.gender }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Email</th>
-                            <td>{{ candidate.email|default:"Not specified" }}</td>
-                        </tr>
-                    </table>
+            
+            <!-- Additional Information -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Additional Information</h5>
                 </div>
-                <div class="col-md-6">
-                    <h5 class="border-bottom pb-2 mb-3">Passport & University Information</h5>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th class="bg-light" style="width: 40%">Passport Number</th>
-                            <td>{{ candidate.passport_number }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Issue Date</th>
-                            <td>{{ candidate.passport_issue_date }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Expiry Date</th>
-                            <td>{{ candidate.passport_expiry_date }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">University</th>
-                            <td>{{ candidate.university.name }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">University Country</th>
-                            <td>{{ candidate.university.country }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Specialization</th>
-                            <td>{{ candidate.specialization }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Secondary Specialization</th>
-                            <td>{{ candidate.secondary_specialization|default:"Not specified" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Shoes Size</th>
-                            <td>{{ candidate.shoes_size|default:"Not specified" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Shirt Size</th>
-                            <td>{{ candidate.shirt_size|default:"Not specified" }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Smokes</th>
-                            <td>{{ candidate.smokes }}</td>
-                        </tr>
-                    </table>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Smokes:</div>
+                        <div class="col-md-8">{{ candidate.smokes }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Shirt Size:</div>
+                        <div class="col-md-8">{{ candidate.shirt_size|default:"Not provided" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Shoes Size:</div>
+                        <div class="col-md-8">{{ candidate.shoes_size|default:"Not provided" }}</div>
+                    </div>
                 </div>
             </div>
-
+            
             <!-- Documents -->
-            <h5 class="border-bottom pb-2 mb-3 mt-4">Documents</h5>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Passport Scan</h6>
-                            {% if candidate.passport_scan %}
-                                <a href="{{ candidate.passport_scan.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
-                            {% else %}
-                                <span class="badge bg-secondary">Not uploaded</span>
-                            {% endif %}
-                        </div>
-                    </div>
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Documents</h5>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Terms and Conditions</h6>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-8 fw-bold">Terms and Conditions:</div>
+                        <div class="col-md-4">
                             {% if candidate.terms_and_conditions %}
-                                <a href="{{ candidate.terms_and_conditions.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
+                                <a href="{{ candidate.terms_and_conditions.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
-                                <span class="badge bg-secondary">Not uploaded</span>
+                                <span class="badge bg-warning text-dark">Not uploaded</span>
                             {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Health Statement (Menora)</h6>
+                    <div class="row mb-2">
+                        <div class="col-md-8 fw-bold">Health Statement (Menora):</div>
+                        <div class="col-md-4">
                             {% if candidate.health_statement_menora %}
-                                <a href="{{ candidate.health_statement_menora.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
+                                <a href="{{ candidate.health_statement_menora.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
-                                <span class="badge bg-secondary">Not uploaded</span>
+                                <span class="badge bg-warning text-dark">Not uploaded</span>
                             {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Health Statement (Ayalon)</h6>
+                    <div class="row mb-2">
+                        <div class="col-md-8 fw-bold">Health Statement (Ayalon):</div>
+                        <div class="col-md-4">
                             {% if candidate.health_statement_ayalon %}
-                                <a href="{{ candidate.health_statement_ayalon.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
+                                <a href="{{ candidate.health_statement_ayalon.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
-                                <span class="badge bg-secondary">Not uploaded</span>
+                                <span class="badge bg-warning text-dark">Not uploaded</span>
                             {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Medical Report</h6>
+                    <div class="row mb-2">
+                        <div class="col-md-8 fw-bold">Medical Report:</div>
+                        <div class="col-md-4">
                             {% if candidate.medical_report %}
-                                <a href="{{ candidate.medical_report.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
+                                <a href="{{ candidate.medical_report.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
-                                <span class="badge bg-secondary">Not uploaded</span>
+                                <span class="badge bg-warning text-dark">Not uploaded</span>
                             {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Information and Rights</h6>
+                    <div class="row mb-2">
+                        <div class="col-md-8 fw-bold">Information and Rights:</div>
+                        <div class="col-md-4">
                             {% if candidate.info_and_rights %}
-                                <a href="{{ candidate.info_and_rights.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                    <i class="fas fa-download"></i> Download
+                                <a href="{{ candidate.info_and_rights.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
-                                <span class="badge bg-secondary">Not uploaded</span>
+                                <span class="badge bg-warning text-dark">Not uploaded</span>
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- System Information -->
-            <h5 class="border-bottom pb-2 mb-3 mt-4">System Information</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th class="bg-light" style="width: 40%">Created By</th>
-                            <td>{{ candidate.created_by.get_full_name|default:candidate.created_by.username }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Created At</th>
-                            <td>{{ candidate.created_at }}</td>
-                        </tr>
-                        <tr>
-                            <th class="bg-light">Last Updated</th>
-                            <td>{{ candidate.updated_at }}</td>
-                        </tr>
-                    </table>
-                </div>
+        </div>
+    </div>
+    
+    <!-- Status Change Section -->
+    <div class="card mb-4 shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Change Status</h5>
+        </div>
+        <div class="card-body">
+            <p class="mb-3">Current status: <span class="badge bg-{{ status_color }}">{{ candidate.status }}</span></p>
+            <div class="btn-group" role="group">
+                <a href="{% url 'change_candidate_status' candidate.id 'Draft' %}" class="btn btn-secondary {% if candidate.status == 'Draft' %}disabled{% endif %}">Draft</a>
+                <a href="{% url 'change_candidate_status' candidate.id 'New' %}" class="btn btn-info {% if candidate.status == 'New' %}disabled{% endif %}">New</a>
+                <a href="{% url 'change_candidate_status' candidate.id 'Fixed' %}" class="btn btn-primary {% if candidate.status == 'Fixed' %}disabled{% endif %}">Fixed</a>
+                <a href="{% url 'change_candidate_status' candidate.id 'Approved' %}" class="btn btn-success {% if candidate.status == 'Approved' %}disabled{% endif %}">Approved</a>
+                <a href="{% url 'change_candidate_status' candidate.id 'Rejected' %}" class="btn btn-danger {% if candidate.status == 'Rejected' %}disabled{% endif %}">Rejected</a>
+                <a href="{% url 'change_candidate_status' candidate.id 'Quit' %}" class="btn btn-warning {% if candidate.status == 'Quit' %}disabled{% endif %}">Quit</a>
             </div>
+        </div>
+    </div>
+    
+    <!-- Created Info -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <small class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                Created by: {{ candidate.created_by.get_full_name|default:candidate.created_by.username }} on {{ candidate.created_at|date:"F d, Y H:i" }}<br>
+                Last updated: {{ candidate.updated_at|date:"F d, Y H:i" }}
+            </small>
         </div>
     </div>
 </div>
