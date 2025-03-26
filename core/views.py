@@ -6,7 +6,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
 from .models import Profile, AgricultureProgram, Registration
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, ProgramRegistrationForm
+from .forms import (
+    UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
+    ProgramRegistrationForm, AdminRegistrationForm
+)
 
 
 def index(request):
@@ -29,6 +32,22 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+def admin_register(request):
+    """Admin registration view"""
+    if request.method == 'POST':
+        form = AdminRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Create profile for admin
+            Profile.objects.create(user=user)
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Admin account created for {username}! You can now log in.')
+            return redirect('login')
+    else:
+        form = AdminRegistrationForm()
+    return render(request, 'admin_register.html', {'form': form})
 
 
 def login_view(request):

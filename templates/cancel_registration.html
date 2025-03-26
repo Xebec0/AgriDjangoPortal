@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Registration - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Cancel Registration
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <h5 class="alert-heading">
+                        <i class="fas fa-exclamation-circle me-2"></i> Are you sure?
+                    </h5>
+                    <p>
+                        You are about to cancel your registration for <strong>{{ registration.program.title }}</strong>.
+                        This action cannot be undone. If you wish to participate in this program in the future,
+                        you will need to register again.
+                    </p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Registration Details</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Program:</strong> {{ registration.program.title }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Registration Date:</strong> {{ registration.registration_date|date:"F j, Y" }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Status:</strong> 
+                            {% if registration.status == 'approved' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif registration.status == 'rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </li>
+                        {% if registration.notes %}
+                            <li class="list-group-item">
+                                <strong>Your Notes:</strong> {{ registration.notes }}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-1"></i> Yes, Cancel My Registration
+                        </button>
+                        <a href="{% url 'profile' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> No, Go Back to Profile
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

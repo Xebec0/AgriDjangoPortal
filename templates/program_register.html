@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Register for {{ program.title }} - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'program_list' %}">Programs</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'program_detail' program.id %}">{{ program.title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Register</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Register for Program: {{ program.title }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i> 
+                    Please review the program details and complete the registration form below.
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Program Information</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Program:</strong> {{ program.title }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Dates:</strong> {{ program.start_date|date:"M d, Y" }} - {{ program.end_date|date:"M d, Y" }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Location:</strong> {{ program.location }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Your Information</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Email:</strong> {{ user.email }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Username:</strong> {{ user.username }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            Additional Notes or Requirements (Optional)
+                        </label>
+                        {{ form.notes }}
+                        {% if form.notes.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.notes.errors }}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            Please share any additional information that might be relevant for your application.
+                            This could include special accommodations, dietary requirements, or specific interests.
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">
+                            I agree to the terms and conditions of the program
+                        </label>
+                        <div class="invalid-feedback">
+                            You must agree before submitting.
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" type="submit">
+                            <i class="fas fa-check-circle me-1"></i> Submit Registration
+                        </button>
+                        <a href="{% url 'program_detail' program.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Program
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-muted">
+                <small>
+                    <i class="fas fa-info-circle me-1"></i> Your registration will be pending until reviewed by an administrator.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
