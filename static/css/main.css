@@ -1,0 +1,129 @@
+/* Main CSS file for Agrostudies Registration System */
+
+/* General styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Custom link colors */
+a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #218838;
+    text-decoration: underline;
+}
+
+/* Custom button styling */
+.btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-outline-primary {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-outline-primary:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+/* Header styling */
+.navbar-dark {
+    background-color: #1c5631 !important;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Card styling */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    color: #28a745;
+}
+
+/* Footer styling */
+footer {
+    background-color: #1c5631 !important;
+}
+
+footer a {
+    transition: opacity 0.2s ease;
+}
+
+footer a:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+/* Form styling */
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Jumbotron styling */
+.jumbotron {
+    background-color: #e9f9ef;
+    border-left: 5px solid #28a745;
+}
+
+/* Alert styling */
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+/* Program list styling */
+.program-list-item {
+    border-left: 3px solid #28a745;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+/* Profile page styling */
+.profile-header {
+    background-color: #e9f9ef;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .jumbotron {
+        padding: 2rem 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .card-deck {
+        display: block;
+    }
+}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Programs - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Agricultural Programs</h1>
+</div>
+
+{% if page_obj %}
+    <div class="row">
+        {% for program in page_obj %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 program-list-item">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ program.title }}</h3>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ program.location }}</h6>
+                        
+                        <p class="card-text">
+                            {{ program.description|truncatewords:30 }}
+                        </p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-1">
+                                    <i class="far fa-calendar-alt me-1"></i> 
+                                    <strong>Start:</strong> {{ program.start_date|date:"M d, Y" }}
+                                </p>
+                                <p class="mb-1">
+                                    <i class="far fa-calendar-check me-1"></i> 
+                                    <strong>End:</strong> {{ program.end_date|date:"M d, Y" }}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1">
+                                    <i class="fas fa-users me-1"></i> 
+                                    <strong>Capacity:</strong> {{ program.capacity }}
+                                </p>
+                                <p class="mb-1">
+                                    <i class="fas fa-map-marker-alt me-1"></i> 
+                                    <strong>Location:</strong> {{ program.location }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'program_detail' program.id %}" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> View Details
+                        </a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'program_register' program.id %}" class="btn btn-outline-success">
+                                <i class="fas fa-sign-in-alt me-1"></i> Register
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;&laquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                {% endif %}
+                
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;&raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info">
+        No programs are currently available. Please check back later.
+    </div>
+{% endif %}
+{% endblock %}

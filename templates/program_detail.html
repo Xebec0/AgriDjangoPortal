@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ program.title }} - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'program_list' %}">Programs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ program.title }}</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h2 class="card-title mb-0">{{ program.title }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h5 class="text-muted mb-3">Program Description</h5>
+                <p>{{ program.description|linebreaks }}</p>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Program Details</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="far fa-calendar-alt me-2"></i>
+                                <strong>Start Date:</strong> {{ program.start_date|date:"F j, Y" }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="far fa-calendar-check me-2"></i>
+                                <strong>End Date:</strong> {{ program.end_date|date:"F j, Y" }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <strong>Location:</strong> {{ program.location }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-users me-2"></i>
+                                <strong>Capacity:</strong> {{ program.capacity }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-clock me-2"></i>
+                                <strong>Created:</strong> {{ program.created_at|date:"F j, Y" }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-edit me-2"></i>
+                                <strong>Updated:</strong> {{ program.updated_at|date:"F j, Y" }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            {% if user.is_authenticated %}
+                {% if user_registered %}
+                    {% if registration.status == 'pending' %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-hourglass-half me-2"></i>
+                            Your registration is pending approval.
+                        </div>
+                        <a href="{% url 'cancel_registration' registration.id %}" class="btn btn-danger">
+                            <i class="fas fa-times me-1"></i> Cancel Registration
+                        </a>
+                    {% elif registration.status == 'approved' %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Your registration has been approved!
+                        </div>
+                        <a href="{% url 'cancel_registration' registration.id %}" class="btn btn-danger">
+                            <i class="fas fa-times me-1"></i> Cancel Registration
+                        </a>
+                    {% elif registration.status == 'rejected' %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-times-circle me-2"></i>
+                            Your registration has been rejected.
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'program_register' program.id %}" class="btn btn-success btn-lg">
+                        <i class="fas fa-sign-in-alt me-1"></i> Register for this Program
+                    </a>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a> to apply for this program.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-graduation-cap fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Learn</h5>
+                <p class="card-text">Gain practical knowledge and skills in agricultural practices.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-hands-helping fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Experience</h5>
+                <p class="card-text">Get hands-on experience with modern farming techniques.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Connect</h5>
+                <p class="card-text">Network with agricultural professionals and fellow students.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

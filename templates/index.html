@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Welcome to Agrostudies Registration System</h1>
+    <p class="lead">
+        Connect with agricultural programs and training opportunities around the world.
+    </p>
+    <hr class="my-4">
+    <p>
+        Register today to gain access to a wide range of agricultural programs, internships, 
+        and training opportunities designed to enhance your knowledge and skills in the field.
+    </p>
+    <a class="btn btn-primary btn-lg" href="{% url 'program_list' %}" role="button">
+        Browse Programs
+    </a>
+    {% if not user.is_authenticated %}
+    <a class="btn btn-outline-secondary btn-lg ms-2" href="{% url 'register' %}" role="button">
+        Sign Up Now
+    </a>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h2 class="mb-4">Featured Programs</h2>
+    </div>
+</div>
+
+<div class="row">
+    {% for program in programs %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ program.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ program.location }}</h6>
+                <p class="card-text">
+                    {{ program.description|truncatewords:20 }}
+                </p>
+                <div class="mb-2">
+                    <small class="text-muted">
+                        <i class="far fa-calendar-alt"></i> {{ program.start_date }} - {{ program.end_date }}
+                    </small>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted">
+                        <i class="fas fa-users"></i> Capacity: {{ program.capacity }}
+                    </small>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'program_detail' program.id %}" class="btn btn-sm btn-primary">Learn More</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No programs available at the moment. Please check back later.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12 text-center">
+        <a href="{% url 'program_list' %}" class="btn btn-outline-primary">
+            View All Programs
+        </a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Find Programs</h5>
+                <p class="card-text">
+                    Browse through our comprehensive catalog of agricultural programs from around the world.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-file-signature fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Apply Online</h5>
+                <p class="card-text">
+                    Complete your application process entirely online with our easy-to-use platform.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-graduation-cap fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title">Expand Knowledge</h5>
+                <p class="card-text">
+                    Gain practical skills and valuable experience in agricultural practices and technologies.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

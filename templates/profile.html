@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="profile-header mb-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2><i class="fas fa-user-circle me-2"></i>{{ user.username }}'s Profile</h2>
+            <p>Member since: {{ user.profile.date_joined|date:"F j, Y" }}</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#editProfileForm" role="button">
+                <i class="fas fa-edit me-1"></i> Edit Profile
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="collapse mb-4" id="editProfileForm">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">Edit Profile</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ u_form.first_name.id_for_label }}" class="form-label">First Name</label>
+                        {{ u_form.first_name }}
+                        {% if u_form.first_name.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ u_form.first_name.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ u_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                        {{ u_form.last_name }}
+                        {% if u_form.last_name.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ u_form.last_name.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ u_form.username.id_for_label }}" class="form-label">Username</label>
+                        {{ u_form.username }}
+                        {% if u_form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ u_form.username.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ u_form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ u_form.email }}
+                        {% if u_form.email.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ u_form.email.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.location.id_for_label }}" class="form-label">Location</label>
+                        {{ p_form.location }}
+                        {% if p_form.location.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ p_form.location.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.bio.id_for_label }}" class="form-label">Bio</label>
+                        {{ p_form.bio }}
+                        {% if p_form.bio.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ p_form.bio.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h4><i class="fas fa-info-circle me-2"></i>Personal Information</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Location:</strong> {{ user.profile.location|default:"Not specified" }}</p>
+                <p><strong>Bio:</strong> {{ user.profile.bio|default:"No bio provided"|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4><i class="fas fa-clipboard-list me-2"></i>My Program Registrations</h4>
+    </div>
+    <div class="card-body">
+        {% if registrations %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Program</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in registrations %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'program_detail' reg.program.id %}">{{ reg.program.title }}</a>
+                                </td>
+                                <td>{{ reg.registration_date|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if reg.status == 'approved' %}
+                                        <span class="badge bg-success">Approved</span>
+                                    {% elif reg.status == 'rejected' %}
+                                        <span class="badge bg-danger">Rejected</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if reg.status != 'rejected' %}
+                                        <a href="{% url 'cancel_registration' reg.id %}" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                You haven't registered for any programs yet. 
+                <a href="{% url 'program_list' %}">Browse available programs</a>.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
