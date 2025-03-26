@@ -16,6 +16,12 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev', '.replit.dev']
 
+# CSRF Trusted Origins for secure form submissions
+CSRF_TRUSTED_ORIGINS = [
+    'https://97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev',
+    'https://*.replit.dev',
+]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
