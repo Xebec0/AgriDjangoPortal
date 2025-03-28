@@ -778,8 +778,48 @@ def change_candidate_status(request, candidate_id, status):
         messages.error(request, 'Invalid status value.')
         return redirect('view_candidate', candidate_id=candidate_id)
     
+    # Store the old status for notification message
+    old_status = candidate.status
+    
+    # Update the status
     candidate.status = status
     candidate.save()
+    
+    # Try to find the user associated with this candidate by email
+    if candidate.email:
+        try:
+            user = User.objects.get(email=candidate.email)
+            
+            # Determine notification type and message based on status
+            if status == 'Approved':
+                notification_type = Notification.SUCCESS
+                message = f"Congratulations! Your application has been approved. You're now ready to proceed with the next steps."
+            elif status == 'Rejected':
+                notification_type = Notification.ERROR
+                message = f"We regret to inform you that your application has been declined. Please contact the administration for more details."
+            elif status == 'Quit':
+                notification_type = Notification.ERROR
+                message = f"Your application has been marked as withdrawn. If this was a mistake, please contact the administration."
+            elif status == 'Fixed':
+                notification_type = Notification.INFO
+                message = f"Your application has been reviewed and marked as fixed. It will now proceed to the next stage of evaluation."
+            elif status == 'New':
+                notification_type = Notification.INFO
+                message = f"Your application has been received and is now under review. We'll update you on any progress."
+            else:
+                notification_type = Notification.INFO
+                message = f"Your application status has been updated to {status}. Please check your profile for more details."
+            
+            # Create a notification for the user
+            Notification.add_notification(
+                user=user,
+                message=message,
+                notification_type=notification_type,
+                link=f"/candidates/{candidate.id}/"
+            )
+        except User.DoesNotExist:
+            # No user found with this email, can't send notification
+            pass
     
     messages.success(request, f'Status for {candidate.first_name} {candidate.last_name} has been changed to {status}.')
     return redirect('view_candidate', candidate_id=candidate_id)
