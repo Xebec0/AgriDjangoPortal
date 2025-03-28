@@ -28,18 +28,21 @@ urlpatterns = [
     ), name='password_reset_complete'),
     
     # Notification URLs
-    path('notifications/', views.notifications, name='notifications'),
     path('notifications/<int:notification_id>/mark-read/', views.mark_notification_read, name='mark_notification_read'),
     path('notifications/mark-all-read/', views.mark_all_read, name='mark_all_read'),
     path('notifications/<int:notification_id>/delete/', views.delete_notification, name='delete_notification'),
     path('notifications/delete-all/', views.delete_all_notifications, name='delete_all_notifications'),
+    path('api/notifications/', views.api_notifications, name='api_notifications'),
+    path('api/notifications/clear-all/', views.api_clear_all_notifications, name='api_clear_all_notifications'),
     
     # Programs and registrations
     path('programs/', views.program_list, name='program_list'),
     path('programs/<int:program_id>/', views.program_detail, name='program_detail'),
     path('programs/<int:program_id>/register/', views.program_register, name='program_register'),
     path('programs/<int:program_id>/registrants/', views.program_registrants, name='program_registrants'),
+    path('registrations/<int:registration_id>/', views.registration_detail, name='registration_detail'),
     path('registrations/<int:registration_id>/cancel/', views.cancel_registration, name='cancel_registration'),
+    path('registrations/<int:registration_id>/status/<str:status>/', views.update_registration_status, name='update_registration_status'),
     
     # Export program registrants
     path('programs/<int:program_id>/export/registrants/csv/', views.export_registrants_csv, name='export_registrants_csv'),

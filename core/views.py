@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Profile, AgricultureProgram, Registration, Candidate, University, Notification
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
@@ -27,6 +27,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.conf import settings
 import os
+import json
 
 
 def index(request):
@@ -308,7 +309,7 @@ def program_register(request, program_id):
                     user=admin,
                     message=f"New registration: {request.user.username} has registered for {program.title}",
                     notification_type=Notification.INFO,
-                    link=f"/admin/core/registration/{registration.id}/change/"
+                    link=f"/registrations/{registration.id}/"
                 )
             
             messages.success(request, f'Successfully registered for {program.title}! Your documents have been submitted.')
@@ -639,6 +640,34 @@ def add_candidate(request):
                 'confirm_first_name': user.first_name,
                 'confirm_surname': user.last_name
             }
+            
+            # Check for registrations by this user and pre-fill document fields
+            registrations = Registration.objects.filter(user=user).order_by('-registration_date')
+            if registrations.exists():
+                # Initialize document fields as None
+                documents = {
+                    'tor': None,
+                    'nc2_tesda': None,
+                    'diploma': None,
+                    'good_moral': None,
+                    'nbi_clearance': None
+                }
+                
+                # Check all registrations for documents
+                for registration in registrations:
+                    # For each document field, use the first non-empty value found
+                    for doc_field in documents.keys():
+                        if documents[doc_field] is None and getattr(registration, doc_field):
+                            documents[doc_field] = getattr(registration, doc_field)
+                
+                # Add found documents to initial_data
+                for doc_field, value in documents.items():
+                    if value:
+                        initial_data[doc_field] = value
+                
+                # Add a message to inform the admin that documents were pre-filled
+                messages.info(request, f'Documents uploaded by {username} during program registration have been pre-filled.')
+            
         except User.DoesNotExist:
             pass
     
@@ -1013,6 +1042,23 @@ def export_registrants_pdf(request, registrations=None, program=None):
 
 
 @login_required
+def registration_detail(request, registration_id):
+    """View details of a specific registration"""
+    # Check if user has staff privilege or is the owner of the registration
+    registration = get_object_or_404(Registration, id=registration_id)
+    
+    if not request.user.is_staff and request.user != registration.user:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    return render(request, 'registration_detail.html', {
+        'registration': registration,
+        'program': registration.program,
+        'user': registration.user,
+    })
+
+
+@login_required
 def notifications(request):
     """View all notifications for a user"""
     notification_type = request.GET.get('type', None)
@@ -1056,8 +1102,17 @@ def mark_notification_read(request, notification_id):
     notification.read = True
     notification.save()
     
-    # Redirect to notification source if available, otherwise to the notifications page
-    return redirect(notification.link if notification.link else 'notifications')
+    # Check if this is an AJAX request
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.content_type == 'application/json':
+        # Get updated unread count
+        unread_count = Notification.objects.filter(user=request.user, read=False).count()
+        return JsonResponse({
+            'success': True,
+            'unread_count': unread_count
+        })
+    
+    # Redirect to notification source if available, otherwise to the home page
+    return redirect(notification.link if notification.link else 'index')
 
 
 @login_required
@@ -1115,3 +1170,69 @@ def delete_all_notifications(request):
     if notification_type:
         redirect_url += f'?type={notification_type}'
     return redirect(redirect_url)
+
+
+@login_required
+def update_registration_status(request, registration_id, status):
+    """Update the status of a registration"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    registration = get_object_or_404(Registration, id=registration_id)
+    
+    if status not in [Registration.PENDING, Registration.APPROVED, Registration.REJECTED]:
+        messages.error(request, 'Invalid status.')
+        return redirect('registration_detail', registration_id=registration_id)
+    
+    registration.status = status
+    registration.save()
+    
+    status_display = dict(Registration.STATUS_CHOICES)[status]
+    messages.success(request, f'Registration status updated to {status_display}.')
+    
+    # Notify the user about the status change
+    Notification.add_notification(
+        user=registration.user,
+        message=f"Your registration for {registration.program.title} has been {status_display.lower()}.",
+        notification_type=Notification.INFO if status == Registration.PENDING else (
+            Notification.SUCCESS if status == Registration.APPROVED else Notification.ERROR
+        ),
+        link=f"/registrations/{registration.id}/"
+    )
+    
+    return redirect('registration_detail', registration_id=registration_id)
+
+
+@login_required
+def api_notifications(request):
+    """API endpoint to get notifications for the current user"""
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')[:10]  # Get the 10 most recent
+    
+    # Format notifications for JSON response
+    notifications_data = []
+    for notification in notifications:
+        # Format the created_at date
+        created_at_formatted = notification.created_at.strftime('%b %d, %Y %H:%M')
+        
+        notifications_data.append({
+            'id': notification.id,
+            'message': notification.message,
+            'notification_type': notification.notification_type,
+            'link': notification.link,
+            'created_at': created_at_formatted,
+            'read': notification.read,
+        })
+    
+    return JsonResponse({'notifications': notifications_data})
+
+
+@login_required
+def api_clear_all_notifications(request):
+    """API endpoint to clear all notifications for the current user"""
+    if request.method == 'POST':
+        # Delete all notifications for the user
+        Notification.objects.filter(user=request.user).delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
