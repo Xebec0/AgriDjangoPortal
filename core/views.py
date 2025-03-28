@@ -13,6 +13,13 @@ from .forms import (
     ProgramRegistrationForm, AdminRegistrationForm,
     CandidateForm, CandidateSearchForm
 )
+import csv
+import xlsxwriter
+from io import BytesIO
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 
 
 def index(request):
@@ -221,6 +228,16 @@ def candidate_list(request):
         if passport:
             candidates = candidates.filter(passport_number__icontains=passport)
     
+    # Check if export is requested
+    export_format = request.GET.get('export')
+    if export_format:
+        if export_format == 'csv':
+            return export_candidates_csv(request, candidates)
+        elif export_format == 'excel':
+            return export_candidates_excel(request, candidates)
+        elif export_format == 'pdf':
+            return export_candidates_pdf(request, candidates)
+    
     # Pagination
     paginator = Paginator(candidates, 15)  # Show 15 candidates per page
     page_number = request.GET.get('page')
@@ -241,12 +258,241 @@ def candidate_list(request):
 
 
 @login_required
+def export_candidates_csv(request, candidates=None):
+    """Export candidates to CSV file"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    # If candidates not provided, get all (used when directly accessing the export URL)
+    if candidates is None:
+        candidates = Candidate.objects.all().order_by('-created_at')
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="candidates.csv"'
+    
+    writer = csv.writer(response)
+    writer.writerow([
+        'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
+        'Gender', 'Nationality', 'University', 'Specialization', 'Status',
+        'Date Added'
+    ])
+    
+    for candidate in candidates:
+        writer.writerow([
+            candidate.passport_number,
+            candidate.first_name,
+            candidate.last_name,
+            candidate.email or '',
+            candidate.date_of_birth.strftime('%Y-%m-%d'),
+            candidate.gender,
+            candidate.nationality,
+            candidate.university.name,
+            candidate.specialization,
+            candidate.status,
+            candidate.created_at.strftime('%Y-%m-%d')
+        ])
+    
+    return response
+
+
+@login_required
+def export_candidates_excel(request, candidates=None):
+    """Export candidates to Excel file"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    # If candidates not provided, get all (used when directly accessing the export URL)
+    if candidates is None:
+        candidates = Candidate.objects.all().order_by('-created_at')
+    
+    # Create an in-memory output file
+    output = BytesIO()
+    
+    # Create a workbook and add a worksheet with remove_timezone option
+    workbook = xlsxwriter.Workbook(output, {'remove_timezone': True})
+    worksheet = workbook.add_worksheet()
+    
+    # Add a bold format to use to highlight cells
+    bold = workbook.add_format({'bold': True})
+    date_format = workbook.add_format({'num_format': 'yyyy-mm-dd'})
+    
+    # Write some data headers
+    headers = [
+        'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
+        'Gender', 'Nationality', 'Country of Birth', 'Religion', 'Father Name', 
+        'Mother Name', 'University', 'Specialization', 'Secondary Specialization',
+        'Smokes', 'Status', 'Date Added'
+    ]
+    
+    for col_num, header in enumerate(headers):
+        worksheet.write(0, col_num, header, bold)
+    
+    # Start from the first cell below headers
+    row = 1
+    
+    # Write data rows
+    for candidate in candidates:
+        col = 0
+        worksheet.write(row, col, candidate.passport_number); col += 1
+        worksheet.write(row, col, candidate.first_name); col += 1
+        worksheet.write(row, col, candidate.last_name); col += 1
+        worksheet.write(row, col, candidate.email or ''); col += 1
+        worksheet.write_datetime(row, col, candidate.date_of_birth, date_format); col += 1
+        worksheet.write(row, col, candidate.gender); col += 1
+        worksheet.write(row, col, candidate.nationality); col += 1
+        worksheet.write(row, col, candidate.country_of_birth); col += 1
+        worksheet.write(row, col, candidate.religion or ''); col += 1
+        worksheet.write(row, col, candidate.father_name or ''); col += 1
+        worksheet.write(row, col, candidate.mother_name or ''); col += 1
+        worksheet.write(row, col, candidate.university.name); col += 1
+        worksheet.write(row, col, candidate.specialization); col += 1
+        worksheet.write(row, col, candidate.secondary_specialization or ''); col += 1
+        worksheet.write(row, col, candidate.smokes); col += 1
+        worksheet.write(row, col, candidate.status); col += 1
+        worksheet.write_datetime(row, col, candidate.created_at, date_format); col += 1
+        row += 1
+    
+    # Adjust column widths for better readability
+    for i, header in enumerate(headers):
+        worksheet.set_column(i, i, len(header) + 2)
+    
+    # Close the workbook
+    workbook.close()
+    
+    # Rewind the buffer
+    output.seek(0)
+    
+    # Set up the HttpResponse
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=candidates.xlsx'
+    
+    return response
+
+
+@login_required
+def export_candidates_pdf(request, candidates=None):
+    """Export candidates to PDF file"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    # If candidates not provided, get all (used when directly accessing the export URL)
+    if candidates is None:
+        candidates = Candidate.objects.all().order_by('-created_at')
+    
+    # Create a file-like buffer to receive PDF data
+    buffer = BytesIO()
+    
+    # Create the PDF object, using the buffer as its "file"
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=landscape(letter),
+        rightMargin=30,
+        leftMargin=30,
+        topMargin=30,
+        bottomMargin=30
+    )
+    
+    # Container for the 'Flowable' objects
+    elements = []
+    
+    # Get styles
+    styles = getSampleStyleSheet()
+    title_style = styles['Heading1']
+    
+    # Add title
+    title = Paragraph("Candidates Report", title_style)
+    elements.append(title)
+    elements.append(Spacer(1, 12))
+    
+    # Create data for table
+    data = [
+        [
+            'Passport Number', 'Name', 'Nationality', 'University', 
+            'Specialization', 'Status', 'Date Added'
+        ]
+    ]
+    
+    # Add data rows
+    for candidate in candidates:
+        data.append([
+            candidate.passport_number,
+            f"{candidate.first_name} {candidate.last_name}",
+            candidate.nationality,
+            candidate.university.name,
+            candidate.specialization,
+            candidate.status,
+            candidate.created_at.strftime('%Y-%m-%d')
+        ])
+    
+    # Create the table
+    table = Table(data)
+    
+    # Style the table
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+    
+    # Apply alternating row colors
+    for i in range(1, len(data)):
+        if i % 2 == 0:
+            style.add('BACKGROUND', (0, i), (-1, i), colors.lightgrey)
+    
+    table.setStyle(style)
+    elements.append(table)
+    
+    # Build the document
+    doc.build(elements)
+    
+    # Get the value of the buffer
+    pdf = buffer.getvalue()
+    buffer.close()
+    
+    # Create the HTTP response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="candidates.pdf"'
+    response.write(pdf)
+    
+    return response
+
+
+@login_required
 def add_candidate(request):
     """Add a new candidate"""
     # Check if user has staff privilege
     if not request.user.is_staff:
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('index')
+    
+    # Check if a username was provided (coming from the registrants page)
+    username = request.GET.get('username')
+    initial_data = {}
+    
+    if username:
+        try:
+            user = User.objects.get(username=username)
+            # Pre-fill form with user data if found
+            initial_data = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'confirm_first_name': user.first_name,
+                'confirm_surname': user.last_name
+            }
+        except User.DoesNotExist:
+            pass
     
     if request.method == 'POST':
         form = CandidateForm(request.POST, request.FILES)
@@ -258,7 +504,7 @@ def add_candidate(request):
             messages.success(request, f'Candidate {candidate.first_name} {candidate.last_name} has been added successfully.')
             return redirect('candidate_list')
     else:
-        form = CandidateForm()
+        form = CandidateForm(initial=initial_data)
     
     return render(request, 'candidate_form.html', {
         'form': form,
@@ -370,3 +616,249 @@ def help_page(request):
 def contact_page(request):
     """Contact page"""
     return render(request, 'contact.html')
+
+
+@login_required
+def program_registrants(request, program_id):
+    """View registrants for a specific program"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    program = get_object_or_404(AgricultureProgram, id=program_id)
+    registrations = Registration.objects.filter(program=program).order_by('-registration_date')
+    
+    # Check if export is requested
+    export_format = request.GET.get('export')
+    if export_format:
+        if export_format == 'csv':
+            return export_registrants_csv(request, registrations, program)
+        elif export_format == 'excel':
+            return export_registrants_excel(request, registrations, program)
+        elif export_format == 'pdf':
+            return export_registrants_pdf(request, registrations, program)
+    
+    # Pagination
+    paginator = Paginator(registrations, 20)  # Show 20 registrations per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'program_registrants.html', {
+        'program': program,
+        'page_obj': page_obj,
+        'status_colors': {
+            'pending': 'warning',
+            'approved': 'success',
+            'rejected': 'danger',
+        }
+    })
+
+
+@login_required
+def export_registrants_csv(request, registrations=None, program=None):
+    """Export program registrants to CSV"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    # If registrations not provided, get from program_id
+    if registrations is None and program is None:
+        program_id = request.GET.get('program_id')
+        if not program_id:
+            messages.error(request, 'Program ID is required.')
+            return redirect('program_list')
+        
+        program = get_object_or_404(AgricultureProgram, id=program_id)
+        registrations = Registration.objects.filter(program=program).order_by('-registration_date')
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{program.title.replace(" ", "_")}_registrants.csv"'
+    
+    writer = csv.writer(response)
+    writer.writerow([
+        'Username', 'First Name', 'Last Name', 'Email', 
+        'Registration Date', 'Status', 'Notes'
+    ])
+    
+    for registration in registrations:
+        writer.writerow([
+            registration.user.username,
+            registration.user.first_name,
+            registration.user.last_name,
+            registration.user.email,
+            registration.registration_date.strftime('%Y-%m-%d'),
+            registration.status,
+            registration.notes
+        ])
+    
+    return response
+
+
+@login_required
+def export_registrants_excel(request, registrations=None, program=None):
+    """Export program registrants to Excel"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    # If registrations not provided, get from program_id
+    if registrations is None and program is None:
+        program_id = request.GET.get('program_id')
+        if not program_id:
+            messages.error(request, 'Program ID is required.')
+            return redirect('program_list')
+        
+        program = get_object_or_404(AgricultureProgram, id=program_id)
+        registrations = Registration.objects.filter(program=program).order_by('-registration_date')
+    
+    # Create an in-memory output file
+    output = BytesIO()
+    
+    # Create a workbook and add a worksheet with remove_timezone option
+    workbook = xlsxwriter.Workbook(output, {'remove_timezone': True})
+    worksheet = workbook.add_worksheet()
+    
+    # Add formatting
+    bold = workbook.add_format({'bold': True})
+    date_format = workbook.add_format({'num_format': 'yyyy-mm-dd'})
+    
+    # Write data headers
+    headers = [
+        'Username', 'First Name', 'Last Name', 'Email', 
+        'Registration Date', 'Status', 'Notes'
+    ]
+    
+    for col_num, header in enumerate(headers):
+        worksheet.write(0, col_num, header, bold)
+    
+    # Start from the first cell below headers
+    row = 1
+    
+    # Write data rows
+    for registration in registrations:
+        col = 0
+        worksheet.write(row, col, registration.user.username); col += 1
+        worksheet.write(row, col, registration.user.first_name); col += 1
+        worksheet.write(row, col, registration.user.last_name); col += 1
+        worksheet.write(row, col, registration.user.email); col += 1
+        worksheet.write_datetime(row, col, registration.registration_date, date_format); col += 1
+        worksheet.write(row, col, registration.status); col += 1
+        worksheet.write(row, col, registration.notes); col += 1
+        row += 1
+    
+    # Adjust column widths for better readability
+    for i, header in enumerate(headers):
+        worksheet.set_column(i, i, len(header) + 2)
+    
+    # Close the workbook
+    workbook.close()
+    
+    # Rewind the buffer
+    output.seek(0)
+    
+    # Set up the HttpResponse
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = f'attachment; filename="{program.title.replace(" ", "_")}_registrants.xlsx"'
+    
+    return response
+
+
+@login_required
+def export_registrants_pdf(request, registrations=None, program=None):
+    """Export program registrants to PDF"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    # If registrations not provided, get from program_id
+    if registrations is None and program is None:
+        program_id = request.GET.get('program_id')
+        if not program_id:
+            messages.error(request, 'Program ID is required.')
+            return redirect('program_list')
+        
+        program = get_object_or_404(AgricultureProgram, id=program_id)
+        registrations = Registration.objects.filter(program=program).order_by('-registration_date')
+    
+    # Create a file-like buffer to receive PDF data
+    buffer = BytesIO()
+    
+    # Create the PDF object, using the buffer as its "file"
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=landscape(letter),
+        rightMargin=30,
+        leftMargin=30,
+        topMargin=30,
+        bottomMargin=30
+    )
+    
+    # Container for the 'Flowable' objects
+    elements = []
+    
+    # Get styles
+    styles = getSampleStyleSheet()
+    title_style = styles['Heading1']
+    
+    # Add title
+    title = Paragraph(f"Registrants for {program.title}", title_style)
+    elements.append(title)
+    elements.append(Spacer(1, 12))
+    
+    # Create data for table
+    data = [
+        [
+            'Username', 'Name', 'Email', 'Registration Date', 'Status'
+        ]
+    ]
+    
+    # Add data rows
+    for registration in registrations:
+        data.append([
+            registration.user.username,
+            f"{registration.user.first_name} {registration.user.last_name}",
+            registration.user.email,
+            registration.registration_date.strftime('%Y-%m-%d'),
+            registration.status
+        ])
+    
+    # Create the table
+    table = Table(data)
+    
+    # Style the table
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+    
+    # Apply alternating row colors
+    for i in range(1, len(data)):
+        if i % 2 == 0:
+            style.add('BACKGROUND', (0, i), (-1, i), colors.lightgrey)
+    
+    table.setStyle(style)
+    elements.append(table)
+    
+    # Build the document
+    doc.build(elements)
+    
+    # Get the value of the buffer
+    pdf = buffer.getvalue()
+    buffer.close()
+    
+    # Create the HTTP response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{program.title.replace(" ", "_")}_registrants.pdf"'
+    response.write(pdf)
+    
+    return response
