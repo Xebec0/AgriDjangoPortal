@@ -7,9 +7,40 @@
     <div class="card shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h3 class="mb-0">Notifications</h3>
-            <a href="{% url 'mark_all_read' %}" class="btn btn-sm btn-light">Mark All as Read</a>
+            <div>
+                <a href="{% url 'mark_all_read' %}{% if current_type %}?type={{ current_type }}{% endif %}" class="btn btn-sm btn-light me-2">
+                    <i class="fas fa-check-double me-1"></i> Mark All as Read
+                </a>
+                <a href="{% url 'delete_all_notifications' %}{% if current_type %}?type={{ current_type }}{% endif %}" class="btn btn-sm btn-outline-light" 
+                   onclick="return confirm('Are you sure you want to delete all notifications?');">
+                    <i class="fas fa-trash-alt me-1"></i> Delete All
+                </a>
+            </div>
         </div>
+        
         <div class="card-body">
+            <!-- Filter buttons -->
+            <div class="mb-3 d-flex flex-wrap">
+                <a href="{% url 'notifications' %}" class="btn btn-sm {% if not current_type %}btn-primary{% else %}btn-outline-primary{% endif %} me-2 mb-2">
+                    <i class="fas fa-list me-1"></i> All
+                </a>
+                {% for type in notification_types %}
+                    <a href="{% url 'notifications' %}?type={{ type.code }}" 
+                       class="btn btn-sm {% if current_type == type.code %}btn-primary{% else %}btn-outline-primary{% endif %} me-2 mb-2">
+                        {% if type.code == 'info' %}
+                            <i class="fas fa-info-circle me-1"></i>
+                        {% elif type.code == 'success' %}
+                            <i class="fas fa-check-circle me-1"></i>
+                        {% elif type.code == 'warning' %}
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                        {% elif type.code == 'error' %}
+                            <i class="fas fa-times-circle me-1"></i>
+                        {% endif %}
+                        {{ type.name }}
+                    </a>
+                {% endfor %}
+            </div>
+            
             {% if notifications %}
                 <ul class="list-group">
                     {% for notification in notifications %}
@@ -36,9 +67,14 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div>
-                                <a href="{% url 'mark_notification_read' notification.id %}" class="text-decoration-none">
+                            <div class="d-flex">
+                                <a href="{% url 'mark_notification_read' notification.id %}" class="text-decoration-none me-2" title="Mark as read">
                                     <i class="fas fa-check text-muted"></i>
+                                </a>
+                                <a href="{% url 'delete_notification' notification.id %}{% if current_type %}?type={{ current_type }}{% endif %}" 
+                                   class="text-decoration-none text-danger" title="Delete notification"
+                                   onclick="return confirm('Are you sure you want to delete this notification?');">
+                                    <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
                         </li>
@@ -51,12 +87,12 @@
                     <ul class="pagination justify-content-center">
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="First">
+                                <a class="page-link" href="?page=1{% if current_type %}&type={{ current_type }}{% endif %}" aria-label="First">
                                     <span aria-hidden="true">&laquo;&laquo;</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_type %}&type={{ current_type }}{% endif %}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -64,20 +100,20 @@
                         
                         {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
-                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}{% if current_type %}&type={{ current_type }}{% endif %}">{{ num }}</a></li>
                             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if current_type %}&type={{ current_type }}{% endif %}">{{ num }}</a></li>
                             {% endif %}
                         {% endfor %}
                         
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_type %}&type={{ current_type }}{% endif %}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if current_type %}&type={{ current_type }}{% endif %}" aria-label="Last">
                                     <span aria-hidden="true">&raquo;&raquo;</span>
                                 </a>
                             </li>

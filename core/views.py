@@ -990,7 +990,17 @@ def export_registrants_pdf(request, registrations=None, program=None):
 @login_required
 def notifications(request):
     """View all notifications for a user"""
-    notifications = Notification.objects.filter(user=request.user)
+    notification_type = request.GET.get('type', None)
+    
+    # Base queryset
+    notifications_queryset = Notification.objects.filter(user=request.user)
+    
+    # Apply filter if requested
+    if notification_type in [Notification.INFO, Notification.SUCCESS, Notification.WARNING, Notification.ERROR]:
+        notifications_queryset = notifications_queryset.filter(notification_type=notification_type)
+    
+    # Order by created date (newest first) and read status (unread first)
+    notifications = notifications_queryset.order_by('read', '-created_at')
     
     # Pagination
     paginator = Paginator(notifications, 20)  # Show 20 notifications per page
@@ -1000,7 +1010,14 @@ def notifications(request):
     return render(request, 'notifications.html', {
         'notifications': page_obj,
         'is_paginated': page_obj.has_other_pages(),
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'current_type': notification_type,
+        'notification_types': [
+            {'code': Notification.INFO, 'name': 'Information'},
+            {'code': Notification.SUCCESS, 'name': 'Success'},
+            {'code': Notification.WARNING, 'name': 'Warning'},
+            {'code': Notification.ERROR, 'name': 'Error'},
+        ]
     })
 
 
@@ -1018,6 +1035,55 @@ def mark_notification_read(request, notification_id):
 @login_required
 def mark_all_read(request):
     """Mark all notifications as read"""
-    Notification.objects.filter(user=request.user, read=False).update(read=True)
+    # Apply type filter if present
+    notification_type = request.GET.get('type', None)
+    filter_kwargs = {'user': request.user, 'read': False}
+    
+    if notification_type in [Notification.INFO, Notification.SUCCESS, Notification.WARNING, Notification.ERROR]:
+        filter_kwargs['notification_type'] = notification_type
+    
+    Notification.objects.filter(**filter_kwargs).update(read=True)
+    
     messages.success(request, 'All notifications have been marked as read.')
-    return redirect('notifications')
+    
+    # Redirect back with type filter if it was present
+    redirect_url = 'notifications'
+    if notification_type:
+        redirect_url += f'?type={notification_type}'
+    return redirect(redirect_url)
+
+
+@login_required
+def delete_notification(request, notification_id):
+    """Delete a specific notification"""
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification.delete()
+    messages.success(request, 'Notification deleted.')
+    
+    # Redirect back to notifications page with any active filters
+    notification_type = request.GET.get('type', None)
+    redirect_url = 'notifications'
+    if notification_type:
+        redirect_url += f'?type={notification_type}'
+    return redirect(redirect_url)
+
+
+@login_required
+def delete_all_notifications(request):
+    """Delete all notifications for a user"""
+    # Apply type filter if present
+    notification_type = request.GET.get('type', None)
+    filter_kwargs = {'user': request.user}
+    
+    if notification_type in [Notification.INFO, Notification.SUCCESS, Notification.WARNING, Notification.ERROR]:
+        filter_kwargs['notification_type'] = notification_type
+    
+    Notification.objects.filter(**filter_kwargs).delete()
+    
+    messages.success(request, 'All notifications have been deleted.')
+    
+    # Redirect back with type filter if it was present
+    redirect_url = 'notifications'
+    if notification_type:
+        redirect_url += f'?type={notification_type}'
+    return redirect(redirect_url)
