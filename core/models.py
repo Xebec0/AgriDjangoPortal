@@ -187,3 +187,11 @@ class Notification(models.Model):
             notification_type=notification_type,
             link=link
         )
+
+    @classmethod
+    def clear_old_notifications(cls, user, days=30):
+        """Remove notifications older than the specified number of days"""
+        from datetime import timedelta
+        from django.utils import timezone
+        cutoff_date = timezone.now() - timedelta(days=days)
+        return cls.objects.filter(user=user, created_at__lt=cutoff_date).delete()

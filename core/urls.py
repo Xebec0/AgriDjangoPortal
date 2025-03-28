@@ -27,14 +27,12 @@ urlpatterns = [
         template_name='password_reset_complete.html'
     ), name='password_reset_complete'),
     
-    # Email Verification URLs
-    path('verify/<str:token>/', views.verify_email, name='verify_email'),
-    path('resend-verification/', views.resend_verification, name='resend_verification'),
-    
     # Notification URLs
     path('notifications/', views.notifications, name='notifications'),
     path('notifications/<int:notification_id>/mark-read/', views.mark_notification_read, name='mark_notification_read'),
     path('notifications/mark-all-read/', views.mark_all_read, name='mark_all_read'),
+    path('notifications/<int:notification_id>/delete/', views.delete_notification, name='delete_notification'),
+    path('notifications/delete-all/', views.delete_all_notifications, name='delete_all_notifications'),
     
     # Programs and registrations
     path('programs/', views.program_list, name='program_list'),

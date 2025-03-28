@@ -36,42 +36,41 @@ def index(request):
 
 
 def register(request):
-    """User registration view with email verification"""
+    """User registration view without email verification"""
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = True  # User can login but needs email verification
-            user.save()
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             
-            # Generate verification token
-            token = str(uuid.uuid4())
+            # Check if a user with this username or email already exists
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f'An account with username "{username}" already exists. Please choose a different username.')
+                return render(request, 'register.html', {'form': form})
             
-            # Create profile with verification token
-            profile = Profile.objects.create(
+            if User.objects.filter(email=email).exists():
+                messages.error(request, f'An account with email "{email}" already exists. Please use a different email or try to log in.')
+                return render(request, 'register.html', {'form': form})
+            
+            # Create the user if it doesn't exist
+            user = form.save()
+            
+            # The profile will be automatically created by signals.py
+            # Just ensure it's marked as email verified
+            profile = Profile.objects.get(user=user)
+            profile.email_verified = True
+            profile.save()
+            
+            # Create welcome notification
+            Notification.add_notification(
                 user=user,
-                email_verified=False,
-                verification_token=token
+                message="Welcome to AgroStudies! Your account has been created successfully.",
+                notification_type=Notification.SUCCESS,
+                link="/"
             )
             
-            # Send verification email
-            current_site = get_current_site(request)
-            mail_subject = 'Activate your AgroStudies account'
-            message = render_to_string('verification_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'protocol': 'https' if request.is_secure() else 'http',
-                'token': token,
-            })
-            send_mail(
-                mail_subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
-            )
-            
-            return render(request, 'email_verification_sent.html', {'email': user.email})
+            messages.success(request, f'Account created for {username}! You can now log in.')
+            return redirect('login')
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
@@ -156,7 +155,7 @@ def admin_register(request):
 
 
 def login_view(request):
-    """Login view with email verification check"""
+    """Login view without email verification check"""
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -164,14 +163,10 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                # Check if email is verified
+                # Create profile if it doesn't exist (for backward compatibility)
                 try:
                     profile = Profile.objects.get(user=user)
-                    if not profile.email_verified:
-                        messages.warning(request, 'Please verify your email address before logging in.')
-                        return redirect('login')
                 except Profile.DoesNotExist:
-                    # Create profile if it doesn't exist (for backward compatibility)
                     Profile.objects.create(user=user, email_verified=True)
                 
                 login(request, user)
@@ -994,6 +989,9 @@ def notifications(request):
     
     # Base queryset
     notifications_queryset = Notification.objects.filter(user=request.user)
+    
+    # Clean up old notifications automatically (older than 30 days)
+    Notification.clear_old_notifications(request.user)
     
     # Apply filter if requested
     if notification_type in [Notification.INFO, Notification.SUCCESS, Notification.WARNING, Notification.ERROR]:
