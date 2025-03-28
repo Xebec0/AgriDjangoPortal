@@ -7,6 +7,10 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    email_verified = models.BooleanField(default=False)
+    verification_token = models.CharField(max_length=100, blank=True, null=True)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
     
     def __str__(self):
         return f"{self.user.username}'s profile"
@@ -144,3 +148,42 @@ class Candidate(models.Model):
     
     class Meta:
         unique_together = ('passport_number', 'university')
+
+
+class Notification(models.Model):
+    """Notification model for user alerts"""
+    # Types of notifications
+    INFO = 'info'
+    SUCCESS = 'success'
+    WARNING = 'warning'
+    ERROR = 'error'
+    
+    NOTIFICATION_TYPES = [
+        (INFO, 'Information'),
+        (SUCCESS, 'Success'),
+        (WARNING, 'Warning'),
+        (ERROR, 'Error'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    notification_type = models.CharField(max_length=10, choices=NOTIFICATION_TYPES, default=INFO)
+    link = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.message[:30]}..."
+        
+    @classmethod
+    def add_notification(cls, user, message, notification_type=INFO, link=None):
+        """Utility method to create a notification"""
+        return cls.objects.create(
+            user=user,
+            message=message,
+            notification_type=notification_type,
+            link=link
+        )

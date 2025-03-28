@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Verification Email Sent - AgroStudies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Verification Email Sent</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success">
+                        <p class="mb-0">We've sent a verification email to <strong>{{ email }}</strong>. Please check your inbox and click the verification link to activate your account.</p>
+                    </div>
+                    
+                    <p>If you don't receive the email within a few minutes, please check your spam folder or <a href="{% url 'resend_verification' %}">click here to resend</a>.</p>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">Return to Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

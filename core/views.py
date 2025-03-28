@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse
-from .models import Profile, AgricultureProgram, Registration, Candidate, University
+from .models import Profile, AgricultureProgram, Registration, Candidate, University, Notification
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
     ProgramRegistrationForm, AdminRegistrationForm,
@@ -20,6 +20,13 @@ from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
+import uuid
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.conf import settings
+import os
 
 
 def index(request):
@@ -29,19 +36,107 @@ def index(request):
 
 
 def register(request):
-    """User registration view"""
+    """User registration view with email verification"""
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # Create profile
-            Profile.objects.create(user=user)
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}! You can now log in.')
-            return redirect('login')
+            user = form.save(commit=False)
+            user.is_active = True  # User can login but needs email verification
+            user.save()
+            
+            # Generate verification token
+            token = str(uuid.uuid4())
+            
+            # Create profile with verification token
+            profile = Profile.objects.create(
+                user=user,
+                email_verified=False,
+                verification_token=token
+            )
+            
+            # Send verification email
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your AgroStudies account'
+            message = render_to_string('verification_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'protocol': 'https' if request.is_secure() else 'http',
+                'token': token,
+            })
+            send_mail(
+                mail_subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,
+            )
+            
+            return render(request, 'email_verification_sent.html', {'email': user.email})
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+def verify_email(request, token):
+    """Email verification view"""
+    try:
+        profile = Profile.objects.get(verification_token=token)
+        # Check if token is valid (not expired)
+        if profile:
+            profile.email_verified = True
+            profile.verification_token = None
+            profile.save()
+            
+            messages.success(request, 'Your email has been verified successfully! You can now log in.')
+            return render(request, 'email_verification.html', {'success': True})
+    except Profile.DoesNotExist:
+        error_message = 'Invalid verification link. It may have expired or already been used.'
+        
+    return render(request, 'email_verification.html', {
+        'success': False,
+        'error_message': error_message if 'error_message' in locals() else 'Verification failed.'
+    })
+
+
+def resend_verification(request):
+    """Resend verification email"""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            profile = Profile.objects.get(user=user)
+            
+            if profile.email_verified:
+                messages.info(request, 'This email is already verified. You can log in now.')
+                return redirect('login')
+            
+            # Generate new token
+            token = str(uuid.uuid4())
+            profile.verification_token = token
+            profile.save()
+            
+            # Send verification email
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your AgroStudies account'
+            message = render_to_string('verification_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'protocol': 'https' if request.is_secure() else 'http',
+                'token': token,
+            })
+            send_mail(
+                mail_subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,
+            )
+            
+            return render(request, 'email_verification_sent.html', {'email': user.email})
+        except (User.DoesNotExist, Profile.DoesNotExist):
+            messages.error(request, 'No user found with this email address.')
+    
+    return render(request, 'resend_verification.html')
 
 
 def admin_register(request):
@@ -61,7 +156,7 @@ def admin_register(request):
 
 
 def login_view(request):
-    """Login view"""
+    """Login view with email verification check"""
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -69,6 +164,16 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                # Check if email is verified
+                try:
+                    profile = Profile.objects.get(user=user)
+                    if not profile.email_verified:
+                        messages.warning(request, 'Please verify your email address before logging in.')
+                        return redirect('login')
+                except Profile.DoesNotExist:
+                    # Create profile if it doesn't exist (for backward compatibility)
+                    Profile.objects.create(user=user, email_verified=True)
+                
                 login(request, user)
                 messages.success(request, f'Welcome back, {username}!')
                 return redirect('index')
@@ -93,12 +198,30 @@ def profile(request):
     """User profile view"""
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         
         if u_form.is_valid() and p_form.is_valid():
+            # Check if user wants to delete the profile image
+            if 'delete_image' in request.POST and request.user.profile.profile_image:
+                # Save the path to delete the file after saving the form
+                old_image = request.user.profile.profile_image.path
+                request.user.profile.profile_image = None
+                
+                # Delete the file if it exists
+                if os.path.exists(old_image):
+                    os.remove(old_image)
+            
             u_form.save()
             p_form.save()
             messages.success(request, 'Your profile has been updated!')
+            
+            # Create a notification
+            Notification.add_notification(
+                request.user,
+                "Your profile has been successfully updated.",
+                Notification.SUCCESS
+            )
+            
             return redirect('profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
@@ -862,3 +985,39 @@ def export_registrants_pdf(request, registrations=None, program=None):
     response.write(pdf)
     
     return response
+
+
+@login_required
+def notifications(request):
+    """View all notifications for a user"""
+    notifications = Notification.objects.filter(user=request.user)
+    
+    # Pagination
+    paginator = Paginator(notifications, 20)  # Show 20 notifications per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'notifications.html', {
+        'notifications': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'page_obj': page_obj
+    })
+
+
+@login_required
+def mark_notification_read(request, notification_id):
+    """Mark a notification as read"""
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification.read = True
+    notification.save()
+    
+    # Redirect to notification source if available, otherwise to the notifications page
+    return redirect(notification.link if notification.link else 'notifications')
+
+
+@login_required
+def mark_all_read(request):
+    """Mark all notifications as read"""
+    Notification.objects.filter(user=request.user, read=False).update(read=True)
+    messages.success(request, 'All notifications have been marked as read.')
+    return redirect('notifications')

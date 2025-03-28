@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Email Verification - AgroStudies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Email Verification</h3>
+                </div>
+                <div class="card-body">
+                    {% if success %}
+                        <div class="alert alert-success">
+                            <p class="mb-0">Your email has been successfully verified! You can now login to your account.</p>
+                        </div>
+                        <div class="mt-4">
+                            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger">
+                            <p class="mb-0">{{ error_message }}</p>
+                        </div>
+                        <div class="mt-4">
+                            <a href="{% url 'resend_verification' %}" class="btn btn-outline-primary">Resend Verification Email</a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-secondary ms-2">Back to Login</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

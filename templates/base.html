@@ -47,6 +47,14 @@
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'notifications' %}">
+                                <i class="fas fa-bell"></i>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="badge rounded-pill bg-danger">{{ unread_notifications_count }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'profile' %}">
                                 <i class="fas fa-user"></i> {{ user.username }}
                             </a>

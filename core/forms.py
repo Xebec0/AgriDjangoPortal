@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from .models import Profile, Registration, Candidate, University
+import os
 
 
 class UserRegisterForm(UserCreationForm):
@@ -86,13 +87,47 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio', 'location']
+        fields = ['bio', 'location', 'phone_number', 'profile_image']
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
+        }
     
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)
         # Set form control classes for Bootstrap styling
-        for field_name in self.fields:
-            self.fields[field_name].widget.attrs.update({'class': 'form-control'})
+        self.fields['profile_image'].widget.attrs.update({
+            'class': 'form-control',
+            'accept': 'image/*'
+        })
+        
+    def clean_profile_image(self):
+        profile_image = self.cleaned_data.get('profile_image')
+        if profile_image:
+            # Check file size (max 2MB)
+            if profile_image.size > 2 * 1024 * 1024:
+                raise ValidationError("Image size should not exceed 2MB")
+            
+            # Check file extension
+            valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+            ext = os.path.splitext(profile_image.name)[1]
+            if not ext.lower() in valid_extensions:
+                raise ValidationError("Only JPG, JPEG, PNG and GIF files are allowed")
+        
+        return profile_image
+        
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if phone_number:
+            # Remove any non-digit characters
+            phone_number = ''.join(filter(str.isdigit, phone_number))
+            
+            # Check if phone number has a valid length
+            if len(phone_number) < 10 or len(phone_number) > 15:
+                raise ValidationError("Please enter a valid phone number")
+            
+        return phone_number
 
 
 class ProgramRegistrationForm(forms.ModelForm):
@@ -103,6 +138,24 @@ class ProgramRegistrationForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Any additional information you want to provide...'}),
         }
 
+
+def validate_file_size(value):
+    """Validate file size (max 5MB)"""
+    filesize = value.size
+    if filesize > 5 * 1024 * 1024:  # 5MB
+        raise ValidationError("The maximum file size that can be uploaded is 5MB")
+    return value
+
+def validate_file_extension(value, valid_extensions):
+    """Validate file extension"""
+    ext = os.path.splitext(value.name)[1]
+    if not ext.lower() in valid_extensions:
+        raise ValidationError(f"Only {', '.join(valid_extensions)} files are allowed")
+    return value
+
+def validate_pdf(value):
+    """Validate that file is a PDF"""
+    return validate_file_extension(value, ['.pdf'])
 
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""
@@ -238,6 +291,49 @@ class CandidateForm(forms.ModelForm):
             self.add_error('confirm_surname', "Surnames do not match")
         
         return cleaned_data
+
+    # Add custom clean methods for file fields
+    def clean_passport_scan(self):
+        passport_scan = self.cleaned_data.get('passport_scan')
+        if passport_scan:
+            validate_file_size(passport_scan)
+            validate_pdf(passport_scan)
+        return passport_scan
+        
+    def clean_tor(self):
+        tor = self.cleaned_data.get('tor')
+        if tor:
+            validate_file_size(tor)
+            validate_pdf(tor)
+        return tor
+        
+    def clean_nc2_tesda(self):
+        nc2_tesda = self.cleaned_data.get('nc2_tesda')
+        if nc2_tesda:
+            validate_file_size(nc2_tesda)
+            validate_pdf(nc2_tesda)
+        return nc2_tesda
+        
+    def clean_diploma(self):
+        diploma = self.cleaned_data.get('diploma')
+        if diploma:
+            validate_file_size(diploma)
+            validate_pdf(diploma)
+        return diploma
+        
+    def clean_good_moral(self):
+        good_moral = self.cleaned_data.get('good_moral')
+        if good_moral:
+            validate_file_size(good_moral)
+            validate_pdf(good_moral)
+        return good_moral
+        
+    def clean_nbi_clearance(self):
+        nbi_clearance = self.cleaned_data.get('nbi_clearance')
+        if nbi_clearance:
+            validate_file_size(nbi_clearance)
+            validate_pdf(nbi_clearance)
+        return nbi_clearance
 
 
 class CandidateSearchForm(forms.Form):
