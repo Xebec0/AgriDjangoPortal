@@ -46,18 +46,32 @@ class Registration(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
     notes = models.TextField(blank=True)
     
-    # Required documents
-    cv_resume = models.FileField(upload_to='registration_documents/cv/', blank=True, null=True)
-    motivation_letter = models.FileField(upload_to='registration_documents/motivation/', blank=True, null=True)
-    transcript = models.FileField(upload_to='registration_documents/transcript/', blank=True, null=True)
-    recommendation_letter = models.FileField(upload_to='registration_documents/recommendation/', blank=True, null=True)
-    additional_document = models.FileField(upload_to='registration_documents/additional/', blank=True, null=True)
+    # Required documents (matching the Candidate model fields)
+    tor = models.FileField(upload_to='documents/tor/', blank=True, null=True, verbose_name="Transcript of Records (TOR)")
+    nc2_tesda = models.FileField(upload_to='documents/tesda/', blank=True, null=True, verbose_name="NC2 from TESDA")
+    diploma = models.FileField(upload_to='documents/diploma/', blank=True, null=True)
+    good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True, verbose_name="Good Moral Character")
+    nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True, verbose_name="NBI Clearance")
     
     class Meta:
         unique_together = ('user', 'program')
         
     def __str__(self):
         return f"{self.user.username} - {self.program.title}"
+    
+    def copy_documents_to_candidate(self, candidate):
+        """Copy uploaded documents to a candidate profile"""
+        if self.tor and not candidate.tor:
+            candidate.tor = self.tor
+        if self.nc2_tesda and not candidate.nc2_tesda:
+            candidate.nc2_tesda = self.nc2_tesda
+        if self.diploma and not candidate.diploma:
+            candidate.diploma = self.diploma
+        if self.good_moral and not candidate.good_moral:
+            candidate.good_moral = self.good_moral
+        if self.nbi_clearance and not candidate.nbi_clearance:
+            candidate.nbi_clearance = self.nbi_clearance
+        candidate.save()
 
 
 class University(models.Model):

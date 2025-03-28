@@ -151,77 +151,76 @@ def validate_pdf(value):
 
 class ProgramRegistrationForm(forms.ModelForm):
     # Add file fields with validators
-    cv_resume = forms.FileField(
+    tor = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your CV/Resume (PDF, DOC, DOCX, max 5MB)",
+        help_text="Upload your Transcript of Records (PDF format, max 5MB)",
         required=True
     )
     
-    motivation_letter = forms.FileField(
+    nc2_tesda = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your motivation letter (PDF, DOC, DOCX, max 5MB)",
+        help_text="Upload your NC2 from TESDA certificate (PDF format, max 5MB)",
         required=True
     )
     
-    transcript = forms.FileField(
+    diploma = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your academic transcript (PDF, max 5MB)",
+        help_text="Upload your Diploma (PDF format, max 5MB)",
         required=True
     )
     
-    recommendation_letter = forms.FileField(
+    good_moral = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload a recommendation letter (PDF, max 5MB)",
-        required=False
+        help_text="Upload your Good Moral Character certificate (PDF format, max 5MB)",
+        required=True
     )
     
-    additional_document = forms.FileField(
+    nbi_clearance = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload any additional supporting document (PDF, max 5MB)",
-        required=False
+        help_text="Upload your NBI Clearance (PDF format, max 5MB)",
+        required=True
     )
     
     class Meta:
         model = Registration
-        fields = ['notes', 'cv_resume', 'motivation_letter', 'transcript', 
-                 'recommendation_letter', 'additional_document']
+        fields = ['notes', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Any additional information you want to provide...'}),
         }
     
-    def clean_cv_resume(self):
-        file = self.cleaned_data.get('cv_resume')
-        if file:
-            validate_file_extension(file, ['.pdf', '.doc', '.docx'])
-        return file
-    
-    def clean_motivation_letter(self):
-        file = self.cleaned_data.get('motivation_letter')
-        if file:
-            validate_file_extension(file, ['.pdf', '.doc', '.docx'])
-        return file
-    
-    def clean_transcript(self):
-        file = self.cleaned_data.get('transcript')
+    def clean_tor(self):
+        file = self.cleaned_data.get('tor')
         if file:
             validate_file_extension(file, ['.pdf'])
         return file
     
-    def clean_recommendation_letter(self):
-        file = self.cleaned_data.get('recommendation_letter')
+    def clean_nc2_tesda(self):
+        file = self.cleaned_data.get('nc2_tesda')
         if file:
             validate_file_extension(file, ['.pdf'])
         return file
     
-    def clean_additional_document(self):
-        file = self.cleaned_data.get('additional_document')
+    def clean_diploma(self):
+        file = self.cleaned_data.get('diploma')
         if file:
-            validate_file_extension(file, ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png'])
+            validate_file_extension(file, ['.pdf'])
+        return file
+    
+    def clean_good_moral(self):
+        file = self.cleaned_data.get('good_moral')
+        if file:
+            validate_file_extension(file, ['.pdf'])
+        return file
+    
+    def clean_nbi_clearance(self):
+        file = self.cleaned_data.get('nbi_clearance')
+        if file:
+            validate_file_extension(file, ['.pdf'])
         return file
 
 

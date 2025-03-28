@@ -290,6 +290,17 @@ def program_register(request, program_id):
             # Save the registration to get an ID
             registration.save()
             
+            # Try to find a candidate profile for this user
+            try:
+                # Assuming the user's email is used to match with candidate's email
+                candidate = Candidate.objects.get(email=request.user.email)
+                # Copy the uploaded documents to the candidate profile
+                registration.copy_documents_to_candidate(candidate)
+                messages.info(request, 'Your documents have been linked to your candidate profile.')
+            except Candidate.DoesNotExist:
+                # No candidate profile found, just continue
+                pass
+            
             # Notify all admin users about the new registration
             admin_users = User.objects.filter(is_staff=True)
             for admin in admin_users:

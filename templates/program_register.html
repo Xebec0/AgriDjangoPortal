@@ -84,77 +84,77 @@
                         <div class="card-body">
                             <p class="card-text mb-3">
                                 Please upload the following required documents to complete your registration.
-                                All documents must be in the specified format and under 5MB in size.
+                                All documents must be in PDF format and under 5MB in size.
                             </p>
                             
-                            <!-- CV/Resume -->
+                            <!-- Transcript of Records (TOR) -->
                             <div class="mb-3">
-                                <label for="{{ form.cv_resume.id_for_label }}" class="form-label">
-                                    <strong>CV/Resume</strong> <span class="text-danger">*</span>
+                                <label for="{{ form.tor.id_for_label }}" class="form-label">
+                                    <strong>Transcript of Records (TOR)</strong> <span class="text-danger">*</span>
                                 </label>
-                                {{ form.cv_resume }}
-                                {% if form.cv_resume.errors %}
+                                {{ form.tor }}
+                                {% if form.tor.errors %}
                                     <div class="invalid-feedback d-block">
-                                        {{ form.cv_resume.errors }}
+                                        {{ form.tor.errors }}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">{{ form.cv_resume.help_text }}</div>
+                                <div class="form-text">{{ form.tor.help_text }}</div>
                             </div>
                             
-                            <!-- Motivation Letter -->
+                            <!-- NC2 from TESDA -->
                             <div class="mb-3">
-                                <label for="{{ form.motivation_letter.id_for_label }}" class="form-label">
-                                    <strong>Motivation Letter</strong> <span class="text-danger">*</span>
+                                <label for="{{ form.nc2_tesda.id_for_label }}" class="form-label">
+                                    <strong>NC2 from TESDA</strong> <span class="text-danger">*</span>
                                 </label>
-                                {{ form.motivation_letter }}
-                                {% if form.motivation_letter.errors %}
+                                {{ form.nc2_tesda }}
+                                {% if form.nc2_tesda.errors %}
                                     <div class="invalid-feedback d-block">
-                                        {{ form.motivation_letter.errors }}
+                                        {{ form.nc2_tesda.errors }}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">{{ form.motivation_letter.help_text }}</div>
+                                <div class="form-text">{{ form.nc2_tesda.help_text }}</div>
                             </div>
                             
-                            <!-- Transcript -->
+                            <!-- Diploma -->
                             <div class="mb-3">
-                                <label for="{{ form.transcript.id_for_label }}" class="form-label">
-                                    <strong>Academic Transcript</strong> <span class="text-danger">*</span>
+                                <label for="{{ form.diploma.id_for_label }}" class="form-label">
+                                    <strong>Diploma</strong> <span class="text-danger">*</span>
                                 </label>
-                                {{ form.transcript }}
-                                {% if form.transcript.errors %}
+                                {{ form.diploma }}
+                                {% if form.diploma.errors %}
                                     <div class="invalid-feedback d-block">
-                                        {{ form.transcript.errors }}
+                                        {{ form.diploma.errors }}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">{{ form.transcript.help_text }}</div>
+                                <div class="form-text">{{ form.diploma.help_text }}</div>
                             </div>
                             
-                            <!-- Recommendation Letter -->
+                            <!-- Good Moral Character -->
                             <div class="mb-3">
-                                <label for="{{ form.recommendation_letter.id_for_label }}" class="form-label">
-                                    <strong>Recommendation Letter</strong> (Optional)
+                                <label for="{{ form.good_moral.id_for_label }}" class="form-label">
+                                    <strong>Good Moral Character</strong> <span class="text-danger">*</span>
                                 </label>
-                                {{ form.recommendation_letter }}
-                                {% if form.recommendation_letter.errors %}
+                                {{ form.good_moral }}
+                                {% if form.good_moral.errors %}
                                     <div class="invalid-feedback d-block">
-                                        {{ form.recommendation_letter.errors }}
+                                        {{ form.good_moral.errors }}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">{{ form.recommendation_letter.help_text }}</div>
+                                <div class="form-text">{{ form.good_moral.help_text }}</div>
                             </div>
                             
-                            <!-- Additional Document -->
+                            <!-- NBI Clearance -->
                             <div class="mb-3">
-                                <label for="{{ form.additional_document.id_for_label }}" class="form-label">
-                                    <strong>Additional Supporting Document</strong> (Optional)
+                                <label for="{{ form.nbi_clearance.id_for_label }}" class="form-label">
+                                    <strong>NBI Clearance</strong> <span class="text-danger">*</span>
                                 </label>
-                                {{ form.additional_document }}
-                                {% if form.additional_document.errors %}
+                                {{ form.nbi_clearance }}
+                                {% if form.nbi_clearance.errors %}
                                     <div class="invalid-feedback d-block">
-                                        {{ form.additional_document.errors }}
+                                        {{ form.nbi_clearance.errors }}
                                     </div>
                                 {% endif %}
-                                <div class="form-text">{{ form.additional_document.help_text }}</div>
+                                <div class="form-text">{{ form.nbi_clearance.help_text }}</div>
                             </div>
                         </div>
                     </div>
