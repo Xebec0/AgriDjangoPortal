@@ -130,15 +130,6 @@ class ProfileUpdateForm(forms.ModelForm):
         return phone_number
 
 
-class ProgramRegistrationForm(forms.ModelForm):
-    class Meta:
-        model = Registration
-        fields = ['notes']
-        widgets = {
-            'notes': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Any additional information you want to provide...'}),
-        }
-
-
 def validate_file_size(value):
     """Validate file size (max 5MB)"""
     filesize = value.size
@@ -156,6 +147,83 @@ def validate_file_extension(value, valid_extensions):
 def validate_pdf(value):
     """Validate that file is a PDF"""
     return validate_file_extension(value, ['.pdf'])
+
+
+class ProgramRegistrationForm(forms.ModelForm):
+    # Add file fields with validators
+    cv_resume = forms.FileField(
+        validators=[validate_file_size],
+        widget=forms.FileInput(attrs={'class': 'form-control'}),
+        help_text="Upload your CV/Resume (PDF, DOC, DOCX, max 5MB)",
+        required=True
+    )
+    
+    motivation_letter = forms.FileField(
+        validators=[validate_file_size],
+        widget=forms.FileInput(attrs={'class': 'form-control'}),
+        help_text="Upload your motivation letter (PDF, DOC, DOCX, max 5MB)",
+        required=True
+    )
+    
+    transcript = forms.FileField(
+        validators=[validate_file_size],
+        widget=forms.FileInput(attrs={'class': 'form-control'}),
+        help_text="Upload your academic transcript (PDF, max 5MB)",
+        required=True
+    )
+    
+    recommendation_letter = forms.FileField(
+        validators=[validate_file_size],
+        widget=forms.FileInput(attrs={'class': 'form-control'}),
+        help_text="Upload a recommendation letter (PDF, max 5MB)",
+        required=False
+    )
+    
+    additional_document = forms.FileField(
+        validators=[validate_file_size],
+        widget=forms.FileInput(attrs={'class': 'form-control'}),
+        help_text="Upload any additional supporting document (PDF, max 5MB)",
+        required=False
+    )
+    
+    class Meta:
+        model = Registration
+        fields = ['notes', 'cv_resume', 'motivation_letter', 'transcript', 
+                 'recommendation_letter', 'additional_document']
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Any additional information you want to provide...'}),
+        }
+    
+    def clean_cv_resume(self):
+        file = self.cleaned_data.get('cv_resume')
+        if file:
+            validate_file_extension(file, ['.pdf', '.doc', '.docx'])
+        return file
+    
+    def clean_motivation_letter(self):
+        file = self.cleaned_data.get('motivation_letter')
+        if file:
+            validate_file_extension(file, ['.pdf', '.doc', '.docx'])
+        return file
+    
+    def clean_transcript(self):
+        file = self.cleaned_data.get('transcript')
+        if file:
+            validate_file_extension(file, ['.pdf'])
+        return file
+    
+    def clean_recommendation_letter(self):
+        file = self.cleaned_data.get('recommendation_letter')
+        if file:
+            validate_file_extension(file, ['.pdf'])
+        return file
+    
+    def clean_additional_document(self):
+        file = self.cleaned_data.get('additional_document')
+        if file:
+            validate_file_extension(file, ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png'])
+        return file
+
 
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""

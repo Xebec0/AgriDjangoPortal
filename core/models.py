@@ -46,6 +46,13 @@ class Registration(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
     notes = models.TextField(blank=True)
     
+    # Required documents
+    cv_resume = models.FileField(upload_to='registration_documents/cv/', blank=True, null=True)
+    motivation_letter = models.FileField(upload_to='registration_documents/motivation/', blank=True, null=True)
+    transcript = models.FileField(upload_to='registration_documents/transcript/', blank=True, null=True)
+    recommendation_letter = models.FileField(upload_to='registration_documents/recommendation/', blank=True, null=True)
+    additional_document = models.FileField(upload_to='registration_documents/additional/', blank=True, null=True)
+    
     class Meta:
         unique_together = ('user', 'program')
         

@@ -280,14 +280,33 @@ def program_register(request, program_id):
         pass
     
     if request.method == 'POST':
-        form = ProgramRegistrationForm(request.POST)
+        # Include request.FILES for file uploads
+        form = ProgramRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             registration = form.save(commit=False)
             registration.user = request.user
             registration.program = program
+            
+            # Save the registration to get an ID
             registration.save()
-            messages.success(request, f'Successfully registered for {program.title}!')
+            
+            # Notify all admin users about the new registration
+            admin_users = User.objects.filter(is_staff=True)
+            for admin in admin_users:
+                Notification.add_notification(
+                    user=admin,
+                    message=f"New registration: {request.user.username} has registered for {program.title}",
+                    notification_type=Notification.INFO,
+                    link=f"/admin/core/registration/{registration.id}/change/"
+                )
+            
+            messages.success(request, f'Successfully registered for {program.title}! Your documents have been submitted.')
             return redirect('profile')
+        else:
+            # If form is invalid, display errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error in {field}: {error}")
     else:
         form = ProgramRegistrationForm()
     

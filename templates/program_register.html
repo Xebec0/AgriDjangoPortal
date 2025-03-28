@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 
-                <form method="POST" class="needs-validation" novalidate>
+                <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     
                     <div class="mb-3">
@@ -73,6 +73,89 @@
                         <div class="form-text">
                             Please share any additional information that might be relevant for your application.
                             This could include special accommodations, dietary requirements, or specific interests.
+                        </div>
+                    </div>
+                    
+                    <!-- Required Documents Section -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">Required Documents</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text mb-3">
+                                Please upload the following required documents to complete your registration.
+                                All documents must be in the specified format and under 5MB in size.
+                            </p>
+                            
+                            <!-- CV/Resume -->
+                            <div class="mb-3">
+                                <label for="{{ form.cv_resume.id_for_label }}" class="form-label">
+                                    <strong>CV/Resume</strong> <span class="text-danger">*</span>
+                                </label>
+                                {{ form.cv_resume }}
+                                {% if form.cv_resume.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.cv_resume.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">{{ form.cv_resume.help_text }}</div>
+                            </div>
+                            
+                            <!-- Motivation Letter -->
+                            <div class="mb-3">
+                                <label for="{{ form.motivation_letter.id_for_label }}" class="form-label">
+                                    <strong>Motivation Letter</strong> <span class="text-danger">*</span>
+                                </label>
+                                {{ form.motivation_letter }}
+                                {% if form.motivation_letter.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.motivation_letter.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">{{ form.motivation_letter.help_text }}</div>
+                            </div>
+                            
+                            <!-- Transcript -->
+                            <div class="mb-3">
+                                <label for="{{ form.transcript.id_for_label }}" class="form-label">
+                                    <strong>Academic Transcript</strong> <span class="text-danger">*</span>
+                                </label>
+                                {{ form.transcript }}
+                                {% if form.transcript.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.transcript.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">{{ form.transcript.help_text }}</div>
+                            </div>
+                            
+                            <!-- Recommendation Letter -->
+                            <div class="mb-3">
+                                <label for="{{ form.recommendation_letter.id_for_label }}" class="form-label">
+                                    <strong>Recommendation Letter</strong> (Optional)
+                                </label>
+                                {{ form.recommendation_letter }}
+                                {% if form.recommendation_letter.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.recommendation_letter.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">{{ form.recommendation_letter.help_text }}</div>
+                            </div>
+                            
+                            <!-- Additional Document -->
+                            <div class="mb-3">
+                                <label for="{{ form.additional_document.id_for_label }}" class="form-label">
+                                    <strong>Additional Supporting Document</strong> (Optional)
+                                </label>
+                                {{ form.additional_document }}
+                                {% if form.additional_document.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.additional_document.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">{{ form.additional_document.help_text }}</div>
+                            </div>
                         </div>
                     </div>
                     
