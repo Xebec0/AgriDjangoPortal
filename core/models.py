@@ -111,6 +111,7 @@ class Candidate(models.Model):
     
     # Education details
     university = models.ForeignKey(University, on_delete=models.CASCADE)
+    year_graduated = models.IntegerField(blank=True, null=True)
     specialization = models.CharField(max_length=100)
     secondary_specialization = models.CharField(max_length=100, blank=True, null=True)
     
@@ -129,11 +130,11 @@ class Candidate(models.Model):
     
     # Files
     passport_scan = models.FileField(upload_to='passports/', blank=True, null=True)
-    terms_and_conditions = models.FileField(upload_to='terms/', blank=True, null=True)
-    health_statement_menora = models.FileField(upload_to='health/', blank=True, null=True)
-    health_statement_ayalon = models.FileField(upload_to='health/', blank=True, null=True)
-    medical_report = models.FileField(upload_to='medical/', blank=True, null=True)
-    info_and_rights = models.FileField(upload_to='info/', blank=True, null=True)
+    tor = models.FileField(upload_to='documents/tor/', blank=True, null=True)
+    nc2_tesda = models.FileField(upload_to='documents/tesda/', blank=True, null=True)
+    diploma = models.FileField(upload_to='documents/diploma/', blank=True, null=True)
+    good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True)
+    nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True)
     
     # System fields
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_candidates')

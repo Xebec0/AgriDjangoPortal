@@ -123,11 +123,9 @@ class CandidateForm(forms.ModelForm):
             'father_name', 'mother_name',
             'date_of_birth', 'country_of_birth', 'nationality', 'religion',
             'gender', 'shoes_size', 'shirt_size',
-            'specialization', 'secondary_specialization',
+            'specialization', 'secondary_specialization', 'year_graduated',
             'email', 'smokes',
-            'passport_scan', 'terms_and_conditions', 
-            'health_statement_menora', 'health_statement_ayalon',
-            'medical_report', 'info_and_rights'
+            'passport_scan', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance'
         ]
         widgets = {
             'university': forms.Select(attrs={'class': 'form-control'}),
@@ -150,6 +148,7 @@ class CandidateForm(forms.ModelForm):
             'shirt_size': forms.Select(attrs={'class': 'form-control'}),
             'specialization': forms.Select(attrs={'class': 'form-control'}),
             'secondary_specialization': forms.Select(attrs={'class': 'form-control'}),
+            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year of graduation'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address'}),
             'smokes': forms.Select(attrs={'class': 'form-control'}),
         }

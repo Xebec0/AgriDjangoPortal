@@ -46,7 +46,10 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-4 fw-bold">Date of Birth:</div>
-                        <div class="col-md-8">{{ candidate.date_of_birth|date:"F d, Y" }}</div>
+                        <div class="col-md-8">
+                            {{ candidate.date_of_birth|date:"F d, Y" }}
+                            <span class="badge bg-primary ms-2">Age: <span id="candidate-age"></span></span>
+                        </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-4 fw-bold">Country of Birth:</div>
@@ -131,6 +134,10 @@
                         <div class="col-md-8">{{ candidate.university.country }}</div>
                     </div>
                     <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Year Graduated:</div>
+                        <div class="col-md-8">{{ candidate.year_graduated|default:"Not provided" }}</div>
+                    </div>
+                    <div class="row mb-2">
                         <div class="col-md-4 fw-bold">Specialization:</div>
                         <div class="col-md-8">{{ candidate.specialization }}</div>
                     </div>
@@ -169,10 +176,10 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-8 fw-bold">Terms and Conditions:</div>
+                        <div class="col-md-8 fw-bold">Transcript of Records (TOR):</div>
                         <div class="col-md-4">
-                            {% if candidate.terms_and_conditions %}
-                                <a href="{{ candidate.terms_and_conditions.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            {% if candidate.tor %}
+                                <a href="{{ candidate.tor.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
@@ -181,10 +188,10 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-8 fw-bold">Health Statement (Menora):</div>
+                        <div class="col-md-8 fw-bold">NC2 from TESDA:</div>
                         <div class="col-md-4">
-                            {% if candidate.health_statement_menora %}
-                                <a href="{{ candidate.health_statement_menora.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            {% if candidate.nc2_tesda %}
+                                <a href="{{ candidate.nc2_tesda.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
@@ -193,10 +200,10 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-8 fw-bold">Health Statement (Ayalon):</div>
+                        <div class="col-md-8 fw-bold">Diploma:</div>
                         <div class="col-md-4">
-                            {% if candidate.health_statement_ayalon %}
-                                <a href="{{ candidate.health_statement_ayalon.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            {% if candidate.diploma %}
+                                <a href="{{ candidate.diploma.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
@@ -205,10 +212,10 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-8 fw-bold">Medical Report:</div>
+                        <div class="col-md-8 fw-bold">Good Moral Character:</div>
                         <div class="col-md-4">
-                            {% if candidate.medical_report %}
-                                <a href="{{ candidate.medical_report.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            {% if candidate.good_moral %}
+                                <a href="{{ candidate.good_moral.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
@@ -217,10 +224,10 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-8 fw-bold">Information and Rights:</div>
+                        <div class="col-md-8 fw-bold">NBI Clearance:</div>
                         <div class="col-md-4">
-                            {% if candidate.info_and_rights %}
-                                <a href="{{ candidate.info_and_rights.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            {% if candidate.nbi_clearance %}
+                                <a href="{{ candidate.nbi_clearance.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-file-pdf"></i> View
                                 </a>
                             {% else %}
@@ -262,4 +269,31 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Calculate candidate's age
+        function calculateAge(birthdate) {
+            const today = new Date();
+            const birthDate = new Date(birthdate);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+        
+        // Display candidate's age
+        const birthDateStr = "{{ candidate.date_of_birth|date:'Y-m-d' }}";
+        if (birthDateStr) {
+            const age = calculateAge(birthDateStr);
+            document.getElementById('candidate-age').textContent = age;
+        }
+    });
+</script>
 {% endblock %}
