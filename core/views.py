@@ -628,6 +628,7 @@ def add_candidate(request):
     # Check if a username was provided (coming from the registrants page)
     username = request.GET.get('username')
     initial_data = {}
+    registration_id = request.GET.get('registration_id')
     
     if username:
         try:
@@ -677,8 +678,30 @@ def add_candidate(request):
             candidate = form.save(commit=False)
             candidate.created_by = request.user
             candidate.status = 'Draft'  # Set initial status
+            
+            # If this candidate was created from a registration, associate with the program
+            if registration_id:
+                try:
+                    registration = Registration.objects.get(id=registration_id)
+                    # Associate the candidate with the program
+                    candidate.program = registration.program
+                    
+                    # Mark registration as processed
+                    registration.processed = True
+                    registration.save()
+                    
+                    # Add a success message
+                    messages.success(request, f'Registration for {registration.user.username} has been processed and removed from the registrants list.')
+                except Registration.DoesNotExist:
+                    pass
+            
             candidate.save()
+            
             messages.success(request, f'Candidate {candidate.first_name} {candidate.last_name} has been added successfully.')
+            
+            # Redirect back to the program registrants page if we came from there
+            if registration_id:
+                return redirect('program_registrants', program_id=registration.program.id)
             return redirect('candidate_list')
     else:
         form = CandidateForm(initial=initial_data)
@@ -686,7 +709,8 @@ def add_candidate(request):
     return render(request, 'candidate_form.html', {
         'form': form,
         'title': 'Add New Candidate',
-        'button_text': 'Add Candidate'
+        'button_text': 'Add Candidate',
+        'registration_id': registration_id  # Pass this to the form so we can use it in POST
     })
 
 
@@ -781,9 +805,20 @@ def change_candidate_status(request, candidate_id, status):
     # Store the old status for notification message
     old_status = candidate.status
     
+    # Check if this is a status change to Approved
+    is_newly_approved = (old_status != 'Approved' and status == 'Approved')
+    
     # Update the status
     candidate.status = status
     candidate.save()
+    
+    # If the candidate is being approved and is associated with a program, decrease the program capacity
+    if is_newly_approved and candidate.program:
+        program = candidate.program
+        if program.capacity > 0:  # Make sure we don't go below zero
+            program.capacity -= 1
+            program.save()
+            messages.info(request, f'Program capacity for {program.title} has been decreased to {program.capacity}.')
     
     # Try to find the user associated with this candidate by email
     if candidate.email:
@@ -844,7 +879,8 @@ def program_registrants(request, program_id):
         return redirect('index')
     
     program = get_object_or_404(AgricultureProgram, id=program_id)
-    registrations = Registration.objects.filter(program=program).order_by('-registration_date')
+    # Only show registrations that haven't been processed into candidates
+    registrations = Registration.objects.filter(program=program, processed=False).order_by('-registration_date')
     
     # Check if export is requested
     export_format = request.GET.get('export')

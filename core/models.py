@@ -45,6 +45,7 @@ class Registration(models.Model):
     registration_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
     notes = models.TextField(blank=True)
+    processed = models.BooleanField(default=False)  # Flag to indicate if this registration has been processed into a candidate
     
     # Required documents (matching the Candidate model fields)
     tor = models.FileField(upload_to='documents/tor/', blank=True, null=True, verbose_name="Transcript of Records (TOR)")
@@ -147,6 +148,9 @@ class Candidate(models.Model):
         ('Often', 'Often'),
     ]
     smokes = models.CharField(max_length=10, choices=SMOKING_CHOICES, default='Never')
+    
+    # Program association
+    program = models.ForeignKey(AgricultureProgram, on_delete=models.SET_NULL, null=True, blank=True, related_name='candidates')
     
     # Status and registration
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=DRAFT)

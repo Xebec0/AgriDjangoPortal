@@ -79,7 +79,7 @@
                                     <td>{{ registration.notes|default:"--" }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{% url 'add_candidate' %}?username={{ registration.user.username }}" class="btn btn-success btn-sm" title="Add as Candidate">
+                                            <a href="{% url 'add_candidate' %}?username={{ registration.user.username }}&registration_id={{ registration.id }}" class="btn btn-success btn-sm" title="Add as Candidate">
                                                 <i class="fas fa-user-plus"></i> Add Candidate
                                             </a>
                                         </div>
