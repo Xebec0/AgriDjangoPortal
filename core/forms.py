@@ -169,16 +169,17 @@ class CandidateForm(forms.ModelForm):
             ('Filipino', 'Filipino'),
             ('Thai', 'Thai'),
             ('Vietnamese', 'Vietnamese'),
+            ('Israeli', 'Israeli'),
             # Add more nationalities as needed
         ]
         
         # Add religion choices
         self.fields['religion'].widget.choices = [('', 'Choose from list')] + [
             ('Catholic', 'Catholic'),
-            ('Protestant', 'Protestant'),
-            ('Muslim', 'Muslim'),
-            ('Buddhist', 'Buddhist'),
-            ('Hindu', 'Hindu'),
+            ('Christian', 'Christian'),
+            ('INC', 'INC'),
+            ('Mormon', 'Mormon'),
+            ('Jehovahs Witnesses', 'Jehovahs Witnesses'),
             ('Other', 'Other'),
         ]
         
