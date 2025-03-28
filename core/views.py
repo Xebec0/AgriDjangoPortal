@@ -802,23 +802,31 @@ def change_candidate_status(request, candidate_id, status):
         messages.error(request, 'Invalid status value.')
         return redirect('view_candidate', candidate_id=candidate_id)
     
-    # Store the old status for notification message
+    # Store the old status for notification message and capacity management
     old_status = candidate.status
     
-    # Check if this is a status change to Approved
-    is_newly_approved = (old_status != 'Approved' and status == 'Approved')
+    # Handle program capacity changes
+    if candidate.program:
+        program = candidate.program
+        
+        # Case 1: Candidate was approved and is now being changed to something else
+        # Increase capacity by 1
+        if old_status == 'Approved' and status != 'Approved':
+            program.capacity += 1
+            program.save()
+            messages.info(request, f'Program capacity for {program.title} has been increased to {program.capacity}.')
+        
+        # Case 2: Candidate was not approved and is now being approved
+        # Decrease capacity by 1
+        elif old_status != 'Approved' and status == 'Approved':
+            if program.capacity > 0:  # Make sure we don't go below zero
+                program.capacity -= 1
+                program.save()
+                messages.info(request, f'Program capacity for {program.title} has been decreased to {program.capacity}.')
     
     # Update the status
     candidate.status = status
     candidate.save()
-    
-    # If the candidate is being approved and is associated with a program, decrease the program capacity
-    if is_newly_approved and candidate.program:
-        program = candidate.program
-        if program.capacity > 0:  # Make sure we don't go below zero
-            program.capacity -= 1
-            program.save()
-            messages.info(request, f'Program capacity for {program.title} has been decreased to {program.capacity}.')
     
     # Try to find the user associated with this candidate by email
     if candidate.email:
