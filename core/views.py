@@ -7,6 +7,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import require_POST, require_GET
+from django.contrib.auth.forms import AuthenticationForm
 from .models import Profile, AgricultureProgram, Registration, Candidate, University, Notification
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
@@ -761,9 +763,29 @@ def view_candidate(request, candidate_id):
         'Quit': 'warning'
     }
     
+    # Check if there's a POST request for importing a document
+    if request.method == 'POST' and 'import_document' in request.POST:
+        doc_type = request.POST.get('document_type')
+        registration_id = request.POST.get('registration_id')
+        
+        from core.utils import import_document_to_candidate
+        success = import_document_to_candidate(candidate, doc_type, registration_id)
+        
+        if success:
+            messages.success(request, f'Successfully imported {doc_type.replace("_", " ").title()} document.')
+        else:
+            messages.error(request, f'Failed to import document. Please try again.')
+        
+        return redirect('view_candidate', candidate_id=candidate.id)
+    
+    # Scan for available documents from the user's registrations
+    from core.utils import get_available_documents
+    documents = get_available_documents(candidate)
+    
     return render(request, 'candidate_detail.html', {
         'candidate': candidate,
-        'status_color': status_colors.get(candidate.status, 'secondary')
+        'status_color': status_colors.get(candidate.status, 'secondary'),
+        'documents': documents
     })
 
 
@@ -1315,8 +1337,183 @@ def api_notifications(request):
 @login_required
 def api_clear_all_notifications(request):
     """API endpoint to clear all notifications for the current user"""
-    if request.method == 'POST':
-        # Delete all notifications for the user
+    if request.user.is_authenticated:
         Notification.objects.filter(user=request.user).delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+        return JsonResponse({
+            'success': True,
+            'message': 'All notifications cleared successfully.'
+        })
+    return JsonResponse({
+        'success': False,
+        'message': 'Authentication required.'
+    }, status=403)
+
+
+@require_GET
+def check_username(request):
+    """API endpoint to check if a username is available"""
+    username = request.GET.get('username', '').strip()
+    if not username:
+        return JsonResponse({
+            'available': False,
+            'message': 'Username cannot be empty'
+        })
+        
+    # Check if username meets the requirements
+    import re
+    if not re.match(r'^[a-zA-Z0-9_]{3,20}$', username):
+        return JsonResponse({
+            'available': False,
+            'message': 'Username must be 3-20 characters using only letters, numbers, and underscores'
+        })
+    
+    # Check if username exists
+    exists = User.objects.filter(username=username).exists()
+    return JsonResponse({
+        'available': not exists,
+        'message': 'Username is available' if not exists else 'Username is already taken'
+    })
+
+
+@require_POST
+def ajax_login(request):
+    """API endpoint for AJAX login"""
+    form = AuthenticationForm(request, data=request.POST)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            # Create profile if it doesn't exist (for backward compatibility)
+            try:
+                profile = Profile.objects.get(user=user)
+            except Profile.DoesNotExist:
+                Profile.objects.create(user=user, email_verified=True)
+            
+            login(request, user)
+            return JsonResponse({
+                'success': True,
+                'message': f'Welcome back, {username}!',
+                'redirect': '/'
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'errors': {'__all__': ['Invalid username or password.']}
+            })
+    else:
+        return JsonResponse({
+            'success': False,
+            'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
+        })
+
+
+@require_POST
+def ajax_register(request):
+    """API endpoint for AJAX registration"""
+    form = UserRegisterForm(request.POST)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        email = form.cleaned_data.get('email')
+        
+        # Check if a user with this username or email already exists
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({
+                'success': False,
+                'errors': {'username': [f'An account with username "{username}" already exists. Please choose a different username.']}
+            })
+        
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({
+                'success': False,
+                'errors': {'email': [f'An account with email "{email}" already exists. Please use a different email or try to log in.']}
+            })
+        
+        # Create the user if it doesn't exist
+        user = form.save()
+        
+        # The profile will be automatically created by signals.py
+        # Just ensure it's marked as email verified
+        profile = Profile.objects.get(user=user)
+        profile.email_verified = True
+        profile.save()
+        
+        # Create welcome notification
+        Notification.add_notification(
+            user=user,
+            message="Welcome to AgroStudies! Your account has been created successfully.",
+            notification_type=Notification.SUCCESS,
+            link="/"
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Account created for {username}! You can now log in.',
+            'redirect': '/login/'
+        })
+    else:
+        return JsonResponse({
+            'success': False,
+            'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
+        })
+
+
+@login_required
+def get_user_applications(request):
+    """API endpoint to get user's program applications"""
+    registrations = Registration.objects.filter(user=request.user).select_related('program')
+    data = [{
+        'id': reg.id,
+        'program_name': reg.program.title,
+        'program_id': reg.program.id,
+        'status': reg.get_status_display(),
+        'status_code': reg.status,
+        'application_date': reg.created_at.strftime('%Y-%m-%d'),
+        'last_updated': reg.updated_at.strftime('%Y-%m-%d %H:%M')
+    } for reg in registrations]
+    
+    return JsonResponse({
+        'success': True,
+        'applications': data
+    })
+
+
+def modal_login(request):
+    """Return login form HTML for modal"""
+    form = AuthenticationForm()
+    return render(request, 'modals/login_modal.html', {'form': form})
+
+
+def modal_register(request):
+    """Return registration form HTML for modal"""
+    form = UserRegisterForm()
+    return render(request, 'modals/register_modal.html', {'form': form})
+
+
+def modal_admin_register(request):
+    """Return admin registration form HTML for modal"""
+    form = AdminRegistrationForm()
+    return render(request, 'modals/admin_register_modal.html', {'form': form})
+
+
+@require_POST
+def ajax_admin_register(request):
+    """API endpoint for AJAX admin registration"""
+    form = AdminRegistrationForm(request.POST)
+    if form.is_valid():
+        user = form.save()
+        # Create profile for admin
+        Profile.objects.create(user=user)
+        username = form.cleaned_data.get('username')
+        
+        return JsonResponse({
+            'success': True,
+            'message': f'Admin account created for {username}! You can now log in.',
+            'redirect': '/login/'
+        })
+    else:
+        return JsonResponse({
+            'success': False,
+            'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
+        })

@@ -20,6 +20,9 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'agridjangoportal.onrender
 CSRF_TRUSTED_ORIGINS = [
     'https://97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev',
     'https://*.replit.dev',
+    'http://127.0.0.1:50804',
+    'http://localhost:*',
+    'http://127.0.0.1:*',
 ]
 
 # Application definition

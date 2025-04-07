@@ -2,95 +2,161 @@
 
 {% block title %}Register - Agrostudies Registration System{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/register-enhanced.css">
+{% endblock %}
+
 {% block content %}
-<div class="row">
-    <div class="col-md-8 offset-md-2">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="card-title mb-0">Create an Account</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST" class="needs-validation" novalidate>
-                    {% csrf_token %}
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.first_name.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.last_name.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                        {{ form.username }}
-                        {% if form.username.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.username.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.email.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
-                        {{ form.password1 }}
-                        {% if form.password1.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.password1.errors }}
-                            </div>
-                        {% endif %}
-                        <div class="form-text">{{ form.password1.help_text }}</div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
-                        {{ form.password2 }}
-                        {% if form.password2.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.password2.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                    
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {{ form.non_field_errors }}
-                        </div>
-                    {% endif %}
-                    
-                    <div class="d-grid">
-                        <button class="btn btn-primary" type="submit">Register</button>
-                    </div>
-                </form>
-            </div>
-            <div class="card-footer text-center">
-                <p class="mb-0">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
-            </div>
+<div class="register-container">
+    <div class="register-box">
+        <div class="register-header">
+            <h2>CREATE ACCOUNT</h2>
         </div>
+        
+        <form id="registerForm" method="POST" class="register-form needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                    <input type="text" name="{{ form.first_name.html_name }}" 
+                           id="{{ form.first_name.id_for_label }}" 
+                           class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" 
+                           value="{{ form.first_name.value|default:'' }}"
+                           required 
+                           placeholder="Enter your first name">
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">
+                        {% if form.first_name.errors %}
+                            {{ form.first_name.errors }}
+                        {% else %}
+                            Please enter your first name
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                    <input type="text" name="{{ form.last_name.html_name }}" 
+                           id="{{ form.last_name.id_for_label }}" 
+                           class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" 
+                           value="{{ form.last_name.value|default:'' }}"
+                           required 
+                           placeholder="Enter your last name">
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">
+                        {% if form.last_name.errors %}
+                            {{ form.last_name.errors }}
+                        {% else %}
+                            Please enter your last name
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                <input type="text" name="{{ form.username.html_name }}" 
+                       id="{{ form.username.id_for_label }}" 
+                       class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                       value="{{ form.username.value|default:'' }}"
+                       required 
+                       placeholder="Choose a username (letters, numbers, underscores)">
+                <div class="valid-feedback">Username looks good!</div>
+                <div class="invalid-feedback">
+                    {% if form.username.errors %}
+                        {{ form.username.errors }}
+                    {% else %}
+                        Username must be 3-20 characters using only letters, numbers, and underscores
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                <input type="email" name="{{ form.email.html_name }}" 
+                       id="{{ form.email.id_for_label }}" 
+                       class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                       value="{{ form.email.value|default:'' }}"
+                       required 
+                       placeholder="Enter your email address">
+                <div class="valid-feedback">Email format is valid!</div>
+                <div class="invalid-feedback">
+                    {% if form.email.errors %}
+                        {{ form.email.errors }}
+                    {% else %}
+                        Please enter a valid email address
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
+                <input type="password" name="{{ form.password1.html_name }}" 
+                       id="{{ form.password1.id_for_label }}" 
+                       class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
+                       required 
+                       placeholder="Create a strong password">
+                <div class="valid-feedback">Password is strong!</div>
+                <div class="invalid-feedback">
+                    {% if form.password1.errors %}
+                        {{ form.password1.errors }}
+                    {% else %}
+                        Password must be at least 8 characters with uppercase, lowercase, and numbers
+                    {% endif %}
+                </div>
+                
+                <!-- Password strength meter -->
+                <div class="password-strength-meter mt-2">
+                    <div></div>
+                </div>
+                <small id="passwordStrengthLabel" class="form-text"></small>
+                
+                <div class="form-text mt-2">
+                    <ul class="mb-0 ps-3 small">
+                        <li>Your password must be 8+ characters</li>
+                        <li>Include at least one uppercase letter</li>
+                        <li>Include at least one lowercase letter</li>
+                        <li>Include at least one number</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                <input type="password" name="{{ form.password2.html_name }}" 
+                       id="{{ form.password2.id_for_label }}" 
+                       class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
+                       required 
+                       placeholder="Confirm your password">
+                <div class="valid-feedback">Passwords match!</div>
+                <div class="invalid-feedback">
+                    {% if form.password2.errors %}
+                        {{ form.password2.errors }}
+                    {% else %}
+                        Passwords do not match
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <div class="d-grid mb-3">
+                <button class="register-btn" type="submit">Create Account</button>
+            </div>
+            
+            <div class="register-links">
+                <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+            </div>
+        </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/register-validation.js"></script>
 {% endblock %}

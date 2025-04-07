@@ -65,4 +65,16 @@ urlpatterns = [
     # Static pages
     path('help/', views.help_page, name='help'),
     path('contact/', views.contact_page, name='contact'),
+    
+    # AJAX API endpoints
+    path('api/check-username/', views.check_username, name='check_username'),
+    path('api/ajax-login/', views.ajax_login, name='ajax_login'),
+    path('api/ajax-register/', views.ajax_register, name='ajax_register'),
+    path('api/user-applications/', views.get_user_applications, name='get_user_applications'),
+    
+    # Modal views
+    path('modal/login/', views.modal_login, name='modal_login'),
+    path('modal/register/', views.modal_register, name='modal_register'),
+    path('modal/admin-register/', views.modal_admin_register, name='modal_admin_register'),
+    path('api/ajax-admin-register/', views.ajax_admin_register, name='ajax_admin_register'),
 ]
