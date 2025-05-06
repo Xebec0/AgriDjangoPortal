@@ -1,187 +1,140 @@
-/* Modal Animations for Login/Registration/Admin Registration */
+/* Modal Animations for Login/Registration/Admin Registration - ALL ANIMATIONS DISABLED */
 
-/* Entrance animation for modals */
+/* Entrance animation for modals - disabled */
 @keyframes modalZoomIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.8) translateY(-30px);
-    }
-    70% {
+    0%, 100% {
         opacity: 1;
-        transform: scale(1.03) translateY(10px);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: none;
     }
 }
 
-/* Exit animation for modals */
+/* Exit animation for modals - disabled */
 @keyframes modalZoomOut {
-    0% {
+    0%, 100% {
         opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.8) translateY(-30px);
+        transform: none;
     }
 }
 
-/* Border animation for modals - outer glow only */
+/* Border animation for modals - disabled */
 @keyframes borderPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px 5px rgba(40, 167, 69, 0.5);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.2);
+    0%, 50%, 100% {
+        box-shadow: none;
     }
 }
 
-/* Staggered form field animations */
+/* Staggered form field animations - disabled */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 20px, 0);
-    }
-    to {
+    0%, 100% {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
+        transform: none;
     }
 }
 
-/* Applied to modal dialogs */
+/* Applied to modal dialogs - animations disabled */
 .modal-dialog.animate-zoom-in .modal-content {
-    animation: modalZoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: none;
 }
 
 .modal-dialog.animate-zoom-out .modal-content {
-    animation: modalZoomOut 0.4s ease-in-out forwards;
+    animation: none;
 }
 
-/* Applied to the border element */
+/* Applied to the border element - animation disabled */
 .modal-content.animate-border,
 .animate-border-box {
-    animation: borderPulse 2.2s infinite;
+    animation: none;
     border-radius: 6px;
     overflow: hidden;
+    box-shadow: none;
 }
 
-/* Apply animations to form elements with delay */
+/* Apply animations to form elements - disabled */
 .animate-field {
-    animation: fadeInUp 0.4s ease-out forwards;
-    opacity: 0;
+    animation: none;
+    opacity: 1;
 }
 
-/* Different delays for different fields */
-.animate-field:nth-child(1) { animation-delay: 0.1s; }
-.animate-field:nth-child(2) { animation-delay: 0.2s; }
-.animate-field:nth-child(3) { animation-delay: 0.3s; }
-.animate-field:nth-child(4) { animation-delay: 0.4s; }
-.animate-field:nth-child(5) { animation-delay: 0.5s; }
-.animate-field:nth-child(6) { animation-delay: 0.6s; }
-.animate-field:nth-child(7) { animation-delay: 0.7s; }
+/* Different delays for different fields - all disabled */
+.animate-field:nth-child(1) { animation-delay: 0s; }
+.animate-field:nth-child(2) { animation-delay: 0s; }
+.animate-field:nth-child(3) { animation-delay: 0s; }
+.animate-field:nth-child(4) { animation-delay: 0s; }
+.animate-field:nth-child(5) { animation-delay: 0s; }
+.animate-field:nth-child(6) { animation-delay: 0s; }
+.animate-field:nth-child(7) { animation-delay: 0s; }
 
-/* Special animation for the form header */
+/* Special animation for the form header - disabled */
 .modal-header {
-    transition: all 0.4s ease;
+    transition: none;
 }
 
 .modal-header:hover {
-    background-position: right center !important;
+    background-position: center !important;
 }
 
-/* Make modals more responsive on mobile */
-@media (max-width: 576px) {
-    .modal-dialog.animate-zoom-in .modal-content {
-        animation-duration: 0.4s;
-    }
-    
-    .animate-field {
-        animation-duration: 0.3s;
-    }
-}
-
-/* Custom animations for each modal type with specific glow colors */
+/* Custom animations for each modal type - all animations disabled */
 #loginModal .modal-content {
-    background: linear-gradient(135deg, rgba(240, 240, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
+    background: #ffffff;
 }
 
 #loginModal .animate-border-box {
-    animation-name: loginBorderPulse;
+    animation: none;
+    box-shadow: none;
 }
 
 #registerModal .modal-content {
-    background: linear-gradient(135deg, rgba(240, 255, 245, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
+    background: #ffffff;
 }
 
 #registerModal .animate-border-box {
-    animation-name: registerBorderPulse;
+    animation: none;
+    box-shadow: none;
 }
 
 #adminRegisterModal .modal-content {
-    background: linear-gradient(135deg, rgba(255, 240, 240, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
+    background: #ffffff;
 }
 
 #adminRegisterModal .animate-border-box {
-    animation-name: adminBorderPulse;
+    animation: none;
+    box-shadow: none;
 }
 
-/* Custom glow for each modal type */
+/* Custom glow animations - all disabled */
 @keyframes loginBorderPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(23, 162, 184, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px 6px rgba(23, 162, 184, 0.6);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(23, 162, 184, 0.2);
+    0%, 50%, 100% {
+        box-shadow: none;
     }
 }
 
 @keyframes registerBorderPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px 6px rgba(40, 167, 69, 0.6);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.2);
+    0%, 50%, 100% {
+        box-shadow: none;
     }
 }
 
 @keyframes adminBorderPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px 6px rgba(220, 53, 69, 0.6);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.2);
+    0%, 50%, 100% {
+        box-shadow: none;
     }
 }
 
-/* Animated gradient backgrounds for headers */
+/* Animated gradient backgrounds for headers - disabled */
 .modal-header.bg-gradient-primary-to-secondary {
-    background-size: 200% auto !important;
-    background: linear-gradient(to right, #1e7e34 0%, #17a2b8 51%, #1e7e34 100%) !important;
-    transition: 0.5s !important;
+    background-size: 100% 100% !important;
+    background: #1e7e34 !important;
+    transition: none !important;
 }
 
 .modal-header.bg-gradient-success-to-secondary {
-    background-size: 200% auto !important;
-    background: linear-gradient(to right, #28a745 0%, #17a2b8 51%, #28a745 100%) !important;
-    transition: 0.5s !important;
+    background-size: 100% 100% !important;
+    background: #28a745 !important;
+    transition: none !important;
 }
 
 .modal-header.bg-gradient-danger-to-dark {
-    background-size: 200% auto !important;
-    background: linear-gradient(to right, #dc3545 0%, #343a40 51%, #dc3545 100%) !important;
-    transition: 0.5s !important;
+    background-size: 100% 100% !important;
+    background: #dc3545 !important;
+    transition: none !important;
 }

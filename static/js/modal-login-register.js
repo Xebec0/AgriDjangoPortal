@@ -1,6 +1,7 @@
 /**
  * Modal Login and Registration functionality
  * Handles AJAX loading of modal content and form submissions
+ * All animations have been disabled for performance optimization
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -21,10 +22,10 @@ function setupLoginModal() {
     if (loginModal) {
         // Load the login form when the modal is shown
         loginModal.addEventListener('show.bs.modal', function() {
-            // Add animation class to modal dialog
+            // Animation classes disabled
             const modalDialog = loginModal.querySelector('.modal-dialog');
             if (modalDialog) {
-                modalDialog.classList.add('animate-zoom-in');
+                modalDialog.classList.remove('animate-zoom-in');
                 modalDialog.classList.remove('animate-zoom-out');
             }
             
@@ -33,21 +34,21 @@ function setupLoginModal() {
                 loginModalContent.querySelector('.alert-danger')) {
                 loadModalContent('/modal/login/', loginModalContent);
             } else {
-                // Apply animations to existing content
+                // Animations disabled
                 const formElements = loginModalContent.querySelectorAll('.form-group, .mb-3, .mb-4, .alert, .d-grid');
                 formElements.forEach(element => {
-                    element.classList.add('animate-field');
+                    element.classList.remove('animate-field');
                 });
             }
         });
         
-        // Reset and animate modal when hidden
+        // Reset modal when hidden
         loginModal.addEventListener('hide.bs.modal', function() {
-            // Add zoom out animation
+            // Animations disabled
             const modalDialog = loginModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-in');
-                modalDialog.classList.add('animate-zoom-out');
+                modalDialog.classList.remove('animate-zoom-out');
             }
         });
         
@@ -60,10 +61,11 @@ function setupLoginModal() {
                 errorElement.style.display = 'none';
             }
             
-            // Remove animation classes for next time
+            // Animation classes disabled
             const modalDialog = loginModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-out');
+                modalDialog.classList.remove('animate-zoom-in');
             }
         });
         
@@ -172,10 +174,10 @@ function setupRegisterModal() {
     if (registerModal) {
         // Load the registration form when the modal is shown
         registerModal.addEventListener('show.bs.modal', function() {
-            // Add animation class to modal dialog
+            // Animation classes disabled
             const modalDialog = registerModal.querySelector('.modal-dialog');
             if (modalDialog) {
-                modalDialog.classList.add('animate-zoom-in');
+                modalDialog.classList.remove('animate-zoom-in');
                 modalDialog.classList.remove('animate-zoom-out');
             }
             
@@ -184,21 +186,21 @@ function setupRegisterModal() {
                 registerModalContent.querySelector('.alert-danger')) {
                 loadModalContent('/modal/register/', registerModalContent);
             } else {
-                // Apply animations to existing content
+                // Animations disabled
                 const formElements = registerModalContent.querySelectorAll('.form-group, .mb-3, .mb-4, .alert, .d-grid');
                 formElements.forEach(element => {
-                    element.classList.add('animate-field');
+                    element.classList.remove('animate-field');
                 });
             }
         });
         
-        // Reset and animate modal when hidden
+        // Reset modal when hidden
         registerModal.addEventListener('hide.bs.modal', function() {
-            // Add zoom out animation
+            // Animations disabled
             const modalDialog = registerModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-in');
-                modalDialog.classList.add('animate-zoom-out');
+                modalDialog.classList.remove('animate-zoom-out');
             }
         });
         
@@ -211,10 +213,11 @@ function setupRegisterModal() {
                 errorElement.style.display = 'none';
             }
             
-            // Remove animation classes for next time
+            // Animation classes disabled
             const modalDialog = registerModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-out');
+                modalDialog.classList.remove('animate-zoom-in');
             }
         });
         
@@ -318,10 +321,10 @@ function setupAdminRegisterModal() {
     if (adminRegisterModal) {
         // Load the admin registration form when the modal is shown
         adminRegisterModal.addEventListener('show.bs.modal', function() {
-            // Add animation class to modal dialog
+            // Animation classes disabled
             const modalDialog = adminRegisterModal.querySelector('.modal-dialog');
             if (modalDialog) {
-                modalDialog.classList.add('animate-zoom-in');
+                modalDialog.classList.remove('animate-zoom-in');
                 modalDialog.classList.remove('animate-zoom-out');
             }
             
@@ -330,21 +333,21 @@ function setupAdminRegisterModal() {
                 adminRegisterModalContent.querySelector('.alert-danger')) {
                 loadModalContent('/modal/admin-register/', adminRegisterModalContent);
             } else {
-                // Apply animations to existing content
+                // Animations disabled
                 const formElements = adminRegisterModalContent.querySelectorAll('.form-group, .mb-3, .mb-4, .alert, .d-grid');
                 formElements.forEach(element => {
-                    element.classList.add('animate-field');
+                    element.classList.remove('animate-field');
                 });
             }
         });
         
-        // Reset and animate modal when hidden
+        // Reset modal when hidden
         adminRegisterModal.addEventListener('hide.bs.modal', function() {
-            // Add zoom out animation
+            // Animations disabled
             const modalDialog = adminRegisterModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-in');
-                modalDialog.classList.add('animate-zoom-out');
+                modalDialog.classList.remove('animate-zoom-out');
             }
         });
         
@@ -357,10 +360,11 @@ function setupAdminRegisterModal() {
                 errorElement.style.display = 'none';
             }
             
-            // Remove animation classes for next time
+            // Animation classes disabled
             const modalDialog = adminRegisterModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-out');
+                modalDialog.classList.remove('animate-zoom-in');
             }
         });
         
@@ -529,77 +533,92 @@ function setupModalSwitching() {
 }
 
 /**
- * Load modal content via AJAX with animations
+ * Load content into a modal via AJAX
  */
 function loadModalContent(url, container) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(html => {
-            // Add animation class to the parent modal dialog
-            const modalDialog = container.closest('.modal-dialog');
-            if (modalDialog) {
-                modalDialog.classList.add('animate-zoom-in');
-            }
-            
-            container.innerHTML = html;
-            
-            // Initialize password strength meter if present
-            const passwordInput = container.querySelector('#id_password1');
-            if (passwordInput) {
-                passwordInput.addEventListener('input', function() {
-                    updatePasswordStrength(this.value);
-                });
-            }
-            
-            // Apply staggered animations to form elements
-            const formElements = container.querySelectorAll('.form-group, .mb-3, .mb-4, .alert, .d-grid');
-            formElements.forEach(element => {
-                element.classList.add('animate-field');
-            });
-            
-            // Apply border animation
-            const modalContent = container.querySelector('.modal-content');
-            if (modalContent) {
-                modalContent.classList.add('animate-border');
-            }
-            
-            // Apply border animation to the border box
-            const borderBox = container.querySelector('.animate-border-box');
-            if (borderBox) {
-                borderBox.style.animation = 'borderPulse 1.8s infinite';
-            }
-            
-            // Animate headers with gradient shift on hover
-            const headers = container.querySelectorAll('.modal-header');
-            headers.forEach(header => {
-                header.addEventListener('mouseenter', function() {
-                    this.style.backgroundPosition = 'right center';
-                });
-                
-                header.addEventListener('mouseleave', function() {
-                    this.style.backgroundPosition = 'left center';
-                });
-            });
-        })
-        .catch(error => {
-            console.error('Error loading modal content:', error);
-            container.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title">Error</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Failed to load content. Please try again later.</p>
-                    </div>
+    // Add a spinner temporarily
+    container.innerHTML = `
+        <div class="modal-content text-center">
+            <div class="modal-header text-white text-center p-3" style="background: #28a745;">
+                <h5 class="modal-title w-100">Loading</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-            `;
+                <p class="mt-3">Loading form...</p>
+            </div>
+        </div>
+    `;
+    
+    // Fetch the content
+    fetch(url, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        // Set the HTML content
+        container.innerHTML = html;
+        
+        // Remove animation classes from all elements
+        const animatedElements = container.querySelectorAll('.animate-field, .animate-border, .animate-border-box');
+        animatedElements.forEach(element => {
+            element.classList.remove('animate-field', 'animate-border', 'animate-border-box');
         });
+        
+        // Initialize password strength meter if present
+        const passwordInput = container.querySelector('#id_password1');
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                updatePasswordStrength(this.value);
+            });
+        }
+        
+        // Remove all animation properties
+        const modalContent = container.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.classList.remove('animate-border');
+            modalContent.style.animation = 'none';
+        }
+        
+        // Remove border animation
+        const borderBox = container.querySelector('.animate-border-box');
+        if (borderBox) {
+            borderBox.style.animation = 'none';
+            borderBox.classList.remove('animate-border-box');
+        }
+        
+        // Remove header animations
+        const headers = container.querySelectorAll('.modal-header');
+        headers.forEach(header => {
+            header.style.backgroundPosition = 'center center';
+            header.style.transition = 'none';
+            
+            // Remove hover event listeners
+            header.removeEventListener('mouseenter', null);
+            header.removeEventListener('mouseleave', null);
+        });
+    })
+    .catch(error => {
+        console.error('Error loading modal content:', error);
+        container.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>An error occurred while loading the content. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        `;
+    });
 }
 
 /**
