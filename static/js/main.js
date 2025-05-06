@@ -89,5 +89,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Function to show login modal
+    function showLoginModal() {
+        // Get the modal instance or create one if it doesn't exist
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            const modal = new bootstrap.Modal(loginModal);
+            modal.show();
+        }
+    }
+
+    // Check if URL has login hash on page load
+    if (window.location.hash === '#login') {
+        showLoginModal();
+        // Clean the hash to avoid showing the modal again on refresh
+        history.replaceState(null, null, ' ');
+    }
+    
+    // Add global function for Django's LOGIN_URL setting
+    window.showLoginModal = showLoginModal;
+
+    // Add an event handler for links with hash #login
+    document.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A' && e.target.getAttribute('href') === '#login') {
+            e.preventDefault();
+            showLoginModal();
+        }
+    });
+
     console.log('Agrostudies Registration System JavaScript initialized');
 });

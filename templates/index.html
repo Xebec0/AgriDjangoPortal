@@ -17,7 +17,7 @@
         Browse Programs
     </a>
     {% if not user.is_authenticated %}
-    <a class="btn btn-outline-secondary btn-lg ms-2" href="{% url 'register' %}" role="button">
+    <a class="btn btn-outline-secondary btn-lg ms-2" href="#" id="registerModalLink" data-bs-toggle="modal" data-bs-target="#registerModal" role="button">
         Sign Up Now
     </a>
     {% endif %}

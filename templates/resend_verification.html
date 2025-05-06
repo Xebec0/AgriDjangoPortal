@@ -29,8 +29,10 @@
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email address" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Resend Verification Email</button>
-                        <a href="{% url 'login' %}" class="btn btn-outline-secondary ms-2">Back to Login</a>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+                            <button type="submit" class="btn btn-primary">Resend Email</button>
+                            <a href="/#login" onclick="showLoginModal(); return false;" class="btn btn-outline-secondary ms-2">Back to Login</a>
+                        </div>
                     </form>
                 </div>
             </div>

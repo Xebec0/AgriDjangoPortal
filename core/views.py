@@ -30,6 +30,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import os
 import json
+from .decorators import ajax_login_required
 
 
 def index(request):
@@ -269,7 +270,7 @@ def program_detail(request, program_id):
     })
 
 
-@login_required
+@ajax_login_required
 def program_register(request, program_id):
     """Register for a program"""
     program = get_object_or_404(AgricultureProgram, id=program_id)

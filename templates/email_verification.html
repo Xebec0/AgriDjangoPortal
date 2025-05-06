@@ -12,19 +12,23 @@
                 </div>
                 <div class="card-body">
                     {% if success %}
-                        <div class="alert alert-success">
-                            <p class="mb-0">Your email has been successfully verified! You can now login to your account.</p>
-                        </div>
-                        <div class="mt-4">
-                            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                        <div class="alert alert-success" role="alert">
+                            <h4 class="alert-heading"><i class="fas fa-check-circle"></i> Email Verified!</h4>
+                            <p>Your email has been successfully verified. You can now log in to your account.</p>
+                            <hr>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+                                <a href="/#login" onclick="showLoginModal(); return false;" class="btn btn-primary">Login</a>
+                            </div>
                         </div>
                     {% else %}
-                        <div class="alert alert-danger">
-                            <p class="mb-0">{{ error_message }}</p>
-                        </div>
-                        <div class="mt-4">
-                            <a href="{% url 'resend_verification' %}" class="btn btn-outline-primary">Resend Verification Email</a>
-                            <a href="{% url 'login' %}" class="btn btn-outline-secondary ms-2">Back to Login</a>
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> Verification Failed</h4>
+                            <p>{{ error_message }}</p>
+                            <hr>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+                                <a href="{% url 'resend_verification' %}" class="btn btn-primary">Resend Verification Email</a>
+                                <a href="/#login" onclick="showLoginModal(); return false;" class="btn btn-outline-secondary ms-2">Back to Login</a>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
