@@ -129,6 +129,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For developm
 EMAIL_HOST = 'smtp.gmail.com'  # For production - replace with your SMTP server
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your_email@gmail.com'  # Replace with your email for production
+EMAIL_HOST_USER = 'helloharith9@gmail.com'  # Replace with your email for production
 EMAIL_HOST_PASSWORD = 'your_app_password'  # Replace with your app password for production
 DEFAULT_FROM_EMAIL = 'Agrostudies <noreply@agrostudies.com>'
