@@ -1,0 +1,140 @@
+/* Modal Animations for Login/Registration/Admin Registration - ALL ANIMATIONS DISABLED */
+
+/* Entrance animation for modals - disabled */
+@keyframes modalZoomIn {
+    0%, 100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Exit animation for modals - disabled */
+@keyframes modalZoomOut {
+    0%, 100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Border animation for modals - disabled */
+@keyframes borderPulse {
+    0%, 50%, 100% {
+        box-shadow: none;
+    }
+}
+
+/* Staggered form field animations - disabled */
+@keyframes fadeInUp {
+    0%, 100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Applied to modal dialogs - animations disabled */
+.modal-dialog.animate-zoom-in .modal-content {
+    animation: none;
+}
+
+.modal-dialog.animate-zoom-out .modal-content {
+    animation: none;
+}
+
+/* Applied to the border element - animation disabled */
+.modal-content.animate-border,
+.animate-border-box {
+    animation: none;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+/* Apply animations to form elements - disabled */
+.animate-field {
+    animation: none;
+    opacity: 1;
+}
+
+/* Different delays for different fields - all disabled */
+.animate-field:nth-child(1) { animation-delay: 0s; }
+.animate-field:nth-child(2) { animation-delay: 0s; }
+.animate-field:nth-child(3) { animation-delay: 0s; }
+.animate-field:nth-child(4) { animation-delay: 0s; }
+.animate-field:nth-child(5) { animation-delay: 0s; }
+.animate-field:nth-child(6) { animation-delay: 0s; }
+.animate-field:nth-child(7) { animation-delay: 0s; }
+
+/* Special animation for the form header - disabled */
+.modal-header {
+    transition: none;
+}
+
+.modal-header:hover {
+    background-position: center !important;
+}
+
+/* Custom animations for each modal type - all animations disabled */
+#loginModal .modal-content {
+    background: #ffffff;
+}
+
+#loginModal .animate-border-box {
+    animation: none;
+    box-shadow: none;
+}
+
+#registerModal .modal-content {
+    background: #ffffff;
+}
+
+#registerModal .animate-border-box {
+    animation: none;
+    box-shadow: none;
+}
+
+#adminRegisterModal .modal-content {
+    background: #ffffff;
+}
+
+#adminRegisterModal .animate-border-box {
+    animation: none;
+    box-shadow: none;
+}
+
+/* Custom glow animations - all disabled */
+@keyframes loginBorderPulse {
+    0%, 50%, 100% {
+        box-shadow: none;
+    }
+}
+
+@keyframes registerBorderPulse {
+    0%, 50%, 100% {
+        box-shadow: none;
+    }
+}
+
+@keyframes adminBorderPulse {
+    0%, 50%, 100% {
+        box-shadow: none;
+    }
+}
+
+/* Animated gradient backgrounds for headers - disabled */
+.modal-header.bg-gradient-primary-to-secondary {
+    background-size: 100% 100% !important;
+    background: #1e7e34 !important;
+    transition: none !important;
+}
+
+.modal-header.bg-gradient-success-to-secondary {
+    background-size: 100% 100% !important;
+    background: #28a745 !important;
+    transition: none !important;
+}
+
+.modal-header.bg-gradient-danger-to-dark {
+    background-size: 100% 100% !important;
+    background: #dc3545 !important;
+    transition: none !important;
+}
