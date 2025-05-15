@@ -114,7 +114,9 @@ footer a:hover {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+
+/* Large mobile devices (480px and up) */
+@media (min-width: 480px) and (max-width: 767px) {
     .jumbotron {
         padding: 2rem 1rem;
     }
@@ -125,5 +127,84 @@ footer a:hover {
     
     .card-deck {
         display: block;
+    }
+    
+    /* Improved touch targets for mobile */
+    .btn, .nav-link, a.dropdown-item {
+        padding: 0.6rem 1rem;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    /* Better spacing between clickable elements */
+    .nav-item, .dropdown-item {
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Full-width form controls */
+    .form-control, .custom-select, .input-group {
+        width: 100%;
+    }
+}
+
+/* Tablet devices (768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .jumbotron {
+        padding: 2rem;
+    }
+    
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    /* Better card layouts for tablets */
+    .card-deck {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* Small mobile devices (less than 480px) */
+@media (max-width: 479px) {
+    .jumbotron {
+        padding: 1.5rem 1rem;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    /* Stacked buttons for very small screens */
+    .d-flex:not(.navbar-nav) {
+        flex-direction: column;
+    }
+    
+    .d-flex:not(.navbar-nav) .btn {
+        margin: 0.25rem 0;
+        width: 100%;
+    }
+    
+    /* Improve touch targets */
+    .btn, .nav-link, a.dropdown-item {
+        padding: 0.75rem 1rem;
+        min-height: 48px;
+    }
+    
+    /* Full-width form controls */
+    .form-control, .custom-select, .input-group {
+        width: 100%;
+    }
+    
+    /* Adjusted padding for containers */
+    .container, .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }

@@ -73,6 +73,99 @@
     background-position: center !important;
 }
 
+/* Modal animations for Agrostudies Registration System */
+
+/* Base animations for modals */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: translate(0, 0);
+}
+
+/* Touch-friendly modals - easier to dismiss */
+.modal-header .btn-close {
+    padding: 1rem;
+    margin: -0.5rem -0.5rem -0.5rem auto;
+    font-size: 1.25rem;
+}
+
+/* Enhanced mobile responsiveness for modals */
+@media (max-width: 991px) {
+    .modal-dialog {
+        margin: 0.75rem;
+        max-width: calc(100% - 1.5rem);
+    }
+    
+    .modal-body {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .modal-header {
+        padding: 0.85rem 1rem;
+    }
+    
+    .modal-footer {
+        padding: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .modal-footer .btn {
+        flex: 1;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 479px) {
+    .modal-dialog {
+        margin: 0.25rem;
+        max-width: calc(100% - 0.5rem);
+    }
+    
+    .modal-body {
+        padding: 0.85rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+        min-height: 48px;
+    }
+    
+    /* Make form controls more touch-friendly */
+    .modal-body .form-control,
+    .modal-body .form-select,
+    .modal-body .input-group {
+        font-size: 16px; /* Prevents iOS zoom */
+        min-height: 44px;
+        margin-bottom: 1rem;
+    }
+    
+    .modal-body label {
+        margin-bottom: 0.5rem;
+    }
+}
+
 /* Custom animations for each modal type - all animations disabled */
 #loginModal .modal-content {
     background: #ffffff;

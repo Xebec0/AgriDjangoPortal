@@ -445,9 +445,39 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+
+/* Tablet devices (768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
     .candidate-container {
-        padding: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .field-group {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+    
+    /* Improve touch targets on tablets */
+    .action-btn, .upload-button, .view-button {
+        min-height: 44px;
+        padding: 0.6rem 1.2rem;
+    }
+    
+    /* Better spacing between items */
+    .info-card {
+        margin-bottom: 2rem;
+    }
+    
+    /* Adjust document items for better touch */
+    .document-item {
+        padding: 1.25rem;
+    }
+}
+
+/* Large mobile devices (480px to 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .candidate-container {
+        padding: 1.25rem;
     }
     
     .field-group {
@@ -488,10 +518,142 @@
     
     .action-buttons {
         flex-direction: column;
+        gap: 0.75rem;
     }
     
     .action-btn {
         width: 100%;
         justify-content: center;
+        min-height: 48px;
+        padding: 0.75rem 0;
+    }
+    
+    /* Larger touch targets */
+    .upload-button, .view-button {
+        padding: 0.75rem 1.25rem;
+        min-height: 44px;
+        margin: 0.25rem;
+    }
+    
+    /* Adjusting font sizes */
+    .card-header {
+        font-size: 1.1rem;
+    }
+    
+    .field-label {
+        font-size: 0.95rem;
+    }
+}
+
+/* Small mobile devices (less than 480px) */
+@media (max-width: 479px) {
+    .candidate-container {
+        padding: 0.75rem;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .field-group {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .progress-container {
+        margin: 1.5rem 0;
+    }
+    
+    .progress-steps {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-left: 12px;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        width: 4px;
+        margin: 0;
+        position: absolute;
+        left: 12px;
+        top: 0;
+    }
+    
+    .progress-fill {
+        width: 4px;
+        height: var(--progress-height);
+    }
+    
+    .progress-step {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .step-label {
+        margin: 0;
+        text-align: left;
+        font-size: 0.8rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0.75rem 0;
+        font-size: 0.9rem;
+    }
+    
+    /* Extra large touch targets for small screens */
+    .upload-button, .view-button {
+        padding: 0.85rem 1rem;
+        min-height: 48px;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        justify-content: center;
+    }
+    
+    .document-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .document-icon {
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+    }
+    
+    .document-actions {
+        margin-top: 1rem;
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .info-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Adjusting font sizes */
+    .card-header {
+        font-size: 1rem;
+        padding: 0.85rem 1rem;
+    }
+    
+    .field-label {
+        font-size: 0.85rem;
+    }
+    
+    .field-value {
+        font-size: 0.95rem;
+        padding: 0.75rem 0.5rem;
     }
 }

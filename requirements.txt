@@ -12,8 +12,9 @@ django-debug-toolbar>=4.2.0
 gunicorn>=21.2.0
 whitenoise>=6.5.0
 
-# Database adapters (uncomment as needed)
-# psycopg2-binary>=2.9.6  # For PostgreSQL
+# Database adapters
+psycopg2-binary>=2.9.6  # For PostgreSQL
+dj-database-url>=2.1.0  # For database URL configuration
 # mysqlclient>=2.1.1  # For MySQL
 
 # For REST API (if needed in the future)

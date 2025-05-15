@@ -1,0 +1,22 @@
+services:
+  # Web service configuration
+  - type: web
+    name: agridjangoportal
+    env: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn agrostudies_project.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: agridjangoportal.onrender.com
+      - key: DATABASE_URL
+        value: "postgresql://agridjangoportal_db_user:L6A2eF9tNXul2Urv8z0pUOTNi2ra1qle@dpg-d0inclp5pdvs739mcab0-a/agridjangoportal_db"
+
+  # PostgreSQL database
+databases:
+  - name: agridjangoportal-db
+    plan: free
+    ipAllowList: [] # Allow all IPs to connect to the database
