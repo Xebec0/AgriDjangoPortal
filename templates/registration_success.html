@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Successful - Agrostudies Registration System{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white text-center">
+            <h2 class="mb-0"><i class="fas fa-check-circle me-2"></i>Registration Successful!</h2>
+        </div>
+        <div class="card-body text-center">
+            <p class="lead">Thank you for registering for <strong>{{ program.title }}</strong>.</p>
+            <p>Your registration has been received and is currently <strong>pending review</strong> by our administrators.</p>
+            <hr>
+            <h5 class="mb-3">Registration Details</h5>
+            <ul class="list-group list-group-flush mb-4 text-start mx-auto" style="max-width: 400px;">
+                <li class="list-group-item"><strong>Program:</strong> {{ program.title }}</li>
+                <li class="list-group-item"><strong>Dates:</strong> {{ program.start_date|date:"M d, Y" }} - {{ program.end_date|date:"M d, Y" }}</li>
+                <li class="list-group-item"><strong>Location:</strong> {{ program.location }}</li>
+                <li class="list-group-item"><strong>Status:</strong> Pending Review</li>
+            </ul>
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-info-circle me-2"></i>
+                You will receive an email notification once your registration has been reviewed.
+            </div>
+            <a href="{% url 'profile' %}" class="btn btn-primary mt-3"><i class="fas fa-user"></i> Go to My Profile</a>
+            <a href="{% url 'program_list' %}" class="btn btn-outline-secondary mt-3 ms-2"><i class="fas fa-list"></i> Browse More Programs</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

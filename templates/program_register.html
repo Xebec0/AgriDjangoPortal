@@ -57,6 +57,13 @@
                     </div>
                 </div>
                 
+                {% if user.is_staff or user.is_superuser %}
+                <div class="alert alert-warning my-5 text-center">
+                    <i class="fas fa-user-shield fa-2x mb-3"></i><br>
+                    <strong>Admins do not need to register for programs.</strong><br>
+                    If you need to manage program registrations, please use the admin dashboard or the Candidates section.
+                </div>
+                {% else %}
                 <form method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     
@@ -83,8 +90,9 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text mb-3">
-                                Please upload the following required documents to complete your registration.
-                                All documents must be in PDF format and under 5MB in size.
+                                Please upload the following required documents to complete your registration.<br>
+                                <strong>All documents must be in PDF format and under 5MB in size.</strong><br>
+                                <span class="text-muted">Tip: Click or drag files to the input below. Only PDF files are accepted.</span>
                             </p>
                             
                             <!-- Transcript of Records (TOR) -->
@@ -178,6 +186,7 @@
                         </a>
                     </div>
                 </form>
+                {% endif %}
             </div>
             <div class="card-footer text-muted">
                 <small>
@@ -187,4 +196,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/program-register-validation.js"></script>
 {% endblock %}

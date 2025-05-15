@@ -315,8 +315,17 @@ def program_register(request, program_id):
                     link=f"/registrations/{registration.id}/"
                 )
             
+            # Send confirmation email to user
+            send_mail(
+                subject=f"Registration Received: {program.title}",
+                message=f"Dear {request.user.get_full_name() or request.user.username},\n\nYour registration for '{program.title}' has been received and is pending review. We will notify you once it is processed.\n\nThank you!\nAgrostudies Team",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[request.user.email],
+                fail_silently=True,
+            )
+            
             messages.success(request, f'Successfully registered for {program.title}! Your documents have been submitted.')
-            return redirect('profile')
+            return render(request, 'registration_success.html', {'program': program})
         else:
             # If form is invalid, display errors
             for field, errors in form.errors.items():

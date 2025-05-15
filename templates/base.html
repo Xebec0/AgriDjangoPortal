@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{% block title %}Agrostudies Registration System{% endblock %}</title>
     
     <!-- Bootstrap CSS from CDN -->
@@ -363,6 +363,47 @@
                     }
                 }
                 return cookieValue;
+            }
+        });
+        
+        // Get CSRF token for AJAX requests and apply responsive enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to get the CSRF token from cookies
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            // Apply lazy loading to all images for better mobile performance
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                if (!img.hasAttribute('loading')) {
+                    img.setAttribute('loading', 'lazy');
+                }
+            });
+            
+            // Improve touch targets on mobile devices
+            if (window.innerWidth < 768) {
+                const smallButtons = document.querySelectorAll('.btn-sm');
+                smallButtons.forEach(btn => {
+                    btn.classList.remove('btn-sm');
+                });
+                
+                // Make dropdown menus more touch-friendly
+                const dropdownItems = document.querySelectorAll('.dropdown-item');
+                dropdownItems.forEach(item => {
+                    item.style.padding = '0.75rem 1rem';
+                });
             }
         });
     </script>
