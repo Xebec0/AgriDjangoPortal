@@ -213,7 +213,27 @@ def profile(request):
             u_form.save()
             p_form.save()
             messages.success(request, 'Your profile has been updated!')
-            
+
+            # Sync updated identity fields to any of the user's candidate applications
+            try:
+                candidate_qs = Candidate.objects.filter(Q(created_by=request.user) | Q(email=request.user.email))
+                if candidate_qs.exists():
+                    candidate_qs.update(
+                        first_name=request.user.first_name,
+                        last_name=request.user.last_name,
+                        email=request.user.email,
+                        father_name=request.user.profile.father_name,
+                        mother_name=request.user.profile.mother_name,
+                        date_of_birth=request.user.profile.date_of_birth,
+                        gender=request.user.profile.gender,
+                        country_of_birth=request.user.profile.country_of_birth,
+                        nationality=request.user.profile.nationality,
+                        religion=request.user.profile.religion,
+                    )
+            except Exception:
+                # Best-effort sync; do not block profile save on errors
+                pass
+
             # Create a notification
             Notification.add_notification(
                 request.user,
@@ -226,13 +246,15 @@ def profile(request):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
     
-    # Get user registrations
+    # Get user registrations and any candidate applications (direct apply flow)
     registrations = Registration.objects.filter(user=request.user).order_by('-registration_date')
+    candidate_apps = Candidate.objects.filter(Q(created_by=request.user) | Q(email=request.user.email)).order_by('-created_at')
     
     context = {
         'u_form': u_form,
         'p_form': p_form,
-        'registrations': registrations
+        'registrations': registrations,
+        'candidate_apps': candidate_apps
     }
     return render(request, 'profile.html', context)
 
@@ -246,95 +268,129 @@ def program_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'program_list.html', {'page_obj': page_obj})
+    # Track if the user has already applied to ANY program (one-time application rule)
+    applied_program_ids = set()
+    has_applied_any = False
+    if request.user.is_authenticated and not request.user.is_staff:
+        reg_qs = Registration.objects.filter(user=request.user)
+        cand_qs = Candidate.objects.filter(Q(created_by=request.user) | Q(email=request.user.email))
+        has_applied_any = reg_qs.exists() or cand_qs.exists()
+        if reg_qs.exists():
+            applied_program_ids.update(reg_qs.values_list('program_id', flat=True))
+        if cand_qs.exists():
+            applied_program_ids.update([pid for pid in cand_qs.values_list('program_id', flat=True) if pid is not None])
+    
+    return render(request, 'program_list.html', {
+        'page_obj': page_obj,
+        'applied_program_ids': applied_program_ids,
+        'has_applied_any': has_applied_any,
+    })
 
 
 def program_detail(request, program_id):
     """Show details of a specific program"""
     program = get_object_or_404(AgricultureProgram, id=program_id)
     
-    # Check if user is already registered
+    # Check if user is already applied/registered (Registration or Candidate)
     user_registered = False
     registration = None
+    has_applied_any = False
     if request.user.is_authenticated:
         try:
             registration = Registration.objects.get(user=request.user, program=program)
             user_registered = True
         except Registration.DoesNotExist:
-            pass
+            # Also consider an existing Candidate as applied
+            if Candidate.objects.filter(program=program).filter(
+                Q(created_by=request.user) | Q(email=request.user.email)
+            ).exists():
+                user_registered = True
+        # One-time application rule across all programs
+        has_applied_any = Registration.objects.filter(user=request.user).exists() or \
+            Candidate.objects.filter(Q(created_by=request.user) | Q(email=request.user.email)).exists()
     
     return render(request, 'program_detail.html', {
         'program': program,
         'user_registered': user_registered,
-        'registration': registration
+        'registration': registration,
+        'has_applied_any': has_applied_any,
     })
 
 
 @ajax_login_required
 def program_register(request, program_id):
-    """Register for a program"""
+    """Legacy route: redirect to new single-step candidate apply flow"""
+    return redirect('candidate_apply', program_id=program_id)
+
+
+@ajax_login_required
+def apply_candidate(request, program_id):
+    """Applicant-facing: single-step application that creates a Candidate directly and redirects to candidates list."""
     program = get_object_or_404(AgricultureProgram, id=program_id)
-    
-    # Check if already registered
-    try:
-        Registration.objects.get(user=request.user, program=program)
-        messages.warning(request, 'You are already registered for this program.')
-        return redirect('program_detail', program_id=program_id)
-    except Registration.DoesNotExist:
-        pass
-    
+
+    # Server-side guards
+    # 1) Already applied to this program
+    already_applied_this = Candidate.objects.filter(program=program).filter(
+        Q(created_by=request.user) | Q(email=request.user.email)
+    ).exists() or Registration.objects.filter(user=request.user, program=program).exists()
+    if already_applied_this:
+        messages.info(request, 'You have already applied to this program.')
+        return redirect('program_detail', program_id=program.id)
+
+    # 2) One-time application: if applied anywhere else, block
+    has_applied_elsewhere = (
+        Registration.objects.filter(user=request.user).exclude(program=program).exists() or
+        Candidate.objects.filter(Q(created_by=request.user) | Q(email=request.user.email)).exclude(program=program).exists()
+    )
+    if has_applied_elsewhere:
+        messages.warning(request, 'You have already applied to a different program and cannot submit another application.')
+        return redirect('program_list')
+
     if request.method == 'POST':
-        # Include request.FILES for file uploads
-        form = ProgramRegistrationForm(request.POST, request.FILES)
+        # Pre-fill POST with current user info to keep profile -> application in sync
+        mutable_post = request.POST.copy()
+        mutable_post['first_name'] = request.user.first_name or mutable_post.get('first_name', '')
+        mutable_post['confirm_first_name'] = request.user.first_name or mutable_post.get('confirm_first_name', '')
+        mutable_post['last_name'] = request.user.last_name or mutable_post.get('last_name', '')
+        mutable_post['confirm_surname'] = request.user.last_name or mutable_post.get('confirm_surname', '')
+        mutable_post['email'] = request.user.email or mutable_post.get('email', '')
+        form = CandidateForm(mutable_post, request.FILES)
         if form.is_valid():
-            registration = form.save(commit=False)
-            registration.user = request.user
-            registration.program = program
-            
-            # Save the registration to get an ID
-            registration.save()
-            
-            # Try to find a candidate profile for this user
-            try:
-                # Assuming the user's email is used to match with candidate's email
-                candidate = Candidate.objects.get(email=request.user.email)
-                # Copy the uploaded documents to the candidate profile
-                registration.copy_documents_to_candidate(candidate)
-                messages.info(request, 'Your documents have been linked to your candidate profile.')
-            except Candidate.DoesNotExist:
-                # No candidate profile found, just continue
-                pass
-            
-            # Notify all admin users about the new registration
-            admin_users = User.objects.filter(is_staff=True)
-            for admin in admin_users:
-                Notification.add_notification(
-                    user=admin,
-                    message=f"New registration: {request.user.username} has registered for {program.title}",
-                    notification_type=Notification.INFO,
-                    link=f"/registrations/{registration.id}/"
-                )
-            
-            # Send confirmation email to user
-            send_mail(
-                subject=f"Registration Received: {program.title}",
-                message=f"Dear {request.user.get_full_name() or request.user.username},\n\nYour registration for '{program.title}' has been received and is pending review. We will notify you once it is processed.\n\nThank you!\nAgrostudies Team",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[request.user.email],
-                fail_silently=True,
-            )
-            
-            messages.success(request, f'Successfully registered for {program.title}! Your documents have been submitted.')
-            return render(request, 'registration_success.html', {'program': program})
+            candidate = form.save(commit=False)
+            candidate.created_by = request.user
+            candidate.program = program
+            candidate.status = Candidate.NEW
+            candidate.save()
+
+            messages.success(request, f'Application submitted for {program.title}. We have received your details.')
+            return redirect('profile')
         else:
-            # If form is invalid, display errors
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"Error in {field}: {error}")
     else:
-        form = ProgramRegistrationForm()
-    
-    return render(request, 'program_register.html', {'form': form, 'program': program})
+        # Prefill from user if available
+        initial_data = {
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email,
+            'confirm_first_name': request.user.first_name,
+            'confirm_surname': request.user.last_name,
+            'father_name': request.user.profile.father_name,
+            'mother_name': request.user.profile.mother_name,
+            'date_of_birth': request.user.profile.date_of_birth,
+            'gender': request.user.profile.gender,
+            'country_of_birth': request.user.profile.country_of_birth,
+            'nationality': request.user.profile.nationality,
+            'religion': request.user.profile.religion,
+        }
+        form = CandidateForm(initial=initial_data)
+
+    return render(request, 'candidate_form.html', {
+        'form': form,
+        'title': f'Apply to {program.title}',
+        'button_text': 'Submit Application'
+    })
 
 
 @login_required
@@ -353,17 +409,18 @@ def cancel_registration(request, registration_id):
 
 @login_required
 def candidate_list(request):
-    """List all candidates with search and filter functionality"""
-    # Check if user has staff privilege
-    if not request.user.is_staff:
-        messages.error(request, 'You do not have permission to access this page.')
-        return redirect('index')
-    
-    candidates = Candidate.objects.all().order_by('-created_at')
+    """List candidates. Staff see all; applicants see only their own submission(s)."""
+    if request.user.is_staff:
+        candidates = Candidate.objects.all().order_by('-created_at')
+    else:
+        # Show only the current user's candidate records
+        candidates = Candidate.objects.filter(
+            Q(created_by=request.user) | Q(email=request.user.email)
+        ).order_by('-created_at')
     form = CandidateSearchForm(request.GET)
     
-    # Apply filters
-    if form.is_valid():
+    # Apply filters (staff only)
+    if form.is_valid() and request.user.is_staff:
         # Filter by country (university's country)
         country = form.cleaned_data.get('country')
         if country:

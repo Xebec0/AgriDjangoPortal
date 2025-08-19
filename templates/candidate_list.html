@@ -33,9 +33,11 @@
                         </li>
                     </ul>
                 </div>
-                <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-user-plus"></i> Add New Candidate
-                </a>
+                {% if user.is_staff %}
+                    <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-user-plus"></i> Add New Candidate
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div class="card-body">

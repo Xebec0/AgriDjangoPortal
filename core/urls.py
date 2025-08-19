@@ -40,6 +40,7 @@ urlpatterns = [
     path('programs/', views.program_list, name='program_list'),
     path('programs/<int:program_id>/', views.program_detail, name='program_detail'),
     path('programs/<int:program_id>/register/', views.program_register, name='program_register'),
+    path('programs/<int:program_id>/apply/', views.apply_candidate, name='candidate_apply'),
     path('programs/<int:program_id>/registrants/', views.program_registrants, name='program_registrants'),
     path('registrations/<int:registration_id>/', views.registration_detail, name='registration_detail'),
     path('registrations/<int:registration_id>/cancel/', views.cancel_registration, name='cancel_registration'),

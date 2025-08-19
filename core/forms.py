@@ -87,11 +87,20 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['bio', 'location', 'phone_number', 'profile_image']
+        fields = ['bio', 'location', 'phone_number', 'profile_image',
+                  'father_name', 'mother_name', 'date_of_birth', 'gender',
+                  'country_of_birth', 'nationality', 'religion']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
+            'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of father'}),
+            'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of mother'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'country_of_birth': forms.TextInput(attrs={'class': 'form-control'}),
+            'nationality': forms.TextInput(attrs={'class': 'form-control'}),
+            'religion': forms.TextInput(attrs={'class': 'form-control'}),
         }
     
     def __init__(self, *args, **kwargs):

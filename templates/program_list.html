@@ -44,9 +44,13 @@
                             <i class="fas fa-info-circle me-1"></i> View Details
                         </a>
                         {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
-                            <a href="{% url 'program_register' program.id %}" class="btn btn-outline-success">
-                                <i class="fas fa-sign-in-alt me-1"></i> Register
-                            </a>
+                            {% if not has_applied_any %}
+                                {% if program.id not in applied_program_ids %}
+                                    <a href="{% url 'candidate_apply' program.id %}" class="btn btn-outline-success">
+                                        <i class="fas fa-user-plus me-1"></i> Apply
+                                    </a>
+                                {% endif %}
+                            {% endif %}
                         {% elif not user.is_authenticated %}
                             <a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#loginModal">
                                 <i class="fas fa-sign-in-alt me-1"></i> Register

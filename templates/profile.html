@@ -102,6 +102,46 @@
                 </div>
                 
                 <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.father_name.id_for_label }}" class="form-label">Father's Name</label>
+                        {{ p_form.father_name }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.mother_name.id_for_label }}" class="form-label">Mother's Name</label>
+                        {{ p_form.mother_name }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.date_of_birth.id_for_label }}" class="form-label">Date of Birth</label>
+                        {{ p_form.date_of_birth }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.gender.id_for_label }}" class="form-label">Gender</label>
+                        {{ p_form.gender }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.country_of_birth.id_for_label }}" class="form-label">Country of Birth</label>
+                        {{ p_form.country_of_birth }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.nationality.id_for_label }}" class="form-label">Nationality</label>
+                        {{ p_form.nationality }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="{{ p_form.religion.id_for_label }}" class="form-label">Religion</label>
+                        {{ p_form.religion }}
+                    </div>
+                </div>
+                
+                <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="{{ p_form.bio.id_for_label }}" class="form-label">Bio</label>
                         {{ p_form.bio }}
@@ -166,27 +206,26 @@
 {% if not user.is_staff %}
 <div class="card">
     <div class="card-header">
-        <h4><i class="fas fa-clipboard-list me-2"></i>My Program Registrations</h4>
+        <h4><i class="fas fa-clipboard-list me-2"></i>My Applications</h4>
     </div>
     <div class="card-body">
-        {% if registrations %}
+        {% if registrations or candidate_apps %}
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
                             <th>Program</th>
-                            <th>Date</th>
+                            <th>Submitted</th>
+                            <th>Type</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for reg in registrations %}
                             <tr>
-                                <td>
-                                    <a href="{% url 'program_detail' reg.program.id %}">{{ reg.program.title }}</a>
-                                </td>
+                                <td><a href="{% url 'program_detail' reg.program.id %}">{{ reg.program.title }}</a></td>
                                 <td>{{ reg.registration_date|date:"M d, Y" }}</td>
+                                <td><span class="badge bg-info">Registration</span></td>
                                 <td>
                                     {% if reg.status == 'approved' %}
                                         <span class="badge bg-success">Approved</span>
@@ -196,13 +235,20 @@
                                         <span class="badge bg-warning text-dark">Pending</span>
                                     {% endif %}
                                 </td>
+                            </tr>
+                        {% endfor %}
+                        {% for cand in candidate_apps %}
+                            <tr>
                                 <td>
-                                    {% if reg.status != 'rejected' %}
-                                        <a href="{% url 'cancel_registration' reg.id %}" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-times"></i> Cancel
-                                        </a>
+                                    {% if cand.program %}
+                                        <a href="{% url 'program_detail' cand.program.id %}">{{ cand.program.title }}</a>
+                                    {% else %}
+                                        <em>Unassigned program</em>
                                     {% endif %}
                                 </td>
+                                <td>{{ cand.created_at|date:"M d, Y" }}</td>
+                                <td><span class="badge bg-primary">Application</span></td>
+                                <td><span class="badge bg-secondary">{{ cand.status }}</span></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -210,7 +256,7 @@
             </div>
         {% else %}
             <div class="alert alert-info">
-                You haven't registered for any programs yet. 
+                You haven't submitted any applications yet. 
                 <a href="{% url 'program_list' %}">Browse available programs</a>.
             </div>
         {% endif %}
