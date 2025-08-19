@@ -3,6 +3,8 @@ Django settings for agrostudies_project project.
 """
 
 import os
+import logging
+from logging.handlers import RotatingFileHandler
 import dj_database_url
 from pathlib import Path
 
@@ -46,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.RequestContextMiddleware',
 ]
 
 ROOT_URLCONF = 'agrostudies_project.urls'
@@ -141,3 +144,43 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'helloharith9@gmail.com'  # Replace with your email for production
 EMAIL_HOST_PASSWORD = 'your_app_password'  # Replace with your app password for production
 DEFAULT_FROM_EMAIL = 'Agrostudies <noreply@agrostudies.com>'
+
+# ----- Logging Configuration -----
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
+
+LOG_DIR = BASE_DIR / 'logs'
+os.makedirs(LOG_DIR, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'level': LOG_LEVEL,
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': str(LOG_DIR / 'app.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 5MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+            'level': LOG_LEVEL,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': LOG_LEVEL,
+    },
+}

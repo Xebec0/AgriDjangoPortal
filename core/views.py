@@ -10,6 +10,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Profile, AgricultureProgram, Registration, Candidate, University, Notification
+from .models import ActivityLog
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
     ProgramRegistrationForm, AdminRegistrationForm,
@@ -871,10 +872,17 @@ def view_candidate(request, candidate_id):
     from core.utils import get_available_documents
     documents = get_available_documents(candidate)
     
+    # Fetch recent audit logs for this candidate (admin-only page)
+    activity_logs = ActivityLog.objects.filter(
+        model_name='core.Candidate',
+        object_id=str(candidate.id)
+    ).order_by('-timestamp')[:50]
+
     return render(request, 'candidate_detail.html', {
         'candidate': candidate,
         'status_color': status_colors.get(candidate.status, 'secondary'),
-        'documents': documents
+        'documents': documents,
+        'activity_logs': activity_logs,
     })
 
 

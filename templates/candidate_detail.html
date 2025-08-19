@@ -572,6 +572,65 @@
         </div>
     </div>
     
+    <!-- Audit Trail (Admin only page) -->
+    <div class="info-card" style="margin-top: 20px;">
+        <div class="card-header">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Audit Trail</span>
+            <span class="ms-auto small text-muted">Latest {{ activity_logs|length }} entries</span>
+        </div>
+        <div class="card-body">
+            {% if activity_logs %}
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>User</th>
+                            <th>IP</th>
+                            <th>Notes</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in activity_logs %}
+                        <tr>
+                            <td>{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ log.get_action_type_display }}</td>
+                            <td>{% if log.user %}{{ log.user.username }}{% else %}<span class="text-muted">system</span>{% endif %}</td>
+                            <td>{{ log.ip_address|default:'-' }}</td>
+                            <td>{{ log.notes|default:'-' }}</td>
+                            <td>
+                                <details>
+                                    <summary>View diff</summary>
+                                    <div class="mt-2">
+                                        {% if log.before_data %}
+                                        <div class="mb-2">
+                                            <strong>Before:</strong>
+                                            <pre style="white-space: pre-wrap;">{{ log.before_data }}</pre>
+                                        </div>
+                                        {% endif %}
+                                        {% if log.after_data %}
+                                        <div class="mb-2">
+                                            <strong>After:</strong>
+                                            <pre style="white-space: pre-wrap;">{{ log.after_data }}</pre>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </details>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <p class="text-muted mb-0">No audit entries for this candidate yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
     <!-- Status Change Section -->
     <div class="info-card">
         <div class="card-header">

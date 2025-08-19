@@ -1,5 +1,8 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
+from django.apps import apps
+from django.core.serializers.json import DjangoJSONEncoder
+from django.utils import timezone
 
 
 class Profile(models.Model):
@@ -234,3 +237,76 @@ class Notification(models.Model):
         from django.utils import timezone
         cutoff_date = timezone.now() - timedelta(days=days)
         return cls.objects.filter(user=user, created_at__lt=cutoff_date).delete()
+
+
+class ActivityLog(models.Model):
+    """Generic activity and audit log for all user/system actions."""
+    ACTION_CREATE = 'CREATE'
+    ACTION_UPDATE = 'UPDATE'
+    ACTION_DELETE = 'DELETE'
+    ACTION_LOGIN = 'LOGIN'
+    ACTION_LOGOUT = 'LOGOUT'
+    ACTION_FAILED_LOGIN = 'FAILED_LOGIN'
+    ACTION_SYSTEM = 'SYSTEM'
+
+    ACTION_CHOICES = [
+        (ACTION_CREATE, 'Create'),
+        (ACTION_UPDATE, 'Update'),
+        (ACTION_DELETE, 'Delete'),
+        (ACTION_LOGIN, 'Login'),
+        (ACTION_LOGOUT, 'Logout'),
+        (ACTION_FAILED_LOGIN, 'Failed Login'),
+        (ACTION_SYSTEM, 'System'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    action_type = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    # Model label in app_label.ModelName form, e.g. "core.Candidate"
+    model_name = models.CharField(max_length=100, db_index=True)
+    object_id = models.CharField(max_length=64, blank=True, null=True)
+    before_data = models.JSONField(encoder=DjangoJSONEncoder, blank=True, null=True)
+    after_data = models.JSONField(encoder=DjangoJSONEncoder, blank=True, null=True)
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    session_key = models.CharField(max_length=40, blank=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now, db_index=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['action_type']),
+            models.Index(fields=['timestamp']),
+        ]
+
+    def __str__(self):  # pragma: no cover
+        return f"{self.timestamp:%Y-%m-%d %H:%M:%S} {self.action_type} {self.model_name}#{self.object_id}"
+
+    @staticmethod
+    def model_from_label(label: str):
+        try:
+            return apps.get_model(label)
+        except Exception:
+            return None
+
+    def rollback(self):
+        """Rollback the target object to the 'before_data' snapshot.
+        Returns the saved instance or None if not possible.
+        """
+        Model = self.model_from_label(self.model_name)
+        if not Model or not self.object_id or not self.before_data:
+            return None
+        try:
+            with transaction.atomic():
+                instance = Model.objects.get(pk=self.object_id)
+                for field, value in self.before_data.items():
+                    # Only assign concrete editable fields
+                    try:
+                        f = Model._meta.get_field(field)
+                        if getattr(f, 'editable', True):
+                            setattr(instance, field, value)
+                    except Exception:
+                        continue
+                instance.save()
+                return instance
+        except Model.DoesNotExist:
+            return None

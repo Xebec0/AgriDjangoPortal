@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AgricultureProgram, Profile, Registration, University, Candidate
+from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog
 
 
 @admin.register(Profile)
@@ -36,6 +36,28 @@ class UniversityAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'country')
     list_filter = ('country',)
     search_fields = ('name', 'code', 'country')
+
+@admin.register(ActivityLog)
+class ActivityLogAdmin(admin.ModelAdmin):
+    list_display = ('timestamp', 'user', 'action_type', 'model_name', 'object_id', 'ip_address')
+    list_filter = ('action_type', 'model_name', 'timestamp', 'user')
+    search_fields = ('model_name', 'object_id', 'user__username', 'ip_address',)
+    readonly_fields = ('timestamp', 'before_data', 'after_data', 'user', 'action_type', 'model_name', 'object_id', 'ip_address', 'session_key')
+    actions = ['rollback_selected']
+
+    def rollback_selected(self, request, queryset):
+        success = 0
+        failed = 0
+        for log in queryset:
+            if log.action_type in ('UPDATE', 'CREATE') and log.before_data:
+                if log.rollback():
+                    success += 1
+                else:
+                    failed += 1
+            else:
+                failed += 1
+        self.message_user(request, f"Rollback completed: {success} succeeded, {failed} failed.")
+    rollback_selected.short_description = "Rollback selected entries to before-state (where possible)"
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):

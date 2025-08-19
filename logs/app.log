@@ -1,0 +1,200 @@
+[2025-08-19 22:52:47,485] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 22:53:18,278] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 22:53:18,281] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:53:33,894] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-08-19 22:53:34,339] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 22:54:18,277] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-19 22:54:18,280] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:55:18,282] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:55:18,286] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:55:53,362] ERROR core.signals Failed to write ActivityLog for migrations.Migration
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: core_activitylog
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 82, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 1161, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 1202, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\sql\compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: core_activitylog
+[2025-08-19 22:56:18,270] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 22:56:18,275] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-19 22:56:32,377] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-08-19 22:56:32,858] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 22:57:18,289] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-08-19 22:57:18,294] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 22:58:18,280] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:58:18,283] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 22:59:18,271] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:59:18,274] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 22:59:58,231] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=24
+[2025-08-19 23:00:02,139] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=85
+[2025-08-19 23:00:18,273] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 23:01:18,276] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:02:18,268] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:02:29,799] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-08-19 23:02:30,277] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:03:03,404] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=25
+[2025-08-19 23:03:04,630] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=15
+[2025-08-19 23:03:18,283] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 23:03:33,566] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=10
+[2025-08-19 23:03:35,475] ERROR django.request Internal Server Error: /candidates/5/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py", line 879, in view_candidate
+    ).order_by('-created_at')[:50]
+      ~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\db\models\query.py", line 1659, in order_by
+    obj.query.add_ordering(*field_names)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\db\models\sql\query.py", line 2222, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\db\models\sql\query.py", line 1725, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'created_at' into field. Choices are: action_type, after_data, before_data, id, ip_address, model_name, object_id, session_key, timestamp, user, user_id
+[2025-08-19 23:03:35,478] INFO core.middleware request GET /candidates/5/ 500 user=admin ip=127.0.0.1 duration_ms=87
+[2025-08-19 23:04:18,279] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:04:36,479] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-08-19 23:04:36,952] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:05:07,771] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-19 23:05:08,894] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=23
+[2025-08-19 23:05:09,580] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-19 23:05:10,469] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=14
+[2025-08-19 23:05:11,687] INFO core.middleware request GET /candidates/3/ 200 user=admin ip=127.0.0.1 duration_ms=16
+[2025-08-19 23:05:18,272] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:05:27,202] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-08-19 23:05:29,436] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=63
+[2025-08-19 23:05:29,459] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-08-19 23:05:37,768] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=9
+[2025-08-19 23:05:44,662] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-08-19 23:05:45,796] INFO core.middleware request GET /candidates/5/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-08-19 23:06:18,271] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:06:46,269] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:07:18,283] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:07:43,485] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=37
+[2025-08-19 23:07:43,489] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:07:44,386] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:07:52,313] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:07:52,315] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=40
+[2025-08-19 23:07:54,392] INFO core.middleware request POST /api/ajax-login/ 200 user=kamotegang ip=127.0.0.1 duration_ms=517
+[2025-08-19 23:07:54,917] INFO core.middleware request GET / 200 user=kamotegang ip=127.0.0.1 duration_ms=2
+[2025-08-19 23:07:57,026] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:08:04,882] INFO core.middleware request GET /admin/ 302 user=kamotegang ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:08:04,916] INFO core.middleware request GET /admin/login/ 200 user=kamotegang ip=127.0.0.1 duration_ms=32
+[2025-08-19 23:08:27,088] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=32
+[2025-08-19 23:08:27,092] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:08:28,041] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:08:32,195] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=513
+[2025-08-19 23:08:32,721] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-19 23:08:33,804] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-08-19 23:08:35,443] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-08-19 23:08:35,459] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:08:52,278] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:09:53,275] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
