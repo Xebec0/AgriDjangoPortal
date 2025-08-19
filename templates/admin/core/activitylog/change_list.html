@@ -3,11 +3,21 @@
 {% block content %}
   <div class="module" style="margin-bottom:16px;">
     <div class="form-row">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap: wrap;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap: wrap;">
         <h2 style="margin: 8px 0;">Latest Backup</h2>
         <form action="{{ run_backup_url }}" method="post" style="margin:0;">
           {% csrf_token %}
-          <button type="submit" class="button">Run backup now</button>
+          <button type="submit" class="button" style="
+              font-size: 18px;
+              line-height: 1.2;
+              padding: 10px 18px;
+              border-radius: 6px;
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+          ">
+            ▶ Run backup now
+          </button>
         </form>
       </div>
 
