@@ -6,6 +6,7 @@ from pathlib import Path
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from core.models import ActivityLog
 
 
 class Command(BaseCommand):
@@ -22,12 +23,26 @@ class Command(BaseCommand):
 
         db_cfg = settings.DATABASES['default']
         engine = db_cfg.get('ENGINE', '')
-
         timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+        dest = None
+        removed = 0
+
         if 'sqlite' in engine:
             db_path = Path(db_cfg.get('NAME'))
             if not db_path.exists():
                 self.stderr.write(self.style.ERROR(f'SQLite database file not found: {db_path}'))
+                # Log failure
+                try:
+                    ActivityLog.objects.create(
+                        user=None,
+                        action_type=ActivityLog.ACTION_SYSTEM,
+                        model_name='core.Database',
+                        object_id='backup',
+                        before_data=None,
+                        after_data={'status': 'error', 'engine': engine, 'reason': 'sqlite file not found', 'path': str(db_path)},
+                    )
+                except Exception:
+                    pass
                 return 1
             dest = output_dir / f'db-sqlite-{timestamp}.sqlite3'
             shutil.copy2(db_path, dest)
@@ -56,12 +71,45 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f'Backup created: {dest}'))
             except FileNotFoundError:
                 self.stderr.write(self.style.ERROR('pg_dump not found on PATH. Install PostgreSQL client tools.'))
+                try:
+                    ActivityLog.objects.create(
+                        user=None,
+                        action_type=ActivityLog.ACTION_SYSTEM,
+                        model_name='core.Database',
+                        object_id='backup',
+                        before_data=None,
+                        after_data={'status': 'error', 'engine': engine, 'reason': 'pg_dump not found'},
+                    )
+                except Exception:
+                    pass
                 return 1
             except subprocess.CalledProcessError as e:
                 self.stderr.write(self.style.ERROR(f'pg_dump failed: {e}'))
+                try:
+                    ActivityLog.objects.create(
+                        user=None,
+                        action_type=ActivityLog.ACTION_SYSTEM,
+                        model_name='core.Database',
+                        object_id='backup',
+                        before_data=None,
+                        after_data={'status': 'error', 'engine': engine, 'reason': f'pg_dump failed: {e}'},
+                    )
+                except Exception:
+                    pass
                 return e.returncode
         else:
             self.stderr.write(self.style.ERROR(f'Unsupported database engine: {engine}'))
+            try:
+                ActivityLog.objects.create(
+                    user=None,
+                    action_type=ActivityLog.ACTION_SYSTEM,
+                    model_name='core.Database',
+                    object_id='backup',
+                    before_data=None,
+                    after_data={'status': 'error', 'engine': engine, 'reason': 'unsupported engine'},
+                )
+            except Exception:
+                pass
             return 1
 
         # Rotation: delete files older than keep_days
@@ -76,4 +124,22 @@ class Command(BaseCommand):
             except Exception:
                 continue
         self.stdout.write(self.style.NOTICE(f'Rotation complete. Removed {removed} old backups.'))
+
+        # Log success to ActivityLog
+        try:
+            ActivityLog.objects.create(
+                user=None,
+                action_type=ActivityLog.ACTION_SYSTEM,
+                model_name='core.Database',
+                object_id='backup',
+                before_data=None,
+                after_data={
+                    'status': 'success',
+                    'engine': engine,
+                    'destination': str(dest) if dest else None,
+                    'rotation_removed': removed,
+                },
+            )
+        except Exception:
+            pass
         return 0

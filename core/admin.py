@@ -1,4 +1,10 @@
 from django.contrib import admin
+from django.contrib import messages
+from django.urls import path, reverse
+from django.shortcuts import redirect
+from django.core.management import call_command
+from django.utils import timezone
+from datetime import timedelta
 from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog
 
 
@@ -58,6 +64,41 @@ class ActivityLogAdmin(admin.ModelAdmin):
                 failed += 1
         self.message_user(request, f"Rollback completed: {success} succeeded, {failed} failed.")
     rollback_selected.short_description = "Rollback selected entries to before-state (where possible)"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('run-backup/', self.admin_site.admin_view(self.run_backup), name='core_activitylog_run_backup'),
+        ]
+        return custom_urls + urls
+
+    def run_backup(self, request):
+        if request.method != 'POST':
+            return redirect(reverse('admin:core_activitylog_changelist'))
+        try:
+            call_command('backup_db')
+            messages.success(request, 'Backup started. Check the latest backup panel for results.')
+        except Exception as e:
+            messages.error(request, f'Backup failed to start: {e}')
+        return redirect(reverse('admin:core_activitylog_changelist'))
+
+    def changelist_view(self, request, extra_context=None):
+        # Provide latest backup info to template
+        latest_backup = ActivityLog.objects.filter(model_name='core.Database', object_id='backup').order_by('-timestamp').first()
+        # Compute stale status: older than 24 hours or last status error/missing
+        backup_ok = False
+        backup_stale = True
+        if latest_backup:
+            status = (latest_backup.after_data or {}).get('status')
+            backup_ok = status == 'success'
+            backup_stale = not backup_ok or (timezone.now() - latest_backup.timestamp) > timedelta(hours=24)
+
+        extra_context = extra_context or {}
+        extra_context['latest_backup'] = latest_backup
+        extra_context['backup_stale'] = backup_stale
+        # custom admin urls are namespaced under the admin site
+        extra_context['run_backup_url'] = reverse('admin:core_activitylog_run_backup')
+        return super().changelist_view(request, extra_context=extra_context)
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):

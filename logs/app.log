@@ -390,3 +390,81 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'auth_required' not found. 'a
 [2025-08-19 23:18:31,699] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
 [2025-08-19 23:19:02,281] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
 [2025-08-19 23:19:02,284] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:20:03,277] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:20:03,279] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:21:00,653] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:21:02,781] INFO core.middleware request GET /help/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:21:04,275] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:21:04,278] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:21:05,589] INFO core.middleware request GET /profile/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:21:05,593] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:21:05,609] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:21:18,111] INFO core.middleware request GET /help/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:21:19,702] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:21:23,264] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:21:26,567] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:22:05,276] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:22:05,278] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:23:06,269] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:23:06,272] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:24:07,272] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:24:07,274] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:24:17,040] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:24:22,182] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=517
+[2025-08-19 23:24:22,716] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-08-19 23:24:24,064] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=18
+[2025-08-19 23:24:28,248] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=26
+[2025-08-19 23:24:28,267] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-19 23:25:08,281] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:26:09,272] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:26:10,277] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-08-19 23:26:10,737] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:26:59,489] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=36
+[2025-08-19 23:27:02,408] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=26
+[2025-08-19 23:27:02,423] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:27:10,269] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:27:17,887] INFO core.middleware request GET /admin/core/activitylog/add/ 200 user=admin ip=127.0.0.1 duration_ms=46
+[2025-08-19 23:27:17,902] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-19 23:27:24,547] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=16
+[2025-08-19 23:28:11,274] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:29:12,280] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:29:39,533] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-08-19 23:29:40,015] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:30:13,284] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-19 23:30:57,209] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=36
+[2025-08-19 23:30:59,527] ERROR django.request Internal Server Error: /admin/core/activitylog/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\admin\options.py", line 688, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py", line 99, in changelist_view
+    extra_context['run_backup_url'] = reverse('core_activitylog_run_backup')
+                                      ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'core_activitylog_run_backup' not found. 'core_activitylog_run_backup' is not a valid view function or pattern name.
+[2025-08-19 23:30:59,530] INFO core.middleware request GET /admin/core/activitylog/ 500 user=admin ip=127.0.0.1 duration_ms=55
+[2025-08-19 23:31:14,278] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:31:27,936] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-08-19 23:31:28,425] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:31:57,956] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=36
+[2025-08-19 23:32:00,289] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-08-19 23:32:01,592] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=27
+[2025-08-19 23:32:01,612] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-08-19 23:32:10,210] INFO core.middleware request POST /admin/core/activitylog/run-backup/ 302 user=admin ip=127.0.0.1 duration_ms=30
+[2025-08-19 23:32:10,230] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=17
+[2025-08-19 23:32:10,245] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:32:15,282] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
