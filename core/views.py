@@ -20,7 +20,7 @@ import xlsxwriter
 from io import BytesIO
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 import uuid
 from django.template.loader import render_to_string
@@ -493,7 +493,7 @@ def export_candidates_csv(request, candidates=None):
     writer.writerow([
         'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
         'Gender', 'Nationality', 'University', 'Specialization', 'Status',
-        'Date Added'
+        'Program', 'Program Location', 'Date Added'
     ])
     
     for candidate in candidates:
@@ -508,6 +508,8 @@ def export_candidates_csv(request, candidates=None):
             candidate.university.name,
             candidate.specialization,
             candidate.status,
+            (candidate.program.title if candidate.program else ''),
+            (candidate.program.location if candidate.program else ''),
             candidate.created_at.strftime('%Y-%m-%d')
         ])
     
@@ -541,7 +543,7 @@ def export_candidates_excel(request, candidates=None):
         'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
         'Gender', 'Nationality', 'Country of Birth', 'Religion', 'Father Name', 
         'Mother Name', 'University', 'Specialization', 'Secondary Specialization',
-        'Smokes', 'Status', 'Date Added'
+        'Smokes', 'Status', 'Program', 'Program Location', 'Date Added'
     ]
     
     for col_num, header in enumerate(headers):
@@ -569,6 +571,9 @@ def export_candidates_excel(request, candidates=None):
         worksheet.write(row, col, candidate.secondary_specialization or ''); col += 1
         worksheet.write(row, col, candidate.smokes); col += 1
         worksheet.write(row, col, candidate.status); col += 1
+        # Program (farm) details
+        worksheet.write(row, col, (candidate.program.title if candidate.program else '')); col += 1
+        worksheet.write(row, col, (candidate.program.location if candidate.program else '')); col += 1
         worksheet.write_datetime(row, col, candidate.created_at, date_format); col += 1
         row += 1
     
@@ -628,38 +633,55 @@ def export_candidates_pdf(request, candidates=None):
     elements.append(title)
     elements.append(Spacer(1, 12))
     
-    # Create data for table
-    data = [
-        [
-            'Passport Number', 'Name', 'Nationality', 'University', 
-            'Specialization', 'Status', 'Date Added'
-        ]
+    # Styles for table content
+    body_style = ParagraphStyle(name='BodySmall', fontSize=8, leading=10)
+    header_style = ParagraphStyle(name='HeaderSmall', fontSize=9, leading=11)
+
+    # Create data for table with wrapped cells
+    headers = [
+        'Passport Number', 'Name', 'Nationality', 'University',
+        'Specialization', 'Status', 'Program', 'Program Location', 'Date Added'
     ]
-    
-    # Add data rows
+    data = [[Paragraph(h, header_style) for h in headers]]
+
     for candidate in candidates:
+        name = Paragraph(f"{candidate.first_name} {candidate.last_name}", body_style)
+        university = Paragraph(candidate.university.name, body_style)
+        specialization = Paragraph(candidate.specialization, body_style)
+        program_title = Paragraph((candidate.program.title if candidate.program else ''), body_style)
+        program_loc = Paragraph((candidate.program.location if candidate.program else ''), body_style)
         data.append([
             candidate.passport_number,
-            f"{candidate.first_name} {candidate.last_name}",
+            name,
             candidate.nationality,
-            candidate.university.name,
-            candidate.specialization,
+            university,
+            specialization,
             candidate.status,
+            program_title,
+            program_loc,
             candidate.created_at.strftime('%Y-%m-%d')
         ])
-    
-    # Create the table
-    table = Table(data)
+
+    # Fit columns to available page width
+    page_width, _ = landscape(letter)
+    content_width = page_width - (30 + 30)
+    weights = [75, 110, 70, 140, 120, 60, 120, 120, 70]
+    scale = content_width / float(sum(weights))
+    col_widths = [w * scale for w in weights]
+
+    table = Table(data, colWidths=col_widths)
     
     # Style the table
     style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
         ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
+        ('FONTSIZE', (0, 1), (-1, -1), 8),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ])
     
@@ -976,21 +998,22 @@ def program_registrants(request, program_id):
         return redirect('index')
     
     program = get_object_or_404(AgricultureProgram, id=program_id)
-    # Only show registrations that haven't been processed into candidates
-    registrations = Registration.objects.filter(program=program, processed=False).order_by('-registration_date')
+    # New logic: applicants go directly to Candidates. Show candidates for this program.
+    candidates_qs = Candidate.objects.filter(program=program).order_by('-created_at')
     
     # Check if export is requested
     export_format = request.GET.get('export')
     if export_format:
+        # Reuse candidates export with program-filtered queryset
         if export_format == 'csv':
-            return export_registrants_csv(request, registrations, program)
+            return export_candidates_csv(request, candidates_qs)
         elif export_format == 'excel':
-            return export_registrants_excel(request, registrations, program)
+            return export_candidates_excel(request, candidates_qs)
         elif export_format == 'pdf':
-            return export_registrants_pdf(request, registrations, program)
+            return export_candidates_pdf(request, candidates_qs)
     
     # Pagination
-    paginator = Paginator(registrations, 20)  # Show 20 registrations per page
+    paginator = Paginator(candidates_qs, 20)  # Show 20 candidates per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -998,9 +1021,12 @@ def program_registrants(request, program_id):
         'program': program,
         'page_obj': page_obj,
         'status_colors': {
-            'pending': 'warning',
-            'approved': 'success',
-            'rejected': 'danger',
+            'Draft': 'secondary',
+            'New': 'info',
+            'Fixed': 'primary',
+            'Approved': 'success',
+            'Rejected': 'danger',
+            'Quit': 'warning'
         }
     })
 
@@ -1028,7 +1054,7 @@ def export_registrants_csv(request, registrations=None, program=None):
     writer = csv.writer(response)
     writer.writerow([
         'Username', 'First Name', 'Last Name', 'Email', 
-        'Registration Date', 'Status', 'Notes'
+        'Registration Date', 'Status', 'Program', 'Program Location', 'Notes'
     ])
     
     for registration in registrations:
@@ -1039,6 +1065,8 @@ def export_registrants_csv(request, registrations=None, program=None):
             registration.user.email,
             registration.registration_date.strftime('%Y-%m-%d'),
             registration.status,
+            (registration.program.title if registration.program else (program.title if program else '')),
+            (registration.program.location if registration.program else (program.location if program else '')),
             registration.notes
         ])
     
@@ -1076,7 +1104,7 @@ def export_registrants_excel(request, registrations=None, program=None):
     # Write data headers
     headers = [
         'Username', 'First Name', 'Last Name', 'Email', 
-        'Registration Date', 'Status', 'Notes'
+        'Registration Date', 'Status', 'Program', 'Program Location', 'Notes'
     ]
     
     for col_num, header in enumerate(headers):
@@ -1094,6 +1122,8 @@ def export_registrants_excel(request, registrations=None, program=None):
         worksheet.write(row, col, registration.user.email); col += 1
         worksheet.write_datetime(row, col, registration.registration_date, date_format); col += 1
         worksheet.write(row, col, registration.status); col += 1
+        worksheet.write(row, col, (registration.program.title if registration.program else (program.title if program else ''))); col += 1
+        worksheet.write(row, col, (registration.program.location if registration.program else (program.location if program else ''))); col += 1
         worksheet.write(row, col, registration.notes); col += 1
         row += 1
     
@@ -1159,35 +1189,50 @@ def export_registrants_pdf(request, registrations=None, program=None):
     elements.append(title)
     elements.append(Spacer(1, 12))
     
-    # Create data for table
-    data = [
-        [
-            'Username', 'Name', 'Email', 'Registration Date', 'Status'
-        ]
+    # Styles for table content
+    body_style = ParagraphStyle(name='BodySmall', fontSize=8, leading=10)
+    header_style = ParagraphStyle(name='HeaderSmall', fontSize=9, leading=11)
+
+    headers = [
+        'Username', 'Name', 'Email', 'Registration Date', 'Status', 'Program', 'Program Location'
     ]
-    
-    # Add data rows
+    data = [[Paragraph(h, header_style) for h in headers]]
+
     for registration in registrations:
+        name = Paragraph(f"{registration.user.first_name} {registration.user.last_name}", body_style)
+        email = Paragraph(registration.user.email, body_style)
+        prog_title = Paragraph((registration.program.title if registration.program else (program.title if program else '')), body_style)
+        prog_loc = Paragraph((registration.program.location if registration.program else (program.location if program else '')), body_style)
         data.append([
             registration.user.username,
-            f"{registration.user.first_name} {registration.user.last_name}",
-            registration.user.email,
+            name,
+            email,
             registration.registration_date.strftime('%Y-%m-%d'),
-            registration.status
+            registration.status,
+            prog_title,
+            prog_loc
         ])
-    
-    # Create the table
-    table = Table(data)
+
+    # Fit columns to available page width
+    page_width, _ = landscape(letter)
+    content_width = page_width - (30 + 30)
+    weights = [80, 110, 150, 80, 60, 120, 120]
+    scale = content_width / float(sum(weights))
+    col_widths = [w * scale for w in weights]
+
+    table = Table(data, colWidths=col_widths)
     
     # Style the table
     style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
         ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
+        ('FONTSIZE', (0, 1), (-1, -1), 8),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ])
     

@@ -16,11 +16,11 @@
         </nav>
     </div>
     
-    <h1 class="h3 mb-4">Registrants for {{ program.title }}</h1>
+    <h1 class="h3 mb-4">Candidates for {{ program.title }}</h1>
     
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Program Registrants</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Program Applicants (Candidates)</h6>
             <div>
                 <div class="dropdown d-inline-block me-2">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,34 +55,34 @@
                     <table class="table table-bordered table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th>Username</th>
+                                <th>Passport #</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
-                                <th>Registration Date</th>
+                                <th>University</th>
+                                <th>Specialization</th>
                                 <th>Status</th>
-                                <th>Notes</th>
+                                <th>Date Added</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for registration in page_obj %}
+                            {% for candidate in page_obj %}
                                 <tr>
-                                    <td>{{ registration.user.username }}</td>
-                                    <td>{{ registration.user.first_name }} {{ registration.user.last_name }}</td>
-                                    <td>{{ registration.user.email }}</td>
-                                    <td>{{ registration.registration_date|date:"M d, Y" }}</td>
+                                    <td>{{ candidate.passport_number }}</td>
+                                    <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                                    <td>{{ candidate.email|default:"--" }}</td>
+                                    <td>{{ candidate.university.name }}</td>
+                                    <td>{{ candidate.specialization }}</td>
                                     <td>
-                                        <span class="badge bg-{{ status_colors|get_item:registration.status }}">
-                                            {{ registration.get_status_display }}
+                                        <span class="badge bg-{{ status_colors|get_item:candidate.status }}">
+                                            {{ candidate.status }}
                                         </span>
                                     </td>
-                                    <td>{{ registration.notes|default:"--" }}</td>
+                                    <td>{{ candidate.created_at|date:"M d, Y" }}</td>
                                     <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{% url 'add_candidate' %}?username={{ registration.user.username }}&registration_id={{ registration.id }}" class="btn btn-success btn-sm" title="Add as Candidate">
-                                                <i class="fas fa-user-plus"></i> Add Candidate
-                                            </a>
-                                        </div>
+                                        <a href="{% url 'view_candidate' candidate.id %}" class="btn btn-primary btn-sm" title="View Candidate">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -157,15 +157,15 @@
                 
                 <div class="mt-3 text-center">
                     <p class="text-muted">
-                        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} registrants
+                        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} candidates
                     </p>
                 </div>
             {% else %}
                 <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i> No registrants found for this program.
+                    <i class="fas fa-info-circle me-2"></i> No candidates found for this program.
                 </div>
             {% endif %}
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
