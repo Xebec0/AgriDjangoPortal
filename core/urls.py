@@ -6,6 +6,7 @@ urlpatterns = [
     # Authentication and profile
     path('', views.index, name='index'),
     path('auth-required/', views.auth_required, name='auth_required'),
+    path('verify-email/<str:token>/', views.verify_email, name='verify_email'),
     path('register/', views.register, name='register'),
     path('admin-register/', views.admin_register, name='admin_register'),
     path('login/', views.login_view, name='login'),

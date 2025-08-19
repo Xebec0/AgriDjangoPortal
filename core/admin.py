@@ -126,8 +126,7 @@ class CandidateAdmin(admin.ModelAdmin):
             'fields': ('university', 'specialization', 'secondary_specialization')
         }),
         ('Documents', {
-            'fields': ('terms_and_conditions', 'health_statement_menora', 'health_statement_ayalon', 
-                      'medical_report', 'info_and_rights')
+            'fields': ('tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance')
         }),
         ('Status', {
             'fields': ('status', 'created_by')
