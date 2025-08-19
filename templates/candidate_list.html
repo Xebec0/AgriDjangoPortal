@@ -92,6 +92,8 @@
                                 <th>Passport #</th>
                                 <th>Name</th>
                                 <th>University</th>
+                                <th>Program</th>
+                                <th>Farm</th>
                                 <th>Country</th>
                                 <th>Specialization</th>
                                 <th>Status</th>
@@ -109,6 +111,8 @@
                                         </a>
                                     </td>
                                     <td>{{ candidate.university.name }}</td>
+                                    <td>{{ candidate.program.title|default:"--" }}</td>
+                                    <td>{{ candidate.program.location|default:"--" }}</td>
                                     <td>{{ candidate.university.country }}</td>
                                     <td>{{ candidate.specialization }}</td>
                                     <td>
