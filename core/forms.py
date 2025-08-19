@@ -155,35 +155,35 @@ class ProgramRegistrationForm(forms.ModelForm):
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
         help_text="Upload your Transcript of Records (PDF format, max 5MB)",
-        required=True
+        required=False
     )
     
     nc2_tesda = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
         help_text="Upload your NC2 from TESDA certificate (PDF format, max 5MB)",
-        required=True
+        required=False
     )
     
     diploma = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
         help_text="Upload your Diploma (PDF format, max 5MB)",
-        required=True
+        required=False
     )
     
     good_moral = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
         help_text="Upload your Good Moral Character certificate (PDF format, max 5MB)",
-        required=True
+        required=False
     )
     
     nbi_clearance = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
         help_text="Upload your NBI Clearance (PDF format, max 5MB)",
-        required=True
+        required=False
     )
     
     class Meta:

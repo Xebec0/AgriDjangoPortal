@@ -20,7 +20,6 @@ class AgricultureProgram(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     start_date = models.DateField()
-    end_date = models.DateField()
     location = models.CharField(max_length=100)
     capacity = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)

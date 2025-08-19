@@ -10,9 +10,9 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(AgricultureProgram)
 class AgricultureProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'end_date', 'location', 'capacity')
+    list_display = ('title', 'start_date', 'location', 'capacity')
     search_fields = ('title', 'description', 'location')
-    list_filter = ('start_date', 'end_date', 'location')
+    list_filter = ('start_date', 'location')
     date_hierarchy = 'start_date'
 
 @admin.register(Registration)

@@ -34,7 +34,7 @@
                                 <strong>Program:</strong> {{ program.title }}
                             </li>
                             <li class="list-group-item">
-                                <strong>Dates:</strong> {{ program.start_date|date:"M d, Y" }} - {{ program.end_date|date:"M d, Y" }}
+                                <strong>Start Date:</strong> {{ program.start_date|date:"M d, Y" }}
                             </li>
                             <li class="list-group-item">
                                 <strong>Location:</strong> {{ program.location }}
@@ -83,22 +83,22 @@
                         </div>
                     </div>
                     
-                    <!-- Required Documents Section -->
+                    <!-- Documents Section -->
                     <div class="card mb-4">
                         <div class="card-header bg-info text-white">
-                            <h5 class="mb-0">Required Documents</h5>
+                            <h5 class="mb-0">Optional Documents</h5>
                         </div>
                         <div class="card-body">
                             <p class="card-text mb-3">
-                                Please upload the following required documents to complete your registration.<br>
-                                <strong>All documents must be in PDF format and under 5MB in size.</strong><br>
+                                You may upload the following documents now or later. Uploading is optional and not required to submit your registration.<br>
+                                <strong>If provided, documents must be in PDF format and under 5MB in size.</strong><br>
                                 <span class="text-muted">Tip: Click or drag files to the input below. Only PDF files are accepted.</span>
                             </p>
                             
                             <!-- Transcript of Records (TOR) -->
                             <div class="mb-3">
                                 <label for="{{ form.tor.id_for_label }}" class="form-label">
-                                    <strong>Transcript of Records (TOR)</strong> <span class="text-danger">*</span>
+                                    <strong>Transcript of Records (TOR)</strong>
                                 </label>
                                 {{ form.tor }}
                                 {% if form.tor.errors %}
@@ -112,7 +112,7 @@
                             <!-- NC2 from TESDA -->
                             <div class="mb-3">
                                 <label for="{{ form.nc2_tesda.id_for_label }}" class="form-label">
-                                    <strong>NC2 from TESDA</strong> <span class="text-danger">*</span>
+                                    <strong>NC2 from TESDA</strong>
                                 </label>
                                 {{ form.nc2_tesda }}
                                 {% if form.nc2_tesda.errors %}
@@ -126,7 +126,7 @@
                             <!-- Diploma -->
                             <div class="mb-3">
                                 <label for="{{ form.diploma.id_for_label }}" class="form-label">
-                                    <strong>Diploma</strong> <span class="text-danger">*</span>
+                                    <strong>Diploma</strong>
                                 </label>
                                 {{ form.diploma }}
                                 {% if form.diploma.errors %}
@@ -140,7 +140,7 @@
                             <!-- Good Moral Character -->
                             <div class="mb-3">
                                 <label for="{{ form.good_moral.id_for_label }}" class="form-label">
-                                    <strong>Good Moral Character</strong> <span class="text-danger">*</span>
+                                    <strong>Good Moral Character</strong>
                                 </label>
                                 {{ form.good_moral }}
                                 {% if form.good_moral.errors %}
@@ -154,7 +154,7 @@
                             <!-- NBI Clearance -->
                             <div class="mb-3">
                                 <label for="{{ form.nbi_clearance.id_for_label }}" class="form-label">
-                                    <strong>NBI Clearance</strong> <span class="text-danger">*</span>
+                                    <strong>NBI Clearance</strong>
                                 </label>
                                 {{ form.nbi_clearance }}
                                 {% if form.nbi_clearance.errors %}
