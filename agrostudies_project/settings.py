@@ -128,8 +128,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Login URL - Use JavaScript to show modal instead of redirecting
-LOGIN_URL = 'javascript:showLoginModal()'
+# Login URL used by @login_required redirects
+# Points to a friendly prompt that opens the register/login modal
+LOGIN_URL = 'auth_required'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

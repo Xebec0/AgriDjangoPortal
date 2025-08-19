@@ -405,6 +405,16 @@
                     item.style.padding = '0.75rem 1rem';
                 });
             }
+
+            // Auto open modal if requested by context (no template logic inside JS)
+            const autoOpen = "{{ auto_open_modal|default:'' }}";
+            if (autoOpen === 'login') {
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            } else if (autoOpen === 'register') {
+                const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+                registerModal.show();
+            }
         });
     </script>
     

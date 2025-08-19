@@ -193,6 +193,19 @@ def logout_view(request):
     return redirect('index')
 
 
+def auth_required(request):
+    """Guest-friendly prompt shown when unauthenticated users hit a protected page.
+    Renders the home page with a message and auto-opens the login/register modal.
+    """
+    if request.user.is_authenticated:
+        return redirect('profile')
+
+    messages.info(request, 'Please log in or create an account to continue.')
+    # Reuse index page and signal the base template to open the login modal automatically
+    programs = AgricultureProgram.objects.all().order_by('-start_date')[:5]
+    return render(request, 'index.html', { 'programs': programs, 'auto_open_modal': 'login' })
+
+
 @login_required
 def profile(request):
     """User profile view"""

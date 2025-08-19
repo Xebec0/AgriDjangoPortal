@@ -198,3 +198,195 @@ django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespac
 [2025-08-19 23:08:35,459] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=1
 [2025-08-19 23:08:52,278] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
 [2025-08-19 23:09:53,275] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:10:32,760] INFO core.middleware request POST /admin/logout/ 302 user= ip=127.0.0.1 duration_ms=34
+[2025-08-19 23:10:32,763] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:10:34,647] INFO core.middleware request GET /contact/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:10:36,416] INFO core.middleware request GET /help/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:10:42,710] ERROR django.request Internal Server Error: /profile/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:10:42,711] INFO core.middleware request GET /profile/ 500 user= ip=127.0.0.1 duration_ms=16
+[2025-08-19 23:10:54,293] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:10:54,294] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=15
+[2025-08-19 23:11:55,281] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:11:55,283] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=15
+[2025-08-19 23:12:56,283] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:12:56,285] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=15
+[2025-08-19 23:13:57,287] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:13:57,289] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=16
+[2025-08-19 23:14:58,290] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:14:58,292] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=15
+[2025-08-19 23:15:59,295] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^
+KeyError: 'javascript'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'javascript' is not a registered namespace
+[2025-08-19 23:15:59,297] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=14
+[2025-08-19 23:16:51,972] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-08-19 23:16:52,467] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:17:00,330] ERROR django.request Internal Server Error: /api/notifications/
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 25, in _wrapper_view
+    resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'auth_required' not found. 'auth_required' is not a valid view function or pattern name.
+[2025-08-19 23:17:00,333] INFO core.middleware request GET /api/notifications/ 500 user= ip=127.0.0.1 duration_ms=57
+[2025-08-19 23:17:09,313] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-08-19 23:17:09,766] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:17:19,339] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\urls.py changed, reloading.
+[2025-08-19 23:17:19,792] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-19 23:18:01,276] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=4
+[2025-08-19 23:18:01,293] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=14
+[2025-08-19 23:18:18,615] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:18:19,498] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-08-19 23:18:20,688] INFO core.middleware request GET /contact/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:18:21,711] INFO core.middleware request GET /help/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:18:31,678] INFO core.middleware request GET /profile/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:18:31,682] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:18:31,699] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-19 23:19:02,281] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-08-19 23:19:02,284] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=1
