@@ -165,13 +165,6 @@ class ProgramRegistrationForm(forms.ModelForm):
         required=False
     )
     
-    diploma = forms.FileField(
-        validators=[validate_file_size],
-        widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your Diploma (PDF format, max 5MB)",
-        required=False
-    )
-    
     good_moral = forms.FileField(
         validators=[validate_file_size],
         widget=forms.FileInput(attrs={'class': 'form-control'}),
@@ -188,7 +181,7 @@ class ProgramRegistrationForm(forms.ModelForm):
     
     class Meta:
         model = Registration
-        fields = ['notes', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
+        fields = ['notes', 'tor', 'nc2_tesda', 'good_moral', 'nbi_clearance']
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Any additional information you want to provide...'}),
         }
@@ -201,12 +194,6 @@ class ProgramRegistrationForm(forms.ModelForm):
     
     def clean_nc2_tesda(self):
         file = self.cleaned_data.get('nc2_tesda')
-        if file:
-            validate_file_extension(file, ['.pdf'])
-        return file
-    
-    def clean_diploma(self):
-        file = self.cleaned_data.get('diploma')
         if file:
             validate_file_extension(file, ['.pdf'])
         return file
