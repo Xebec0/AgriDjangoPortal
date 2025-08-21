@@ -89,7 +89,7 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile
         fields = ['bio', 'location', 'phone_number', 'profile_image',
                   'father_name', 'mother_name', 'date_of_birth', 'gender',
-                  'country_of_birth', 'nationality', 'religion']
+                  'country_of_birth', 'nationality', 'religion', 'has_international_license', 'license_scan']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
@@ -109,6 +109,10 @@ class ProfileUpdateForm(forms.ModelForm):
         self.fields['profile_image'].widget.attrs.update({
             'class': 'form-control',
             'accept': 'image/*'
+        })
+        self.fields['license_scan'].widget.attrs.update({
+            'class': 'form-control',
+            'accept': '.pdf,.jpg,.jpeg,.png'
         })
         
     def clean_profile_image(self):
@@ -137,6 +141,23 @@ class ProfileUpdateForm(forms.ModelForm):
                 raise ValidationError("Please enter a valid phone number")
             
         return phone_number
+
+    def clean_license_scan(self):
+        license_scan = self.cleaned_data.get('license_scan')
+        if license_scan:
+            validate_file_size(license_scan)
+            validate_file_extension(license_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return license_scan
+
+    def clean(self):
+        cleaned_data = super().clean()
+        has_license = cleaned_data.get("has_international_license")
+        license_scan = cleaned_data.get("license_scan")
+
+        if has_license and not license_scan:
+            self.add_error('license_scan', "Please upload a scan of your license to verify.")
+
+        return cleaned_data
 
 
 def validate_file_size(value):

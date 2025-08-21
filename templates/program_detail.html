@@ -41,6 +41,14 @@
                                 <strong>Capacity:</strong> {{ program.capacity }}
                             </li>
                             <li class="list-group-item">
+                                <i class="fas fa-venus-mars me-2"></i>
+                                <strong>Gender:</strong> {{ program.get_required_gender_display }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-id-card me-2"></i>
+                                <strong>License:</strong> {% if program.requires_license %}International Driver's License Required{% else %}Not Required{% endif %}
+                            </li>
+                            <li class="list-group-item">
                                 <i class="fas fa-clock me-2"></i>
                                 <strong>Created:</strong> {{ program.created_at|date:"F j, Y" }}
                             </li>

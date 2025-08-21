@@ -29,6 +29,8 @@ class Profile(models.Model):
         ('Other', 'Other'),
     ]
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+    has_international_license = models.BooleanField(default=False)
+    license_scan = models.FileField(upload_to='licenses/', blank=True, null=True)
     
     def __str__(self):
         return f"{self.user.username}'s profile"
@@ -42,6 +44,14 @@ class AgricultureProgram(models.Model):
     capacity = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    GENDER_REQUIREMENT_CHOICES = [
+        ('Any', 'Any'),
+        ('Male', 'Male Only'),
+        ('Female', 'Female Only'),
+    ]
+    required_gender = models.CharField(max_length=10, choices=GENDER_REQUIREMENT_CHOICES, default='Any')
+    requires_license = models.BooleanField(default=False, verbose_name="Requires International Driver's License")
     
     def __str__(self):
         return self.title

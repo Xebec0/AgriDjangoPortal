@@ -176,6 +176,24 @@
                     </div>
                 </div>
                 
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            {{ p_form.has_international_license }}
+                            <label for="{{ p_form.has_international_license.id_for_label }}" class="form-check-label">I have an international driver's license</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.license_scan.id_for_label }}" class="form-label">Upload License Scan</label>
+                        {{ p_form.license_scan }}
+                        {% if p_form.license_scan.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ p_form.license_scan.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
                 <div class="d-grid">
                     <button class="btn btn-primary" type="submit">Save Changes</button>
                 </div>

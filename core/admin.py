@@ -16,10 +16,18 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(AgricultureProgram)
 class AgricultureProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'location', 'capacity')
+    list_display = ('title', 'start_date', 'location', 'capacity', 'required_gender', 'requires_license')
     search_fields = ('title', 'description', 'location')
-    list_filter = ('start_date', 'location')
+    list_filter = ('start_date', 'location', 'required_gender', 'requires_license')
     date_hierarchy = 'start_date'
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'description', 'location', 'start_date', 'capacity')
+        }),
+        ('Requirements', {
+            'fields': ('required_gender', 'requires_license')
+        }),
+    )
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):

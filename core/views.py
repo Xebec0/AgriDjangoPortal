@@ -361,6 +361,15 @@ def apply_candidate(request, program_id):
         messages.error(request, 'This program has no available slots.', extra_tags='error')
         return redirect('program_detail', program_id=program.id)
 
+    # New guard: Check program requirements
+    if program.required_gender != 'Any' and request.user.profile.gender != program.required_gender:
+        messages.error(request, f"This program requires applicants to be {program.required_gender}.", extra_tags='error')
+        return redirect('program_detail', program_id=program.id)
+    
+    if program.requires_license and not request.user.profile.has_international_license:
+        messages.error(request, "This program requires an international driver's license.", extra_tags='error')
+        return redirect('program_detail', program_id=program.id)
+
     # Server-side guards
     # 1) Already applied to this program
     already_applied_this = Candidate.objects.filter(program=program).filter(
