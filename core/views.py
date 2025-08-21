@@ -209,6 +209,7 @@ def auth_required(request):
 @login_required
 def profile(request):
     """User profile view"""
+    form_with_errors = False
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -256,6 +257,8 @@ def profile(request):
             )
             
             return redirect('profile')
+        else:
+            form_with_errors = True
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
@@ -268,7 +271,8 @@ def profile(request):
         'u_form': u_form,
         'p_form': p_form,
         'registrations': registrations,
-        'candidate_apps': candidate_apps
+        'candidate_apps': candidate_apps,
+        'form_with_errors': form_with_errors
     }
     return render(request, 'profile.html', context)
 
