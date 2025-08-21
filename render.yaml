@@ -1,5 +1,4 @@
 services:
-  # Web service configuration
   - type: web
     name: agridjangoportal
     env: python
@@ -14,9 +13,9 @@ services:
         value: agridjangoportal.onrender.com
       - key: DATABASE_URL
         value: "postgresql://agridjangoportal_db_user:L6A2eF9tNXul2Urv8z0pUOTNi2ra1qle@dpg-d0inclp5pdvs739mcab0-a/agridjangoportal_db"
-    postDeployCommand: "python manage.py migrate"
+    postDeployCommand: "python manage.py migrate --noinput"
 
 databases:
   - name: agridjangoportal-db
     plan: free
-    ipAllowList: [] # Allow all IPs to connect to the database
+    ipAllowList: []
