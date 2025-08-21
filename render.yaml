@@ -2,7 +2,7 @@ services:
   - type: web
     name: agridjangoportal
     env: python
-    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
     startCommand: gunicorn agrostudies_project.wsgi:application
     envVars:
       - key: SECRET_KEY
@@ -12,7 +12,11 @@ services:
       - key: ALLOWED_HOSTS
         value: agridjangoportal.onrender.com
       - key: DATABASE_URL
-        value: "postgresql://agridjangoportal_db_user:L6A2eF9tNXul2Urv8z0pUOTNi2ra1qle@dpg-d0inclp5pdvs739mcab0-a/agridjangoportal_db"
+        fromDatabase:
+          name: agridjangoportal-db
+          property: connectionString
+
+    postDeployCommand: python manage.py migrate   # Run migrations after deploy
 
 databases:
   - name: agridjangoportal-db

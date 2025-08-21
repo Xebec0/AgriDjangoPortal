@@ -342,6 +342,11 @@ def apply_candidate(request, program_id):
     """Applicant-facing: single-step application that creates a Candidate directly and redirects to candidates list."""
     program = get_object_or_404(AgricultureProgram, id=program_id)
 
+    # New guard: Check program capacity
+    if program.capacity <= 0:
+        messages.error(request, 'This program has no available slots.')
+        return redirect('program_detail', program_id=program.id)
+
     # Server-side guards
     # 1) Already applied to this program
     already_applied_this = Candidate.objects.filter(program=program).filter(
@@ -373,10 +378,24 @@ def apply_candidate(request, program_id):
             candidate = form.save(commit=False)
             candidate.created_by = request.user
             candidate.program = program
-            candidate.status = Candidate.NEW
+            candidate.status = Candidate.APPROVED
+            
+            # Decrease program capacity
+            program.capacity -= 1
+            program.save()
+            
             candidate.save()
 
-            messages.success(request, f'Application submitted for {program.title}. We have received your details.')
+            messages.success(request, f'Congratulations! Your application for {program.title} has been approved.')
+            
+            # Create a notification for the user
+            Notification.add_notification(
+                user=request.user,
+                message=f"Congratulations! Your application for {program.title} has been approved. You're now ready to proceed with the next steps.",
+                notification_type=Notification.SUCCESS,
+                link=f"/candidates/{candidate.id}/"
+            )
+            
             return redirect('profile')
         else:
             for field, errors in form.errors.items():
@@ -917,87 +936,6 @@ def delete_candidate(request, candidate_id):
     
     return render(request, 'candidate_confirm_delete.html', {'candidate': candidate})
 
-
-@login_required
-def change_candidate_status(request, candidate_id, status):
-    """Change candidate status"""
-    # Check if user has staff privilege
-    if not request.user.is_staff:
-        messages.error(request, 'You do not have permission to access this page.')
-        return redirect('index')
-    
-    candidate = get_object_or_404(Candidate, id=candidate_id)
-    
-    # Validate status
-    valid_statuses = ['Draft', 'New', 'Fixed', 'Approved', 'Rejected', 'Quit']
-    if status not in valid_statuses:
-        messages.error(request, 'Invalid status value.')
-        return redirect('view_candidate', candidate_id=candidate_id)
-    
-    # Store the old status for notification message and capacity management
-    old_status = candidate.status
-    
-    # Handle program capacity changes
-    if candidate.program:
-        program = candidate.program
-        
-        # Case 1: Candidate was approved and is now being changed to something else
-        # Increase capacity by 1
-        if old_status == 'Approved' and status != 'Approved':
-            program.capacity += 1
-            program.save()
-            messages.info(request, f'Program capacity for {program.title} has been increased to {program.capacity}.')
-        
-        # Case 2: Candidate was not approved and is now being approved
-        # Decrease capacity by 1
-        elif old_status != 'Approved' and status == 'Approved':
-            if program.capacity > 0:  # Make sure we don't go below zero
-                program.capacity -= 1
-                program.save()
-                messages.info(request, f'Program capacity for {program.title} has been decreased to {program.capacity}.')
-    
-    # Update the status
-    candidate.status = status
-    candidate.save()
-    
-    # Try to find the user associated with this candidate by email
-    if candidate.email:
-        try:
-            user = User.objects.get(email=candidate.email)
-            
-            # Determine notification type and message based on status
-            if status == 'Approved':
-                notification_type = Notification.SUCCESS
-                message = f"Congratulations! Your application has been approved. You're now ready to proceed with the next steps."
-            elif status == 'Rejected':
-                notification_type = Notification.ERROR
-                message = f"We regret to inform you that your application has been declined. Please contact the administration for more details."
-            elif status == 'Quit':
-                notification_type = Notification.ERROR
-                message = f"Your application has been marked as withdrawn. If this was a mistake, please contact the administration."
-            elif status == 'Fixed':
-                notification_type = Notification.INFO
-                message = f"Your application has been reviewed and marked as fixed. It will now proceed to the next stage of evaluation."
-            elif status == 'New':
-                notification_type = Notification.INFO
-                message = f"Your application has been received and is now under review. We'll update you on any progress."
-            else:
-                notification_type = Notification.INFO
-                message = f"Your application status has been updated to {status}. Please check your profile for more details."
-            
-            # Create a notification for the user
-            Notification.add_notification(
-                user=user,
-                message=message,
-                notification_type=notification_type,
-                link=f"/candidates/{candidate.id}/"
-            )
-        except User.DoesNotExist:
-            # No user found with this email, can't send notification
-            pass
-    
-    messages.success(request, f'Status for {candidate.first_name} {candidate.last_name} has been changed to {status}.')
-    return redirect('view_candidate', candidate_id=candidate_id)
 
 
 def help_page(request):

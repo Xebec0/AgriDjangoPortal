@@ -25,40 +25,9 @@
             </div>
         </div>
         
+>>>>>>>
         <!-- Application Progress Tracker -->
-        <div class="progress-container">
-            <div class="progress-bar">
-                {% if candidate.status == 'Approved' %}
-                    <div class="progress-fill" style="width: 100%;"></div>
-                {% elif candidate.status == 'Under Review' %}
-                    <div class="progress-fill" style="width: 66%;"></div>
-                {% elif candidate.status == 'Pending' %}
-                    <div class="progress-fill" style="width: 33%;"></div>
-                {% else %}
-                    <div class="progress-fill" style="width: 0%;"></div>
-                {% endif %}
-            </div>
-            <div class="progress-steps">
-                <div class="progress-step">
-                    <div class="step-dot {% if candidate.status == 'Pending' or candidate.status == 'Under Review' or candidate.status == 'Approved' %}active{% endif %}">
-                        {% if candidate.status == 'Under Review' or candidate.status == 'Approved' %}<i class="fas fa-check"></i>{% endif %}
-                    </div>
-                    <div class="step-label">Application Submitted</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-dot {% if candidate.status == 'Under Review' or candidate.status == 'Approved' %}active{% endif %}">
-                        {% if candidate.status == 'Approved' %}<i class="fas fa-check"></i>{% endif %}
-                    </div>
-                    <div class="step-label">Under Review</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-dot {% if candidate.status == 'Approved' %}active{% endif %}">
-                        {% if candidate.status == 'Approved' %}<i class="fas fa-check"></i>{% endif %}
-                    </div>
-                    <div class="step-label">Application Approved</div>
-                </div>
-            </div>
-        </div>
+        
 
     <div class="row">
         <!-- Personal Information -->
@@ -631,49 +600,9 @@
         </div>
     </div>
 
+>>>>>>>
     <!-- Status Change Section -->
-    <div class="info-card">
-        <div class="card-header">
-            <i class="fas fa-sync-alt"></i>
-            <span>Change Status</span>
-        </div>
-        <div class="card-body">
-            <div class="field-group">
-                <div class="field-item">
-                    <div class="field-label">
-                        <i class="fas fa-tag"></i> Current Status
-                    </div>
-                    <div class="field-value">
-                        <span class="status-badge {{ candidate.status|lower }}">{{ candidate.status }}</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-4">
-                <p class="mb-2"><i class="fas fa-exchange-alt"></i> Change to:</p>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="{% url 'change_candidate_status' candidate.id 'Draft' %}" class="upload-button {% if candidate.status == 'Draft' %}disabled{% endif %}">
-                        <i class="fas fa-file"></i> Draft
-                    </a>
-                    <a href="{% url 'change_candidate_status' candidate.id 'New' %}" class="upload-button {% if candidate.status == 'New' %}disabled{% endif %}" style="background-color: #17a2b8;">
-                        <i class="fas fa-star"></i> New
-                    </a>
-                    <a href="{% url 'change_candidate_status' candidate.id 'Fixed' %}" class="upload-button {% if candidate.status == 'Fixed' %}disabled{% endif %}" style="background-color: #007bff;">
-                        <i class="fas fa-check-circle"></i> Fixed
-                    </a>
-                    <a href="{% url 'change_candidate_status' candidate.id 'Approved' %}" class="upload-button {% if candidate.status == 'Approved' %}disabled{% endif %}" style="background-color: #28a745;">
-                        <i class="fas fa-thumbs-up"></i> Approved
-                    </a>
-                    <a href="{% url 'change_candidate_status' candidate.id 'Rejected' %}" class="upload-button {% if candidate.status == 'Rejected' %}disabled{% endif %}" style="background-color: #dc3545;">
-                        <i class="fas fa-thumbs-down"></i> Rejected
-                    </a>
-                    <a href="{% url 'change_candidate_status' candidate.id 'Quit' %}" class="upload-button {% if candidate.status == 'Quit' %}disabled{% endif %}" style="background-color: #ffc107; color: #212529;">
-                        <i class="fas fa-sign-out-alt"></i> Quit
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     
     <!-- Created Info -->
     <div class="card mb-4 shadow">
