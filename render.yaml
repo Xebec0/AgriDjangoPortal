@@ -13,12 +13,12 @@ services:
         value: agridjangoportal.onrender.com
       - key: DATABASE_URL
         fromDatabase:
-          name: agridjangoportal-db
+          name: "agri-db"   # quoted for safety
           property: connectionString
 
     postDeployCommand: python manage.py migrate   # Run migrations after deploy
 
 databases:
-  - name: agridjangoportal-db
+  - name: "agri-db"     # quoted for safety
     plan: free
     ipAllowList: []

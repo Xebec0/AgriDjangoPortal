@@ -14,7 +14,7 @@ from .models import ActivityLog
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
     ProgramRegistrationForm, AdminRegistrationForm,
-    CandidateForm, CandidateSearchForm
+    CandidateForm, CandidateSearchForm, ProgramSearchForm
 )
 import csv
 import xlsxwriter
@@ -276,7 +276,20 @@ def profile(request):
 def program_list(request):
     """List all available programs"""
     programs = AgricultureProgram.objects.all().order_by('-start_date')
-    
+    form = ProgramSearchForm(request.GET)
+
+    if form.is_valid():
+        query = form.cleaned_data.get('query')
+        location = form.cleaned_data.get('location')
+
+        if query:
+            programs = programs.filter(
+                Q(title__icontains=query) | Q(description__icontains=query)
+            )
+        
+        if location:
+            programs = programs.filter(location__icontains=location)
+
     # Pagination
     paginator = Paginator(programs, 10)  # Show 10 programs per page
     page_number = request.GET.get('page')
@@ -298,6 +311,7 @@ def program_list(request):
         'page_obj': page_obj,
         'applied_program_ids': applied_program_ids,
         'has_applied_any': has_applied_any,
+        'form': form,
     })
 
 
@@ -344,7 +358,7 @@ def apply_candidate(request, program_id):
 
     # New guard: Check program capacity
     if program.capacity <= 0:
-        messages.error(request, 'This program has no available slots.')
+        messages.error(request, 'This program has no available slots.', extra_tags='error')
         return redirect('program_detail', program_id=program.id)
 
     # Server-side guards

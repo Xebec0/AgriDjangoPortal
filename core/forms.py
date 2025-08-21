@@ -446,3 +446,16 @@ class CandidateSearchForm(forms.Form):
             ('Agricultural Engineering', 'Agricultural Engineering'),
             # Add more specializations as needed
         ]
+
+class ProgramSearchForm(forms.Form):
+    """Form for searching programs."""
+    query = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search by keyword...'}),
+        label=""
+    )
+    location = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Filter by location...'}),
+        label=""
+    )

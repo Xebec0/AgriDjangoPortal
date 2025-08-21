@@ -98,6 +98,12 @@ footer a:hover {
     color: #155724;
 }
 
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
 /* Program list styling */
 .program-list-item {
     border-left: 3px solid #28a745;
