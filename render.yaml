@@ -14,8 +14,8 @@ services:
         value: agridjangoportal.onrender.com
       - key: DATABASE_URL
         value: "postgresql://agridjangoportal_db_user:L6A2eF9tNXul2Urv8z0pUOTNi2ra1qle@dpg-d0inclp5pdvs739mcab0-a/agridjangoportal_db"
+    postDeployCommand: "python manage.py migrate"
 
-  # PostgreSQL database
 databases:
   - name: agridjangoportal-db
     plan: free
