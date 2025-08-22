@@ -176,6 +176,7 @@
                     </div>
                 </div>
                 
+                {% if not user.is_staff %}
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-check">
@@ -193,6 +194,7 @@
                         {% endif %}
                     </div>
                 </div>
+                {% endif %}
 
                 <div class="d-grid">
                     <button class="btn btn-primary" type="submit">Save Changes</button>
