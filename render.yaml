@@ -26,6 +26,23 @@ services:
       python manage.py migrate   # Run migrations after deploy
       python manage.py createsu  # Run custom superuser creation script
 
+  # Cron job for automatic daily backups at 5:00 PM UTC
+  - type: cron
+    name: agridjangoportal-backup
+    env: python
+    schedule: "0 17 * * *"  # Daily at 5:00 PM UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python manage.py scheduled_backup
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: "agri-db"
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+
 databases:
   - name: "agri-db"     # quoted for safety
     plan: free

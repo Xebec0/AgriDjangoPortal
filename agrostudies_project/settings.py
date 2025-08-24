@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',  # Our custom app
+    'django_crontab',  # For scheduled tasks
 ]
 
 MIDDLEWARE = [
@@ -185,3 +186,18 @@ LOGGING = {
         'level': LOG_LEVEL,
     },
 }
+
+# ----- Cron Jobs Configuration -----
+# Schedule automatic database backup at 5:00 PM (17:00) daily
+CRONJOBS = [
+    # Format: ('minute hour day month day_of_week', 'django_command')
+    # Run backup at 5:00 PM (17:00) every day
+    ('0 17 * * *', 'django.core.management.call_command', ['scheduled_backup']),
+    
+    # Alternative: Run backup every 6 hours for testing (uncomment if needed)
+    # ('0 */6 * * *', 'django.core.management.call_command', ['scheduled_backup']),
+]
+
+# Crontab command prefix (for logging)
+CRONTAB_COMMAND_PREFIX = 'DJANGO_SETTINGS_MODULE=agrostudies_project.settings'
+CRONTAB_COMMAND_SUFFIX = '2>&1'

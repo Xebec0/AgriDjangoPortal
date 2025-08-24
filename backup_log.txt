@@ -1,0 +1,9 @@
+Starting backup at 24/08/2025 14:26:20.51 
+Starting scheduled backup at 2025-08-24 14:26:23.262788
+INFO Scheduled backup started at 2025-08-24 14:26:23.262788
+Backup created: C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\backups\db-sqlite-20250824-142623.sqlite3
+Rotation complete. Removed 0 old backups.
+Scheduled backup completed successfully in 0.02 seconds
+INFO Scheduled backup completed successfully in 0.02 seconds
+Backup completed at 24/08/2025 14:26:23.42 
+---------------------------------------- 
