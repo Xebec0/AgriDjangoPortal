@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: agridjangoportal
+    env: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn agrostudies_project.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: agridjangoportal.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agri-db
+          property: connectionString
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: admin
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: admin@example.com
+      - key: DJANGO_SUPERUSER_PASSWORD
+        generateValue: true  # More secure - Render will generate a random password
+      - key: PYTHON_VERSION
+        value: "3.11"  # Specify Python version for consistency
+
+    # Fixed: Use && to chain commands properly
+    postDeployCommand: python manage.py migrate --noinput && python manage.py createsu
+
+    # Health check configuration
+    healthCheckPath: /
+    
+    # Auto-deploy from GitHub (optional)
+    autoDeploy: false  # Set to true if you want automatic deploys
+
+  # Cron job for automatic daily backups at 5:00 PM UTC
+  - type: cron
+    name: agridjangoportal-backup
+    env: python
+    schedule: "0 17 * * *"  # Daily at 5:00 PM UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python manage.py scheduled_backup
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agri-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: PYTHON_VERSION
+        value: "3.11"
+
+databases:
+  - name: agri-db
+    plan: free  # or 'starter' for production
+    ipAllowList: []  # Empty array allows connections from anywhere
+    # Optional: Set database version
+    # databaseName: agridjango
+    # user: agriuser

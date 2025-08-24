@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
 
-{% block title %}Candidates - AgroStudies{% endblock %}
+{% block title %}Candidates - Agrostudies Registration System{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -43,37 +43,25 @@
         <div class="card-body">
             <form method="get" class="mb-4">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group mb-2">
                             {{ form.country.label_tag }}
                             {{ form.country }}
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="form-group mb-2">
-                            {{ form.university.label_tag }}
-                            {{ form.university }}
-                        </div>
-                    </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group mb-2">
                             {{ form.specialization.label_tag }}
                             {{ form.specialization }}
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group mb-2">
                             {{ form.status.label_tag }}
                             {{ form.status }}
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="form-group mb-2">
-                            {{ form.passport.label_tag }}
-                            {{ form.passport }}
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-end">
+                    <div class="col-md-3 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary mb-2 me-2">
                             <i class="fas fa-search"></i> Search
                         </button>
@@ -89,13 +77,14 @@
                     <table class="table table-bordered table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th>Passport #</th>
                                 <th>Name</th>
-                                <th>University</th>
-                                <th>Program</th>
-                                <th>Farm</th>
+                                <th>Email</th>
+                                <th>Gender</th>
                                 <th>Country</th>
+                                <th>Nationality</th>
                                 <th>Specialization</th>
+                                <th>Program</th>
+                                <th>Farm Location</th>
                                 <th>Status</th>
                                 <th>Date Added</th>
                                 <th>Actions</th>
@@ -104,17 +93,18 @@
                         <tbody>
                             {% for candidate in page_obj %}
                                 <tr>
-                                    <td>{{ candidate.passport_number }}</td>
                                     <td>
                                         <a href="{% url 'view_candidate' candidate.id %}">
                                             {{ candidate.first_name }} {{ candidate.last_name }}
                                         </a>
                                     </td>
-                                    <td>{{ candidate.university.name }}</td>
+                                    <td>{{ candidate.email|default:"--" }}</td>
+                                    <td>{{ candidate.gender|default:"--" }}</td>
+                                    <td>{{ candidate.country_of_birth|default:"--" }}</td>
+                                    <td>{{ candidate.nationality|default:"--" }}</td>
+                                    <td>{{ candidate.specialization }}</td>
                                     <td>{{ candidate.program.title|default:"--" }}</td>
                                     <td>{{ candidate.program.location|default:"--" }}</td>
-                                    <td>{{ candidate.university.country }}</td>
-                                    <td>{{ candidate.specialization }}</td>
                                     <td>
                                         <span class="badge bg-{{ status_colors|get_item:candidate.status }}">
                                             {{ candidate.status }}
@@ -126,12 +116,14 @@
                                             <a href="{% url 'view_candidate' candidate.id %}" class="btn btn-info btn-sm" title="View">
                                                 <i class="fas fa-eye"></i>
                                             </a>
+                                            {% if user.is_staff %}
                                             <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-primary btn-sm" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-danger btn-sm" title="Delete">
                                                 <i class="fas fa-trash"></i>
                                             </a>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>

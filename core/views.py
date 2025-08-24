@@ -407,6 +407,46 @@ def apply_candidate(request, program_id):
             candidate.program = program
             candidate.status = Candidate.APPROVED
             
+            # Set a default university since it's required in the model but not in the form
+            # Get or create a default university for simplified applications
+            default_university, created = University.objects.get_or_create(
+                code='DEFAULT',
+                defaults={
+                    'name': 'Not Specified',
+                    'country': 'Not Specified'
+                }
+            )
+            candidate.university = default_university
+            
+            # Set default values for other required model fields that aren't in the form
+            if not candidate.passport_number:
+                candidate.passport_number = ''  # Empty string for optional passport
+            
+            # Set default passport dates if not provided (using far future dates)
+            from datetime import date, timedelta
+            if not hasattr(candidate, 'passport_issue_date') or not candidate.passport_issue_date:
+                candidate.passport_issue_date = date.today()
+            if not hasattr(candidate, 'passport_expiry_date') or not candidate.passport_expiry_date:
+                candidate.passport_expiry_date = date.today() + timedelta(days=3650)  # 10 years
+            
+            # Set other optional fields to defaults if not present
+            if not hasattr(candidate, 'year_graduated'):
+                candidate.year_graduated = None
+            if not hasattr(candidate, 'secondary_specialization'):
+                candidate.secondary_specialization = ''
+            if not hasattr(candidate, 'religion'):
+                candidate.religion = ''
+            if not hasattr(candidate, 'father_name'):
+                candidate.father_name = ''
+            if not hasattr(candidate, 'mother_name'):
+                candidate.mother_name = ''
+            if not hasattr(candidate, 'shoes_size'):
+                candidate.shoes_size = ''
+            if not hasattr(candidate, 'shirt_size'):
+                candidate.shirt_size = ''
+            if not hasattr(candidate, 'smokes') or not candidate.smokes:
+                candidate.smokes = 'Never'
+            
             # Decrease program capacity
             program.capacity -= 1
             program.save()
@@ -481,15 +521,10 @@ def candidate_list(request):
     
     # Apply filters (staff only)
     if form.is_valid() and request.user.is_staff:
-        # Filter by country (university's country)
+        # Filter by country (country of birth)
         country = form.cleaned_data.get('country')
         if country:
-            candidates = candidates.filter(university__country=country)
-        
-        # Filter by university
-        university = form.cleaned_data.get('university')
-        if university:
-            candidates = candidates.filter(university__code=university)
+            candidates = candidates.filter(country_of_birth=country)
         
         # Filter by specialization
         specialization = form.cleaned_data.get('specialization')
@@ -500,11 +535,6 @@ def candidate_list(request):
         status = form.cleaned_data.get('status')
         if status:
             candidates = candidates.filter(status=status)
-        
-        # Filter by passport number
-        passport = form.cleaned_data.get('passport')
-        if passport:
-            candidates = candidates.filter(passport_number__icontains=passport)
     
     # Check if export is requested
     export_format = request.GET.get('export')
@@ -911,37 +941,10 @@ def view_candidate(request, candidate_id):
         'Rejected': 'danger',
         'Quit': 'warning'
     }
-    
-    # Check if there's a POST request for importing a document
-    if request.method == 'POST' and 'import_document' in request.POST:
-        doc_type = request.POST.get('document_type')
-        registration_id = request.POST.get('registration_id')
-        
-        from core.utils import import_document_to_candidate
-        success = import_document_to_candidate(candidate, doc_type, registration_id)
-        
-        if success:
-            messages.success(request, f'Successfully imported {doc_type.replace("_", " ").title()} document.')
-        else:
-            messages.error(request, f'Failed to import document. Please try again.')
-        
-        return redirect('view_candidate', candidate_id=candidate.id)
-    
-    # Scan for available documents from the user's registrations
-    from core.utils import get_available_documents
-    documents = get_available_documents(candidate)
-    
-    # Fetch recent audit logs for this candidate (admin-only page)
-    activity_logs = ActivityLog.objects.filter(
-        model_name='core.Candidate',
-        object_id=str(candidate.id)
-    ).order_by('-timestamp')[:50]
 
     return render(request, 'candidate_detail.html', {
         'candidate': candidate,
         'status_color': status_colors.get(candidate.status, 'secondary'),
-        'documents': documents,
-        'activity_logs': activity_logs,
     })
 
 

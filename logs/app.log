@@ -1055,3 +1055,108 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'core_activitylog_run_backup'
 [2025-08-24 14:47:50,164] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=4
 [2025-08-24 14:47:52,298] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
 [2025-08-24 14:48:50,228] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:49:50,227] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:50:50,232] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:51:50,237] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 14:52:50,227] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:53:50,226] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:54:50,232] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:55:51,235] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:56:52,225] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:57:53,230] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 14:58:54,235] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:59:55,229] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:00:40,635] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=193
+[2025-08-24 15:00:40,732] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=43
+[2025-08-24 15:00:47,201] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=123
+[2025-08-24 15:00:54,046] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-24 15:00:56,199] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-24 15:01:06,052] INFO core.middleware request POST /api/ajax-login/ 200 user=kamotegang ip=127.0.0.1 duration_ms=1058
+[2025-08-24 15:01:06,596] INFO core.middleware request GET / 200 user=kamotegang ip=127.0.0.1 duration_ms=11
+[2025-08-24 15:01:14,044] INFO core.middleware request GET /programs/3/ 200 user=kamotegang ip=127.0.0.1 duration_ms=14
+[2025-08-24 15:01:15,938] INFO core.middleware request GET /programs/3/apply/ 302 user=kamotegang ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:01:16,113] INFO core.middleware request GET /programs/3/ 200 user=kamotegang ip=127.0.0.1 duration_ms=8
+[2025-08-24 15:01:19,649] INFO core.middleware request GET /programs/ 200 user=kamotegang ip=127.0.0.1 duration_ms=24
+[2025-08-24 15:01:21,731] INFO core.middleware request GET /programs/4/apply/ 302 user=kamotegang ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:01:21,750] INFO core.middleware request GET /programs/4/ 200 user=kamotegang ip=127.0.0.1 duration_ms=8
+[2025-08-24 15:01:26,682] INFO core.middleware request GET /profile/ 200 user=kamotegang ip=127.0.0.1 duration_ms=264
+[2025-08-24 15:01:34,844] INFO core.middleware request POST /profile/ 200 user=kamotegang ip=127.0.0.1 duration_ms=493
+[2025-08-24 15:01:40,266] INFO core.middleware request GET /programs/ 200 user=kamotegang ip=127.0.0.1 duration_ms=9
+[2025-08-24 15:01:45,923] INFO core.middleware request GET /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=45
+[2025-08-24 15:02:46,228] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:03:46,227] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:04:42,144] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-08-24 15:04:49,802] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:05:46,290] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=5
+[2025-08-24 15:05:59,836] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-08-24 15:06:01,192] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:06:26,550] INFO core.middleware request GET /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=89
+[2025-08-24 15:06:27,497] INFO core.middleware request GET /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=11
+[2025-08-24 15:06:27,651] INFO core.middleware request GET /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=11
+[2025-08-24 15:06:27,878] INFO core.middleware request GET /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=10
+[2025-08-24 15:06:31,133] INFO core.middleware request GET /programs/ 200 user=kamotegang ip=127.0.0.1 duration_ms=21
+[2025-08-24 15:06:34,376] INFO core.middleware request GET /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=10
+[2025-08-24 15:06:42,207] INFO core.middleware request POST /programs/1/apply/ 200 user=kamotegang ip=127.0.0.1 duration_ms=49
+[2025-08-24 15:06:53,915] INFO core.middleware request POST /programs/1/apply/ 302 user=kamotegang ip=127.0.0.1 duration_ms=188
+[2025-08-24 15:06:53,936] INFO core.middleware request GET /profile/ 200 user=kamotegang ip=127.0.0.1 duration_ms=16
+[2025-08-24 15:07:53,371] INFO core.middleware request GET /programs/ 200 user=kamotegang ip=127.0.0.1 duration_ms=10
+[2025-08-24 15:07:55,620] INFO core.middleware request GET /profile/ 200 user=kamotegang ip=127.0.0.1 duration_ms=11
+[2025-08-24 15:08:02,368] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=110
+[2025-08-24 15:08:02,377] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:08:03,425] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-08-24 15:08:12,420] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=875
+[2025-08-24 15:08:12,971] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=11
+[2025-08-24 15:08:14,915] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=169
+[2025-08-24 15:08:19,481] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=489
+[2025-08-24 15:08:22,733] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-08-24 15:08:23,678] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:08:41,593] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-08-24 15:08:43,041] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:09:11,181] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-08-24 15:09:12,251] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:09:19,651] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:09:21,373] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=45
+[2025-08-24 15:10:21,403] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:10:22,451] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=23
+[2025-08-24 15:11:23,227] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:12:23,232] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:13:23,231] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:14:23,238] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:14:25,024] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-08-24 15:14:26,405] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:14:54,469] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-08-24 15:14:55,627] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:15:23,244] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:15:59,559] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=56
+[2025-08-24 15:16:02,856] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=30
+[2025-08-24 15:16:13,157] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=10
+[2025-08-24 15:17:13,200] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:18:13,233] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:19:14,645] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:20:13,226] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:21:13,232] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:22:13,230] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:22:31,368] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=53
+[2025-08-24 15:23:32,237] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 15:24:20,342] INFO django.utils.autoreload C:\Users\lenovo\Desktop\AgriDjangoPortal\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-08-24 15:24:23,956] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 15:24:32,259] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:24:44,910] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=341
+[2025-08-24 15:24:46,350] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-08-24 15:24:46,511] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-08-24 15:24:46,669] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-08-24 15:24:46,844] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:24:47,012] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:24:47,172] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-08-24 15:24:47,341] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-08-24 15:24:47,504] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-08-24 15:24:47,673] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:24:47,834] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-08-24 15:24:48,053] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-08-24 15:24:59,528] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=63
+[2025-08-24 15:24:59,555] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=4
+[2025-08-24 15:25:01,366] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-08-24 15:25:08,630] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=895
+[2025-08-24 15:25:09,169] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-08-24 15:25:11,072] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=29
+[2025-08-24 15:25:13,811] INFO core.middleware request GET /candidates/6/ 200 user=admin ip=127.0.0.1 duration_ms=7

@@ -132,59 +132,6 @@
                 </div>
             </div>
             
-            <!-- Passport Information -->
-            <div class="info-card">
-                <div class="card-header">
-                    <i class="fas fa-passport"></i>
-                    <span>Passport Information</span>
-                </div>
-                <div class="card-body">
-                    <div class="field-group">
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-id-card"></i> Passport Number
-                            </div>
-                            <div class="field-value highlight">{{ candidate.passport_number }}</div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-calendar-plus"></i> Issue Date
-                            </div>
-                            <div class="field-value">{{ candidate.passport_issue_date|date:"F d, Y" }}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="field-group">
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-calendar-times"></i> Expiry Date
-                            </div>
-                            <div class="field-value">
-                                {{ candidate.passport_expiry_date|date:"F d, Y" }}
-                            </div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-file-pdf"></i> Passport Scan
-                            </div>
-                            <div class="field-value">
-                                {% if candidate.passport_scan %}
-                                    <a href="{{ candidate.passport_scan.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View Document
-                                    </a>
-                                {% else %}
-                                    <span class="status-badge not-uploaded">Not uploaded</span>
-                                    <a href="{% url 'edit_candidate' candidate.id %}" class="upload-button">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <!-- Academic & Other Information -->

@@ -244,28 +244,23 @@ class ProgramRegistrationForm(forms.ModelForm):
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""
     
-    # Add custom validation and formatting - passport fields now optional
-    confirm_passport = forms.CharField(max_length=20, required=False)
+    # Add custom validation and formatting - passport fields hidden for now
     confirm_first_name = forms.CharField(max_length=100, required=True)
     confirm_surname = forms.CharField(max_length=100, required=True)
     
     class Meta:
         model = Candidate
         fields = [
-            # Removed 'university' from fields
-            'passport_number', 'confirm_passport', 
+            # Basic information - passport fields removed from display
             'first_name', 'confirm_first_name',
             'last_name', 'confirm_surname',
             'date_of_birth', 'country_of_birth', 'nationality',
             'gender',
             'specialization',
             'email',
-            # Removed document fields and additional info fields
+            # Removed: passport fields, university, passport dates, documents, additional info fields
         ]
         widgets = {
-            # Removed university widget
-            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number (optional)'}),
-            'confirm_passport': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm passport number (optional)'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}),
             'confirm_first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm first name'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname'}),
@@ -280,9 +275,6 @@ class CandidateForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CandidateForm, self).__init__(*args, **kwargs)
-        
-        # Make passport_number field optional
-        self.fields['passport_number'].required = False
         
         # Add country choices based on a predefined list
         self.fields['country_of_birth'].widget.choices = [('', 'Choose from list')] + [
@@ -312,18 +304,12 @@ class CandidateForm(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super().clean()
-        passport_number = cleaned_data.get("passport_number")
-        confirm_passport = cleaned_data.get("confirm_passport")
         
         first_name = cleaned_data.get("first_name")
         confirm_first_name = cleaned_data.get("confirm_first_name")
         
         last_name = cleaned_data.get("last_name")
         confirm_surname = cleaned_data.get("confirm_surname")
-        
-        # Validate matching passport numbers
-        if passport_number and confirm_passport and passport_number != confirm_passport:
-            self.add_error('confirm_passport', "Passport numbers do not match")
         
         # Validate matching first names
         if first_name and confirm_first_name and first_name != confirm_first_name:
@@ -392,10 +378,9 @@ class CandidateSearchForm(forms.Form):
     ]
     
     country = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
-    # Removed university field
+    # Removed university and passport fields
     specialization = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     status = forms.CharField(required=False, widget=forms.Select(choices=STATUSES, attrs={'class': 'form-control'}))
-    passport = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport Number'}))
     
     def __init__(self, *args, **kwargs):
         super(CandidateSearchForm, self).__init__(*args, **kwargs)

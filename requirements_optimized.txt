@@ -1,0 +1,46 @@
+# Core Django dependencies
+Django>=4.2.0,<5.0.0
+python-dotenv>=1.0.0
+
+# For handling file uploads and image processing
+Pillow>=9.5.0
+
+# For deployment
+gunicorn>=21.2.0
+whitenoise>=6.5.0
+
+# Database adapters
+psycopg2-binary>=2.9.6  # For PostgreSQL on Render
+dj-database-url>=2.1.0  # For database URL configuration
+
+# For export functionality (actively used in views)
+openpyxl>=3.1.2  # For Excel export
+reportlab>=3.6.12  # For PDF generation
+xlsxwriter>=3.1.0  # Alternative Excel library
+
+# Optional - Uncomment if needed:
+# ================================
+
+# For development only:
+# django-debug-toolbar>=4.2.0
+
+# For forms enhancement (if using crispy forms):
+# django-crispy-forms>=2.0
+# crispy-bootstrap5>=0.7
+
+# For REST API:
+# djangorestframework>=3.14.0
+
+# For security headers:
+# django-csp>=3.7
+# django-cors-headers>=4.2.0
+
+# For testing:
+# pytest>=7.3.1
+# pytest-django>=4.5.2
+
+# For import/export:
+# django-import-export>=3.2.0
+
+# For scheduled tasks (if not using Render cron):
+# django-crontab>=0.7.1
