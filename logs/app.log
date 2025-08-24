@@ -1025,3 +1025,33 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'core_activitylog_run_backup'
 [2025-08-24 14:24:10,789] INFO core.management.commands.scheduled_backup Scheduled backup completed successfully in 0.02 seconds
 [2025-08-24 14:26:23,262] INFO core.management.commands.scheduled_backup Scheduled backup started at 2025-08-24 14:26:23.262788
 [2025-08-24 14:26:23,283] INFO core.management.commands.scheduled_backup Scheduled backup completed successfully in 0.02 seconds
+[2025-08-24 14:41:56,898] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-08-24 14:42:28,491] INFO core.middleware request GET / 200 user=kamotegang ip=127.0.0.1 duration_ms=2142
+[2025-08-24 14:42:32,520] INFO core.middleware request GET /favicon.ico 404 user=kamotegang ip=127.0.0.1 duration_ms=2938
+[2025-08-24 14:42:32,663] WARNING django.request Not Found: /favicon.ico
+[2025-08-24 14:42:32,703] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:42:45,005] INFO core.middleware request GET /programs/4/ 200 user=kamotegang ip=127.0.0.1 duration_ms=132
+[2025-08-24 14:42:47,048] INFO core.middleware request GET /programs/4/apply/ 302 user=kamotegang ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:42:47,145] INFO core.middleware request GET /programs/4/ 200 user=kamotegang ip=127.0.0.1 duration_ms=5
+[2025-08-24 14:42:50,296] INFO core.middleware request GET /profile/ 200 user=kamotegang ip=127.0.0.1 duration_ms=626
+[2025-08-24 14:43:50,328] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:44:43,304] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=4
+[2025-08-24 14:44:44,008] INFO core.middleware request GET /favicon.ico 404 user= ip=127.0.0.1 duration_ms=17
+[2025-08-24 14:44:44,009] WARNING django.request Not Found: /favicon.ico
+[2025-08-24 14:44:51,238] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:44:54,146] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=7
+[2025-08-24 14:45:04,146] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=101
+[2025-08-24 14:45:27,042] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:45:51,225] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:46:51,359] INFO core.middleware request GET /api/notifications/ 200 user=kamotegang ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:47:13,540] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=146
+[2025-08-24 14:47:13,546] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=2
+[2025-08-24 14:47:14,741] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-08-24 14:47:25,255] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=1113
+[2025-08-24 14:47:25,791] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=11
+[2025-08-24 14:47:29,759] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=2433
+[2025-08-24 14:47:32,982] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=663
+[2025-08-24 14:47:33,096] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=88
+[2025-08-24 14:47:50,164] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-08-24 14:47:52,298] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-08-24 14:48:50,228] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2

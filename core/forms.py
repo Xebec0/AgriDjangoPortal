@@ -244,54 +244,46 @@ class ProgramRegistrationForm(forms.ModelForm):
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""
     
-    # Add custom validation and formatting
-    confirm_passport = forms.CharField(max_length=20, required=True)
+    # Add custom validation and formatting - passport fields now optional
+    confirm_passport = forms.CharField(max_length=20, required=False)
     confirm_first_name = forms.CharField(max_length=100, required=True)
     confirm_surname = forms.CharField(max_length=100, required=True)
     
     class Meta:
         model = Candidate
         fields = [
-            'university', 
+            # Removed 'university' from fields
             'passport_number', 'confirm_passport', 
-            'passport_issue_date', 'passport_expiry_date',
             'first_name', 'confirm_first_name',
             'last_name', 'confirm_surname',
-            'father_name', 'mother_name',
-            'date_of_birth', 'country_of_birth', 'nationality', 'religion',
-            'gender', 'shoes_size', 'shirt_size',
-            'specialization', 'secondary_specialization', 'year_graduated',
-            'email', 'smokes',
-            'passport_scan', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance'
+            'date_of_birth', 'country_of_birth', 'nationality',
+            'gender',
+            'specialization',
+            'email',
+            # Removed document fields and additional info fields
         ]
         widgets = {
-            'university': forms.Select(attrs={'class': 'form-control'}),
-            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number'}),
-            'confirm_passport': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm passport number'}),
-            'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            # Removed university widget
+            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number (optional)'}),
+            'confirm_passport': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm passport number (optional)'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}),
             'confirm_first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm first name'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname'}),
             'confirm_surname': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm surname'}),
-            'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of father'}),
-            'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of mother'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'country_of_birth': forms.Select(attrs={'class': 'form-control'}),
             'nationality': forms.Select(attrs={'class': 'form-control'}),
-            'religion': forms.Select(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'shoes_size': forms.Select(attrs={'class': 'form-control'}),
-            'shirt_size': forms.Select(attrs={'class': 'form-control'}),
             'specialization': forms.Select(attrs={'class': 'form-control'}),
-            'secondary_specialization': forms.Select(attrs={'class': 'form-control'}),
-            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year of graduation'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address'}),
-            'smokes': forms.Select(attrs={'class': 'form-control'}),
         }
     
     def __init__(self, *args, **kwargs):
         super(CandidateForm, self).__init__(*args, **kwargs)
+        
+        # Make passport_number field optional
+        self.fields['passport_number'].required = False
+        
         # Add country choices based on a predefined list
         self.fields['country_of_birth'].widget.choices = [('', 'Choose from list')] + [
             ('Philippines', 'Philippines'),
@@ -309,16 +301,6 @@ class CandidateForm(forms.ModelForm):
             # Add more nationalities as needed
         ]
         
-        # Add religion choices
-        self.fields['religion'].widget.choices = [('', 'Choose from list')] + [
-            ('Catholic', 'Catholic'),
-            ('Christian', 'Christian'),
-            ('INC', 'INC'),
-            ('Mormon', 'Mormon'),
-            ('Jehovahs Witnesses', 'Jehovahs Witnesses'),
-            ('Other', 'Other'),
-        ]
-        
         # Add specialization choices
         self.fields['specialization'].widget.choices = [('', 'Choose from list')] + [
             ('Animal science', 'Animal science'),
@@ -326,29 +308,6 @@ class CandidateForm(forms.ModelForm):
             ('Horticulture', 'Horticulture'),
             ('Agricultural Engineering', 'Agricultural Engineering'),
             # Add more specializations as needed
-        ]
-        
-        # Add secondary specialization choices
-        self.fields['secondary_specialization'].widget.choices = [('', 'Choose from list')] + [
-            ('Agronomy', 'Agronomy'),
-            ('Animal science', 'Animal science'),
-            ('Horticulture', 'Horticulture'),
-            ('Agricultural Engineering', 'Agricultural Engineering'),
-            # Add more specializations as needed
-        ]
-        
-        # Physical attributes
-        self.fields['shoes_size'].widget.choices = [('', 'Choose from list')] + [
-            (str(i), str(i)) for i in range(35, 47)
-        ]
-        
-        self.fields['shirt_size'].widget.choices = [('', 'Choose from list')] + [
-            ('XS', 'XS'),
-            ('S', 'S'),
-            ('M', 'M'),
-            ('L', 'L'),
-            ('XL', 'XL'),
-            ('XXL', 'XXL'),
         ]
     
     def clean(self):
@@ -433,7 +392,7 @@ class CandidateSearchForm(forms.Form):
     ]
     
     country = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
-    university = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+    # Removed university field
     specialization = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     status = forms.CharField(required=False, widget=forms.Select(choices=STATUSES, attrs={'class': 'form-control'}))
     passport = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport Number'}))
@@ -449,15 +408,7 @@ class CandidateSearchForm(forms.Form):
             # Add more countries as needed
         ]
         
-        # Populate university choices based on the database
-        university_choices = [('', 'All universities')]
-        try:
-            for university in University.objects.all().order_by('name'):
-                university_choices.append((university.code, university.name))
-        except:
-            # Handle case where database table may not exist yet
-            pass
-        self.fields['university'].widget.choices = university_choices
+        # Removed university choices population
         
         # Populate specialization choices
         self.fields['specialization'].widget.choices = [('', 'All specializations')] + [
