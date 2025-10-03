@@ -51,9 +51,11 @@ backups/
 attached_assets/
 backup_log.txt
 
-# Test files
-test_*.py
-create_*.py
+# Test files (but allow proper test directories)
+test_backup.py
+create_candidate.py
+create_registration.py
+create_user.py
 
 # Windows specific
 *.bat

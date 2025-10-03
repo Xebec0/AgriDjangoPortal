@@ -16,18 +16,48 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(AgricultureProgram)
 class AgricultureProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'location', 'capacity', 'required_gender', 'requires_license')
+    list_display = ('title', 'start_date', 'location', 'capacity', 'is_featured', 'required_gender', 'requires_license', 'has_image')
     search_fields = ('title', 'description', 'location')
-    list_filter = ('start_date', 'location', 'required_gender', 'requires_license')
+    list_filter = ('start_date', 'location', 'is_featured', 'required_gender', 'requires_license')
     date_hierarchy = 'start_date'
+    list_editable = ('is_featured',)
     fieldsets = (
         (None, {
             'fields': ('title', 'description', 'location', 'start_date', 'capacity')
+        }),
+        ('Display Settings', {
+            'fields': ('image', 'is_featured'),
+            'description': '⚠️ ADMIN ONLY: Upload farm image and mark as featured to display on landing page. Only administrators can modify these settings.',
+            'classes': ('collapse',)  # Make it collapsible for security
         }),
         ('Requirements', {
             'fields': ('required_gender', 'requires_license')
         }),
     )
+    
+    def has_image(self, obj):
+        return bool(obj.image)
+    has_image.boolean = True
+    has_image.short_description = 'Has Image'
+    
+    def get_readonly_fields(self, request, obj=None):
+        """Make image and is_featured read-only for non-superusers"""
+        if not request.user.is_superuser:
+            # Only superusers can edit image and featured status
+            return self.readonly_fields + ('image', 'is_featured')
+        return self.readonly_fields
+    
+    def has_change_permission(self, request, obj=None):
+        """Only staff members can access the admin"""
+        return request.user.is_staff
+    
+    def has_add_permission(self, request):
+        """Only staff members can add programs"""
+        return request.user.is_staff
+    
+    def has_delete_permission(self, request, obj=None):
+        """Only superusers can delete programs"""
+        return request.user.is_superuser
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):

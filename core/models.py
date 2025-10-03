@@ -42,6 +42,8 @@ class AgricultureProgram(models.Model):
     start_date = models.DateField()
     location = models.CharField(max_length=100)
     capacity = models.PositiveIntegerField()
+    image = models.ImageField(upload_to='program_images/', blank=True, null=True, help_text='Program/Farm image')
+    is_featured = models.BooleanField(default=False, help_text='Display on landing page as featured program')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -55,6 +57,36 @@ class AgricultureProgram(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def get_image_url(self):
+        """Return image URL or placeholder"""
+        if self.image:
+            return self.image.url
+        
+        # Check if placeholder image exists, otherwise use placehold.co
+        import os
+        from django.conf import settings
+        
+        placeholders = {
+            'Israel': 'israel-farm.jpg',
+            'Japan': 'japan-farm.jpg',
+            'Australia': 'australia-farm.jpg',
+            'New Zealand': 'newzealand-farm.jpg',
+        }
+        
+        placeholder_file = placeholders.get(self.location, 'default-farm.jpg')
+        placeholder_path = os.path.join(settings.STATIC_ROOT or 'static', 'images', 'placeholders', placeholder_file)
+        
+        # If placeholder image exists, use it; otherwise use placehold.co
+        if os.path.exists(placeholder_path):
+            return f'/static/images/placeholders/{placeholder_file}'
+        else:
+            # Use placehold.co as fallback with location name
+            location_text = self.location.replace(' ', '+')
+            return f'https://placehold.co/800x400/228B22/FFFFFF/png?text={location_text}+Farm'
+    
+    class Meta:
+        ordering = ['-is_featured', '-created_at']
 
 
 class Registration(models.Model):

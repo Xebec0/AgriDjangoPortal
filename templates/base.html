@@ -1,5 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -12,16 +13,258 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/modal-animations.css">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal-animations.css' %}">
     
     {% block extra_css %}{% endblock %}
+    
+    <style>
+    /* Modern Notification Dropdown Styles */
+    .notification-dropdown-modern {
+        width: 380px;
+        max-height: 550px;
+        border-radius: 15px;
+        border: none;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .notification-header {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        padding: 1rem 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .notification-title {
+        color: white;
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .btn-mark-all {
+        color: white;
+        text-decoration: none;
+        font-size: 0.85rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .btn-mark-all:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .notification-list {
+        max-height: 400px;
+        overflow-y: auto;
+        background: white;
+    }
+
+    .notification-loading {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: #666;
+    }
+
+    .notification-empty {
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+
+    .empty-icon {
+        font-size: 3.5rem;
+        color: #d0d0d0;
+        margin-bottom: 1rem;
+    }
+
+    .empty-title {
+        color: #666;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+        color: #999;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .notification-item-modern {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid #f0f0f0;
+        transition: all 0.3s ease;
+        animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .notification-item-modern:hover {
+        background: #f8f9fa;
+    }
+
+    .notification-item-modern.unread {
+        background: #e8f5e9;
+        border-left: 4px solid #28a745;
+    }
+
+    .notification-item-modern.unread:hover {
+        background: #d4edda;
+    }
+
+    .notification-item-content {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .notification-icon-wrapper {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1.1rem;
+    }
+
+    .notification-success {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        color: white;
+    }
+
+    .notification-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: white;
+    }
+
+    .notification-error {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+    }
+
+    .notification-info {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        color: white;
+    }
+
+    .notification-body {
+        flex: 1;
+    }
+
+    .notification-message {
+        color: #333;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .notification-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .notification-time {
+        color: #999;
+        font-size: 0.8rem;
+    }
+
+    .notification-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-notification-action {
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        background: #28a745;
+        color: white;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-block;
+    }
+
+    .btn-notification-action:hover {
+        background: #218838;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .btn-notification-action.secondary {
+        background: #6c757d;
+    }
+
+    .btn-notification-action.secondary:hover {
+        background: #5a6268;
+    }
+
+    .notification-footer {
+        background: #f8f9fa;
+        padding: 0.75rem 1.25rem;
+        text-align: center;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn-clear-all {
+        color: #dc3545;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-clear-all:hover {
+        color: #c82333;
+    }
+
+    .notification-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .notification-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb {
+        background: #28a745;
+        border-radius: 3px;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb:hover {
+        background: #218838;
+    }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'index' %}">Agrostudies</a>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'index' %}" class="me-3">
+                    <img src="{% static 'images/logo-agrostudies.png' %}" alt="AgroStudies Logo" height="32" style="border-radius: 8px;">
+                </a>
+                <a class="navbar-brand" href="{% url 'index' %}">AgroStudies</a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,24 +298,23 @@
                                     <span class="badge rounded-pill bg-danger">{{ unread_notifications_count }}</span>
                                 {% endif %}
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end notification-dropdown shadow" aria-labelledby="notificationDropdown" style="width: 350px; max-height: 500px; overflow-y: auto;">
-                                <div class="dropdown-header bg-primary text-white p-2 d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0"><i class="fas fa-bell me-2"></i>Notifications</h6>
-                                    <a href="{% url 'mark_all_read' %}" class="text-white text-decoration-none small">
+                            <div class="dropdown-menu dropdown-menu-end notification-dropdown-modern shadow-lg" aria-labelledby="notificationDropdown">
+                                <div class="notification-header">
+                                    <h6 class="notification-title"><i class="fas fa-bell me-2"></i>Notifications</h6>
+                                    <a href="{% url 'mark_all_read' %}" class="btn-mark-all">
                                         <i class="fas fa-check-double me-1"></i>Mark all as read
                                     </a>
                                 </div>
-                                <div id="notificationList">
-                                    <div class="text-center p-3">
-                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <div id="notificationList" class="notification-list">
+                                    <div class="notification-loading">
+                                        <div class="spinner-border text-success" role="status">
                                             <span class="visually-hidden">Loading...</span>
                                         </div>
-                                        <p class="mb-0 small">Loading notifications...</p>
+                                        <p class="mb-0 mt-2">Loading notifications...</p>
                                     </div>
                                 </div>
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-footer bg-light p-2 text-center">
-                                    <a href="#" id="clearAllNotifications" class="text-decoration-none small text-danger">
+                                <div class="notification-footer">
+                                    <a href="#" id="clearAllNotifications" class="btn-clear-all">
                                         <i class="fas fa-trash-alt me-1"></i>Clear all
                                     </a>
                                 </div>
@@ -116,13 +358,26 @@
     <div class="container mt-3">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show auto-dismiss-alert" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
+    
+    <script>
+        // Auto-dismiss alerts after 4 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.auto-dismiss-alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }, 4000); // 4 seconds
+            });
+        });
+    </script>
 
     <!-- Main content -->
     <main class="container my-4">
@@ -164,7 +419,7 @@
             <hr>
             <div class="text-center">
                 <p>&copy; {% now "Y" %} Agrostudies Registration System. All rights reserved.</p>
-                <p>Developed by: Meilton C. Latosa</p>
+                <p>Developed by: Greyson Latosa</p>
             </div>
         </div>
     </footer>
@@ -173,10 +428,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- AJAX Features -->
-    <script src="/static/js/ajax-features.js"></script>
+    <script src="{% static 'js/ajax-features.js' %}"></script>
     
     <!-- Modal Login/Register -->
-    <script src="/static/js/modal-login-register.js"></script>
+    <script src="{% static 'js/modal-login-register.js' %}"></script>
     
     <!-- Custom JS -->
     <script>
@@ -197,9 +452,12 @@
                             
                             if (data.notifications.length === 0) {
                                 notificationList.innerHTML = `
-                                    <div class="text-center p-4">
-                                        <i class="fas fa-bell-slash text-muted mb-2" style="font-size: 2rem;"></i>
-                                        <p class="mb-0 text-muted">No notifications</p>
+                                    <div class="notification-empty">
+                                        <div class="empty-icon">
+                                            <i class="fas fa-bell-slash"></i>
+                                        </div>
+                                        <h6 class="empty-title">No notifications</h6>
+                                        <p class="empty-text">You're all caught up!</p>
                                     </div>`;
                                 return;
                             }
@@ -207,9 +465,9 @@
                             // Add notifications to the dropdown
                             data.notifications.forEach(notification => {
                                 const notificationItem = document.createElement('div');
-                                notificationItem.className = 'notification-item p-2 border-bottom';
+                                notificationItem.className = 'notification-item-modern';
                                 if (!notification.read) {
-                                    notificationItem.classList.add('bg-light');
+                                    notificationItem.classList.add('unread');
                                 }
                                 
                                 let iconClass = 'fas fa-info-circle text-info';
@@ -235,20 +493,19 @@
                                     }
                                 }
                                 
+                                let typeClass = notification.notification_type || 'info';
                                 let notificationHtml = `
-                                    <div class="d-flex">
-                                        <div class="me-2">
-                                            <span class="notification-icon rounded-circle ${badgeClass} d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
-                                                <i class="${iconClass.split(' ')[0]} text-white" style="font-size: 0.8rem;"></i>
-                                            </span>
+                                    <div class="notification-item-content">
+                                        <div class="notification-icon-wrapper notification-${typeClass}">
+                                            <i class="${iconClass.split(' ')[0]}"></i>
                                         </div>
-                                        <div class="flex-grow-1">
-                                            <div class="mb-1">${notification.message}</div>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <small class="text-muted"><i class="far fa-clock me-1"></i>${notification.created_at}</small>
-                                                <div class="btn-group btn-group-sm">
-                                                    ${notificationLink ? `<a href="${notificationLink}" class="btn btn-sm btn-outline-primary mark-as-read" data-notification-id="${notification.id}"><i class="fas fa-eye me-1"></i>View</a>` : ''}
-                                                    <a href="/notifications/${notification.id}/mark-read/" class="btn btn-sm btn-outline-secondary"><i class="fas fa-check me-1"></i>Mark Read</a>
+                                        <div class="notification-body">
+                                            <p class="notification-message">${notification.message}</p>
+                                            <div class="notification-meta">
+                                                <span class="notification-time"><i class="far fa-clock me-1"></i>${notification.created_at}</span>
+                                                <div class="notification-actions">
+                                                    ${notificationLink ? `<a href="${notificationLink}" class="btn-notification-action mark-as-read" data-notification-id="${notification.id}"><i class="fas fa-eye me-1"></i>View</a>` : ''}
+                                                    <a href="/notifications/${notification.id}/mark-read/" class="btn-notification-action secondary"><i class="fas fa-check me-1"></i>Read</a>
                                                 </div>
                                             </div>
                                         </div>

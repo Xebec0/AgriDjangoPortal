@@ -1,0 +1,406 @@
+/* Agriculture-themed color palette and design system */
+:root {
+    /* Primary Colors */
+    --ag-green-dark: #0A5C36;    /* Rich forest green for primary actions */
+    --ag-green: #2D8C5F;         /* Modern sage green for CTAs */
+    --ag-brown: #8C6954;         /* Warm earth tone for accents */
+    --ag-beige: #F9F7F4;         /* Off-white for backgrounds */
+    
+    /* Secondary Colors */
+    --ag-wheat: #E6D5B8;         /* Soft wheat for cards */
+    --ag-sage: #89B899;          /* Muted sage for secondary elements */
+    --ag-clay: #B6857A;          /* Terracotta for borders/accents */
+    
+    /* Functional Colors */
+    --ag-success: #43A047;       /* Fresh green for success */
+    --ag-warning: #FFA000;       /* Warm amber for warnings */
+    --ag-danger: #E57373;        /* Soft red for errors */
+    --ag-info: #039BE5;          /* Clear blue for info */
+    
+    /* Typography */
+    --ag-font-primary: 'Open Sans', system-ui, -apple-system, sans-serif;
+    --ag-font-headers: 'Montserrat', var(--ag-font-primary);
+}
+
+/* Base Styles */
+body {
+    font-family: var(--ag-font-primary);
+    background-color: var(--ag-beige);
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Modern Typography Enhancements */
+.display-2 {
+    font-size: calc(2.5rem + 2.5vw);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.lead {
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* Modern Card and Button Styles */
+.btn {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.625rem 1.5rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success {
+    background: var(--ag-green);
+    border: none;
+    color: white;
+}
+
+.btn-success:hover {
+    background: var(--ag-green-dark);
+}
+
+.btn-light {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--ag-green);
+    color: var(--ag-green);
+}
+
+.btn-light:hover {
+    background: var(--ag-green);
+    color: white;
+    border-color: var(--ag-green);
+}
+
+.btn-outline-success {
+    border: 2px solid var(--ag-green);
+    color: var(--ag-green);
+}
+
+.btn-outline-success:hover {
+    background: var(--ag-green);
+    color: white;
+    border-color: var(--ag-green);
+}
+
+/* Modern Section Styling */
+.bg-opacity-50 {
+    backdrop-filter: blur(8px);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--ag-font-headers);
+    color: var(--ag-green-dark);
+}
+
+/* Navigation */
+.navbar-dark {
+    background: var(--ag-green-dark) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    padding: 1rem 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+    color: #fff;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.navbar-dark .navbar-brand {
+    color: #fff;
+    font-family: var(--ag-font-headers);
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.navbar-dark .navbar-toggler {
+    border-color: rgba(255,255,255,0.1);
+    padding: 0.5rem 0.75rem;
+}
+
+.navbar-dark .dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Cards */
+.card {
+    background-color: #fff;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background-color: var(--ag-beige);
+    color: var(--ag-green-dark);
+    border-bottom: 2px solid var(--ag-sage);
+    padding: 1.25rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    color: var(--ag-green-dark);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.card-subtitle {
+    color: var(--ag-brown);
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--ag-green);
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--ag-green-dark);
+    border: none;
+}
+
+/* Forms and Interactive Elements */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--ag-sage);
+    box-shadow: 0 0 0 0.2rem rgba(45, 140, 95, 0.15);
+}
+
+/* Badges and Labels */
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.badge.bg-success {
+    background-color: var(--ag-success) !important;
+}
+
+.badge.bg-info {
+    background-color: var(--ag-info) !important;
+}
+
+.badge.bg-warning {
+    background-color: var(--ag-warning) !important;
+    color: #fff;
+}
+
+/* Interactive Highlights */
+.text-success {
+    color: var(--ag-success) !important;
+}
+
+.text-info {
+    color: var(--ag-info) !important;
+}
+
+.text-warning {
+    color: var(--ag-warning) !important;
+}
+
+/* List Groups */
+.list-group-item {
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    border-left-color: var(--ag-sage);
+    background-color: var(--ag-beige);
+}
+
+/* Custom Components */
+
+/* Header Section Styles */
+.btn-success, .btn-outline-success {
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover, .btn-outline-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .lead {
+        font-size: 1.2rem;
+    }
+    
+    .btn-success, .btn-outline-success {
+        padding: 0.6rem 1.5rem;
+    }
+}
+
+/* Program Cards */
+.program-card {
+    border-left: 4px solid var(--ag-green);
+    transition: transform 0.3s ease;
+}
+
+.program-card:hover {
+    transform: translateY(-5px);
+}
+
+.program-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Footer */
+footer {
+    background: var(--ag-green-dark) !important;
+    padding: 4rem 0 2rem;
+    margin-top: 6rem;
+    border-top: 5px solid var(--ag-green);
+}
+
+footer h5 {
+    color: var(--ag-wheat);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+footer a {
+    color: rgba(255,255,255,0.8) !important;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+footer a:hover {
+    color: var(--ag-wheat) !important;
+    transform: translateX(5px);
+}
+
+footer p {
+    color: rgba(255,255,255,0.8);
+}
+
+footer hr {
+    border-color: rgba(255,255,255,0.1);
+    margin: 2rem 0;
+}
+
+footer address {
+    color: rgba(255,255,255,0.8);
+}
+
+footer i {
+    color: var(--ag-wheat);
+    width: 20px;
+    margin-right: 10px;
+}
+
+/* Loading Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        padding: 4rem 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .program-card .card-img-top {
+        height: 150px;
+    }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    .card, .program-card {
+        transition: none;
+    }
+}
+
+/* Feature Cards */
+.feature-card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, var(--ag-green-dark), var(--ag-green));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.icon-circle i {
+    font-size: 2rem;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --ag-green: #006400;
+        --ag-brown: #8B4513;
+    }
+    
+    .card {
+        border: 2px solid currentColor;
+    }
+
+    .icon-circle {
+        background: var(--ag-green-dark);
+        border: 2px solid white;
+    }
+}

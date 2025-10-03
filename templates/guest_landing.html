@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to AgroStudies - Agriculture & Eco Farming{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/guest-landing.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="guest-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            Welcome to AgroStudies Registration System for Farm Selection
+        </div>
+        <h1 class="hero-title">
+            Agriculture<br>
+            <span class="highlight">
+                <svg class="hero-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10L35 25L50 40L65 25L50 10Z" fill="#FFC107"/>
+                    <path d="M50 40L35 55L50 70L65 55L50 40Z" fill="#FFD54F"/>
+                    <path d="M20 40L35 55L35 25L20 40Z" fill="#FFC107"/>
+                    <path d="M80 40L65 55L65 25L80 40Z" fill="#FFC107"/>
+                </svg>
+                & Eco Farming
+            </span>
+        </h1>
+        <p class="hero-subtitle">
+            Discover opportunities to grow your agricultural expertise worldwide. Join our international farm programs and cultivate your future in sustainable farming.
+        </p>
+        <div class="hero-buttons">
+            <a href="#" class="btn-hero btn-hero-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
+                <i class="fas fa-user-plus"></i>
+                Get Started
+            </a>
+            <a href="#features" class="btn-hero btn-hero-secondary">
+                <i class="fas fa-arrow-down"></i>
+                Discover More
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-section" id="features">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose AgroStudies?</h2>
+            <p class="section-subtitle">
+                We connect students with world-class agricultural programs and farms across the globe, providing hands-on experience and professional development.
+            </p>
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3 class="feature-title">Global Opportunities</h3>
+                <p class="feature-text">
+                    Access farm programs in Israel. Expand your horizons with international experience.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="feature-title">Learn & Grow</h3>
+                <p class="feature-text">
+                    Gain practical knowledge and skills in modern agricultural practices from experienced farmers and industry professionals.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3 class="feature-title">Professional Network</h3>
+                <p class="feature-text">
+                    Build connections with agricultural professionals and fellow students from around the world. Grow your career network.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3 class="feature-title">Sustainable Practices</h3>
+                <p class="feature-text">
+                    Learn cutting-edge sustainable and eco-friendly farming techniques that are shaping the future of agriculture.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3 class="feature-title">Certification Programs</h3>
+                <p class="feature-text">
+                    Earn recognized certifications and credentials that enhance your career prospects in the agricultural sector.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="feature-title">Full Support</h3>
+                <p class="feature-text">
+                    Get comprehensive support throughout your journey, from application to completion of your program.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">Ready to Start Your Agricultural Journey?</h2>
+        <p class="cta-text">
+            Join thousands of students who have transformed their careers through our international farm programs.
+        </p>
+        <div class="cta-buttons">
+            <a href="#" class="btn-hero btn-hero-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
+                <i class="fas fa-rocket"></i>
+                Create Free Account
+            </a>
+            <a href="#" class="btn-hero btn-hero-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <i class="fas fa-sign-in-alt"></i>
+                Already Have Account?
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

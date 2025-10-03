@@ -5,17 +5,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, F
+from django.db import transaction
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST, require_GET
-from django.contrib.auth.forms import AuthenticationForm
+from django_ratelimit.decorators import ratelimit
 from .models import Profile, AgricultureProgram, Registration, Candidate, University, Notification
 from .models import ActivityLog
+import logging
 from .forms import (
     UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
     ProgramRegistrationForm, AdminRegistrationForm,
     CandidateForm, CandidateSearchForm, ProgramSearchForm
 )
+from .forms_email import CustomPasswordResetForm
 import csv
 import xlsxwriter
 from io import BytesIO
@@ -33,13 +36,28 @@ import os
 import json
 from .decorators import ajax_login_required
 
+# Initialize logger
+logger = logging.getLogger(__name__)
+
 
 def index(request):
-    """Home page view"""
-    programs = AgricultureProgram.objects.all().order_by('-start_date')[:5]
+    """Home page view - shows different pages for guests vs authenticated users"""
+    # If user is not authenticated, show guest landing page
+    if not request.user.is_authenticated:
+        return render(request, 'guest_landing.html')
+    
+    # For authenticated users, show the main programs landing page
+    # Get featured programs first, then regular programs if needed
+    featured_programs = AgricultureProgram.objects.filter(is_featured=True).order_by('-start_date')[:6]
+    if featured_programs.count() < 3:
+        # If less than 3 featured programs, show latest programs
+        programs = AgricultureProgram.objects.all().order_by('-start_date')[:6]
+    else:
+        programs = featured_programs
     return render(request, 'index.html', {'programs': programs})
 
 
+@ratelimit(key='ip', rate='5/h', method='POST', block=True)
 def register(request):
     """User registration view without email verification"""
     if request.method == 'POST':
@@ -143,14 +161,14 @@ def resend_verification(request):
     return render(request, 'resend_verification.html')
 
 
+@ratelimit(key='ip', rate='3/h', method='POST', block=True)
 def admin_register(request):
     """Admin registration view"""
     if request.method == 'POST':
         form = AdminRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # Create profile for admin
-            Profile.objects.create(user=user)
+            # Profile auto-created by signal, no need to create manually
             username = form.cleaned_data.get('username')
             messages.success(request, f'Admin account created for {username}! You can now log in.')
             return redirect('login')
@@ -159,6 +177,7 @@ def admin_register(request):
     return render(request, 'admin_register.html', {'form': form})
 
 
+@ratelimit(key='ip', rate='5/5m', method='POST', block=True)
 def login_view(request):
     """Login view without email verification check"""
     if request.method == 'POST':
@@ -245,8 +264,9 @@ def profile(request):
                         nationality=request.user.profile.nationality,
                         religion=request.user.profile.religion,
                     )
-            except Exception:
+            except Exception as e:
                 # Best-effort sync; do not block profile save on errors
+                logger.exception(f"Failed to sync candidate data for user {request.user.id}: {e}")
                 pass
 
             # Create a notification
@@ -285,6 +305,7 @@ def program_list(request):
     if form.is_valid():
         query = form.cleaned_data.get('query')
         location = form.cleaned_data.get('location')
+        gender = form.cleaned_data.get('gender')
 
         if query:
             programs = programs.filter(
@@ -293,6 +314,9 @@ def program_list(request):
         
         if location:
             programs = programs.filter(location__icontains=location)
+        
+        if gender:
+            programs = programs.filter(required_gender=gender)
 
     # Pagination
     paginator = Paginator(programs, 10)  # Show 10 programs per page
@@ -402,68 +426,90 @@ def apply_candidate(request, program_id):
         mutable_post['email'] = request.user.email or mutable_post.get('email', '')
         form = CandidateForm(mutable_post, request.FILES)
         if form.is_valid():
-            candidate = form.save(commit=False)
-            candidate.created_by = request.user
-            candidate.program = program
-            candidate.status = Candidate.APPROVED
-            
-            # Set a default university since it's required in the model but not in the form
-            # Get or create a default university for simplified applications
-            default_university, created = University.objects.get_or_create(
-                code='DEFAULT',
-                defaults={
-                    'name': 'Not Specified',
-                    'country': 'Not Specified'
-                }
-            )
-            candidate.university = default_university
-            
-            # Set default values for other required model fields that aren't in the form
-            if not candidate.passport_number:
-                candidate.passport_number = ''  # Empty string for optional passport
-            
-            # Set default passport dates if not provided (using far future dates)
-            from datetime import date, timedelta
-            if not hasattr(candidate, 'passport_issue_date') or not candidate.passport_issue_date:
-                candidate.passport_issue_date = date.today()
-            if not hasattr(candidate, 'passport_expiry_date') or not candidate.passport_expiry_date:
-                candidate.passport_expiry_date = date.today() + timedelta(days=3650)  # 10 years
-            
-            # Set other optional fields to defaults if not present
-            if not hasattr(candidate, 'year_graduated'):
-                candidate.year_graduated = None
-            if not hasattr(candidate, 'secondary_specialization'):
-                candidate.secondary_specialization = ''
-            if not hasattr(candidate, 'religion'):
-                candidate.religion = ''
-            if not hasattr(candidate, 'father_name'):
-                candidate.father_name = ''
-            if not hasattr(candidate, 'mother_name'):
-                candidate.mother_name = ''
-            if not hasattr(candidate, 'shoes_size'):
-                candidate.shoes_size = ''
-            if not hasattr(candidate, 'shirt_size'):
-                candidate.shirt_size = ''
-            if not hasattr(candidate, 'smokes') or not candidate.smokes:
-                candidate.smokes = 'Never'
-            
-            # Decrease program capacity
-            program.capacity -= 1
-            program.save()
-            
-            candidate.save()
+            # Use atomic transaction with row-level locking to prevent race conditions
+            try:
+                with transaction.atomic():
+                    # Lock the program row for update to prevent concurrent capacity decrements
+                    program = AgricultureProgram.objects.select_for_update().get(id=program_id)
+                    
+                    # Re-check capacity inside transaction after acquiring lock
+                    if program.capacity <= 0:
+                        messages.error(request, 'This program has no available slots.', extra_tags='error')
+                        return redirect('program_detail', program_id=program.id)
+                    
+                    # Re-check if user already applied (inside transaction)
+                    already_applied_this = Candidate.objects.filter(program=program).filter(
+                        Q(created_by=request.user) | Q(email=request.user.email)
+                    ).exists() or Registration.objects.filter(user=request.user, program=program).exists()
+                    if already_applied_this:
+                        messages.info(request, 'You have already applied to this program.')
+                        return redirect('program_detail', program_id=program.id)
+                    
+                    candidate = form.save(commit=False)
+                    candidate.created_by = request.user
+                    candidate.program = program
+                    candidate.status = Candidate.APPROVED
+                    
+                    # Set a default university since it's required in the model but not in the form
+                    # Get or create a default university for simplified applications
+                    default_university, created = University.objects.get_or_create(
+                        code='DEFAULT',
+                        defaults={
+                            'name': 'Not Specified',
+                            'country': 'Not Specified'
+                        }
+                    )
+                    candidate.university = default_university
+                    
+                    # Set default values for other required model fields that aren't in the form
+                    if not candidate.passport_number:
+                        candidate.passport_number = ''  # Empty string for optional passport
+                    
+                    # Set default passport dates if not provided (using far future dates)
+                    from datetime import date, timedelta
+                    if not hasattr(candidate, 'passport_issue_date') or not candidate.passport_issue_date:
+                        candidate.passport_issue_date = date.today()
+                    if not hasattr(candidate, 'passport_expiry_date') or not candidate.passport_expiry_date:
+                        candidate.passport_expiry_date = date.today() + timedelta(days=3650)  # 10 years
+                    
+                    # Set other optional fields to defaults if not present
+                    if not hasattr(candidate, 'year_graduated'):
+                        candidate.year_graduated = None
+                    if not hasattr(candidate, 'secondary_specialization'):
+                        candidate.secondary_specialization = ''
+                    if not hasattr(candidate, 'religion'):
+                        candidate.religion = ''
+                    if not hasattr(candidate, 'father_name'):
+                        candidate.father_name = ''
+                    if not hasattr(candidate, 'mother_name'):
+                        candidate.mother_name = ''
+                    if not hasattr(candidate, 'shoes_size'):
+                        candidate.shoes_size = ''
+                    if not hasattr(candidate, 'shirt_size'):
+                        candidate.shirt_size = ''
+                    if not hasattr(candidate, 'smokes') or not candidate.smokes:
+                        candidate.smokes = 'Never'
+                    
+                    # Save candidate first
+                    candidate.save()
+                    
+                    # Atomically decrease program capacity using F() expression to avoid race conditions
+                    AgricultureProgram.objects.filter(id=program.id).update(capacity=F('capacity') - 1)
 
-            messages.success(request, f'Congratulations! Your application for {program.title} has been approved.')
-            
-            # Create a notification for the user
-            Notification.add_notification(
-                user=request.user,
-                message=f"Congratulations! Your application for {program.title} has been approved. You're now ready to proceed with the next steps.",
-                notification_type=Notification.SUCCESS,
-                link=f"/candidates/{candidate.id}/"
-            )
-            
-            return redirect('profile')
+                    messages.success(request, f'Congratulations! Your application for {program.title} has been approved.')
+                    
+                    # Create a notification for the user
+                    Notification.add_notification(
+                        user=request.user,
+                        message=f"Congratulations! Your application for {program.title} has been approved. You're now ready to proceed with the next steps.",
+                        notification_type=Notification.SUCCESS,
+                        link=f"/candidates/{candidate.id}/"
+                    )
+                    
+                    return redirect('profile')
+            except AgricultureProgram.DoesNotExist:
+                messages.error(request, 'Program not found.')
+                return redirect('program_list')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -511,10 +557,10 @@ def cancel_registration(request, registration_id):
 def candidate_list(request):
     """List candidates. Staff see all; applicants see only their own submission(s)."""
     if request.user.is_staff:
-        candidates = Candidate.objects.all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('university', 'program', 'created_by').all().order_by('-created_at')
     else:
         # Show only the current user's candidate records
-        candidates = Candidate.objects.filter(
+        candidates = Candidate.objects.select_related('university', 'program', 'created_by').filter(
             Q(created_by=request.user) | Q(email=request.user.email)
         ).order_by('-created_at')
     form = CandidateSearchForm(request.GET)
@@ -567,14 +613,14 @@ def candidate_list(request):
 
 @login_required
 def export_candidates_csv(request, candidates=None):
-    """Export candidates to CSV file"""
+    """Export candidates to CSV file with memory-efficient streaming"""
     if not request.user.is_staff:
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('index')
     
     # If candidates not provided, get all (used when directly accessing the export URL)
     if candidates is None:
-        candidates = Candidate.objects.all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('university', 'program').all().order_by('-created_at')
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="candidates.csv"'
@@ -586,7 +632,8 @@ def export_candidates_csv(request, candidates=None):
         'Program', 'Program Location', 'Date Added'
     ])
     
-    for candidate in candidates:
+    # Use iterator() for memory efficiency with large datasets
+    for candidate in candidates.iterator(chunk_size=100):
         writer.writerow([
             candidate.passport_number,
             candidate.first_name,
@@ -608,20 +655,20 @@ def export_candidates_csv(request, candidates=None):
 
 @login_required
 def export_candidates_excel(request, candidates=None):
-    """Export candidates to Excel file"""
+    """Export candidates to Excel file with memory-efficient processing"""
     if not request.user.is_staff:
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('index')
     
     # If candidates not provided, get all (used when directly accessing the export URL)
     if candidates is None:
-        candidates = Candidate.objects.all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('university', 'program').all().order_by('-created_at')
     
     # Create an in-memory output file
     output = BytesIO()
     
     # Create a workbook and add a worksheet with remove_timezone option
-    workbook = xlsxwriter.Workbook(output, {'remove_timezone': True})
+    workbook = xlsxwriter.Workbook(output, {'remove_timezone': True, 'constant_memory': True})
     worksheet = workbook.add_worksheet()
     
     # Add a bold format to use to highlight cells
@@ -642,8 +689,8 @@ def export_candidates_excel(request, candidates=None):
     # Start from the first cell below headers
     row = 1
     
-    # Write data rows
-    for candidate in candidates:
+    # Write data rows using iterator for memory efficiency
+    for candidate in candidates.iterator(chunk_size=100):
         col = 0
         worksheet.write(row, col, candidate.passport_number); col += 1
         worksheet.write(row, col, candidate.first_name); col += 1
@@ -689,14 +736,14 @@ def export_candidates_excel(request, candidates=None):
 
 @login_required
 def export_candidates_pdf(request, candidates=None):
-    """Export candidates to PDF file"""
+    """Export candidates to PDF file with optimized queries"""
     if not request.user.is_staff:
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('index')
     
     # If candidates not provided, get all (used when directly accessing the export URL)
     if candidates is None:
-        candidates = Candidate.objects.all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('university', 'program').all().order_by('-created_at')
     
     # Create a file-like buffer to receive PDF data
     buffer = BytesIO()
@@ -1604,8 +1651,7 @@ def ajax_admin_register(request):
     form = AdminRegistrationForm(request.POST)
     if form.is_valid():
         user = form.save()
-        # Create profile for admin
-        Profile.objects.create(user=user)
+        # Profile auto-created by signal, no need to create manually
         username = form.cleaned_data.get('username')
         
         return JsonResponse({
@@ -1618,3 +1664,39 @@ def ajax_admin_register(request):
             'success': False,
             'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
         })
+
+
+def custom_password_reset(request):
+    """
+    Custom password reset view with email validation
+    """
+    if request.method == 'POST':
+        form = CustomPasswordResetForm(request.POST)
+        if form.is_valid():
+            # Email exists and is valid, send reset email
+            try:
+                form.save(
+                    request=request,
+                    use_https=request.is_secure(),
+                    email_template_name='password_reset_email.html',
+                    subject_template_name='password_reset_subject.txt'
+                )
+                messages.success(
+                    request,
+                    'Password reset email has been sent. Please check your inbox.'
+                )
+                return redirect('password_reset_done')
+            except Exception as e:
+                logging.error(f"Error sending password reset email: {e}")
+                messages.error(
+                    request,
+                    'There was an error sending the password reset email. Please try again later.'
+                )
+        else:
+            # Form has errors (email not found)
+            for error in form.errors.get('email', []):
+                messages.warning(request, error)
+    else:
+        form = CustomPasswordResetForm()
+    
+    return render(request, 'password_reset.html', {'form': form})

@@ -29,6 +29,46 @@
         <!-- Application Progress Tracker -->
         
 
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="info-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-user-circle fa-3x text-primary mb-2"></i>
+                    <h6 class="text-muted mb-1">Status</h6>
+                    <h4 class="mb-0"><span class="status-badge {{ candidate.status|lower }}">{{ candidate.status }}</span></h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="info-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-birthday-cake fa-3x text-success mb-2"></i>
+                    <h6 class="text-muted mb-1">Age</h6>
+                    <h4 class="mb-0"><span id="candidate-age-stat"></span> years</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="info-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-venus-mars fa-3x text-warning mb-2"></i>
+                    <h6 class="text-muted mb-1">Gender</h6>
+                    <h6 class="mb-0">{{ candidate.gender }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="info-card text-center">
+                <div class="card-body">
+                    <i class="fas fa-globe fa-3x text-info mb-2"></i>
+                    <h6 class="text-muted mb-1">Nationality</h6>
+                    <h6 class="mb-0">{{ candidate.nationality }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- Personal Information -->
         <div class="col-md-6">
@@ -134,357 +174,86 @@
             
         </div>
         
-        <!-- Academic & Other Information -->
+        <!-- Contact Information -->
         <div class="col-md-6">
             <div class="info-card">
                 <div class="card-header">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Academic Information</span>
+                    <i class="fas fa-address-book"></i>
+                    <span>Contact Information</span>
                 </div>
                 <div class="card-body">
                     <div class="field-group">
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-university"></i> University
+                                <i class="fas fa-envelope"></i> Email Address
                             </div>
-                            <div class="field-value highlight">{{ candidate.university.name }}</div>
+                            <div class="field-value highlight">
+                                {% if candidate.email %}
+                                    <a href="mailto:{{ candidate.email }}">{{ candidate.email }}</a>
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </div>
                         </div>
                         
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-hashtag"></i> University Code
+                                <i class="fas fa-phone"></i> Phone Number
                             </div>
-                            <div class="field-value">{{ candidate.university.code }}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="field-group">
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-globe-americas"></i> Country
+                            <div class="field-value">
+                                {% if candidate.phone_number %}
+                                    {{ candidate.phone_number }}
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
                             </div>
-                            <div class="field-value">{{ candidate.university.country }}</div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-calendar-check"></i> Year Graduated
-                            </div>
-                            <div class="field-value">{{ candidate.year_graduated|default:"Not provided" }}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="field-group">
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-book"></i> Specialization
-                            </div>
-                            <div class="field-value highlight">{{ candidate.specialization }}</div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-book-open"></i> Secondary Specialization
-                            </div>
-                            <div class="field-value">{{ candidate.secondary_specialization|default:"Not provided" }}</div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Additional Information -->
+            <!-- Program Information -->
+            {% if candidate.program %}
             <div class="info-card">
                 <div class="card-header">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Additional Information</span>
+                    <i class="fas fa-seedling"></i>
+                    <span>Applied Program</span>
                 </div>
                 <div class="card-body">
                     <div class="field-group">
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-smoking"></i> Smokes
+                                <i class="fas fa-tag"></i> Program
                             </div>
-                            <div class="field-value">{{ candidate.smokes }}</div>
+                            <div class="field-value highlight">{{ candidate.program.title }}</div>
                         </div>
                         
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-tshirt"></i> Shirt Size
+                                <i class="fas fa-map-marker-alt"></i> Location
                             </div>
-                            <div class="field-value">{{ candidate.shirt_size|default:"Not provided" }}</div>
+                            <div class="field-value">{{ candidate.program.location }}</div>
                         </div>
                     </div>
                     
                     <div class="field-group">
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-shoe-prints"></i> Shoes Size
+                                <i class="fas fa-calendar-alt"></i> Start Date
                             </div>
-                            <div class="field-value">{{ candidate.shoes_size|default:"Not provided" }}</div>
+                            <div class="field-value">{{ candidate.program.start_date|date:"F d, Y" }}</div>
+                        </div>
+                        
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-users"></i> Capacity
+                            </div>
+                            <div class="field-value">{{ candidate.program.capacity }} participants</div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Documents -->
-            <div class="info-card">
-                <div class="card-header">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Required Documents</span>
-                </div>
-                <div class="card-body">
-                    <div class="document-items">
-                        <div class="document-item">
-                            <div class="document-icon">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <div class="document-info">
-                                <div class="document-name">Transcript of Records (TOR)</div>
-                                <div class="document-status">
-                                    {% if documents.tor.status == 'uploaded' %}
-                                        <span class="status-badge uploaded"><i class="fas fa-check-circle"></i> Uploaded</span>
-                                    {% elif documents.tor.status == 'available' %}
-                                        <span class="status-badge pending"><i class="fas fa-sync-alt"></i> Available from previous registration</span>
-                                    {% else %}
-                                        <span class="status-badge not-uploaded"><i class="fas fa-exclamation-circle"></i> Not uploaded</span>
-                                    {% endif %}
-                                </div>
-                                {% if documents.tor.status == 'available' %}
-                                <div class="document-source small text-muted mt-1">
-                                    <i class="fas fa-info-circle"></i> From: {{ documents.tor.source }} ({{ documents.tor.date|date:"M d, Y" }})
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="document-actions">
-                                {% if documents.tor.status == 'uploaded' %}
-                                    <a href="{{ documents.tor.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                {% elif documents.tor.status == 'available' %}
-                                    <a href="{{ documents.tor.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                    <form method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="import_document" value="true">
-                                        <input type="hidden" name="document_type" value="tor">
-                                        <input type="hidden" name="registration_id" value="{{ documents.tor.registration_id }}">
-                                        <button type="submit" class="upload-button" style="background-color: #6f42c1;">
-                                            <i class="fas fa-file-import"></i> Import
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <a href="{% url 'edit_candidate' candidate.id %}" class="upload-button">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div class="document-item">
-                            <div class="document-icon">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div class="document-info">
-                                <div class="document-name">NC2 from TESDA</div>
-                                <div class="document-status">
-                                    {% if documents.nc2_tesda.status == 'uploaded' %}
-                                        <span class="status-badge uploaded"><i class="fas fa-check-circle"></i> Uploaded</span>
-                                    {% elif documents.nc2_tesda.status == 'available' %}
-                                        <span class="status-badge pending"><i class="fas fa-sync-alt"></i> Available from previous registration</span>
-                                    {% else %}
-                                        <span class="status-badge not-uploaded"><i class="fas fa-exclamation-circle"></i> Not uploaded</span>
-                                    {% endif %}
-                                </div>
-                                {% if documents.nc2_tesda.status == 'available' %}
-                                <div class="document-source small text-muted mt-1">
-                                    <i class="fas fa-info-circle"></i> From: {{ documents.nc2_tesda.source }} ({{ documents.nc2_tesda.date|date:"M d, Y" }})
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="document-actions">
-                                {% if documents.nc2_tesda.status == 'uploaded' %}
-                                    <a href="{{ documents.nc2_tesda.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                {% elif documents.nc2_tesda.status == 'available' %}
-                                    <a href="{{ documents.nc2_tesda.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                    <form method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="import_document" value="true">
-                                        <input type="hidden" name="document_type" value="nc2_tesda">
-                                        <input type="hidden" name="registration_id" value="{{ documents.nc2_tesda.registration_id }}">
-                                        <button type="submit" class="upload-button" style="background-color: #6f42c1;">
-                                            <i class="fas fa-file-import"></i> Import
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <a href="{% url 'edit_candidate' candidate.id %}" class="upload-button">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div class="document-item">
-                            <div class="document-icon">
-                                <i class="fas fa-scroll"></i>
-                            </div>
-                            <div class="document-info">
-                                <div class="document-name">Diploma</div>
-                                <div class="document-status">
-                                    {% if documents.diploma.status == 'uploaded' %}
-                                        <span class="status-badge uploaded"><i class="fas fa-check-circle"></i> Uploaded</span>
-                                    {% elif documents.diploma.status == 'available' %}
-                                        <span class="status-badge pending"><i class="fas fa-sync-alt"></i> Available from previous registration</span>
-                                    {% else %}
-                                        <span class="status-badge not-uploaded"><i class="fas fa-exclamation-circle"></i> Not uploaded</span>
-                                    {% endif %}
-                                </div>
-                                {% if documents.diploma.status == 'available' %}
-                                <div class="document-source small text-muted mt-1">
-                                    <i class="fas fa-info-circle"></i> From: {{ documents.diploma.source }} ({{ documents.diploma.date|date:"M d, Y" }})
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="document-actions">
-                                {% if documents.diploma.status == 'uploaded' %}
-                                    <a href="{{ documents.diploma.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                {% elif documents.diploma.status == 'available' %}
-                                    <a href="{{ documents.diploma.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                    <form method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="import_document" value="true">
-                                        <input type="hidden" name="document_type" value="diploma">
-                                        <input type="hidden" name="registration_id" value="{{ documents.diploma.registration_id }}">
-                                        <button type="submit" class="upload-button" style="background-color: #6f42c1;">
-                                            <i class="fas fa-file-import"></i> Import
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <a href="{% url 'edit_candidate' candidate.id %}" class="upload-button">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div class="document-item">
-                            <div class="document-icon">
-                                <i class="fas fa-clipboard-check"></i>
-                            </div>
-                            <div class="document-info">
-                                <div class="document-name">Good Moral Character</div>
-                                <div class="document-status">
-                                    {% if documents.good_moral.status == 'uploaded' %}
-                                        <span class="status-badge uploaded"><i class="fas fa-check-circle"></i> Uploaded</span>
-                                    {% elif documents.good_moral.status == 'available' %}
-                                        <span class="status-badge pending"><i class="fas fa-sync-alt"></i> Available from previous registration</span>
-                                    {% else %}
-                                        <span class="status-badge not-uploaded"><i class="fas fa-exclamation-circle"></i> Not uploaded</span>
-                                    {% endif %}
-                                </div>
-                                {% if documents.good_moral.status == 'available' %}
-                                <div class="document-source small text-muted mt-1">
-                                    <i class="fas fa-info-circle"></i> From: {{ documents.good_moral.source }} ({{ documents.good_moral.date|date:"M d, Y" }})
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="document-actions">
-                                {% if documents.good_moral.status == 'uploaded' %}
-                                    <a href="{{ documents.good_moral.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                {% elif documents.good_moral.status == 'available' %}
-                                    <a href="{{ documents.good_moral.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                    <form method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="import_document" value="true">
-                                        <input type="hidden" name="document_type" value="good_moral">
-                                        <input type="hidden" name="registration_id" value="{{ documents.good_moral.registration_id }}">
-                                        <button type="submit" class="upload-button" style="background-color: #6f42c1;">
-                                            <i class="fas fa-file-import"></i> Import
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <a href="{% url 'edit_candidate' candidate.id %}" class="upload-button">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div class="document-item">
-                            <div class="document-icon">
-                                <i class="fas fa-id-badge"></i>
-                            </div>
-                            <div class="document-info">
-                                <div class="document-name">NBI Clearance</div>
-                                <div class="document-status">
-                                    {% if documents.nbi_clearance.status == 'uploaded' %}
-                                        <span class="status-badge uploaded"><i class="fas fa-check-circle"></i> Uploaded</span>
-                                    {% elif documents.nbi_clearance.status == 'available' %}
-                                        <span class="status-badge pending"><i class="fas fa-sync-alt"></i> Available from previous registration</span>
-                                    {% else %}
-                                        <span class="status-badge not-uploaded"><i class="fas fa-exclamation-circle"></i> Not uploaded</span>
-                                    {% endif %}
-                                </div>
-                                {% if documents.nbi_clearance.status == 'available' %}
-                                <div class="document-source small text-muted mt-1">
-                                    <i class="fas fa-info-circle"></i> From: {{ documents.nbi_clearance.source }} ({{ documents.nbi_clearance.date|date:"M d, Y" }})
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="document-actions">
-                                {% if documents.nbi_clearance.status == 'uploaded' %}
-                                    <a href="{{ documents.nbi_clearance.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                {% elif documents.nbi_clearance.status == 'available' %}
-                                    <a href="{{ documents.nbi_clearance.file.url }}" target="_blank" class="view-button">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
-                                    <form method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="import_document" value="true">
-                                        <input type="hidden" name="document_type" value="nbi_clearance">
-                                        <input type="hidden" name="registration_id" value="{{ documents.nbi_clearance.registration_id }}">
-                                        <button type="submit" class="upload-button" style="background-color: #6f42c1;">
-                                            <i class="fas fa-file-import"></i> Import
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <a href="{% url 'edit_candidate' candidate.id %}" class="upload-button">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- File Upload Dropzone -->
-                    <div class="upload-dropzone">
-                        <div class="upload-icon">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                        </div>
-                        <div class="upload-text">
-                            <h5>Drag and drop files here</h5>
-                            <p>or click to browse files</p>
-                        </div>
-                        <div class="upload-note">
-                            Accepted file types: PDF, JPG, PNG (Max 10MB)
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
     
@@ -585,7 +354,15 @@
         const birthDateStr = "{{ candidate.date_of_birth|date:'Y-m-d' }}";
         if (birthDateStr) {
             const age = calculateAge(birthDateStr);
-            document.getElementById('candidate-age').textContent = age;
+            const ageElement = document.getElementById('candidate-age');
+            const ageStatElement = document.getElementById('candidate-age-stat');
+            
+            if (ageElement) {
+                ageElement.textContent = age;
+            }
+            if (ageStatElement) {
+                ageStatElement.textContent = age;
+            }
         }
     });
 </script>

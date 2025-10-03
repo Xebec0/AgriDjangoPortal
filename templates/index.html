@@ -3,55 +3,150 @@
 {% block title %}Home - Agrostudies Registration System for Farm Selection{% endblock %}
 
 {% block content %}
-<div class="jumbotron bg-light p-5 rounded">
-    <h1 class="display-4">Welcome to Agrostudies Registration System for Farm Selection</h1>
-    <p class="lead">
-        Connect with agricultural farm programs and training opportunities around the world.
-    </p>
-    <hr class="my-4">
-    <p>
-        Register today to gain access to a wide range of agricultural programs, internships, 
-        and training opportunities designed to enhance your knowledge and skills in the field.
-    </p>
-    <a class="btn btn-primary btn-lg" href="{% url 'program_list' %}" role="button">
-        Browse Programs
-    </a>
-    {% if not user.is_authenticated %}
-    <a class="btn btn-outline-secondary btn-lg ms-2" href="#" id="registerModalLink" data-bs-toggle="modal" data-bs-target="#registerModal" role="button">
-        Sign Up Now
-    </a>
-    {% endif %}
+<div class="position-relative mb-4 hero-section">
+    <img src="/static/images/agrostudies.png" class="w-100 hero-image" alt="Agrostudies PNG Image" style="max-height: 600px; object-fit: cover;">
+    <div class="position-absolute d-flex align-items-center justify-content-center" style="top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5));">
+        <div class="text-center px-3 px-md-4">
+            <h1 class="hero-title fw-bold text-white mb-3 mb-md-4">
+                Cultivate Your Future <br class="d-none d-md-inline">in Agriculture
+            </h1>
+            <p class="hero-subtitle lead text-white fw-normal mx-auto mb-4 mb-md-5">
+                Welcome to Agrostudies Registration System for Farm Selection
+            </p>
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-3 gap-md-4">
+                <a class="btn btn-success btn-lg hero-button" href="{% url 'program_list' %}" role="button">
+                    <i class="fas fa-search me-2"></i>BROWSE PROGRAMS
+                </a>
+                {% if not user.is_authenticated %}
+                <a class="btn btn-light btn-lg hero-button" href="#" id="registerModalLink" data-bs-toggle="modal" data-bs-target="#registerModal" role="button">
+                    <i class="fas fa-user-plus me-2"></i>SIGN UP NOW
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Hero Section Mobile Styles -->
+<style>
+.hero-section {
+    min-height: 400px;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+    max-width: 800px;
+}
+
+.hero-button {
+    font-size: 1.1rem;
+    padding: 0.75rem 2rem;
+    min-width: 200px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 767px) {
+    .hero-section {
+        min-height: 300px;
+    }
+    
+    .hero-image {
+        max-height: 300px !important;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem !important;
+        letter-spacing: 0;
+        margin-bottom: 1rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.95rem !important;
+        padding: 0 1rem;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .hero-button {
+        font-size: 0.95rem !important;
+        padding: 0.65rem 1.5rem !important;
+        min-width: 100% !important;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+/* Very small mobile */
+@media (max-width: 479px) {
+    .hero-section {
+        min-height: 250px;
+    }
+    
+    .hero-image {
+        max-height: 250px !important;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.85rem !important;
+    }
+    
+    .hero-button {
+        font-size: 0.9rem !important;
+        padding: 0.6rem 1.25rem !important;
+    }
+}
+</style>
 
 <div class="row mt-5">
     <div class="col-md-12">
-        <h2 class="mb-4">Featured Programs</h2>
+        <h2 class="mb-4 scroll-animate">Featured Programs</h2>
     </div>
 </div>
 
 <div class="row">
     {% for program in programs %}
     <div class="col-md-4 mb-4">
-        <div class="card h-100">
+        <div class="program-card card h-100 scroll-animate">
+            {% if program.is_featured %}
+            <div class="position-absolute top-0 end-0 m-2">
+                <span class="badge bg-warning text-dark">
+                    <i class="fas fa-star me-1"></i>Featured
+                </span>
+            </div>
+            {% endif %}
+            <img src="{{ program.get_image_url }}" class="card-img-top" alt="{{ program.title }}" style="height: 200px; object-fit: cover;">
             <div class="card-body">
                 <h5 class="card-title">{{ program.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ program.location }}</h6>
+                <h6 class="card-subtitle mb-3 text-muted">
+                    <i class="fas fa-map-marker-alt text-success me-2"></i>{{ program.location }}
+                </h6>
                 <p class="card-text">
                     {{ program.description|truncatewords:20 }}
                 </p>
                 <div class="mb-2">
-                    <small class="text-muted">
-                        <i class="far fa-calendar-alt"></i> {{ program.start_date }}
-                    </small>
-                </div>
-                <div class="mb-2">
-                    <small class="text-muted">
-                        <i class="fas fa-users"></i> Capacity: {{ program.capacity }}
-                    </small>
+                    <span class="badge bg-success">
+                        <i class="far fa-calendar-alt me-1"></i>{{ program.start_date }}
+                    </span>
+                    <span class="badge bg-info">
+                        <i class="fas fa-users me-1"></i>Capacity: {{ program.capacity }}
+                    </span>
                 </div>
             </div>
-            <div class="card-footer">
-                <a href="{% url 'program_detail' program.id %}" class="btn btn-sm btn-primary">Learn More</a>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{% url 'program_detail' program.id %}" class="btn btn-primary w-100">
+                    <i class="fas fa-info-circle me-2"></i>Learn More
+                </a>
             </div>
         </div>
     </div>
@@ -74,10 +169,12 @@
 
 <div class="row mt-5">
     <div class="col-md-4">
-        <div class="card text-center h-100">
+        <div class="card text-center h-100 feature-card">
             <div class="card-body">
-                <i class="fas fa-search fa-3x mb-3 text-primary"></i>
-                <h5 class="card-title">Find Programs</h5>
+                <div class="icon-circle mb-4">
+                    <i class="fas fa-search fa-2x text-white"></i>
+                </div>
+                <h5 class="card-title text-success">Find Programs</h5>
                 <p class="card-text">
                     Browse through our comprehensive catalog of agricultural programs from around the world.
                 </p>
@@ -85,10 +182,12 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-center h-100">
+        <div class="card text-center h-100 feature-card">
             <div class="card-body">
-                <i class="fas fa-file-signature fa-3x mb-3 text-primary"></i>
-                <h5 class="card-title">Apply Online</h5>
+                <div class="icon-circle mb-4">
+                    <i class="fas fa-file-signature fa-2x text-white"></i>
+                </div>
+                <h5 class="card-title text-success">Apply Online</h5>
                 <p class="card-text">
                     Complete your application process entirely online with our easy-to-use platform.
                 </p>
@@ -96,10 +195,12 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-center h-100">
+        <div class="card text-center h-100 feature-card">
             <div class="card-body">
-                <i class="fas fa-graduation-cap fa-3x mb-3 text-primary"></i>
-                <h5 class="card-title">Expand Knowledge</h5>
+                <div class="icon-circle mb-4">
+                    <i class="fas fa-graduation-cap fa-2x text-white"></i>
+                </div>
+                <h5 class="card-title text-success">Expand Knowledge</h5>
                 <p class="card-text">
                     Gain practical skills and valuable experience in agricultural practices and technologies.
                 </p>
@@ -107,4 +208,80 @@
         </div>
     </div>
 </div>
+
+<!-- Scroll Animation Styles -->
+<style>
+/* Animation only on mobile */
+@media (max-width: 767px) {
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .scroll-animate.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .scroll-animate.animate-out {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+}
+
+/* No animation on desktop */
+@media (min-width: 768px) {
+    .scroll-animate {
+        opacity: 1;
+        transform: none;
+    }
+}
+</style>
+
+<!-- Scroll Animation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Only run on mobile devices
+    if (window.innerWidth <= 767) {
+        const animateElements = document.querySelectorAll('.scroll-animate');
+        
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '-50px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Element is entering viewport
+                    entry.target.classList.remove('animate-out');
+                    entry.target.classList.add('animate-in');
+                } else {
+                    // Element is leaving viewport
+                    entry.target.classList.remove('animate-in');
+                    entry.target.classList.add('animate-out');
+                }
+            });
+        }, observerOptions);
+        
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 767) {
+                // Disable animations on larger screens
+                animateElements.forEach(element => {
+                    element.classList.remove('animate-in', 'animate-out');
+                    element.style.opacity = '1';
+                    element.style.transform = 'none';
+                });
+            }
+        });
+    }
+});
+</script>
+
 {% endblock %}

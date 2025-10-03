@@ -40,3 +40,9 @@ xlsxwriter>=3.1.0  # Alternative Excel library
 
 # For scheduled tasks (automatic backups)
 django-crontab>=0.7.1  # For cron job scheduling
+
+# For rate limiting
+django-ratelimit>=4.1.0  # For preventing brute-force attacks
+
+# For error tracking (optional - requires SENTRY_DSN env var)
+sentry-sdk>=1.40.0  # For production error monitoring

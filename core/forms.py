@@ -416,3 +416,14 @@ class ProgramSearchForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Filter by location...'}),
         label=""
     )
+    gender = forms.ChoiceField(
+        required=False,
+        choices=[
+            ('', 'All Genders'),
+            ('Male', 'Male Only'),
+            ('Female', 'Female Only'),
+            ('Any', 'Any Gender')
+        ],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label=""
+    )

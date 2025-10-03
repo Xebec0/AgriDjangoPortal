@@ -17,15 +17,22 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key-for-developmen
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'agridjangoportal.onrender.com', '97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev', '.replit.dev']
+# Allow hosts based on environment
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '0.0.0.0,localhost,127.0.0.1').split(',')
+if not DEBUG:
+    ALLOWED_HOSTS.append('agridjangoportal.onrender.com')
+else:
+    # Development hosts
+    ALLOWED_HOSTS.extend(['97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev', '.replit.dev'])
 
 # CSRF Trusted Origins for secure form submissions
 CSRF_TRUSTED_ORIGINS = [
+    'https://agridjangoportal.onrender.com',
     'https://97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev',
     'https://*.replit.dev',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
     'http://127.0.0.1:50804',
-    'http://localhost:*',
-    'http://127.0.0.1:*',
 ]
 
 # Application definition
@@ -40,6 +47,10 @@ INSTALLED_APPS = [
     'django_crontab',  # For scheduled tasks
 ]
 
+# Add debug toolbar only in DEBUG mode
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise middleware for static files
@@ -51,6 +62,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.RequestContextMiddleware',
 ]
+
+# Add debug toolbar middleware only in DEBUG mode
+if DEBUG:
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
 ROOT_URLCONF = 'agrostudies_project.urls'
 
@@ -111,14 +127,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # WhiteNoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Use simpler storage for tests to avoid manifest issues
+import sys
+if 'test' in sys.argv:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MAX_AGE = 31536000  # Cache static files for 1 year
 
 # Media files (Uploads)
@@ -138,14 +159,20 @@ LOGOUT_REDIRECT_URL = '/'
 # Admin Registration
 ADMIN_REGISTRATION_CODE = 'ADMIN123'
 
-# Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - prints to console
-EMAIL_HOST = 'smtp.gmail.com'  # For production - replace with your SMTP server
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'helloharith9@gmail.com'  # Replace with your email for production
-EMAIL_HOST_PASSWORD = 'your_app_password'  # Replace with your app password for production
-DEFAULT_FROM_EMAIL = 'Agrostudies <noreply@agrostudies.com>'
+# ----- Email Configuration -----
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'merlielatosa@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'anrrwukmaiygowbb')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Agrostudies <noreply@agrostudies.com>')
+EMAIL_TIMEOUT = 10  # Timeout in seconds
+
+# For development/testing without email credentials, use console backend
+if DEBUG and not EMAIL_HOST_USER:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # ----- Logging Configuration -----
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
@@ -201,3 +228,38 @@ CRONJOBS = [
 # Crontab command prefix (for logging)
 CRONTAB_COMMAND_PREFIX = 'DJANGO_SETTINGS_MODULE=agrostudies_project.settings'
 CRONTAB_COMMAND_SUFFIX = '2>&1'
+
+# ----- Production Security Settings -----
+if not DEBUG:
+    # HTTPS/SSL Settings
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Security Headers
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    
+    # HSTS Settings
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+# ----- Rate Limiting Configuration -----
+# Disable rate limiting during tests to avoid false failures
+RATELIMIT_ENABLE = 'test' not in sys.argv
+
+# ----- Sentry Error Tracking -----
+SENTRY_DSN = os.getenv('SENTRY_DSN', '')
+if SENTRY_DSN and not DEBUG:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=0.1,  # 10% of transactions for performance monitoring
+        send_default_pii=False,  # Don't send personally identifiable information
+        environment='production' if not DEBUG else 'development',
+    )
