@@ -31109,3 +31109,7 @@ ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.Anonym
 [2025-10-07 22:07:38,076] INFO django.utils.autoreload Watching for file changes with StatReloader
 [2025-10-07 22:07:49,877] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
 [2025-10-07 22:07:50,507] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:17:47,833] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=26
+[2025-10-07 22:17:47,841] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 22:21:55,830] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\cache_utils.py changed, reloading.
+[2025-10-07 22:21:56,577] INFO django.utils.autoreload Watching for file changes with StatReloader

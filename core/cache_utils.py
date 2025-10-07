@@ -120,6 +120,7 @@ def warm_cache():
     Warm up the cache with frequently accessed data
     Should be called after deployments or cache flushes
     """
+    from django.utils import timezone
     from .models import AgricultureProgram, Candidate
     
     # Warm up program list cache
