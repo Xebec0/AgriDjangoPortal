@@ -8,8 +8,13 @@ from django.core.paginator import Paginator
 from django.db.models import Q, F
 from django.db import transaction
 from django.http import HttpResponse, JsonResponse
+from django.db import connection
 from django.views.decorators.http import require_POST, require_GET
+from django.utils import timezone
 from django_ratelimit.decorators import ratelimit
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+from django.conf import settings
 from .models import Profile, AgricultureProgram, Registration, Candidate, University, Notification
 from .models import ActivityLog
 import logging
@@ -38,6 +43,62 @@ from .decorators import ajax_login_required
 
 # Initialize logger
 logger = logging.getLogger(__name__)
+
+
+@require_GET
+def health_check(request):
+    """
+    Health check endpoint for monitoring and SLO tracking
+    Returns 200 if all systems are operational
+    """
+    try:
+        # Check database connectivity
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            db_status = "healthy"
+        
+        # Check critical models can be queried
+        user_count = User.objects.count()
+        program_count = AgricultureProgram.objects.count()
+        
+        # Check cache connectivity
+        cache_status = "healthy"
+        try:
+            cache.set('health_check', 'ok', timeout=60)
+            if cache.get('health_check') != 'ok':
+                cache_status = "unhealthy"
+        except Exception:
+            cache_status = "unhealthy"
+        
+        health_data = {
+            "status": "healthy",
+            "timestamp": timezone.now().isoformat(),
+            "checks": {
+                "database": db_status,
+                "cache": cache_status,
+                "users": user_count,
+                "programs": program_count,
+            },
+            "performance": {
+                "cache_backend": settings.CACHES['default']['BACKEND'],
+                "session_engine": settings.SESSION_ENGINE,
+            },
+            "version": "2.0"
+        }
+        
+        return JsonResponse(health_data, status=200)
+        
+    except Exception as e:
+        logger.error(f"Health check failed: {str(e)}")
+        
+        error_data = {
+            "status": "unhealthy",
+            "timestamp": timezone.now().isoformat(),
+            "error": str(e),
+            "version": "2.0"
+        }
+        
+        return JsonResponse(error_data, status=503)
 
 
 def index(request):
@@ -298,8 +359,20 @@ def profile(request):
 
 
 def program_list(request):
-    """List all available programs"""
-    programs = AgricultureProgram.objects.all().order_by('-start_date')
+    """List all available programs with intelligent caching"""
+    # Create cache key based on search parameters
+    cache_key_params = []
+    if request.GET:
+        cache_key_params = [f"{k}={v}" for k, v in sorted(request.GET.items())]
+    cache_key = f"programs_list:{'_'.join(cache_key_params)}" if cache_key_params else "programs_list:all"
+    
+    # Try to get from cache first (for non-authenticated users or staff)
+    if not request.user.is_authenticated or request.user.is_staff:
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return render(request, 'program_list.html', cached_data)
+    
+    programs = AgricultureProgram.objects.select_related().all().order_by('-start_date')
     form = ProgramSearchForm(request.GET)
 
     if form.is_valid():
@@ -335,17 +408,30 @@ def program_list(request):
         if cand_qs.exists():
             applied_program_ids.update([pid for pid in cand_qs.values_list('program_id', flat=True) if pid is not None])
     
-    return render(request, 'program_list.html', {
+    context = {
         'page_obj': page_obj,
         'applied_program_ids': applied_program_ids,
         'has_applied_any': has_applied_any,
         'form': form,
-    })
+    }
+    
+    # Cache the context for non-authenticated users or staff (10 minutes)
+    if not request.user.is_authenticated or request.user.is_staff:
+        cache.set(cache_key, context, timeout=getattr(settings, 'CACHE_TTL', {}).get('programs', 600))
+    
+    return render(request, 'program_list.html', context)
 
 
 def program_detail(request, program_id):
-    """Show details of a specific program"""
-    program = get_object_or_404(AgricultureProgram, id=program_id)
+    """Show details of a specific program with caching"""
+    # Cache program data for anonymous users
+    cache_key = f"program_detail:{program_id}"
+    if not request.user.is_authenticated:
+        cached_program = cache.get(cache_key)
+        if cached_program:
+            return render(request, 'program_detail.html', cached_program)
+    
+    program = get_object_or_404(AgricultureProgram.objects.select_related(), id=program_id)
     
     # Check if user is already applied/registered (Registration or Candidate)
     user_registered = False

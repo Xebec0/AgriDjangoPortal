@@ -3,6 +3,9 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    # System monitoring
+    path('health/', views.health_check, name='health_check'),
+    
     # Authentication and profile
     path('', views.index, name='index'),
     path('auth-required/', views.auth_required, name='auth_required'),

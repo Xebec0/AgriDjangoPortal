@@ -7,3 +7,4 @@ class CoreConfig(AppConfig):
     
     def ready(self):
         import core.signals
+        import core.cache_signals  # Import cache invalidation signals

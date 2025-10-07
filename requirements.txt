@@ -1,5 +1,5 @@
-# Core Django dependencies
-Django>=4.2.0,<5.0.0
+# Core Django dependencies - Updated for CVE-2025-48432 & CVE-2025-26699
+Django>=5.2.7
 python-dotenv>=1.0.0
 
 # For handling file uploads and image processing
@@ -46,3 +46,17 @@ django-ratelimit>=4.1.0  # For preventing brute-force attacks
 
 # For error tracking (optional - requires SENTRY_DSN env var)
 sentry-sdk>=1.40.0  # For production error monitoring
+
+# Security scanning
+pip-audit>=2.6.1  # For vulnerability scanning
+
+# For CAPTCHA protection
+django-recaptcha>=3.0.0  # For bot protection
+
+# For structured logging
+python-json-logger>=2.0.7  # For ELK stack compatibility
+
+# For caching and performance
+redis>=5.0.1  # Redis client
+django-redis>=5.4.0  # Django Redis cache backend
+django-cachalot>=2.6.1  # Automatic ORM caching

@@ -31008,3 +31008,104 @@ ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.Anonym
 [2025-10-03 09:37:12,241] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
 [2025-10-03 09:37:59,237] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
 [2025-10-03 09:38:13,226] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:38:59,230] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:39:14,232] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:39:19,902] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-03 09:39:20,677] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-03 09:39:22,120] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:39:23,784] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:39:24,523] INFO core.middleware request GET /profile/ 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-10-03 09:40:15,237] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-03 09:40:25,227] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:41:16,227] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:41:25,226] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-03 09:42:10,349] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-03 09:42:11,339] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=36
+[2025-10-03 09:42:11,359] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-03 09:42:17,240] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-07 21:15:27,233] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 21:15:35,172] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=270
+[2025-10-07 21:15:35,262] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 304 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-07 21:15:35,268] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 304 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-07 21:15:35,269] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 304 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-07 21:15:35,431] INFO core.middleware request GET /favicon.ico 404 user=admin ip=127.0.0.1 duration_ms=40
+[2025-10-07 21:15:35,454] WARNING django.request Not Found: /favicon.ico
+[2025-10-07 21:15:38,512] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=16
+[2025-10-07 21:15:38,536] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-07 21:20:57,705] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:20:57,722] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:37:59,047] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-07 21:37:59,109] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=27
+[2025-10-07 21:37:59,126] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:38:54,613] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:38:58,717] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:39:02,089] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=7
+[2025-10-07 21:39:02,104] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:41:01,081] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:41:01,547] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:41:01,713] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:41:06,542] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=7
+[2025-10-07 21:41:06,557] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:41:12,070] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:41:12,113] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=12
+[2025-10-07 21:41:12,132] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:41:12,981] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-07 21:41:13,013] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:41:13,029] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:45:11,277] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:45:11,313] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:45:11,328] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:45:12,083] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:45:12,127] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:45:12,141] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:45:12,245] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:45:12,281] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:45:12,295] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:45:12,394] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:45:12,430] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:45:12,447] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:45:12,541] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:45:12,573] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:45:12,588] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:47:29,732] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-07 21:47:30,556] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:47:30,715] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:47:30,849] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:47:31,861] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:47:34,551] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:47:34,566] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:48:41,089] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:48:41,145] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:48:41,160] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:48:42,683] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:48:42,713] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:48:42,726] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:48:43,181] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:48:43,211] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-07 21:48:43,225] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-07 21:49:06,302] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-07 21:49:07,372] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-07 21:49:07,524] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:49:07,672] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:49:07,840] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:49:08,051] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-07 21:54:19,045] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-07 21:54:19,728] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 21:54:35,616] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-07 21:54:36,206] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 21:54:46,987] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-07 21:54:47,567] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 21:55:31,172] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\urls.py changed, reloading.
+[2025-10-07 21:55:31,817] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:01:28,208] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-10-07 22:01:28,840] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:01:52,868] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-10-07 22:01:53,364] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:05:04,874] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\apps.py changed, reloading.
+[2025-10-07 22:05:05,273] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:07:17,086] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-10-07 22:07:17,642] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:07:37,467] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-10-07 22:07:38,076] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 22:07:49,877] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-10-07 22:07:50,507] INFO django.utils.autoreload Watching for file changes with StatReloader

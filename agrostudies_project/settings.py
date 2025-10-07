@@ -47,6 +47,13 @@ INSTALLED_APPS = [
     'django_crontab',  # For scheduled tasks
 ]
 
+# Add caching apps if available
+try:
+    import cachalot
+    INSTALLED_APPS.append('cachalot')  # Automatic ORM caching
+except ImportError:
+    pass
+
 # Add debug toolbar only in DEBUG mode
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
@@ -249,6 +256,56 @@ if not DEBUG:
 # ----- Rate Limiting Configuration -----
 # Disable rate limiting during tests to avoid false failures
 RATELIMIT_ENABLE = 'test' not in sys.argv
+
+# ----- Caching Configuration -----
+REDIS_URL = os.getenv('REDIS_URL', '')
+
+# Use Redis if available, otherwise fallback to local memory cache
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'SERIALIZER': 'django_redis.serializers.json.JSONSerializer',
+                'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+                'CONNECTION_POOL_KWARGS': {
+                    'max_connections': 50,
+                    'retry_on_timeout': True,
+                }
+            },
+            'KEY_PREFIX': 'agrostudies',
+            'VERSION': 1,
+            'TIMEOUT': 300,  # 5 minutes default
+        }
+    }
+    # Session caching (faster than database sessions)
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+    SESSION_CACHE_ALIAS = 'default'
+else:
+    # Fallback to local memory cache for development
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'agrostudies-cache',
+            'TIMEOUT': 300,
+            'OPTIONS': {
+                'MAX_ENTRIES': 1000,
+            }
+        }
+    }
+
+SESSION_COOKIE_AGE = 86400  # 24 hours
+
+# Cache time to live settings
+CACHE_TTL = {
+    'default': 300,      # 5 minutes
+    'programs': 600,     # 10 minutes  
+    'candidates': 300,   # 5 minutes
+    'user_data': 900,    # 15 minutes
+    'static_content': 3600,  # 1 hour
+}
 
 # ----- Sentry Error Tracking -----
 SENTRY_DSN = os.getenv('SENTRY_DSN', '')

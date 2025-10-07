@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/guest-landing.css' %}">
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.classList.add('guest-landing-page');
+});
+</script>
 {% endblock %}
 
 {% block content %}
