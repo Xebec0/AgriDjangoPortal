@@ -19,9 +19,9 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 # Allow hosts based on environment
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '0.0.0.0,localhost,127.0.0.1').split(',')
-if not DEBUG:
-    ALLOWED_HOSTS.append('agridjangoportal.onrender.com')
-else:
+# Always include Render domain for deployment
+ALLOWED_HOSTS.append('agridjangoportal.onrender.com')
+if DEBUG:
     # Development hosts
     ALLOWED_HOSTS.extend(['97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev', '.replit.dev'])
 
@@ -30,9 +30,12 @@ CSRF_TRUSTED_ORIGINS = [
     'https://agridjangoportal.onrender.com',
     'https://97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev',
     'https://*.replit.dev',
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
-    'http://127.0.0.1:50804',
+    'https://127.0.0.1:8000',
+    'https://localhost:8000',
+    'https://127.0.0.1:8000',
+    'https://localhost:8000',
+    'https://127.0.0.1:50804',
+    'https://127.0.0.1:53543',  # Added for development server
 ]
 
 # Application definition
@@ -57,6 +60,12 @@ except ImportError:
 # Add debug toolbar only in DEBUG mode
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
+    # Enable local HTTPS dev server (only if installed)
+    try:
+        import sslserver  # noqa: F401
+        INSTALLED_APPS.append('sslserver')
+    except ImportError:
+        pass
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -236,18 +245,24 @@ CRONJOBS = [
 CRONTAB_COMMAND_PREFIX = 'DJANGO_SETTINGS_MODULE=agrostudies_project.settings'
 CRONTAB_COMMAND_SUFFIX = '2>&1'
 
-# ----- Production Security Settings -----
-if not DEBUG:
+# ----- Security Settings -----
+# Explicitly disable SSL redirect in development to prevent HTTP/HTTPS conflicts
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+# Production Security Settings
+else:
     # HTTPS/SSL Settings
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    
+
     # Security Headers
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
-    
+
     # HSTS Settings
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True

@@ -7,6 +7,8 @@ Pillow>=9.5.0
 
 # For improved development experience
 django-debug-toolbar>=4.2.0
+# Local HTTPS dev server
+django-sslserver>=0.22.0
 
 # For deployment
 gunicorn>=21.2.0

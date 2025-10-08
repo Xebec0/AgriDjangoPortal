@@ -452,6 +452,8 @@ class CandidateSearchForm(forms.Form):
     # Removed university and passport fields
     specialization = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     status = forms.CharField(required=False, widget=forms.Select(choices=STATUSES, attrs={'class': 'form-control'}))
+    start_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='From Date')
+    end_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='To Date')
     
     def __init__(self, *args, **kwargs):
         super(CandidateSearchForm, self).__init__(*args, **kwargs)

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
+{% load static %}
 
 {% block title %}Candidates - Agrostudies Registration System{% endblock %}
 
@@ -17,19 +18,35 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="exportDropdown">
                         <li>
-                            <a class="dropdown-item" href="?{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}export=csv">
-                                <i class="fas fa-file-csv me-1"></i> CSV Format
-                            </a>
+                            <button class="dropdown-item export-selected" data-format="csv">
+                                <i class="fas fa-file-csv me-1"></i> Export Selected as CSV
+                            </button>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="?{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}export=excel">
-                                <i class="fas fa-file-excel me-1"></i> Excel Format
-                            </a>
+                            <button class="dropdown-item export-selected" data-format="excel">
+                                <i class="fas fa-file-excel me-1"></i> Export Selected as Excel
+                            </button>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="?{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}export=pdf">
-                                <i class="fas fa-file-pdf me-1"></i> PDF Format
-                            </a>
+                            <button class="dropdown-item export-selected" data-format="pdf">
+                                <i class="fas fa-file-pdf me-1"></i> Export Selected as PDF
+                            </button>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <button class="dropdown-item export-all" data-format="csv">
+                                <i class="fas fa-file-csv me-1"></i> Export All as CSV
+                            </button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item export-all" data-format="excel">
+                                <i class="fas fa-file-excel me-1"></i> Export All as Excel
+                            </button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item export-all" data-format="pdf">
+                                <i class="fas fa-file-pdf me-1"></i> Export All as PDF
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +58,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form method="get" class="mb-4">
+            <form method="get" class="mb-4" id="candidateFilterForm">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group mb-2">
@@ -61,6 +78,18 @@
                             {{ form.status }}
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group mb-2">
+                            <label for="start_date">From Date</label>
+                            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ request.GET.start_date|default:'' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group mb-2">
+                            <label for="end_date">To Date</label>
+                            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ request.GET.end_date|default:'' }}">
+                        </div>
+                    </div>
                     <div class="col-md-3 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary mb-2 me-2">
                             <i class="fas fa-search"></i> Search
@@ -77,6 +106,11 @@
                     <table class="table table-bordered table-hover">
                         <thead class="table-light">
                             <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="selectAll">
+                                    </div>
+                                </th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Gender</th>
@@ -93,6 +127,11 @@
                         <tbody>
                             {% for candidate in page_obj %}
                                 <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input candidate-select" name="selected_candidates" value="{{ candidate.id }}">
+                                        </div>
+                                    </td>
                                     <td>
                                         <a href="{% url 'view_candidate' candidate.id %}">
                                             {{ candidate.first_name }} {{ candidate.last_name }}

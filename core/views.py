@@ -646,16 +646,37 @@ def candidate_list(request):
         status = form.cleaned_data.get('status')
         if status:
             candidates = candidates.filter(status=status)
+
+        # Filter by date range
+        start_date = form.cleaned_data.get('start_date')
+        end_date = form.cleaned_data.get('end_date')
+        if start_date:
+            candidates = candidates.filter(created_at__date__gte=start_date)
+        if end_date:
+            from datetime import timedelta
+            # Include the entire end date by adding one day and using less than
+            end_date_next = end_date + timedelta(days=1)
+            candidates = candidates.filter(created_at__date__lt=end_date_next)
     
     # Check if export is requested
     export_format = request.GET.get('export')
+    selected_candidates = request.GET.get('selected')
+    
     if export_format:
+        if selected_candidates:
+            # Filter by selected candidate IDs
+            selected_ids = [int(id) for id in selected_candidates.split(',')]
+            export_queryset = candidates.filter(id__in=selected_ids)
+        else:
+            # Export all filtered candidates
+            export_queryset = candidates
+            
         if export_format == 'csv':
-            return export_candidates_csv(request, candidates)
+            return export_candidates_csv(request, export_queryset)
         elif export_format == 'excel':
-            return export_candidates_excel(request, candidates)
+            return export_candidates_excel(request, export_queryset)
         elif export_format == 'pdf':
-            return export_candidates_pdf(request, candidates)
+            return export_candidates_pdf(request, export_queryset)
     
     # Pagination
     paginator = Paginator(candidates, 15)  # Show 15 candidates per page

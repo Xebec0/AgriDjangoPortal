@@ -12,6 +12,56 @@ document.addEventListener('DOMContentLoaded', function() {
     setupModalSwitching();
 });
 
+// CSRF helpers
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function getCSRFToken() {
+    const token = getCookie('csrftoken');
+    if (!token) {
+        // Try to get it from the form if available
+        const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        if (csrfInput) {
+            return csrfInput.value;
+        }
+    }
+    return token;
+}
+
+// Safely parse JSON without reading the body twice
+async function parseJsonSafe(response, contextLabel) {
+    const clone = response.clone();
+    try {
+        if (!response.ok) {
+            const text = await response.text();
+            console.error(`${contextLabel} request failed`, { status: response.status, text });
+            throw new Error(text || `HTTP ${response.status}`);
+        }
+        return await response.json();
+    } catch (e) {
+        if (e.message) {
+            throw e;
+        }
+        // Fallback to text from the clone so we don't read the body twice
+        const text = await clone.text();
+        console.error(`${contextLabel} response not JSON`, { status: response.status, text });
+        throw new Error(text || `HTTP ${response.status}`);
+    }
+}
+
 /**
  * Setup the login modal functionality
  */
@@ -91,13 +141,23 @@ function setupLoginModal() {
                 // Get form data
                 const formData = new FormData(form);
                 
+                // Convert FormData to URLSearchParams for proper form submission
+                const params = new URLSearchParams();
+                for (const pair of formData.entries()) {
+                    params.append(pair[0], pair[1]);
+                }
+                
                 // Submit the form via AJAX
-                fetch(form.action, {
+                fetch('/api/ajax-login/', {
                     method: 'POST',
-                    body: formData,
+                    body: params,
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    credentials: 'same-origin',
+                    mode: 'same-origin'
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -111,33 +171,22 @@ function setupLoginModal() {
                         const modalInstance = bootstrap.Modal.getInstance(loginModal);
                         modalInstance.hide();
                         
-                        // Redirect if specified
-                        if (data.redirect) {
-                            setTimeout(function() {
+                        // Redirect or reload
+                        setTimeout(function() {
+                            if (data.redirect) {
                                 window.location.href = data.redirect;
-                            }, 500);
-                        } else {
-                            // Reload the page
-                            setTimeout(function() {
+                            } else {
                                 window.location.reload();
-                            }, 500);
-                        }
+                            }
+                        }, 500);
                     } else {
                         // Show error messages
                         if (errorElement) {
-                            errorElement.innerHTML = '';
-                            
-                            if (data.errors.__all__) {
-                                errorElement.innerHTML = data.errors.__all__.join('<br>');
-                            } else {
-                                // Loop through all errors
-                                let errorHtml = '';
-                                for (const [field, fieldErrors] of Object.entries(data.errors)) {
-                                    errorHtml += fieldErrors.join('<br>') + '<br>';
-                                }
-                                errorElement.innerHTML = errorHtml;
+                            let errorMessage = 'Login failed. Please check your credentials.';
+                            if (data.errors && data.errors.__all__) {
+                                errorMessage = data.errors.__all__.join('<br>');
                             }
-                            
+                            errorElement.innerHTML = errorMessage;
                             errorElement.style.display = 'block';
                         }
                         
@@ -151,7 +200,11 @@ function setupLoginModal() {
                     
                     // Show error message
                     if (errorElement) {
-                        errorElement.innerHTML = 'An error occurred. Please try again.';
+                        let errorMessage = 'An error occurred during login. Please try again.';
+                        if (error.message && !error.message.includes('<!DOCTYPE html>')) {
+                            errorMessage = error.message;
+                        }
+                        errorElement.innerHTML = errorMessage;
                         errorElement.style.display = 'block';
                     }
                     
@@ -248,10 +301,12 @@ function setupRegisterModal() {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    redirect: 'manual'
                 })
-                .then(response => response.json())
+                .then((response) => parseJsonSafe(response, 'Register'))
                 .then(data => {
                     if (data.success) {
                         // Show success toast
@@ -395,10 +450,12 @@ function setupAdminRegisterModal() {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCSRFToken() || ''
+                    },
+                    redirect: 'manual'
                 })
-                .then(response => response.json())
+                .then((response) => parseJsonSafe(response, 'Admin register'))
                 .then(data => {
                     if (data.success) {
                         // Show success toast
@@ -442,10 +499,10 @@ function setupAdminRegisterModal() {
                 })
                 .catch(error => {
                     console.error('Error during admin registration:', error);
-                    
-                    // Show error message
+                    // Show error message with details when available
                     if (errorElement) {
-                        errorElement.innerHTML = 'An error occurred. Please try again.';
+                        const msg = (typeof error === 'string') ? error : (error && error.message) ? error.message : 'An error occurred. Please try again.';
+                        errorElement.innerHTML = msg;
                         errorElement.style.display = 'block';
                     }
                     
