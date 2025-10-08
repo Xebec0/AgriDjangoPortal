@@ -3,7 +3,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const fileFields = [
-        'id_tor', 'id_nc2_tesda', 'id_diploma', 'id_good_moral', 'id_nbi_clearance'
+        'id_tor', 'id_nc2_tesda', 'id_good_moral', 'id_nbi_clearance'
     ];
     const maxSize = 5 * 1024 * 1024; // 5MB
     const allowedType = 'application/pdf';

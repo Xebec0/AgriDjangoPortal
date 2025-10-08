@@ -31113,3 +31113,515 @@ ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.Anonym
 [2025-10-07 22:17:47,841] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
 [2025-10-07 22:21:55,830] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\cache_utils.py changed, reloading.
 [2025-10-07 22:21:56,577] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:24:28,700] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=176
+[2025-10-08 12:24:34,297] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:24:35,357] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=252
+[2025-10-08 12:24:35,358] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=209
+[2025-10-08 12:24:35,461] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user= ip=127.0.0.1 duration_ms=15
+[2025-10-08 12:24:35,461] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user= ip=127.0.0.1 duration_ms=17
+[2025-10-08 12:24:35,462] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user= ip=127.0.0.1 duration_ms=16
+[2025-10-08 12:24:37,033] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:24:38,463] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:24:54,909] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=18
+[2025-10-08 12:24:55,127] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:24:58,717] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:24:59,413] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:24:59,454] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=9
+[2025-10-08 12:25:02,673] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:25:02,889] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:25:06,496] INFO core.middleware request POST /api/ajax-login/ 200 user= ip=127.0.0.1 duration_ms=380
+[2025-10-08 12:25:06,717] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:25:10,190] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=595
+[2025-10-08 12:25:10,477] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:25:10,937] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=149
+[2025-10-08 12:25:16,886] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=36
+[2025-10-08 12:25:16,906] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 12:31:06,992] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:31:07,988] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:08,430] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:08,574] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:08,740] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:08,892] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:09,052] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:09,175] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:09,380] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:09,540] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:09,701] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:09,877] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:11,020] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:11,204] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:11,348] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:11,503] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:11,676] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:11,837] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:40,277] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:31:41,494] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:42,259] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:31:43,069] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:31:43,802] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:31:44,361] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:31:44,532] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:32:06,197] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:37:25,114] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:37:25,707] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=65
+[2025-10-08 12:37:25,727] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:37:27,786] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:37:29,812] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 12:37:30,747] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:37:30,759] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:37:32,851] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 12:37:33,072] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 12:37:35,770] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:37:35,784] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:37:37,903] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=669
+[2025-10-08 12:37:38,170] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-08 12:37:38,503] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=14
+[2025-10-08 12:37:40,796] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:37:40,809] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:37:41,339] ERROR django.request Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\sites.py", line 261, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py", line 21, in custom_admin_index
+    from django.contrib.admin.views.main import index
+ImportError: cannot import name 'index' from 'django.contrib.admin.views.main' (C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\views\main.py)
+[2025-10-08 12:37:41,343] INFO core.middleware request GET /admin/ 500 user=admin ip=127.0.0.1 duration_ms=74
+[2025-10-08 12:37:41,386] ERROR django.request Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\sites.py", line 261, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py", line 21, in custom_admin_index
+    from django.contrib.admin.views.main import index
+ImportError: cannot import name 'index' from 'django.contrib.admin.views.main' (C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\views\main.py)
+[2025-10-08 12:37:41,388] INFO core.middleware request GET /admin/ 500 user=admin ip=127.0.0.1 duration_ms=47
+[2025-10-08 12:37:45,826] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:37:45,840] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:37:51,607] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:37:51,620] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:37:57,606] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:37:57,619] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:02,648] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:38:02,661] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:05,795] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:38:06,409] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:38:07,687] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:38:07,704] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:12,001] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:38:12,557] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:38:13,137] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:38:13,153] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:18,179] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:38:18,192] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:23,206] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:38:23,224] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:28,238] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:38:28,257] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:33,277] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:38:33,292] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:34,609] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:38:35,180] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:38:38,317] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=10
+[2025-10-08 12:38:38,334] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:43,352] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:38:43,364] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:48,375] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:38:48,387] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:53,408] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:38:53,420] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:38:58,435] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:38:58,448] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:00,956] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=198
+[2025-10-08 12:39:03,460] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:03,473] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:08,498] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:08,511] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:10,778] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=312
+[2025-10-08 12:39:10,779] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=391
+[2025-10-08 12:39:10,997] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:39:13,536] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:13,549] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:13,804] INFO core.middleware request POST /admin/core/activitylog/run-backup/ 302 user=admin ip=127.0.0.1 duration_ms=35
+[2025-10-08 12:39:13,940] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=122
+[2025-10-08 12:39:14,043] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:39:17,259] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:18,563] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:18,575] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:22,766] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=10
+[2025-10-08 12:39:23,585] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:23,598] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:24,434] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:26,268] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:27,228] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:28,452] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:28,613] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:28,625] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:29,458] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:39:33,651] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:33,663] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:37,765] INFO core.middleware request GET /admin/auth/group/ 200 user=admin ip=127.0.0.1 duration_ms=9
+[2025-10-08 12:39:37,806] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:38,674] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:38,686] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:43,706] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:43,718] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:48,734] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:48,746] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:53,759] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:53,772] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:39:58,795] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:39:58,808] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:03,819] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:40:03,831] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:08,842] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:40:08,854] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:12,725] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:40:13,332] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:40:13,883] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:40:13,899] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:17,892] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:40:18,428] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:40:18,929] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:40:18,946] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:23,956] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:40:23,969] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:28,988] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:40:29,000] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:34,012] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:40:34,026] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:38,194] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=142
+[2025-10-08 12:40:39,038] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:40:39,051] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:44,599] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:40:44,612] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:50,594] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:40:50,605] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:56,602] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:40:56,615] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:40:58,538] INFO core.middleware request GET /admin/core/candidate/ 200 user=admin ip=127.0.0.1 duration_ms=36
+[2025-10-08 12:40:58,590] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:41:02,604] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:41:02,625] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:04,017] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=13
+[2025-10-08 12:41:04,876] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:41:07,229] INFO core.middleware request GET /admin/core/agricultureprogram/ 200 user=admin ip=127.0.0.1 duration_ms=72
+[2025-10-08 12:41:07,296] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:41:08,591] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:08,604] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:14,322] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:14,603] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:41:14,618] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:18,908] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:20,597] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:20,609] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:23,346] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:26,601] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:26,613] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:32,609] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:41:32,629] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:38,601] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:38,614] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:42,881] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=125
+[2025-10-08 12:41:42,995] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-08 12:41:44,599] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:44,612] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:47,537] INFO core.middleware request POST /admin/core/activitylog/run-backup/ 302 user=admin ip=127.0.0.1 duration_ms=27
+[2025-10-08 12:41:47,670] INFO core.middleware request GET /admin/core/activitylog/ 200 user=admin ip=127.0.0.1 duration_ms=117
+[2025-10-08 12:41:47,764] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 12:41:50,607] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:41:50,621] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:41:55,631] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:41:55,643] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:00,664] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:00,676] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:05,691] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:05,703] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:10,722] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:10,735] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:15,748] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:15,761] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:20,776] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:20,793] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:25,803] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:42:25,816] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:30,828] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:30,841] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:35,854] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:42:35,870] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:40,892] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:40,905] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:45,921] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:42:45,934] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:50,945] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:42:50,957] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:42:55,973] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:42:55,986] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:01,003] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:01,015] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:06,030] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:43:06,043] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:11,066] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:11,078] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:16,092] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:43:16,105] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:21,116] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:21,128] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:26,151] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:26,163] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:31,174] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:31,186] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:36,201] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:36,213] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:41,223] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:41,236] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:46,250] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:43:46,263] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:51,277] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:51,290] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:43:56,300] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:43:56,313] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:01,337] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:01,352] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:06,374] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:06,387] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:11,928] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:44:11,946] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:16,988] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:17,001] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:22,014] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:22,027] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:27,078] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:44:27,092] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:32,118] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:44:32,132] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:37,149] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:37,161] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:42,176] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:44:42,190] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:47,202] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:47,215] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:52,224] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:44:52,238] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:44:57,248] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:44:57,264] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:02,280] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:45:02,293] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:07,302] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:45:07,316] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:12,327] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:12,339] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:17,360] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:17,373] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:22,385] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:45:22,401] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:27,420] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:45:27,434] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:32,446] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:32,461] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:37,481] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:37,494] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:42,504] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:45:42,517] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:47,542] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:47,557] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:52,577] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:52,590] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:45:57,602] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:45:57,615] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:02,631] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:46:02,646] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:07,658] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:46:07,670] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:12,685] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:46:12,697] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:17,708] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:46:17,724] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:22,735] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:46:22,748] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:27,760] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:46:27,773] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:32,787] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:46:32,799] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:37,856] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=51
+[2025-10-08 12:46:37,869] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:42,881] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:46:42,894] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:47,908] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:46:47,921] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:52,931] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:46:52,944] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:46:57,964] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:46:57,978] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:02,997] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:03,013] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:08,608] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:08,621] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:14,600] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:14,613] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:20,602] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:47:20,620] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:26,608] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:47:26,623] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:32,597] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:47:32,610] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:38,602] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:38,614] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:44,609] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:44,622] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:50,600] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:50,613] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:47:56,606] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:47:56,619] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:02,596] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:02,609] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:08,600] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:08,613] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:14,599] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:14,611] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:20,596] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:20,609] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:26,594] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:48:26,607] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:32,603] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:32,616] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:38,599] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:38,613] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:44,606] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:48:44,620] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:50,606] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:50,619] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:48:56,601] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:48:56,614] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:02,604] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:49:02,618] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:08,596] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:49:08,609] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:14,599] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=4
+[2025-10-08 12:49:14,612] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:20,595] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 12:49:20,611] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:26,597] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 12:49:26,615] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:32,593] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:49:32,606] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:38,595] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:49:38,615] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:49:44,595] INFO core.middleware request GET /v1/models 404 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:49:44,609] WARNING django.request Not Found: /v1/models
+[2025-10-08 12:55:57,276] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-08 12:56:58,522] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 12:56:59,180] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 12:57:12,312] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=13
+[2025-10-08 12:57:12,337] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-08 12:58:54,329] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=21
+[2025-10-08 12:59:32,415] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:43,435] INFO core.middleware request GET /admin/core/ 200 user=admin ip=127.0.0.1 duration_ms=14
+[2025-10-08 12:59:44,527] INFO core.middleware request GET /admin/core/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:45,442] INFO core.middleware request GET /admin/auth/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:46,086] INFO core.middleware request GET /admin/auth/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:46,448] INFO core.middleware request GET /admin/auth/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:47,483] INFO core.middleware request GET /admin/core/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:48,818] INFO core.middleware request GET /admin/auth/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:49,671] INFO core.middleware request GET /admin/core/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 12:59:51,338] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=23
+[2025-10-08 12:59:51,377] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-08 12:59:55,471] INFO core.middleware request GET /admin/auth/user/1/change/ 200 user=admin ip=127.0.0.1 duration_ms=180
+[2025-10-08 12:59:55,527] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-08 13:00:09,850] INFO core.middleware request GET /admin/core/agricultureprogram/ 200 user=admin ip=127.0.0.1 duration_ms=33
+[2025-10-08 13:00:09,894] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:00:16,431] INFO core.middleware request GET /admin/core/agricultureprogram/4/change/ 200 user=admin ip=127.0.0.1 duration_ms=42
+[2025-10-08 13:00:16,470] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-08 13:00:26,388] INFO core.middleware request GET /admin/core/agricultureprogram/ 200 user=admin ip=127.0.0.1 duration_ms=19
+[2025-10-08 13:00:26,424] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:00:35,344] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 13:00:36,010] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:02:44,973] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 13:02:45,524] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:02:46,028] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=146
+[2025-10-08 13:02:46,098] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=admin ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:02:46,106] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=admin ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:02:46,110] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=admin ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:02:50,144] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:02:55,071] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 13:02:55,976] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-08 13:02:57,130] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=29
+[2025-10-08 13:03:01,418] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=14
+[2025-10-08 13:03:54,417] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 13:03:55,019] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 13:03:55,211] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:03:55,672] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:04:10,812] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=177
+[2025-10-08 13:06:19,759] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=187
+[2025-10-08 13:07:11,460] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=54
+[2025-10-08 13:07:15,399] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=24
+[2025-10-08 13:07:15,431] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-08 13:07:27,495] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:07:27,720] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:07:31,900] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=463
+[2025-10-08 13:07:32,155] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:07:32,469] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-08 13:07:37,558] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=17
+[2025-10-08 13:07:51,185] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-08 13:07:53,031] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=10
+[2025-10-08 13:07:59,300] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=15
+[2025-10-08 13:07:59,319] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:10:02,570] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:10:03,425] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:10:03,604] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:10:04,559] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=39
+[2025-10-08 13:10:04,789] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:10:05,965] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:10:06,179] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:10:07,622] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:10:07,850] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:11:07,859] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:11:08,539] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:12:28,818] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 13:12:28,865] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-08 13:12:29,664] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:13:58,577] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:14:31,724] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=18
+[2025-10-08 13:14:48,880] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:14:49,106] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:15:53,149] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:15:55,366] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=8
+[2025-10-08 13:16:21,879] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:16:22,098] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:16:26,149] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=670
+[2025-10-08 13:16:26,421] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:16:26,748] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=24
+[2025-10-08 13:16:26,795] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-08 13:16:26,797] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:16:26,811] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-08 13:16:55,074] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=36
+[2025-10-08 13:16:55,092] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:17:16,883] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 13:17:18,732] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=9
+[2025-10-08 13:17:19,906] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=132
+[2025-10-08 13:17:23,006] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=5
+[2025-10-08 13:17:23,954] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:17:24,704] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:17:25,378] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=6
+[2025-10-08 13:17:27,350] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-08 13:17:28,074] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=5

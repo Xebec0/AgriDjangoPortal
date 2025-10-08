@@ -268,15 +268,31 @@
     flex-wrap: wrap;
 }
 
-/* Global Navbar Transparency Override */
+/* Global Navbar - Clean but Visible Design */
 .guest-landing-page .navbar,
 .guest-landing-page .navbar-dark,
 .guest-landing-page .bg-dark {
-    background: transparent !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
     border: none !important;
-    backdrop-filter: none !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Override Bootstrap's navbar-dark text colors - Force visibility */
+.guest-landing-page .navbar-dark .navbar-nav .nav-link,
+.guest-landing-page .navbar-dark .navbar-brand,
+.guest-landing-page .navbar .navbar-nav .nav-link,
+.guest-landing-page .navbar .navbar-brand {
+    color: #2c5530 !important;
+    font-weight: 600 !important;
+}
+
+.guest-landing-page .navbar-dark .navbar-nav .nav-link:hover,
+.guest-landing-page .navbar-dark .navbar-nav .nav-link:focus,
+.guest-landing-page .navbar .navbar-nav .nav-link:hover,
+.guest-landing-page .navbar .navbar-nav .nav-link:focus {
+    color: #1e3a21 !important;
 }
 
 .guest-landing-page .navbar .container,
@@ -285,17 +301,40 @@
     background-color: transparent !important;
 }
 
+/* Force navbar text to be visible with stronger selectors */
+.guest-landing-page .navbar-brand,
+.guest-landing-page .navbar-dark .navbar-brand,
+body.guest-landing-page .navbar-dark .navbar-brand {
+    color: #2c5530 !important;
+    font-weight: 700 !important;
+}
+
+.guest-landing-page .navbar-nav .nav-link,
+.guest-landing-page .navbar-dark .navbar-nav .nav-link,
+body.guest-landing-page .navbar-dark .navbar-nav .nav-link,
+.guest-landing-page nav.navbar-dark .navbar-nav .nav-link {
+    color: #2c5530 !important;
+    font-weight: 700 !important;
+}
+
+.guest-landing-page .navbar-nav .nav-link:hover,
+.guest-landing-page .navbar-dark .navbar-nav .nav-link:hover,
+body.guest-landing-page .navbar-dark .navbar-nav .nav-link:hover,
+.guest-landing-page nav.navbar-dark .navbar-nav .nav-link:hover {
+    color: #1e3a21 !important;
+}
+
 /* Enhanced Mobile & Tablet Responsive */
 @media (max-width: 576px) {
-    /* Navbar - Mobile - Complete Overhaul */
-    .navbar {
+    /* Navbar - Mobile - Clean Visible Design */
+    .guest-landing-page .navbar {
         padding: 0.4rem 0.75rem !important;
         min-height: auto !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        backdrop-filter: none !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
         border-bottom: none !important;
-        box-shadow: none !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
         border: none !important;
     }
 
@@ -324,18 +363,19 @@
         border-radius: 6px !important;
     }
 
-    .navbar-brand {
+    .guest-landing-page .navbar-brand {
         font-size: 1.15rem !important;
         padding: 0 !important;
         margin: 0 !important;
         font-weight: 600 !important;
-        color: #333 !important;
+        color: #2c5530 !important;
     }
 
-    .navbar-nav .nav-link {
+    .guest-landing-page .navbar-nav .nav-link {
         font-size: 0.9rem !important;
         padding: 0.5rem 0.75rem !important;
-        color: #333 !important;
+        color: #2c5530 !important;
+        font-weight: 600 !important;
     }
 
     .navbar-toggler {
@@ -475,13 +515,13 @@
     }
 }
 @media (min-width: 577px) and (max-width: 768px) {
-    .navbar {
+    .guest-landing-page .navbar {
         padding: 0.6rem 1rem !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        backdrop-filter: none !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
         border-bottom: none !important;
-        box-shadow: none !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
         border: none !important;
     }
 
@@ -500,13 +540,14 @@
         width: 32px !important;
     }
 
-    .navbar-brand {
+    .guest-landing-page .navbar-brand {
         font-size: 1.25rem !important;
-        color: #333 !important;
+        color: #2c5530 !important;
     }
 
-    .navbar-nav .nav-link {
-        color: #333 !important;
+    .guest-landing-page .navbar-nav .nav-link {
+        color: #2c5530 !important;
+        font-weight: 600 !important;
     }
 
     .navbar-toggler {
