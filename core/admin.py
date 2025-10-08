@@ -6,20 +6,6 @@ from django.core.management import call_command
 from django.utils import timezone
 from datetime import timedelta
 from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog
-from django.contrib.auth.models import User
-
-
-# Customize admin site
-admin.site.site_header = "AgroStudies Administration"
-admin.site.site_title = "AgroStudies Admin"
-admin.site.index_title = "AgroStudies Admin Dashboard"
-
-# Remove Groups from admin interface
-from django.contrib.auth.models import Group
-admin.site.unregister(Group)
-
-# Note: Custom admin index template will handle the dashboard statistics
-# The template override approach is more reliable than view override
 
 
 @admin.register(Profile)

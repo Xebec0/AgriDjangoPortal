@@ -150,18 +150,14 @@ class Candidate(models.Model):
     # Status choices
     DRAFT = 'Draft'
     NEW = 'New'
-    FIXED = 'Fixed'
     APPROVED = 'Approved'
     REJECTED = 'Rejected'
-    QUIT = 'Quit'
     
     STATUS_CHOICES = [
         (DRAFT, 'Draft'),
         (NEW, 'New'),
-        (FIXED, 'Fixed'),
         (APPROVED, 'Approved'),
         (REJECTED, 'Rejected'),
-        (QUIT, 'Quit'),
     ]
     
     # Basic information

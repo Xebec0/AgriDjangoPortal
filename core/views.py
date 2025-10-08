@@ -359,19 +359,7 @@ def profile(request):
 
 
 def program_list(request):
-    """List all available programs with intelligent caching"""
-    # Create cache key based on search parameters
-    cache_key_params = []
-    if request.GET:
-        cache_key_params = [f"{k}={v}" for k, v in sorted(request.GET.items())]
-    cache_key = f"programs_list:{'_'.join(cache_key_params)}" if cache_key_params else "programs_list:all"
-    
-    # Try to get from cache first (for non-authenticated users or staff)
-    if not request.user.is_authenticated or request.user.is_staff:
-        cached_data = cache.get(cache_key)
-        if cached_data:
-            return render(request, 'program_list.html', cached_data)
-    
+    """List all available programs"""
     programs = AgricultureProgram.objects.select_related().all().order_by('-start_date')
     form = ProgramSearchForm(request.GET)
 
@@ -415,22 +403,13 @@ def program_list(request):
         'form': form,
     }
     
-    # Cache the context for non-authenticated users or staff (10 minutes)
-    if not request.user.is_authenticated or request.user.is_staff:
-        cache.set(cache_key, context, timeout=getattr(settings, 'CACHE_TTL', {}).get('programs', 600))
-    
+    # Don't cache the full context - paginator objects can't be pickled
+    # Note: Caching disabled here to avoid pickling errors with Django objects
     return render(request, 'program_list.html', context)
 
 
 def program_detail(request, program_id):
-    """Show details of a specific program with caching"""
-    # Cache program data for anonymous users
-    cache_key = f"program_detail:{program_id}"
-    if not request.user.is_authenticated:
-        cached_program = cache.get(cache_key)
-        if cached_program:
-            return render(request, 'program_detail.html', cached_program)
-    
+    """Show details of a specific program"""
     program = get_object_or_404(AgricultureProgram.objects.select_related(), id=program_id)
     
     # Check if user is already applied/registered (Registration or Candidate)
@@ -689,10 +668,8 @@ def candidate_list(request):
         'status_colors': {
             'Draft': 'secondary',
             'New': 'info',
-            'Fixed': 'primary',
             'Approved': 'success',
-            'Rejected': 'danger',
-            'Quit': 'warning'
+            'Rejected': 'danger'
         }
     })
 
@@ -1069,10 +1046,8 @@ def view_candidate(request, candidate_id):
     status_colors = {
         'Draft': 'secondary',
         'New': 'info',
-        'Fixed': 'primary',
         'Approved': 'success',
-        'Rejected': 'danger',
-        'Quit': 'warning'
+        'Rejected': 'danger'
     }
 
     return render(request, 'candidate_detail.html', {
@@ -1145,10 +1120,8 @@ def program_registrants(request, program_id):
         'status_colors': {
             'Draft': 'secondary',
             'New': 'info',
-            'Fixed': 'primary',
             'Approved': 'success',
-            'Rejected': 'danger',
-            'Quit': 'warning'
+            'Rejected': 'danger'
         }
     })
 

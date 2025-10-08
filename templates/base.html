@@ -263,7 +263,7 @@
                 <a href="{% url 'index' %}" class="me-3">
                     <img src="{% static 'images/logo-agrostudies.png' %}" alt="AgroStudies Logo" height="32" style="border-radius: 8px;">
                 </a>
-                <a class="navbar-brand" href="{% url 'index' %}" style="color: #2c5530 !important; font-weight: 700 !important;">AgroStudies</a>
+                <a class="navbar-brand" href="{% url 'index' %}">AgroStudies</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -271,18 +271,18 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}" style="color: #2c5530 !important; font-weight: 700 !important;">Home</a>
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'program_list' %}" style="color: #2c5530 !important; font-weight: 700 !important;">Programs</a>
+                        <a class="nav-link" href="{% url 'program_list' %}">Programs</a>
                     </li>
                     {% if user.is_staff %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'candidate_list' %}" style="color: #2c5530 !important; font-weight: 700 !important;">Candidates</a>
+                        <a class="nav-link" href="{% url 'candidate_list' %}">Candidates</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'help' %}" style="color: #2c5530 !important; font-weight: 700 !important;">Help</a>
+                        <a class="nav-link" href="{% url 'help' %}">Help</a>
                     </li>
                     <!-- Temporarily hidden Contact link (keep for future use) -->
                     <li class="nav-item d-none">
