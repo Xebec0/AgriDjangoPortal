@@ -16,12 +16,19 @@
                 <a href="{% url 'candidate_list' %}" class="action-btn secondary">
                     <i class="fas fa-arrow-left"></i> Back to List
                 </a>
-                <a href="{% url 'edit_candidate' candidate.id %}" class="action-btn primary">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-                <a href="{% url 'delete_candidate' candidate.id %}" class="action-btn danger">
-                    <i class="fas fa-trash"></i> Delete
-                </a>
+                {% if not user.is_staff and user == candidate.created_by or user.email == candidate.email %}
+                    <a href="{% url 'cancel_application' candidate.id %}" class="action-btn danger">
+                        <i class="fas fa-times-circle"></i> Cancel Application
+                    </a>
+                {% endif %}
+                {% if user.is_staff %}
+                    <a href="{% url 'edit_candidate' candidate.id %}" class="action-btn primary">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'delete_candidate' candidate.id %}" class="action-btn danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                {% endif %}
             </div>
         </div>
         

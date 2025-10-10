@@ -44,6 +44,71 @@ from .decorators import ajax_login_required
 # Initialize logger
 logger = logging.getLogger(__name__)
 
+@login_required
+def cancel_application(request, candidate_id):
+    """Cancel a candidate's application to a program and restore program capacity."""
+    # Get candidate record ensuring it belongs to the current user
+    candidate = get_object_or_404(
+        Candidate.objects.filter(
+            Q(created_by=request.user) | Q(email=request.user.email),
+            id=candidate_id
+        )
+    )
+    
+    if request.method == 'POST':
+        try:
+            with transaction.atomic():
+                # Get program for notification before deletion
+                program = candidate.program
+                program_title = program.title if program else 'Unknown Program'
+                
+                # Increment program capacity if program exists
+                if program:
+                    AgricultureProgram.objects.filter(id=program.id).update(capacity=F('capacity') + 1)
+                
+                # Delete the candidate application
+                candidate.delete()
+                
+                # Create a notification for the user
+                Notification.add_notification(
+                    user=request.user,
+                    message=f"Your application for {program_title} has been cancelled successfully.",
+                    notification_type=Notification.INFO,
+                )
+                
+                messages.success(request, f'Your application for {program_title} has been cancelled successfully.')
+                
+                # Clear related cache entries
+                try:
+                    cache_keys = [
+                        'candidate_list:all',
+                        f'candidate_detail:{candidate_id}',
+                    ]
+                    if program:
+                        cache_keys.extend([
+                            f'program_candidates:{program.id}',
+                            f'program_detail:{program.id}',
+                            f'program_stats:{program.id}'
+                        ])
+                    
+                    for key in cache_keys:
+                        try:
+                            cache.delete(key)
+                        except Exception as e:
+                            logger.warning(f"Cache clear failed for key {key}: {e}")
+                except Exception as e:
+                    logger.warning(f"Cache operations failed: {e}")
+                    # Continue even if cache fails
+                
+                return redirect('program_list')
+                
+        except Exception as e:
+            logger.error(f"Error cancelling application: {e}")
+            messages.error(request, 'An error occurred while cancelling your application. Please try again.')
+            return redirect('profile')
+    
+    return render(request, 'cancel_application.html', {'candidate': candidate})
+
 
 @require_GET
 def health_check(request):

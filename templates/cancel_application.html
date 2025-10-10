@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="card-title mb-0">Cancel Application</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Are you sure you want to cancel your application?</h5>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Warning:</strong> This action cannot be undone. If you wish to apply again later, you will need to submit a new application.
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6>Application Details:</h6>
+                            <ul class="list-unstyled">
+                                <li><strong>Program:</strong> {{ candidate.program.title }}</li>
+                                <li><strong>Location:</strong> {{ candidate.program.location }}</li>
+                                <li><strong>Applied On:</strong> {{ candidate.created_at|date:"F d, Y" }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'profile' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Go Back
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-times-circle"></i> Cancel Application
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
