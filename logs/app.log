@@ -38088,3 +38088,299 @@ NotImplementedError: This backend does not support this feature
 [2025-10-10 13:04:54,040] INFO core.middleware request GET /candidates/6/delete/ 200 user=admin ip=127.0.0.1 duration_ms=7
 [2025-10-10 13:04:55,108] INFO core.middleware request POST /candidates/6/delete/ 302 user=admin ip=127.0.0.1 duration_ms=15
 [2025-10-10 13:04:55,137] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=10
+[2025-10-10 13:05:25,385] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=11
+[2025-10-10 13:05:29,757] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=16
+[2025-10-10 13:05:29,772] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:05:50,335] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-10 13:05:50,371] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:05:50,388] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:05:52,118] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-10 13:05:52,150] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:05:52,169] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:05:52,309] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-10 13:05:52,340] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:05:52,355] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:05:52,470] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-10 13:05:52,501] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:05:52,517] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:05:52,630] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=9
+[2025-10-10 13:05:52,663] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:05:52,678] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:06:53,304] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:06:54,285] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:07:22,431] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-10 13:07:23,006] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-10 13:07:32,443] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=175
+[2025-10-10 13:07:32,532] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-10 13:07:32,558] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:07:38,063] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-10 13:07:38,691] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-10 13:07:41,076] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=237
+[2025-10-10 13:07:41,145] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:07:41,169] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:07:41,221] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=admin ip=127.0.0.1 duration_ms=15
+[2025-10-10 13:07:41,224] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=admin ip=127.0.0.1 duration_ms=13
+[2025-10-10 13:07:41,225] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=admin ip=127.0.0.1 duration_ms=15
+[2025-10-10 13:07:41,939] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=16
+[2025-10-10 13:07:41,989] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:07:42,006] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:07:42,670] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-10 13:07:42,708] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:07:42,723] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:07:44,408] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-10 13:07:44,452] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-10 13:07:44,472] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:07:55,840] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-10 13:07:56,430] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-10 13:08:02,358] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=37
+[2025-10-10 13:08:06,010] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=46
+[2025-10-10 13:08:06,229] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:08:45,448] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=166
+[2025-10-10 13:08:46,282] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:09:45,290] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:09:46,280] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:10:44,466] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:10:45,294] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:11:45,282] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:11:46,284] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:12:45,293] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:12:46,293] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:12:46,592] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-10 13:12:49,339] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-10 13:12:49,561] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:13:45,287] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:13:46,288] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:13:50,797] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000028D13677130>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-10 13:13:50,857] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000028D13677130>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-10 13:13:50,873] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000028D13677130>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-10 13:13:50,882] ERROR core.signals Failed to write ActivityLog for core.Notification
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000028D13677130>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-10 13:13:50,883] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=703
+[2025-10-10 13:13:51,139] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:13:51,472] INFO core.middleware request GET /login/ 200 user= ip=127.0.0.1 duration_ms=26
+[2025-10-10 13:14:07,487] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=38
+[2025-10-10 13:14:07,542] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-10 13:14:07,567] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:14:08,422] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=110
+[2025-10-10 13:14:08,474] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:14:08,493] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:14:10,246] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=127
+[2025-10-10 13:14:10,310] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:14:10,330] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:14:10,361] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=26
+[2025-10-10 13:14:16,175] INFO core.middleware request GET /admin/auth/user/17/change/ 200 user=admin ip=127.0.0.1 duration_ms=193
+[2025-10-10 13:14:16,232] INFO core.middleware request GET /.well-known/appspecific/com.chrome.devtools.json 404 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:14:16,254] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2025-10-10 13:14:16,255] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=14
+[2025-10-10 13:14:35,504] INFO core.middleware request POST /api/ajax-login/ 200 user=213123 ip=127.0.0.1 duration_ms=852
+[2025-10-10 13:14:35,769] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:14:37,081] INFO core.middleware request GET / 200 user=213123 ip=127.0.0.1 duration_ms=6
+[2025-10-10 13:14:37,121] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:14:37,123] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=213123 ip=127.0.0.1 duration_ms=0
+[2025-10-10 13:14:37,141] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:14:38,558] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:14:38,790] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:14:40,413] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:14:40,627] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:14:41,140] INFO core.middleware request POST /notifications/39/mark-read/ 200 user=213123 ip=127.0.0.1 duration_ms=50
+[2025-10-10 13:14:41,172] INFO core.middleware request GET / 200 user=213123 ip=127.0.0.1 duration_ms=6
+[2025-10-10 13:14:43,783] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:14:44,009] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:14:45,334] INFO core.middleware request POST /notifications/39/mark-read/ 200 user=213123 ip=127.0.0.1 duration_ms=51
+[2025-10-10 13:14:45,365] INFO core.middleware request GET / 200 user=213123 ip=127.0.0.1 duration_ms=8
+[2025-10-10 13:14:46,127] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=5
+[2025-10-10 13:14:46,346] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:14:48,101] INFO core.middleware request POST /api/notifications/clear-all/ 200 user=213123 ip=127.0.0.1 duration_ms=23
+[2025-10-10 13:14:48,329] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:15:02,656] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=16
+[2025-10-10 13:15:02,674] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:15:04,018] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-10 13:15:04,234] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:15:26,592] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=13
+[2025-10-10 13:15:26,809] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:15:33,168] INFO core.middleware request POST /api/ajax-login/ 200 user= ip=127.0.0.1 duration_ms=396
+[2025-10-10 13:15:33,385] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:15:38,967] INFO core.middleware request POST /api/ajax-login/ 200 user=213123 ip=127.0.0.1 duration_ms=820
+[2025-10-10 13:15:39,215] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:15:39,524] INFO core.middleware request GET / 200 user=213123 ip=127.0.0.1 duration_ms=7
+[2025-10-10 13:15:40,774] INFO core.middleware request GET /programs/ 200 user=213123 ip=127.0.0.1 duration_ms=62
+[2025-10-10 13:15:43,900] INFO core.middleware request GET /profile/ 200 user=213123 ip=127.0.0.1 duration_ms=61
+[2025-10-10 13:15:57,850] INFO core.middleware request POST /profile/ 302 user=213123 ip=127.0.0.1 duration_ms=164
+[2025-10-10 13:15:57,904] INFO core.middleware request GET /profile/ 200 user=213123 ip=127.0.0.1 duration_ms=17
+[2025-10-10 13:16:00,360] INFO core.middleware request GET /programs/ 200 user=213123 ip=127.0.0.1 duration_ms=7
+[2025-10-10 13:16:05,282] INFO core.middleware request GET /programs/4/apply/ 302 user=213123 ip=127.0.0.1 duration_ms=4
+[2025-10-10 13:16:05,319] INFO core.middleware request GET /programs/4/ 200 user=213123 ip=127.0.0.1 duration_ms=22
+[2025-10-10 13:16:07,776] INFO core.middleware request GET /programs/ 200 user=213123 ip=127.0.0.1 duration_ms=9
+[2025-10-10 13:16:12,466] INFO core.middleware request GET /programs/1/apply/ 200 user=213123 ip=127.0.0.1 duration_ms=66
+[2025-10-10 13:16:17,700] INFO core.middleware request POST /programs/1/apply/ 200 user=213123 ip=127.0.0.1 duration_ms=27
+[2025-10-10 13:17:07,180] INFO core.middleware request POST /programs/1/apply/ 200 user=213123 ip=127.0.0.1 duration_ms=58
+[2025-10-10 13:18:07,285] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:18:08,293] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:19:07,217] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:19:07,435] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:19:09,702] INFO core.middleware request POST /programs/1/apply/ 200 user=213123 ip=127.0.0.1 duration_ms=24
+[2025-10-10 13:19:34,247] INFO core.middleware request POST /programs/1/apply/ 200 user=213123 ip=127.0.0.1 duration_ms=29
+[2025-10-10 13:20:35,294] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:20:36,292] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:21:35,281] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:21:36,285] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:22:35,282] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:22:36,293] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:23:35,289] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:23:36,282] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:24:35,281] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:24:36,290] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:25:35,286] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:25:36,292] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:26:35,282] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:26:36,283] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:27:36,289] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:27:37,280] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:28:37,289] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:28:38,282] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:29:38,282] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:29:39,283] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:30:39,294] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:30:40,295] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:31:40,280] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:31:41,287] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:32:41,281] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:32:42,281] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:33:42,280] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:33:43,285] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:34:43,283] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:34:44,286] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:35:44,279] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:35:45,280] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:36:45,291] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:36:46,291] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:37:46,293] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:37:47,287] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:38:47,280] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:38:48,294] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:39:48,290] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:39:49,291] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:40:49,281] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:40:50,291] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:41:50,294] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:41:51,279] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:42:51,292] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:42:52,289] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:43:52,283] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:43:53,283] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:44:53,288] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:44:54,295] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:45:54,292] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:45:55,289] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=2
+[2025-10-10 13:46:55,291] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:46:56,282] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:47:56,293] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:47:57,293] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:48:57,279] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:48:58,280] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:49:58,284] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:49:59,293] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:50:59,291] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:51:00,292] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:52:00,293] INFO core.middleware request GET /api/notifications/ 200 user=213123 ip=127.0.0.1 duration_ms=3
+[2025-10-10 13:52:01,288] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=213123 ip=127.0.0.1 duration_ms=1
+[2025-10-10 13:52:24,336] INFO core.middleware request POST /programs/1/apply/ 200 user=213123 ip=127.0.0.1 duration_ms=51
+[2025-10-10 13:52:38,245] INFO core.middleware request POST /programs/1/apply/ 302 user=213123 ip=127.0.0.1 duration_ms=52
+[2025-10-10 13:52:38,300] INFO core.middleware request GET /profile/ 200 user=213123 ip=127.0.0.1 duration_ms=23
+[2025-10-10 13:52:43,232] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-10 13:52:43,974] INFO django.utils.autoreload Watching for file changes with StatReloader

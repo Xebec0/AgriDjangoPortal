@@ -191,10 +191,10 @@
                         </div>
                         
                         <div class="col-md-6 mb-3 required-field">
-                            <label for="{{ form.confirm_passport.id_for_label }}" class="form-label">Confirm Passport Number</label>
-                            {{ form.confirm_passport }}
-                            {% if form.confirm_passport.errors %}
-                                <div class="text-danger">{{ form.confirm_passport.errors }}</div>
+                            <label for="{{ form.confirm_passport_number.id_for_label }}" class="form-label">Confirm Passport Number</label>
+                            {{ form.confirm_passport_number }}
+                            {% if form.confirm_passport_number.errors %}
+                                <div class="text-danger">{{ form.confirm_passport_number.errors }}</div>
                             {% endif %}
                             <div class="help-text">Confirmation must match the passport number exactly.</div>
                         </div>
@@ -470,7 +470,7 @@
             const lastName = document.getElementById('{{ form.last_name.id_for_label }}').value;
             const confirmLastName = document.getElementById('{{ form.confirm_surname.id_for_label }}').value;
             const passport = document.getElementById('{{ form.passport_number.id_for_label }}').value;
-            const confirmPassport = document.getElementById('{{ form.confirm_passport.id_for_label }}').value;
+            const confirmPassport = document.getElementById('{{ form.confirm_passport_number.id_for_label }}').value;
             
             let hasError = false;
             

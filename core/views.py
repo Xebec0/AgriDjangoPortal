@@ -360,9 +360,25 @@ def profile(request):
 
 def program_list(request):
     """List all available programs"""
-    programs = AgricultureProgram.objects.select_related().all().order_by('-start_date')
+    # Try to get from cache first, but only if no filters are applied
+    cache_key = 'programs_list:all'
+    programs = None
+    
+    if not request.GET:  # Only use cache for unfiltered list
+        try:
+            programs = cache.get(cache_key)
+        except Exception as e:
+            logger.warning(f"Cache get failed for programs list: {e}")
+    
+    if programs is None:
+        programs = AgricultureProgram.objects.select_related().all().order_by('-start_date')
+        if not request.GET:  # Cache only unfiltered results
+            try:
+                cache.set(cache_key, programs, timeout=300)  # Cache for 5 minutes
+            except Exception as e:
+                logger.warning(f"Cache set failed for programs list: {e}")
+    
     form = ProgramSearchForm(request.GET)
-
     if form.is_valid():
         query = form.cleaned_data.get('query')
         location = form.cleaned_data.get('location')
@@ -491,6 +507,24 @@ def apply_candidate(request, program_id):
         mutable_post['email'] = request.user.email or mutable_post.get('email', '')
         form = CandidateForm(mutable_post, request.FILES)
         if form.is_valid():
+            # Handle cache operations outside the transaction
+            try:
+                # Clear related cache entries
+                cache_keys = [
+                    'candidate_list:all',
+                    f'program_candidates:{program_id}',
+                    f'program_detail:{program_id}',
+                    f'program_stats:{program_id}'
+                ]
+                for key in cache_keys:
+                    try:
+                        cache.delete(key)
+                    except Exception as e:
+                        logger.warning(f"Cache clear failed for key {key}: {e}")
+            except Exception as e:
+                logger.warning(f"Cache operations failed: {e}")
+                # Continue with the application process even if cache fails
+
             # Use atomic transaction with row-level locking to prevent race conditions
             try:
                 with transaction.atomic():
@@ -1089,6 +1123,29 @@ def delete_candidate(request, candidate_id):
     
     if request.method == 'POST':
         candidate_name = f"{candidate.first_name} {candidate.last_name}"
+        program_id = candidate.program.id if candidate.program else None
+        
+        # Clear cache before deletion
+        try:
+            cache_keys = [
+                'candidate_list:all',
+                f'candidate_detail:{candidate_id}',
+            ]
+            if program_id:
+                cache_keys.extend([
+                    f'program_candidates:{program_id}',
+                    f'program_detail:{program_id}',
+                ])
+            
+            for key in cache_keys:
+                try:
+                    cache.delete(key)
+                except Exception as e:
+                    logger.warning(f"Cache clear failed for key {key}: {e}")
+        except Exception as e:
+            logger.warning(f"Cache operations failed during candidate deletion: {e}")
+            # Continue with deletion even if cache fails
+        
         candidate.delete()
         messages.success(request, f'Candidate {candidate_name} has been deleted successfully.')
         return redirect('candidate_list')

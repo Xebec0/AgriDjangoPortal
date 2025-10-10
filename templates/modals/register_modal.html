@@ -166,6 +166,52 @@
                         <p>Already have an account? <a href="#" id="switchToLogin">Sign in</a></p>
                         <p>Admin registration? <a href="#" id="openAdminRegister">Register as Admin</a></p>
                     </div>
+                    
+                    <!-- Passport Information Section -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_passport_number" class="form-label">Passport Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-passport"></i></span>
+                                <input type="text" name="passport_number" 
+                                       id="id_passport_number" 
+                                       class="form-control {% if form.passport_number.errors %}is-invalid{% endif %}" 
+                                       value="{{ form.passport_number.value|default:'' }}"
+                                       required 
+                                       placeholder="Enter your passport number">
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                {% if form.passport_number.errors %}
+                                    {{ form.passport_number.errors }}
+                                {% else %}
+                                    Please enter your passport number
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="id_confirm_passport_number" class="form-label">Confirm Passport Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-passport"></i></span>
+                                <input type="text" name="confirm_passport_number" 
+                                       id="id_confirm_passport_number" 
+                                       class="form-control {% if form.confirm_passport_number.errors %}is-invalid{% endif %}" 
+                                       value="{{ form.confirm_passport_number.value|default:'' }}"
+                                       required 
+                                       placeholder="Confirm your passport number">
+                            </div>
+                            <div class="valid-feedback">Passport numbers match!</div>
+                            <div class="invalid-feedback">
+                                {% if form.confirm_passport_number.errors %}
+                                    {{ form.confirm_passport_number.errors }}
+                                {% else %}
+                                    Please confirm your passport number
+                                {% endif %}
+                            </div>
+                            <div class="help-text">Confirmation must match the passport number exactly.</div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

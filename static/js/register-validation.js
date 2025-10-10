@@ -1,7 +1,11 @@
 // Client-side form validation for registration page
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Get both the regular form and modal form
     const registerForm = document.getElementById('registerForm');
+    const registerModalForm = document.getElementById('registerModalForm');
+    const currentForm = registerForm || registerModalForm; // Use whichever form exists
+    
     const passwordInput = document.getElementById('id_password1');
     const confirmPasswordInput = document.getElementById('id_password2');
     const usernameInput = document.getElementById('id_username');
@@ -12,12 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordStrengthLabel = document.getElementById('passwordStrengthLabel');
 
     // Initialize form validation
-    if (registerForm) {
-        registerForm.addEventListener('submit', validateForm);
+    if (currentForm) {
+        currentForm.addEventListener('submit', validateForm);
         
         // Live validation as user types
-        if (firstNameInput) firstNameInput.addEventListener('input', () => validateField(firstNameInput, isNotEmpty));
-        if (lastNameInput) lastNameInput.addEventListener('input', () => validateField(lastNameInput, isNotEmpty));
+        if (firstNameInput) firstNameInput.addEventListener('input', () => validateField(firstNameInput, isValidName, 'Please enter a valid first name (letters only)'));
+        if (lastNameInput) lastNameInput.addEventListener('input', () => validateField(lastNameInput, isValidName, 'Please enter a valid last name (letters only)'));
         if (usernameInput) usernameInput.addEventListener('input', () => validateField(usernameInput, isValidUsername));
         if (emailInput) emailInput.addEventListener('input', () => validateField(emailInput, isValidEmail));
         if (passwordInput) {
@@ -41,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let isValid = true;
         
         // Validate each field
-        if (firstNameInput && !validateField(firstNameInput, isNotEmpty)) isValid = false;
-        if (lastNameInput && !validateField(lastNameInput, isNotEmpty)) isValid = false;
+        if (firstNameInput && !validateField(firstNameInput, isValidName, 'Please enter a valid first name (letters only)')) isValid = false;
+        if (lastNameInput && !validateField(lastNameInput, isValidName, 'Please enter a valid last name (letters only)')) isValid = false;
         if (usernameInput && !validateField(usernameInput, isValidUsername)) isValid = false;
         if (emailInput && !validateField(emailInput, isValidEmail)) isValid = false;
         if (passwordInput && !validateField(passwordInput, isStrongPassword)) isValid = false;
@@ -51,11 +55,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isValid) {
             event.preventDefault();
             // Show an error message at the top of the form
-            const errorDiv = document.getElementById('formErrors') || document.createElement('div');
-            errorDiv.id = 'formErrors';
+            // Show error message in the appropriate error div
+            const errorDivId = currentForm.id === 'registerModalForm' ? 'registerModalErrors' : 'formErrors';
+            const errorDiv = document.getElementById(errorDivId) || document.createElement('div');
+            errorDiv.id = errorDivId;
             errorDiv.className = 'alert alert-danger';
+            errorDiv.style.display = 'block';
             errorDiv.textContent = 'Please correct the errors in the form before submitting.';
-            registerForm.prepend(errorDiv);
+            if (!document.getElementById(errorDivId)) {
+                currentForm.prepend(errorDiv);
+            }
             
             // Scroll to the first error
             const firstError = document.querySelector('.is-invalid');
@@ -67,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Validate a single field based on a validation function
-    function validateField(field, validationFn) {
+    function validateField(field, validationFn, customErrorMessage = null) {
         resetValidation(field);
         
         const isValid = validationFn(field.value);
@@ -88,6 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show error message
             const errorFeedback = Array.from(field.parentNode.children).find(el => el.classList.contains('invalid-feedback'));
             if (errorFeedback) {
+                if (customErrorMessage) {
+                    errorFeedback.textContent = customErrorMessage;
+                }
                 errorFeedback.style.display = 'block';
             }
         }
@@ -107,6 +119,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Validation functions
     function isNotEmpty(value) {
         return value.trim() !== '';
+    }
+
+    function isValidName(value) {
+        // Only allow letters, spaces, hyphens and apostrophes for names
+        return /^[a-zA-Z\s'-]+$/.test(value.trim());
     }
 
     function isValidUsername(value) {
