@@ -276,7 +276,7 @@ RATELIMIT_ENABLE = 'test' not in sys.argv
 REDIS_URL = os.getenv('REDIS_URL', '')
 
 # Use Redis if available, otherwise fallback to local memory cache
-if REDIS_URL:
+if REDIS_URL and not DEBUG:  # Only use Redis in production
     CACHES = {
         'default': {
             'BACKEND': 'django_redis.cache.RedisCache',
@@ -299,7 +299,7 @@ if REDIS_URL:
     SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
     SESSION_CACHE_ALIAS = 'default'
 else:
-    # Fallback to local memory cache for development
+    # Use local memory cache for development or when Redis is not available
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -310,6 +310,8 @@ else:
             }
         }
     }
+    # Use database sessions for reliability in dev/non-Redis environments
+    SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 SESSION_COOKIE_AGE = 86400  # 24 hours
 

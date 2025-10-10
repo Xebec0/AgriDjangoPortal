@@ -55,41 +55,29 @@ def cache_view_result(cache_type='default', timeout=None, key_prefix='view'):
 def invalidate_program_cache():
     """Invalidate all program-related cache entries"""
     cache_patterns = [
-        'programs_list:*',
-        'program_detail:*',
-        'program_stats:*'
+        'programs_list',
+        'program_detail',
+        'program_stats'
     ]
     
-    # Note: Django-redis supports pattern deletion
-    try:
-        from django_redis import get_redis_connection
-        con = get_redis_connection("default")
-        for pattern in cache_patterns:
-            keys = con.keys(f"{settings.CACHES['default']['KEY_PREFIX']}:*:{pattern}")
-            if keys:
-                con.delete(*keys)
-    except ImportError:
-        # Fallback: delete known keys (less efficient)
-        pass
+    # Directly delete known keys
+    for pattern in cache_patterns:
+        cache.delete(f"{pattern}:all")  # Delete main list key
+        cache.delete(f"{pattern}:stats")  # Delete stats key
 
 
 def invalidate_candidate_cache():
     """Invalidate all candidate-related cache entries"""
     cache_patterns = [
-        'candidate_list:*',
-        'candidate_detail:*',
-        'candidate_stats:*'
+        'candidate_list',
+        'candidate_detail',
+        'candidate_stats'
     ]
     
-    try:
-        from django_redis import get_redis_connection
-        con = get_redis_connection("default")
-        for pattern in cache_patterns:
-            keys = con.keys(f"{settings.CACHES['default']['KEY_PREFIX']}:*:{pattern}")
-            if keys:
-                con.delete(*keys)
-    except ImportError:
-        pass
+    # Directly delete known keys
+    for pattern in cache_patterns:
+        cache.delete(f"{pattern}:all")  # Delete main list key
+        cache.delete(f"{pattern}:stats")  # Delete stats key
 
 
 def get_or_set_stats(cache_key, stats_function, timeout=None):

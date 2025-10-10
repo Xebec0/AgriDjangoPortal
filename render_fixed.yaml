@@ -15,6 +15,11 @@ services:
         fromDatabase:
           name: agri-db
           property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: agri-cache
+          property: connectionString
       - key: DJANGO_SUPERUSER_USERNAME
         value: admin
       - key: DJANGO_SUPERUSER_EMAIL
@@ -32,6 +37,12 @@ services:
     
     # Auto-deploy from GitHub (optional)
     autoDeploy: false  # Set to true if you want automatic deploys
+
+  # Redis service for caching
+  - type: redis
+    name: agri-cache
+    ipAllowList: []  # Empty array allows connections from anywhere
+    plan: free
 
   # Cron job for automatic daily backups at 5:00 PM UTC
   - type: cron

@@ -15,6 +15,11 @@ services:
         fromDatabase:
           name: "agri-db"   # quoted for safety
           property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: agri-cache
+          property: connectionString
       - key: DJANGO_SUPERUSER_USERNAME
         value: admin
       - key: DJANGO_SUPERUSER_EMAIL
@@ -25,6 +30,12 @@ services:
     postDeployCommand: |
       python manage.py migrate   # Run migrations after deploy
       python manage.py createsu  # Run custom superuser creation script
+
+  # Redis service for caching
+  - type: redis
+    name: agri-cache
+    ipAllowList: []
+    plan: free
 
   # Cron job for automatic daily backups at 5:00 PM UTC
   - type: cron
