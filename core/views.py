@@ -568,8 +568,9 @@ def program_register(request, program_id):
 
 @ajax_login_required
 def apply_candidate(request, program_id):
-    """Applicant-facing: single-step application that creates a Candidate directly and redirects to candidates list."""
+    """Applicant-facing: simplified confirmation flow that uses profile data."""
     program = get_object_or_404(AgricultureProgram, id=program_id)
+    profile = request.user.profile
 
     # New guard: Check program capacity
     if program.capacity <= 0:
@@ -577,11 +578,11 @@ def apply_candidate(request, program_id):
         return redirect('program_detail', program_id=program.id)
 
     # New guard: Check program requirements
-    if program.required_gender != 'Any' and request.user.profile.gender != program.required_gender:
+    if program.required_gender != 'Any' and profile.gender != program.required_gender:
         messages.error(request, f"This program requires applicants to be {program.required_gender}.", extra_tags='error')
         return redirect('program_detail', program_id=program.id)
     
-    if program.requires_license and not request.user.profile.has_international_license:
+    if program.requires_license and not profile.has_international_license:
         messages.error(request, "This program requires an international driver's license.", extra_tags='error')
         return redirect('program_detail', program_id=program.id)
 
@@ -604,174 +605,112 @@ def apply_candidate(request, program_id):
         return redirect('program_list')
 
     if request.method == 'POST':
-        # Pre-fill POST with current user info to keep profile -> application in sync
-        mutable_post = request.POST.copy()
-        profile = request.user.profile
-        
-        # Basic identity fields
-        mutable_post['first_name'] = request.user.first_name or mutable_post.get('first_name', '')
-        mutable_post['confirm_first_name'] = request.user.first_name or mutable_post.get('confirm_first_name', '')
-        mutable_post['last_name'] = request.user.last_name or mutable_post.get('last_name', '')
-        mutable_post['confirm_surname'] = request.user.last_name or mutable_post.get('confirm_surname', '')
-        mutable_post['email'] = request.user.email or mutable_post.get('email', '')
-        
-        form = CandidateForm(mutable_post, request.FILES)
-        if form.is_valid():
-            # Handle cache operations outside the transaction
-            try:
+        # User confirmed - create candidate from profile data
+        try:
+            with transaction.atomic():
+                # Lock the program row for update to prevent concurrent capacity decrements
+                program = AgricultureProgram.objects.select_for_update().get(id=program_id)
+                
+                # Re-check capacity inside transaction after acquiring lock
+                if program.capacity <= 0:
+                    messages.error(request, 'This program has no available slots.', extra_tags='error')
+                    return redirect('program_detail', program_id=program.id)
+                
+                # Re-check if user already applied (inside transaction)
+                already_applied_this = Candidate.objects.filter(program=program).filter(
+                    Q(created_by=request.user) | Q(email=request.user.email)
+                ).exists() or Registration.objects.filter(user=request.user, program=program).exists()
+                if already_applied_this:
+                    messages.info(request, 'You have already applied to this program.')
+                    return redirect('program_detail', program_id=program.id)
+                
+                # Create candidate from profile data
+                candidate = Candidate()
+                candidate.created_by = request.user
+                candidate.program = program
+                candidate.status = Candidate.APPROVED
+                
+                # Copy data from profile
+                candidate.first_name = request.user.first_name
+                candidate.last_name = request.user.last_name
+                candidate.email = request.user.email
+                candidate.father_name = profile.father_name or ''
+                candidate.mother_name = profile.mother_name or ''
+                candidate.date_of_birth = profile.date_of_birth
+                candidate.gender = profile.gender
+                candidate.country_of_birth = profile.country_of_birth or ''
+                candidate.nationality = profile.nationality or ''
+                candidate.religion = profile.religion or ''
+                
+                # Passport details
+                candidate.passport_number = profile.passport_number or ''
+                candidate.passport_issue_date = profile.passport_issue_date or timezone.now().date()
+                candidate.passport_expiry_date = profile.passport_expiry_date or (timezone.now().date() + timezone.timedelta(days=3650))
+                
+                # Education
+                candidate.university = profile.university or University.objects.get_or_create(
+                    code='DEFAULT',
+                    defaults={'name': 'Not Specified', 'country': 'Not Specified'}
+                )[0]
+                candidate.specialization = profile.specialization or 'Not Specified'
+                candidate.secondary_specialization = profile.secondary_specialization or ''
+                candidate.year_graduated = profile.graduation_year
+                
+                # Physical attributes
+                candidate.shoes_size = profile.shoes_size or ''
+                candidate.shirt_size = profile.shirt_size or ''
+                candidate.smokes = profile.smokes or 'Never'
+                
+                # Documents
+                if profile.passport_scan:
+                    candidate.passport_scan = profile.passport_scan
+                if profile.academic_certificate:
+                    candidate.diploma = profile.academic_certificate
+                
+                # Save candidate
+                candidate.save()
+                
+                # Atomically decrease program capacity
+                AgricultureProgram.objects.filter(id=program.id).update(capacity=F('capacity') - 1)
+
+                messages.success(request, f'Congratulations! Your application for {program.title} has been approved.')
+                
+                # Create a notification for the user
+                Notification.add_notification(
+                    user=request.user,
+                    message=f"Congratulations! Your application for {program.title} has been approved. You're now ready to proceed with the next steps.",
+                    notification_type=Notification.SUCCESS,
+                    link=f"/candidates/{candidate.id}/"
+                )
+                
                 # Clear related cache entries
-                cache_keys = [
-                    'candidate_list:all',
-                    f'program_candidates:{program_id}',
-                    f'program_detail:{program_id}',
-                    f'program_stats:{program_id}'
-                ]
-                for key in cache_keys:
-                    try:
-                        cache.delete(key)
-                    except Exception as e:
-                        logger.warning(f"Cache clear failed for key {key}: {e}")
-            except Exception as e:
-                logger.warning(f"Cache operations failed: {e}")
-                # Continue with the application process even if cache fails
-
-            # Use atomic transaction with row-level locking to prevent race conditions
-            try:
-                with transaction.atomic():
-                    # Lock the program row for update to prevent concurrent capacity decrements
-                    program = AgricultureProgram.objects.select_for_update().get(id=program_id)
-                    
-                    # Re-check capacity inside transaction after acquiring lock
-                    if program.capacity <= 0:
-                        messages.error(request, 'This program has no available slots.', extra_tags='error')
-                        return redirect('program_detail', program_id=program.id)
-                    
-                    # Re-check if user already applied (inside transaction)
-                    already_applied_this = Candidate.objects.filter(program=program).filter(
-                        Q(created_by=request.user) | Q(email=request.user.email)
-                    ).exists() or Registration.objects.filter(user=request.user, program=program).exists()
-                    if already_applied_this:
-                        messages.info(request, 'You have already applied to this program.')
-                        return redirect('program_detail', program_id=program.id)
-                    
-                    candidate = form.save(commit=False)
-                    candidate.created_by = request.user
-                    candidate.program = program
-                    candidate.status = Candidate.APPROVED
-                    
-                    # Set a default university since it's required in the model but not in the form
-                    # Get or create a default university for simplified applications
-                    default_university, created = University.objects.get_or_create(
-                        code='DEFAULT',
-                        defaults={
-                            'name': 'Not Specified',
-                            'country': 'Not Specified'
-                        }
-                    )
-                    candidate.university = default_university
-                    
-                    # Set default values for other required model fields that aren't in the form
-                    if not candidate.passport_number:
-                        candidate.passport_number = ''  # Empty string for optional passport
-                    
-                    # Set default passport dates if not provided (using far future dates)
-                    from datetime import date, timedelta
-                    if not hasattr(candidate, 'passport_issue_date') or not candidate.passport_issue_date:
-                        candidate.passport_issue_date = date.today()
-                    if not hasattr(candidate, 'passport_expiry_date') or not candidate.passport_expiry_date:
-                        candidate.passport_expiry_date = date.today() + timedelta(days=3650)  # 10 years
-                    
-                    # Set other optional fields to defaults if not present
-                    if not hasattr(candidate, 'year_graduated'):
-                        candidate.year_graduated = None
-                    if not hasattr(candidate, 'secondary_specialization'):
-                        candidate.secondary_specialization = ''
-                    if not hasattr(candidate, 'religion'):
-                        candidate.religion = ''
-                    if not hasattr(candidate, 'father_name'):
-                        candidate.father_name = ''
-                    if not hasattr(candidate, 'mother_name'):
-                        candidate.mother_name = ''
-                    if not hasattr(candidate, 'shoes_size'):
-                        candidate.shoes_size = ''
-                    if not hasattr(candidate, 'shirt_size'):
-                        candidate.shirt_size = ''
-                    if not hasattr(candidate, 'smokes') or not candidate.smokes:
-                        candidate.smokes = 'Never'
-                    
-                    # Save candidate first
-                    candidate.save()
-                    
-                    # Atomically decrease program capacity using F() expression to avoid race conditions
-                    AgricultureProgram.objects.filter(id=program.id).update(capacity=F('capacity') - 1)
-
-                    messages.success(request, f'Congratulations! Your application for {program.title} has been approved.')
-                    
-                    # Create a notification for the user
-                    Notification.add_notification(
-                        user=request.user,
-                        message=f"Congratulations! Your application for {program.title} has been approved. You're now ready to proceed with the next steps.",
-                        notification_type=Notification.SUCCESS,
-                        link=f"/candidates/{candidate.id}/"
-                    )
-                    
-                    return redirect('profile')
-            except AgricultureProgram.DoesNotExist:
-                messages.error(request, 'Program not found.')
-                return redirect('program_list')
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"Error in {field}: {error}")
-    else:
-        # Prefill ALL available data from user profile
-        profile = request.user.profile
-        initial_data = {
-            # Basic identity
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'email': request.user.email,
-            'confirm_first_name': request.user.first_name,
-            'confirm_surname': request.user.last_name,
-            
-            # Personal details
-            'father_name': profile.father_name,
-            'mother_name': profile.mother_name,
-            'date_of_birth': profile.date_of_birth,
-            'gender': profile.gender,
-            'country_of_birth': profile.country_of_birth,
-            'nationality': profile.nationality,
-            'religion': profile.religion,
-            
-            # Passport details
-            'passport_number': profile.passport_number,
-            'passport_issue_date': profile.passport_issue_date,
-            'passport_expiry_date': profile.passport_expiry_date,
-            
-            # Education
-            'university': profile.university,
-            'specialization': profile.specialization,
-            'secondary_specialization': profile.secondary_specialization,
-            
-            # Physical attributes
-            'shoes_size': profile.shoes_size,
-            'shirt_size': profile.shirt_size,
-            'smokes': profile.smokes,
-            
-            # Document scans (if already uploaded in profile)
-            'passport_scan': profile.passport_scan if profile.passport_scan else None,
-            'diploma': profile.academic_certificate if profile.academic_certificate else None,
-        }
-        
-        # Remove None values to avoid overwriting form defaults
-        initial_data = {k: v for k, v in initial_data.items() if v is not None and v != ''}
-        
-        form = CandidateForm(initial=initial_data)
-
-    return render(request, 'candidate_form.html', {
-        'form': form,
-        'title': f'Apply to {program.title}',
-        'button_text': 'Submit Application'
+                try:
+                    cache_keys = [
+                        'candidate_list:all',
+                        f'program_candidates:{program_id}',
+                        f'program_detail:{program_id}',
+                        f'program_stats:{program_id}'
+                    ]
+                    for key in cache_keys:
+                        try:
+                            cache.delete(key)
+                        except Exception as e:
+                            logger.warning(f"Cache clear failed for key {key}: {e}")
+                except Exception as e:
+                    logger.warning(f"Cache operations failed: {e}")
+                
+                return redirect('profile')
+                
+        except Exception as e:
+            logger.error(f"Error creating application: {e}")
+            messages.error(request, 'An error occurred while processing your application. Please try again.')
+            return redirect('program_detail', program_id=program.id)
+    
+    # GET request - show confirmation page with profile data
+    return render(request, 'program_apply_confirm.html', {
+        'program': program,
+        'profile': profile,
+        'user': request.user,
     })
 
 

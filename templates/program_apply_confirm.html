@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Application - AgroStudies{% endblock %}
+
+{% block extra_css %}
+<style>
+    .info-section {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .info-section:last-child {
+        border-bottom: none;
+    }
+    
+    .info-section-title {
+        margin-bottom: 1rem;
+        color: #0275d8;
+        font-weight: 600;
+    }
+    
+    .info-row {
+        display: flex;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f8f9fa;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        min-width: 200px;
+        color: #495057;
+    }
+    
+    .info-value {
+        flex: 1;
+        color: #212529;
+    }
+    
+    .missing-info {
+        color: #dc3545;
+        font-style: italic;
+    }
+    
+    .program-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Confirm Your Application</h1>
+        <a href="{% url 'program_detail' program.id %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Program
+        </a>
+    </div>
+
+    <!-- Program Information -->
+    <div class="program-card shadow">
+        <h3 class="mb-3"><i class="fas fa-seedling me-2"></i>{{ program.title }}</h3>
+        <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i><strong>Location:</strong> {{ program.location }}</p>
+        <p class="mb-2"><i class="fas fa-calendar-alt me-2"></i><strong>Start Date:</strong> {{ program.start_date|date:"F d, Y" }}</p>
+        <p class="mb-0"><i class="fas fa-users me-2"></i><strong>Available Slots:</strong> {{ program.capacity }}</p>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-user-check me-2"></i>Review Your Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Please review your information below.</strong> This data was collected during your registration. 
+                If you need to update any information, please visit your 
+                <a href="{% url 'profile' %}" class="alert-link">profile page</a> first, then return to apply.
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Personal Information Section -->
+                <div class="info-section">
+                    <h4 class="info-section-title">
+                        <i class="fas fa-user me-2"></i> Personal Information
+                    </h4>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Full Name:</div>
+                        <div class="info-value">{{ user.first_name }} {{ user.last_name }}</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value">{{ user.email }}</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Date of Birth:</div>
+                        <div class="info-value">
+                            {% if profile.date_of_birth %}
+                                {{ profile.date_of_birth|date:"F d, Y" }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Gender:</div>
+                        <div class="info-value">
+                            {% if profile.gender %}
+                                {{ profile.gender }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Nationality:</div>
+                        <div class="info-value">
+                            {% if profile.nationality %}
+                                {{ profile.nationality }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Country of Birth:</div>
+                        <div class="info-value">
+                            {% if profile.country_of_birth %}
+                                {{ profile.country_of_birth }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if profile.father_name or profile.mother_name %}
+                    <div class="info-row">
+                        <div class="info-label">Parents:</div>
+                        <div class="info-value">
+                            {% if profile.father_name %}Father: {{ profile.father_name }}<br>{% endif %}
+                            {% if profile.mother_name %}Mother: {{ profile.mother_name }}{% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Passport Information Section -->
+                <div class="info-section">
+                    <h4 class="info-section-title">
+                        <i class="fas fa-passport me-2"></i> Passport Information
+                    </h4>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Passport Number:</div>
+                        <div class="info-value">
+                            {% if profile.passport_number %}
+                                {{ profile.passport_number }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Issue Date:</div>
+                        <div class="info-value">
+                            {% if profile.passport_issue_date %}
+                                {{ profile.passport_issue_date|date:"F d, Y" }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Expiry Date:</div>
+                        <div class="info-value">
+                            {% if profile.passport_expiry_date %}
+                                {{ profile.passport_expiry_date|date:"F d, Y" }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Passport Scan:</div>
+                        <div class="info-value">
+                            {% if profile.passport_scan %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Academic Information Section -->
+                <div class="info-section">
+                    <h4 class="info-section-title">
+                        <i class="fas fa-graduation-cap me-2"></i> Academic Information
+                    </h4>
+                    
+                    <div class="info-row">
+                        <div class="info-label">University:</div>
+                        <div class="info-value">
+                            {% if profile.university %}
+                                {{ profile.university.name }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Specialization:</div>
+                        <div class="info-value">
+                            {% if profile.specialization %}
+                                {{ profile.specialization }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if profile.graduation_year %}
+                    <div class="info-row">
+                        <div class="info-label">Graduation Year:</div>
+                        <div class="info-value">{{ profile.graduation_year }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="info-row">
+                        <div class="info-label">Academic Certificate:</div>
+                        <div class="info-value">
+                            {% if profile.academic_certificate %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Information Section -->
+                {% if profile.shirt_size or profile.shoes_size or profile.smokes %}
+                <div class="info-section">
+                    <h4 class="info-section-title">
+                        <i class="fas fa-info-circle me-2"></i> Additional Information
+                    </h4>
+                    
+                    {% if profile.shirt_size %}
+                    <div class="info-row">
+                        <div class="info-label">Shirt Size:</div>
+                        <div class="info-value">{{ profile.shirt_size }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if profile.shoes_size %}
+                    <div class="info-row">
+                        <div class="info-label">Shoes Size:</div>
+                        <div class="info-value">{{ profile.shoes_size }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if profile.smokes %}
+                    <div class="info-row">
+                        <div class="info-label">Smoking Habits:</div>
+                        <div class="info-value">{{ profile.smokes }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- License Information -->
+                {% if program.requires_license %}
+                <div class="info-section">
+                    <h4 class="info-section-title">
+                        <i class="fas fa-id-card me-2"></i> Driver's License
+                    </h4>
+                    
+                    <div class="info-row">
+                        <div class="info-label">International License:</div>
+                        <div class="info-value">
+                            {% if profile.has_international_license %}
+                                <span class="badge bg-success">Yes</span>
+                                {% if profile.license_scan %}
+                                    <a href="{{ profile.license_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="fas fa-eye"></i> View License
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                                <div class="alert alert-warning mt-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    This program requires an international driver's license. Please update your profile.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Confirmation -->
+                <div class="alert alert-warning mt-4">
+                    <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h5>
+                    <ul class="mb-0">
+                        <li>By submitting this application, you confirm that all information provided is accurate and complete.</li>
+                        <li>You can only apply to ONE program. Once submitted, you cannot apply to other programs.</li>
+                        <li>If you need to update any information, please go to your <a href="{% url 'profile' %}" class="alert-link">profile page</a> before submitting.</li>
+                    </ul>
+                </div>
+                
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="confirmAccuracy" required>
+                    <label class="form-check-label" for="confirmAccuracy">
+                        <strong>I confirm that all the information above is accurate and I understand that I can only apply to one program.</strong>
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-edit me-2"></i> Update Profile First
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg px-5" id="submitBtn" disabled>
+                        <i class="fas fa-check-circle me-2"></i> Confirm & Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.getElementById('confirmAccuracy');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        checkbox.addEventListener('change', function() {
+            submitBtn.disabled = !this.checked;
+        });
+    });
+</script>
+{% endblock %}

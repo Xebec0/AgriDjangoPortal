@@ -39921,3 +39921,308 @@ django.template.exceptions.TemplateSyntaxError: Invalid filter: 'add_class'
 [2025-10-15 15:22:41,474] WARNING django.request Not Found: /favicon.ico
 [2025-10-15 15:22:42,152] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=30
 [2025-10-15 15:22:42,370] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:37:32,912] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:37:34,952] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=11
+[2025-10-15 16:37:35,175] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:37:36,877] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:37,001] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:37,093] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:37,310] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:37:39,893] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=1110
+[2025-10-15 16:37:40,181] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:37:40,618] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=144
+[2025-10-15 16:37:40,675] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-10-15 16:37:40,678] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-10-15 16:37:40,679] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=admin ip=127.0.0.1 duration_ms=9
+[2025-10-15 16:37:48,311] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:48,535] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:37:51,022] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:51,101] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:51,190] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:51,333] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:51,518] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:51,654] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:37:51,875] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:38:40,715] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=18
+[2025-10-15 16:38:41,693] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:39:40,691] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:39:41,697] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:40:40,697] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:40:41,695] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:41:22,346] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000207D4AA60D0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 16:41:22,422] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000207D4AA60D0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 16:41:22,435] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000207D4AA60D0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 16:41:22,446] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000207D4AA60D0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 16:41:22,458] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000207D4AA60D0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 16:41:22,468] ERROR core.signals Failed to write ActivityLog for core.Notification
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000207D4AA60D0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 16:41:22,470] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=566
+[2025-10-15 16:41:22,752] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:41:23,065] INFO core.middleware request GET /login/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:41:27,486] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:41:27,581] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:41:27,671] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:41:27,886] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:41:32,229] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 16:41:32,443] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:41:40,693] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-15 16:41:41,687] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:41:47,671] INFO core.middleware request POST /api/ajax-login/ 200 user=buchugan ip=127.0.0.1 duration_ms=953
+[2025-10-15 16:41:47,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:41:49,237] INFO core.middleware request GET / 200 user=buchugan ip=127.0.0.1 duration_ms=6
+[2025-10-15 16:41:53,816] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:41:54,041] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:41:56,424] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=38
+[2025-10-15 16:42:31,966] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=76
+[2025-10-15 16:42:37,031] INFO core.middleware request GET /programs/4/apply/ 302 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:42:37,064] INFO core.middleware request GET /programs/4/ 200 user=buchugan ip=127.0.0.1 duration_ms=14
+[2025-10-15 16:42:40,701] INFO core.middleware request GET /programs/4/apply/ 302 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:42:40,720] INFO core.middleware request GET /programs/4/ 200 user=buchugan ip=127.0.0.1 duration_ms=6
+[2025-10-15 16:42:44,142] INFO core.middleware request GET /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=46
+[2025-10-15 16:43:03,400] INFO core.middleware request POST /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=32
+[2025-10-15 16:43:21,697] INFO core.middleware request POST /profile/ 302 user=buchugan ip=127.0.0.1 duration_ms=121
+[2025-10-15 16:43:21,752] INFO core.middleware request GET /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=17
+[2025-10-15 16:43:24,503] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=13
+[2025-10-15 16:43:32,693] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-15 16:43:33,700] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:43:35,825] INFO core.middleware request GET /programs/4/apply/ 200 user=buchugan ip=127.0.0.1 duration_ms=23
+[2025-10-15 16:44:09,794] INFO core.middleware request GET /candidates/ 200 user=buchugan ip=127.0.0.1 duration_ms=9
+[2025-10-15 16:44:19,007] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:44:22,217] INFO core.middleware request GET /programs/1/apply/ 200 user=buchugan ip=127.0.0.1 duration_ms=17
+[2025-10-15 16:44:26,761] INFO core.middleware request GET /candidates/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:44:32,695] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:44:33,689] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:44:58,214] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:45:07,086] INFO core.middleware request GET /programs/1/apply/ 200 user=buchugan ip=127.0.0.1 duration_ms=14
+[2025-10-15 16:45:32,694] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:45:33,685] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:46:32,694] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:46:33,690] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:46:39,649] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=4
+[2025-10-15 16:46:39,867] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:46:43,860] INFO core.middleware request POST /notifications/43/mark-read/ 200 user=buchugan ip=127.0.0.1 duration_ms=16
+[2025-10-15 16:46:43,899] INFO core.middleware request GET /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=11
+[2025-10-15 16:47:32,698] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:47:33,702] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:47:44,700] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:47:45,698] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:48:32,697] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-15 16:48:33,698] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:48:44,696] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:48:45,689] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:49:32,686] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:49:33,693] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:49:44,700] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:49:45,693] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:50:33,689] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-15 16:50:34,700] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:50:44,690] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:50:45,697] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:51:33,699] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:51:34,691] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:51:44,694] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:51:45,687] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:52:33,693] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:52:34,700] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:52:44,695] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:52:45,690] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:53:33,686] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:53:34,694] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:53:44,685] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:53:45,691] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:53:48,238] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:53:50,858] INFO core.middleware request GET /programs/3/apply/ 302 user=buchugan ip=127.0.0.1 duration_ms=4
+[2025-10-15 16:53:50,882] INFO core.middleware request GET /programs/3/ 200 user=buchugan ip=127.0.0.1 duration_ms=9
+[2025-10-15 16:53:53,750] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:54:33,693] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:54:34,699] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:54:54,699] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:54:55,691] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:55:33,690] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:55:34,696] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:55:54,687] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:55:55,698] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:56:33,128] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 16:56:33,635] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 16:56:34,818] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 16:56:35,491] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=123
+[2025-10-15 16:56:36,690] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:56:45,994] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 16:56:54,113] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=6
+[2025-10-15 16:56:54,340] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:56:55,181] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=43
+[2025-10-15 16:56:56,438] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:56:56,663] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:57:01,965] INFO core.middleware request GET /programs/4/apply/ 200 user=buchugan ip=127.0.0.1 duration_ms=39
+[2025-10-15 16:57:10,409] INFO core.middleware request GET /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=19
+[2025-10-15 16:57:13,424] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:57:15,457] INFO core.middleware request GET /programs/1/apply/ 200 user=buchugan ip=127.0.0.1 duration_ms=10
+[2025-10-15 16:57:33,685] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:57:34,695] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:57:47,755] INFO core.middleware request GET /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=11
+[2025-10-15 16:57:49,213] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:58:19,306] INFO core.middleware request GET /programs/1/apply/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-15 16:58:26,938] INFO core.middleware request POST /programs/1/apply/ 302 user=buchugan ip=127.0.0.1 duration_ms=31
+[2025-10-15 16:58:26,984] INFO core.middleware request GET /profile/ 200 user=buchugan ip=127.0.0.1 duration_ms=15
+[2025-10-15 16:58:32,051] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:58:32,268] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:58:34,122] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=26
+[2025-10-15 16:58:37,043] INFO core.middleware request GET /candidates/4/edit/ 200 user=admin ip=127.0.0.1 duration_ms=19
+[2025-10-15 16:58:40,817] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-15 16:58:43,387] INFO core.middleware request GET /programs/ 200 user=buchugan ip=127.0.0.1 duration_ms=12
+[2025-10-15 16:58:48,577] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=6
+[2025-10-15 16:58:48,793] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:58:52,349] INFO core.middleware request POST /notifications/45/mark-read/ 200 user=buchugan ip=127.0.0.1 duration_ms=34
+[2025-10-15 16:58:52,377] INFO core.middleware request GET /candidates/4/ 302 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:58:52,397] INFO core.middleware request GET / 200 user=buchugan ip=127.0.0.1 duration_ms=8
+[2025-10-15 16:58:55,062] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:58:55,282] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 16:59:41,697] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:59:42,694] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 16:59:52,698] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 16:59:53,692] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:00:41,690] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:00:42,700] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
