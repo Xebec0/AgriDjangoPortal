@@ -14,15 +14,15 @@
    - Real-time validation with Bootstrap classes (is-valid/is-invalid).
    - Handle submission on Step 3 via nextBtn.
 
-3. **[PENDING]** Test the multi-step modal:
+3. **[COMPLETE]** Test the multi-step modal:
    - Reload the page at http://127.0.0.1:8000/.
    - Click "Register" and verify steps switch on Next/Prev.
    - Test validation: Try advancing without required fields, check confirm matches.
    - Fill form and submit on Step 3 (optional, to verify AJAX).
    - Ensure modal fits screen without overflow.
 
-4. **[PENDING]** Confirm original login test:
+4. **[COMPLETE]** Confirm original login test:
    - Click "Login" modal, use admin credentials (username: admin, your password).
    - Verify no "no such column: core_profile.address" error and login succeeds.
 
-5. **[PENDING]** If all tests pass, mark task complete and clean up TODO.md.
+5. **[COMPLETE]** If all tests pass, mark task complete and clean up TODO.md.

@@ -119,34 +119,52 @@ function setupLoginModal() {
             }
         });
         
+        // Setup username validation
+        setupUsernameValidation();
+
         // Handle form submission via event delegation
         document.addEventListener('submit', function(e) {
             const form = e.target;
-            
+
             // Check if this is the login modal form
             if (form.id === 'loginModalForm') {
                 e.preventDefault();
-                
+
+                // Validate username exists before submitting
+                const usernameInput = form.querySelector('#id_username');
+                const username = usernameInput ? usernameInput.value.trim() : '';
+
+                if (!username) {
+                    showLoginError('Please enter your username.');
+                    return;
+                }
+
+                // Check if username validation has been performed and passed
+                if (usernameInput && usernameInput.dataset.validated === 'false') {
+                    showLoginError('Please check that your username is registered.');
+                    return;
+                }
+
                 const submitButton = form.querySelector('button[type="submit"]');
                 const originalText = submitButton.innerHTML;
                 submitButton.disabled = true;
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-                
+
                 // Hide any previous error messages
                 const errorElement = document.getElementById('loginModalErrors');
                 if (errorElement) {
                     errorElement.style.display = 'none';
                 }
-                
+
                 // Get form data
                 const formData = new FormData(form);
-                
+
                 // Convert FormData to URLSearchParams for proper form submission
                 const params = new URLSearchParams();
                 for (const pair of formData.entries()) {
                     params.append(pair[0], pair[1]);
                 }
-                
+
                 // Submit the form via AJAX
                 fetch('/api/ajax-login/', {
                     method: 'POST',
@@ -166,11 +184,11 @@ function setupLoginModal() {
                         if (typeof showToast === 'function') {
                             showToast('Success', data.message, 'success');
                         }
-                        
+
                         // Hide the modal
                         const modalInstance = bootstrap.Modal.getInstance(loginModal);
                         modalInstance.hide();
-                        
+
                         // Redirect or reload
                         setTimeout(function() {
                             if (data.redirect) {
@@ -189,7 +207,7 @@ function setupLoginModal() {
                             errorElement.innerHTML = errorMessage;
                             errorElement.style.display = 'block';
                         }
-                        
+
                         // Reset the button
                         submitButton.disabled = false;
                         submitButton.innerHTML = originalText;
@@ -197,7 +215,7 @@ function setupLoginModal() {
                 })
                 .catch(error => {
                     console.error('Error during login:', error);
-                    
+
                     // Show error message
                     if (errorElement) {
                         let errorMessage = 'An error occurred during login. Please try again.';
@@ -207,7 +225,7 @@ function setupLoginModal() {
                         errorElement.innerHTML = errorMessage;
                         errorElement.style.display = 'block';
                     }
-                    
+
                     // Reset the button
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalText;
@@ -923,27 +941,151 @@ function loadModalContent(url, container) {
 }
 
 /**
+ * Setup username validation for login modal
+ */
+function setupUsernameValidation() {
+    // Add event listener to username input for real-time validation
+    document.addEventListener('input', function(e) {
+        if (e.target && e.target.id === 'id_username') {
+            const usernameInput = e.target;
+            const username = usernameInput.value.trim();
+
+            // Clear previous validation state
+            usernameInput.classList.remove('is-valid', 'is-invalid');
+            usernameInput.dataset.validated = 'false';
+
+            // Only validate if username is not empty and has minimum length
+            if (username.length >= 3) {
+                validateUsername(username, usernameInput);
+            }
+        }
+    });
+
+    // Add blur event to validate when user leaves the field
+    document.addEventListener('blur', function(e) {
+        if (e.target && e.target.id === 'id_username') {
+            const usernameInput = e.target;
+            const username = usernameInput.value.trim();
+
+            if (username && username.length >= 3) {
+                validateUsername(username, usernameInput);
+            }
+        }
+    });
+}
+
+/**
+ * Validate username existence via AJAX
+ */
+function validateUsername(username, inputElement) {
+    // Show loading state
+    inputElement.classList.add('is-validating');
+    inputElement.dataset.validated = 'pending';
+
+    fetch('/api/check-username/', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        inputElement.classList.remove('is-validating');
+
+        if (data.available) {
+            // Username is available (not registered) - show error
+            inputElement.classList.add('is-invalid');
+            inputElement.classList.remove('is-valid');
+            inputElement.dataset.validated = 'false';
+
+            // Add custom error message
+            showUsernameError(inputElement, 'This username is not registered. Please check your username or register first.');
+        } else {
+            // Username exists - show success
+            inputElement.classList.add('is-valid');
+            inputElement.classList.remove('is-invalid');
+            inputElement.dataset.validated = 'true';
+
+            // Clear any error message
+            clearUsernameError(inputElement);
+        }
+    })
+    .catch(error => {
+        console.error('Error validating username:', error);
+        inputElement.classList.remove('is-validating');
+        inputElement.classList.add('is-invalid');
+        inputElement.dataset.validated = 'false';
+        showUsernameError(inputElement, 'Unable to verify username. Please try again.');
+    });
+}
+
+/**
+ * Show username validation error
+ */
+function showUsernameError(inputElement, message) {
+    // Remove existing error message if any
+    clearUsernameError(inputElement);
+
+    // Create error message element
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'invalid-feedback d-block';
+    errorDiv.textContent = message;
+
+    // Insert after the input group
+    const inputGroup = inputElement.closest('.input-group');
+    if (inputGroup) {
+        inputGroup.parentNode.insertBefore(errorDiv, inputGroup.nextSibling);
+    }
+}
+
+/**
+ * Clear username validation error
+ */
+function clearUsernameError(inputElement) {
+    const inputGroup = inputElement.closest('.input-group');
+    if (inputGroup) {
+        const errorElement = inputGroup.parentNode.querySelector('.invalid-feedback');
+        if (errorElement) {
+            errorElement.remove();
+        }
+    }
+}
+
+/**
+ * Show login error message
+ */
+function showLoginError(message) {
+    const errorElement = document.getElementById('loginModalErrors');
+    if (errorElement) {
+        errorElement.innerHTML = message;
+        errorElement.style.display = 'block';
+    }
+}
+
+/**
  * Update password strength meter
  */
 function updatePasswordStrength(password) {
     const passwordStrengthMeter = document.getElementById('passwordStrengthMeter');
     const passwordStrengthLabel = document.getElementById('passwordStrengthLabel');
-    
+
     if (!passwordStrengthMeter || !passwordStrengthLabel) return;
-    
+
     let strength = 0;
     let label = '';
-    
+
     // Calculate password strength
     if (password.length >= 8) strength += 1;
     if (/[A-Z]/.test(password)) strength += 1;
     if (/[a-z]/.test(password)) strength += 1;
     if (/[0-9]/.test(password)) strength += 1;
     if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-    
+
     // Update the UI based on strength
     const meterBar = passwordStrengthMeter.querySelector('div');
-    
+
     if (strength >= 4) {
         label = 'Strong';
         meterBar.style.width = '100%';
@@ -961,6 +1103,6 @@ function updatePasswordStrength(password) {
         meterBar.style.width = '0';
         meterBar.className = '';
     }
-    
+
     passwordStrengthLabel.textContent = label;
 }
