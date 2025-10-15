@@ -169,10 +169,13 @@ def health_check(request):
 
 def index(request):
     """Home page view - shows different pages for guests vs authenticated users"""
+    # Check for auto_open_modal query parameter
+    auto_open_modal = request.GET.get('auto_open_modal', '')
+
     # If user is not authenticated, show guest landing page
     if not request.user.is_authenticated:
-        return render(request, 'guest_landing.html')
-    
+        return render(request, 'guest_landing.html', {'auto_open_modal': auto_open_modal})
+
     # For authenticated users, show the main programs landing page
     # Get featured programs first, then regular programs if needed
     featured_programs = AgricultureProgram.objects.filter(is_featured=True).order_by('-start_date')[:6]
@@ -181,7 +184,7 @@ def index(request):
         programs = AgricultureProgram.objects.all().order_by('-start_date')[:6]
     else:
         programs = featured_programs
-    return render(request, 'index.html', {'programs': programs})
+    return render(request, 'index.html', {'programs': programs, 'auto_open_modal': auto_open_modal})
 
 
 @ratelimit(key='ip', rate='5/h', method='POST', block=True)
@@ -219,7 +222,8 @@ def register(request):
             )
 
             messages.success(request, f'Account created for {username}! Your profile is now complete. You can log in.')
-            return redirect('login')
+            # Redirect to index page with modal auto-open instead of login page
+            return redirect('/?auto_open_modal=login')
     else:
         form = ComprehensiveRegisterForm()
     return render(request, 'register.html', {'form': form})
@@ -338,7 +342,8 @@ def admin_register(request):
             # Profile auto-created by signal, no need to create manually
             username = form.cleaned_data.get('username')
             messages.success(request, f'Admin account created for {username}! You can now log in.')
-            return redirect('login')
+            # Redirect to index page with modal auto-open instead of login page
+            return redirect('/?auto_open_modal=login')
     else:
         form = AdminRegistrationForm()
     return render(request, 'admin_register.html', {'form': form})
@@ -1817,7 +1822,7 @@ def ajax_register(request):
         return JsonResponse({
             'success': True,
             'message': f'Account created for {username}! Your profile is now complete. You can log in.',
-            'redirect': '/login/'
+            'redirect': '/?auto_open_modal=login'
         })
     else:
         return JsonResponse({
@@ -1876,7 +1881,7 @@ def ajax_admin_register(request):
         return JsonResponse({
             'success': True,
             'message': f'Admin account created for {username}! You can now log in.',
-            'redirect': '/login/'
+            'redirect': '/?auto_open_modal=login'
         })
     else:
         return JsonResponse({

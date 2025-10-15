@@ -40226,3 +40226,433 @@ ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.Anonym
 [2025-10-15 16:59:53,692] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
 [2025-10-15 17:00:41,690] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
 [2025-10-15 17:00:42,700] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:00:52,694] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:00:53,698] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:01:40,845] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:01:41,064] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:01:42,751] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-15 17:01:44,002] INFO core.middleware request GET /programs/4/ 200 user=admin ip=127.0.0.1 duration_ms=10
+[2025-10-15 17:01:45,671] INFO core.middleware request GET /programs/4/registrants/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-15 17:01:47,045] INFO core.middleware request GET /programs/4/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-15 17:01:49,782] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-15 17:01:52,695] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:01:53,040] INFO core.middleware request GET /programs/1/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-15 17:01:53,686] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:01:54,131] INFO core.middleware request GET /programs/1/registrants/ 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-10-15 17:02:00,200] INFO core.middleware request GET /candidates/3/ 200 user=admin ip=127.0.0.1 duration_ms=9
+[2025-10-15 17:02:10,783] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=8
+[2025-10-15 17:02:12,303] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-15 17:02:14,366] INFO core.middleware request GET /programs/1/ 200 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-15 17:02:15,636] INFO core.middleware request GET /programs/1/registrants/ 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-10-15 17:02:19,368] INFO core.middleware request GET /programs/1/registrants/ 200 user=admin ip=127.0.0.1 duration_ms=24
+[2025-10-15 17:02:32,532] INFO core.middleware request GET /programs/ 200 user=admin ip=127.0.0.1 duration_ms=19
+[2025-10-15 17:02:52,694] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:02:53,686] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:03:32,693] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:03:33,698] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:03:52,694] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:03:53,689] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:04:32,689] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:04:33,336] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:04:34,662] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=39
+[2025-10-15 17:04:34,680] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:04:41,008] INFO core.middleware request GET /login 404 user= ip=127.0.0.1 duration_ms=26
+[2025-10-15 17:04:41,026] INFO core.middleware request GET /login/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:04:52,694] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:04:53,692] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:05:06,476] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:05:06,703] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:05:52,698] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:05:53,692] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:06:02,764] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:06:04,908] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:05,140] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=6
+[2025-10-15 17:06:05,374] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:06:05,472] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:05,731] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:05,755] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:06,105] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:06,353] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:07,048] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 17:06:07,150] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 17:06:07,244] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 17:06:07,459] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:06:09,815] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=939
+[2025-10-15 17:06:10,097] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:06:10,432] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=26
+[2025-10-15 17:06:12,064] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=89
+[2025-10-15 17:06:13,291] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=106
+[2025-10-15 17:06:13,355] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=27
+[2025-10-15 17:06:15,519] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:15,710] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:15,923] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:16,165] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:16,330] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:16,523] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:23,792] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:23,916] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:24,080] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:24,454] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:24,556] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:24,739] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:37,765] INFO core.middleware request POST /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=217
+[2025-10-15 17:06:41,827] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=29
+[2025-10-15 17:06:45,420] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:45,489] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:45,559] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:06:46,245] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:46,316] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:46,362] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:06:53,805] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=114
+[2025-10-15 17:06:54,692] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:07:31,471] INFO core.middleware request POST /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=48
+[2025-10-15 17:07:38,421] INFO core.middleware request POST /admin/auth/user/ 302 user=admin ip=127.0.0.1 duration_ms=83
+[2025-10-15 17:07:38,516] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=34
+[2025-10-15 17:07:38,553] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:07:40,871] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=11
+[2025-10-15 17:07:42,084] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=13
+[2025-10-15 17:07:45,424] INFO core.middleware request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=33
+[2025-10-15 17:07:45,444] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:07:46,829] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:07:47,045] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:07:48,868] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=50
+[2025-10-15 17:07:49,097] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:07:50,963] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 17:07:51,180] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:08:42,701] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-15 17:08:43,687] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:08:56,419] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=32
+[2025-10-15 17:08:56,644] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:09:00,735] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:09:00,951] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:09:02,886] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:09:02,919] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=4
+[2025-10-15 17:09:03,137] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:09:13,564] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000256C3BF6990>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:09:13,576] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000256C3BF6990>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:09:13,588] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000256C3BF6990>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:09:13,599] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000256C3BF6990>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:09:13,608] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000256C3BF6990>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:09:13,616] ERROR core.signals Failed to write ActivityLog for core.Notification
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000256C3BF6990>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:09:13,618] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=447
+[2025-10-15 17:09:13,894] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-15 17:09:14,202] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:09:19,482] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 17:09:19,702] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:09:42,695] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-15 17:09:43,690] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:09:59,307] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:09:59,908] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:09:59,961] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-15 17:10:00,089] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:10:00,547] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:10:00,588] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-15 17:10:05,729] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=171
+[2025-10-15 17:10:07,689] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=34
+[2025-10-15 17:10:07,729] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:10:12,897] INFO core.middleware request POST /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=25
+[2025-10-15 17:10:14,265] INFO core.middleware request POST /admin/auth/user/ 302 user=admin ip=127.0.0.1 duration_ms=106
+[2025-10-15 17:10:14,349] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=19
+[2025-10-15 17:10:14,387] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:10:25,803] INFO core.middleware request GET /modal/register/ 200 user= ip=127.0.0.1 duration_ms=24
+[2025-10-15 17:10:26,025] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:10:27,155] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-15 17:10:27,384] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:11:26,545] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000022E95B8B5C0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:11:26,566] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000022E95B8B5C0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:11:26,586] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000022E95B8B5C0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:11:26,606] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000022E95B8B5C0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:11:26,627] ERROR core.signals Failed to write ActivityLog for core.Profile
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000022E95B8B5C0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:11:26,646] ERROR core.signals Failed to write ActivityLog for core.Notification
+Traceback (most recent call last):
+  File "C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py", line 102, in log_post_save
+    ActivityLog.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=get_request_user(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        session_key=get_request_session_key(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x0000022E95B8B5C0>>": "ActivityLog.user" must be a "User" instance.
+[2025-10-15 17:11:26,647] INFO core.middleware request POST /api/ajax-register/ 200 user= ip=127.0.0.1 duration_ms=564
+[2025-10-15 17:11:26,922] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-15 17:11:27,241] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-15 17:11:27,286] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
