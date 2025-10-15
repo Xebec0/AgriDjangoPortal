@@ -19,9 +19,10 @@ from .models import Profile, AgricultureProgram, Registration, Candidate, Univer
 from .models import ActivityLog
 import logging
 from .forms import (
-    UserRegisterForm, UserUpdateForm, ProfileUpdateForm, 
+    UserRegisterForm, UserUpdateForm, ProfileUpdateForm,
     ProgramRegistrationForm, AdminRegistrationForm,
-    CandidateForm, CandidateSearchForm, ProgramSearchForm
+    CandidateForm, CandidateSearchForm, ProgramSearchForm,
+    ComprehensiveRegisterForm
 )
 from .forms_email import CustomPasswordResetForm
 import csv
@@ -185,44 +186,84 @@ def index(request):
 
 @ratelimit(key='ip', rate='5/h', method='POST', block=True)
 def register(request):
-    """User registration view without email verification"""
+    """Comprehensive user registration view with extended profile fields"""
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = ComprehensiveRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
-            
+
             # Check if a user with this username or email already exists
             if User.objects.filter(username=username).exists():
                 messages.error(request, f'An account with username "{username}" already exists. Please choose a different username.')
                 return render(request, 'register.html', {'form': form})
-            
+
             if User.objects.filter(email=email).exists():
                 messages.error(request, f'An account with email "{email}" already exists. Please use a different email or try to log in.')
                 return render(request, 'register.html', {'form': form})
-            
-            # Create the user if it doesn't exist
+
+            # Save user and profile
             user = form.save()
-            
-            # The profile will be automatically created by signals.py
-            # Just ensure it's marked as email verified
-            profile = Profile.objects.get(user=user)
+            profile = form.save_profile(user)
+
+            # Mark email as verified
             profile.email_verified = True
             profile.save()
-            
+
             # Create welcome notification
             Notification.add_notification(
                 user=user,
-                message="Welcome to AgroStudies! Your account has been created successfully.",
+                message="Welcome to AgroStudies! Your comprehensive profile has been created successfully.",
                 notification_type=Notification.SUCCESS,
-                link="/"
+                link="/profile/"
             )
-            
-            messages.success(request, f'Account created for {username}! You can now log in.')
+
+            messages.success(request, f'Account created for {username}! Your profile is now complete. You can log in.')
             return redirect('login')
     else:
-        form = UserRegisterForm()
+        form = ComprehensiveRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+@ratelimit(key='ip', rate='3/h', method='POST', block=True)
+def comprehensive_register(request):
+    """Comprehensive user registration view with extended profile fields"""
+    if request.method == 'POST':
+        form = ComprehensiveRegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+
+            # Check if a user with this username or email already exists
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f'An account with username "{username}" already exists. Please choose a different username.')
+                return render(request, 'comprehensive_register.html', {'form': form})
+
+            if User.objects.filter(email=email).exists():
+                messages.error(request, f'An account with email "{email}" already exists. Please use a different email or try to log in.')
+                return render(request, 'comprehensive_register.html', {'form': form})
+
+            # Save user and profile
+            user = form.save()
+            profile = form.save_profile(user)
+
+            # Mark email as verified (no email verification in this flow)
+            profile.email_verified = True
+            profile.save()
+
+            # Create welcome notification
+            Notification.add_notification(
+                user=user,
+                message="Welcome to AgroStudies! Your comprehensive profile has been created successfully.",
+                notification_type=Notification.SUCCESS,
+                link="/profile/"
+            )
+
+            messages.success(request, f'Account created for {username}! Your profile is now complete.')
+            return redirect('profile')
+    else:
+        form = ComprehensiveRegisterForm()
+    return render(request, 'comprehensive_register.html', {'form': form})
 
 
 def verify_email(request, token):
@@ -565,11 +606,15 @@ def apply_candidate(request, program_id):
     if request.method == 'POST':
         # Pre-fill POST with current user info to keep profile -> application in sync
         mutable_post = request.POST.copy()
+        profile = request.user.profile
+        
+        # Basic identity fields
         mutable_post['first_name'] = request.user.first_name or mutable_post.get('first_name', '')
         mutable_post['confirm_first_name'] = request.user.first_name or mutable_post.get('confirm_first_name', '')
         mutable_post['last_name'] = request.user.last_name or mutable_post.get('last_name', '')
         mutable_post['confirm_surname'] = request.user.last_name or mutable_post.get('confirm_surname', '')
         mutable_post['email'] = request.user.email or mutable_post.get('email', '')
+        
         form = CandidateForm(mutable_post, request.FILES)
         if form.is_valid():
             # Handle cache operations outside the transaction
@@ -679,21 +724,48 @@ def apply_candidate(request, program_id):
                 for error in errors:
                     messages.error(request, f"Error in {field}: {error}")
     else:
-        # Prefill from user if available
+        # Prefill ALL available data from user profile
+        profile = request.user.profile
         initial_data = {
+            # Basic identity
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
             'email': request.user.email,
             'confirm_first_name': request.user.first_name,
             'confirm_surname': request.user.last_name,
-            'father_name': request.user.profile.father_name,
-            'mother_name': request.user.profile.mother_name,
-            'date_of_birth': request.user.profile.date_of_birth,
-            'gender': request.user.profile.gender,
-            'country_of_birth': request.user.profile.country_of_birth,
-            'nationality': request.user.profile.nationality,
-            'religion': request.user.profile.religion,
+            
+            # Personal details
+            'father_name': profile.father_name,
+            'mother_name': profile.mother_name,
+            'date_of_birth': profile.date_of_birth,
+            'gender': profile.gender,
+            'country_of_birth': profile.country_of_birth,
+            'nationality': profile.nationality,
+            'religion': profile.religion,
+            
+            # Passport details
+            'passport_number': profile.passport_number,
+            'passport_issue_date': profile.passport_issue_date,
+            'passport_expiry_date': profile.passport_expiry_date,
+            
+            # Education
+            'university': profile.university,
+            'specialization': profile.specialization,
+            'secondary_specialization': profile.secondary_specialization,
+            
+            # Physical attributes
+            'shoes_size': profile.shoes_size,
+            'shirt_size': profile.shirt_size,
+            'smokes': profile.smokes,
+            
+            # Document scans (if already uploaded in profile)
+            'passport_scan': profile.passport_scan if profile.passport_scan else None,
+            'diploma': profile.academic_certificate if profile.academic_certificate else None,
         }
+        
+        # Remove None values to avoid overwriting form defaults
+        initial_data = {k: v for k, v in initial_data.items() if v is not None and v != ''}
+        
         form = CandidateForm(initial=initial_data)
 
     return render(request, 'candidate_form.html', {
@@ -1728,41 +1800,48 @@ def check_username(request):
 @require_POST
 def ajax_login(request):
     """API endpoint for AJAX login"""
-    form = AuthenticationForm(request, data=request.POST)
-    if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        
-        if user is not None:
-            # Create profile if it doesn't exist (for backward compatibility)
-            try:
-                profile = Profile.objects.get(user=user)
-            except Profile.DoesNotExist:
-                Profile.objects.create(user=user, email_verified=True)
+    try:
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
             
-            login(request, user)
-            return JsonResponse({
-                'success': True,
-                'message': f'Welcome back, {username}!',
-                'redirect': '/'
-            })
+            if user is not None:
+                # Create profile if it doesn't exist (for backward compatibility)
+                try:
+                    profile = Profile.objects.get(user=user)
+                except Profile.DoesNotExist:
+                    Profile.objects.create(user=user, email_verified=True)
+                
+                login(request, user)
+                return JsonResponse({
+                    'success': True,
+                    'message': f'Welcome back, {username}!',
+                    'redirect': '/'
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {'__all__': ['Invalid username or password.']}
+                })
         else:
             return JsonResponse({
                 'success': False,
-                'errors': {'__all__': ['Invalid username or password.']}
+                'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
             })
-    else:
+    except Exception as e:
+        logger.error(f"AJAX login error: {str(e)}", exc_info=True)
         return JsonResponse({
             'success': False,
-            'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
-        })
+            'errors': {'__all__': [f'Server error: {str(e)}']}
+        }, status=500)
 
 
 @require_POST
 def ajax_register(request):
-    """API endpoint for AJAX registration"""
-    form = UserRegisterForm(request.POST)
+    """API endpoint for AJAX registration using comprehensive form"""
+    form = ComprehensiveRegisterForm(request.POST, request.FILES)
     if form.is_valid():
         username = form.cleaned_data.get('username')
         email = form.cleaned_data.get('email')
@@ -1780,26 +1859,25 @@ def ajax_register(request):
                 'errors': {'email': [f'An account with email "{email}" already exists. Please use a different email or try to log in.']}
             })
         
-        # Create the user if it doesn't exist
+        # Save user and profile
         user = form.save()
+        profile = form.save_profile(user)
         
-        # The profile will be automatically created by signals.py
-        # Just ensure it's marked as email verified
-        profile = Profile.objects.get(user=user)
+        # Mark email as verified
         profile.email_verified = True
         profile.save()
         
         # Create welcome notification
         Notification.add_notification(
             user=user,
-            message="Welcome to AgroStudies! Your account has been created successfully.",
+            message="Welcome to AgroStudies! Your comprehensive profile has been created successfully.",
             notification_type=Notification.SUCCESS,
-            link="/"
+            link="/profile/"
         )
         
         return JsonResponse({
             'success': True,
-            'message': f'Account created for {username}! You can now log in.',
+            'message': f'Account created for {username}! Your profile is now complete. You can log in.',
             'redirect': '/login/'
         })
     else:
@@ -1836,8 +1914,8 @@ def modal_login(request):
 
 
 def modal_register(request):
-    """Return registration form HTML for modal"""
-    form = UserRegisterForm()
+    """Return comprehensive registration form HTML for modal"""
+    form = ComprehensiveRegisterForm()
     return render(request, 'modals/register_modal.html', {'form': form})
 
 

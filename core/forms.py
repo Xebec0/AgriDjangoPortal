@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.utils import timezone
 from .models import Profile, Registration, Candidate, University
 import os
 
@@ -481,12 +482,12 @@ class ProgramSearchForm(forms.Form):
     """Form for searching programs."""
     query = forms.CharField(
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search by keyword...'}),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search by keyword...'}), 
         label=""
     )
     location = forms.CharField(
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Filter by location...'}),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Filter by location...'}), 
         label=""
     )
     gender = forms.ChoiceField(
@@ -500,3 +501,140 @@ class ProgramSearchForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-select'}),
         label=""
     )
+
+
+class ComprehensiveRegisterForm(UserCreationForm):
+    # User fields
+    email = forms.EmailField(required=True)
+    confirm_email = forms.EmailField(required=True, label='Confirm Email')
+    
+    # Profile fields (existing + new)
+    phone_number = forms.CharField(max_length=20, required=False, help_text="Enter your phone number")
+    date_of_birth = forms.DateField(required=True, help_text="Enter your date of birth")
+    gender = forms.ChoiceField(choices=Profile.GENDER_CHOICES, required=True)
+    nationality = forms.CharField(max_length=100, required=True, help_text="Enter your nationality")
+    address = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Enter your full address")
+    
+    # Passport fields
+    passport_number = forms.CharField(max_length=20, required=True, help_text="Enter your passport number")
+    confirm_passport_number = forms.CharField(max_length=20, required=True, help_text="Confirm passport number")
+    passport_issue_date = forms.DateField(required=True, help_text="Passport issue date")
+    passport_expiry_date = forms.DateField(required=True, help_text="Passport expiry date")
+    place_of_issue = forms.CharField(max_length=100, required=False, help_text="Place of issue")
+    
+    # Academic fields
+    highest_education_level = forms.ChoiceField(choices=Profile.EDUCATION_LEVEL_CHOICES, required=True)
+    institution_name = forms.CharField(max_length=200, required=True, help_text="Name of institution")
+    graduation_year = forms.IntegerField(required=True, min_value=1900, max_value=timezone.now().year, help_text="Year of graduation")
+    field_of_study = forms.CharField(max_length=100, required=True, help_text="Field of study")
+    
+    # Additional fields
+    preferred_country = forms.CharField(max_length=100, required=False, help_text="Preferred country for opportunities")
+    willing_to_relocate = forms.BooleanField(required=False, initial=True, help_text="Are you willing to relocate?")
+    special_requirements = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Any special requirements or notes")
+    
+    # Documents
+    profile_image = forms.ImageField(required=False, help_text="Upload your profile photo (optional)")
+    passport_scan = forms.FileField(required=False, help_text="Upload passport scan (PDF/JPG/PNG, max 5MB)")
+    academic_certificate = forms.FileField(required=False, help_text="Upload academic certificate (PDF/JPG/PNG, max 5MB)")
+    
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Bootstrap styling for all fields
+        for field_name in self.fields:
+            if isinstance(self.fields[field_name], forms.FileField):
+                self.fields[field_name].widget.attrs.update({
+                    'class': 'form-control',
+                    'accept': '.pdf,.jpg,.jpeg,.png,image/*' if 'profile' in field_name else '.pdf,.jpg,.jpeg,.png'
+                })
+            elif isinstance(self.fields[field_name], forms.DateField):
+                self.fields[field_name].widget.attrs.update({
+                    'class': 'form-control',
+                    'type': 'date'
+                })
+            elif isinstance(self.fields[field_name], forms.ChoiceField):
+                self.fields[field_name].widget.attrs.update({'class': 'form-control'})
+            elif isinstance(self.fields[field_name], forms.BooleanField):
+                self.fields[field_name].widget.attrs.update({'class': 'form-check-input'})
+            else:
+                self.fields[field_name].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder': self.fields[field_name].help_text or f'Enter {field_name.replace("_", " ")}'
+                })
+
+        # Specific placeholders
+        self.fields['password1'].widget.attrs['placeholder'] = 'Create a strong password (8+ chars)'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Confirm your password'
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        passport_number = cleaned_data.get('passport_number')
+        confirm_passport_number = cleaned_data.get('confirm_passport_number')
+        passport_issue_date = cleaned_data.get('passport_issue_date')
+        passport_expiry_date = cleaned_data.get('passport_expiry_date')
+        date_of_birth = cleaned_data.get('date_of_birth')
+        graduation_year = cleaned_data.get('graduation_year')
+        
+        # Passport match
+        if passport_number and confirm_passport_number and passport_number != confirm_passport_number:
+            raise ValidationError("Passport numbers do not match.")
+
+        # Email match
+        email = cleaned_data.get('email')
+        confirm_email = cleaned_data.get('confirm_email')
+        if email and confirm_email and email != confirm_email:
+            raise ValidationError("Email addresses do not match.")
+        
+        # Passport dates
+        if passport_issue_date and passport_expiry_date:
+            if passport_expiry_date <= passport_issue_date:
+                raise ValidationError("Passport expiry date must be after issue date.")
+            if passport_expiry_date < timezone.now().date():
+                raise ValidationError("Passport must not be expired.")
+        
+        # DOB
+        if date_of_birth and date_of_birth >= timezone.now().date():
+            raise ValidationError("Date of birth must be in the past.")
+        
+        # Graduation year
+        if graduation_year:
+            current_year = timezone.now().year
+            if graduation_year < 1900 or graduation_year > current_year:
+                raise ValidationError("Graduation year must be between 1900 and current year.")
+        
+        # File validations
+        for field_name in ['profile_image', 'passport_scan', 'academic_certificate']:
+            file_field = cleaned_data.get(field_name)
+            if file_field:
+                validate_file_size(file_field)
+                valid_exts = ['.pdf', '.jpg', '.jpeg', '.png'] if field_name != 'profile_image' else ['.jpg', '.jpeg', '.png', '.gif']
+                validate_file_extension(file_field, valid_exts)
+        
+        return cleaned_data
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            self.save_profile(user)
+        return user
+    
+    def save_profile(self, user, commit=True):
+        profile, created = Profile.objects.get_or_create(user=user)
+        profile_fields = [
+            'phone_number', 'date_of_birth', 'gender', 'nationality', 'address',
+            'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
+            'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
+            'preferred_country', 'willing_to_relocate', 'special_requirements',
+            'profile_image', 'passport_scan', 'academic_certificate'
+        ]
+        for field in profile_fields:
+            if field in self.cleaned_data:
+                setattr(profile, field, self.cleaned_data[field])
+        if commit:
+            profile.save()
+        return profile

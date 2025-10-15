@@ -225,6 +225,10 @@ function setupRegisterModal() {
     const registerModalContent = document.getElementById('registerModalContent');
     
     if (registerModal) {
+        let currentStep = 1;
+        const totalSteps = 3;
+        let nextBtn, prevBtn, stepIndicator, form, errorElement;
+        
         // Load the registration form when the modal is shown
         registerModal.addEventListener('show.bs.modal', function() {
             // Animation classes disabled
@@ -238,23 +242,24 @@ function setupRegisterModal() {
             if (!registerModalContent.querySelector('form') || 
                 registerModalContent.querySelector('.alert-danger')) {
                 loadModalContent('/modal/register/', registerModalContent);
-            } else {
-                // Animations disabled
-                const formElements = registerModalContent.querySelectorAll('.form-group, .mb-3, .mb-4, .alert, .d-grid');
-                formElements.forEach(element => {
-                    element.classList.remove('animate-field');
-                });
             }
+            
+            // Initialize multi-step after content loads
+            setTimeout(() => {
+                initializeMultiStep();
+            }, 100);
         });
         
         // Reset modal when hidden
         registerModal.addEventListener('hide.bs.modal', function() {
-            // Animations disabled
+            // Animation classes disabled
             const modalDialog = registerModal.querySelector('.modal-dialog');
             if (modalDialog) {
                 modalDialog.classList.remove('animate-zoom-in');
                 modalDialog.classList.remove('animate-zoom-out');
             }
+            // Reset to step 1
+            currentStep = 1;
         });
         
         // Clean up after animation completes
@@ -274,95 +279,334 @@ function setupRegisterModal() {
             }
         });
         
-        // Handle form submission via event delegation
-        document.addEventListener('submit', function(e) {
-            const form = e.target;
+        function initializeMultiStep() {
+            form = registerModalContent.querySelector('#registerModalForm');
+            if (!form) return;
             
-            // Check if this is the register modal form
-            if (form.id === 'registerModalForm') {
-                e.preventDefault();
-                
-                const submitButton = form.querySelector('button[type="submit"]');
-                const originalText = submitButton.innerHTML;
-                submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-                
-                // Hide any previous error messages
-                const errorElement = document.getElementById('registerModalErrors');
-                if (errorElement) {
-                    errorElement.style.display = 'none';
-                }
-                
-                // Get form data
-                const formData = new FormData(form);
-                
-                // Submit the form via AJAX
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': getCSRFToken() || ''
-                    },
-                    redirect: 'manual'
-                })
-                .then((response) => parseJsonSafe(response, 'Register'))
-                .then(data => {
-                    if (data.success) {
-                        // Show success toast
-                        if (typeof showToast === 'function') {
-                            showToast('Success', data.message, 'success');
-                        }
-                        
-                        // Hide the modal
-                        const modalInstance = bootstrap.Modal.getInstance(registerModal);
-                        modalInstance.hide();
-                        
-                        // Redirect if specified
-                        if (data.redirect) {
-                            setTimeout(function() {
-                                window.location.href = data.redirect;
-                            }, 500);
-                        } else {
-                            // Reload the page
-                            setTimeout(function() {
-                                window.location.reload();
-                            }, 500);
-                        }
-                    } else {
-                        // Show error messages
-                        if (errorElement) {
-                            errorElement.innerHTML = '';
-                            
-                            // Loop through all errors
-                            let errorHtml = '';
-                            for (const [field, fieldErrors] of Object.entries(data.errors)) {
-                                errorHtml += `<strong>${field}:</strong> ${fieldErrors.join('<br>')}<br>`;
-                            }
-                            errorElement.innerHTML = errorHtml;
-                            errorElement.style.display = 'block';
-                        }
-                        
-                        // Reset the button
-                        submitButton.disabled = false;
-                        submitButton.innerHTML = originalText;
+            const formSteps = registerModalContent.querySelectorAll('.form-step');
+            nextBtn = registerModalContent.querySelector('#nextBtn');
+            prevBtn = registerModalContent.querySelector('#prevBtn');
+            stepIndicator = registerModalContent.querySelector('#stepIndicator');
+            errorElement = registerModalContent.querySelector('#registerModalErrors');
+            
+            if (!nextBtn || !prevBtn || !stepIndicator || formSteps.length === 0) return;
+            
+            // Reset to step 1
+            currentStep = 1;
+            showStep(currentStep);
+            
+            // Attach event listeners
+            nextBtn.addEventListener('click', handleNextClick);
+            prevBtn.addEventListener('click', handlePrevClick);
+            
+            // Real-time validation for confirm fields
+            setupRealTimeValidation();
+            
+            // Remove existing submit listener to avoid conflicts
+            // Since we're handling submit manually on step 3
+        }
+        
+        function showStep(n) {
+            const formSteps = registerModalContent.querySelectorAll('.form-step');
+            formSteps.forEach((step, index) => {
+                step.classList.toggle('active', index + 1 === n);
+            });
+            
+            prevBtn.style.display = n === 1 ? 'none' : 'inline-block';
+            
+            if (n === totalSteps) {
+                nextBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i> Create Account';
+                nextBtn.classList.add('submit-btn');
+            } else {
+                nextBtn.innerHTML = 'Next';
+                nextBtn.classList.remove('submit-btn');
+            }
+            
+            stepIndicator.textContent = `Step ${n} of ${totalSteps}`;
+            
+            // Scroll to top of modal body
+            const modalBody = registerModal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.scrollTop = 0;
+            }
+        }
+        
+        function validateStep(step) {
+            let isValid = true;
+            const errors = [];
+            
+            // Clear previous step errors
+            if (errorElement) {
+                errorElement.innerHTML = '';
+                errorElement.classList.add('d-none');
+            }
+            
+            switch (step) {
+                case 1:
+                    // Account fields
+                    if (!form.querySelector('#id_username').value.trim()) {
+                        errors.push('Username is required.');
+                        isValid = false;
                     }
-                })
-                .catch(error => {
-                    console.error('Error during registration:', error);
+                    if (!form.querySelector('#id_email').value.trim()) {
+                        errors.push('Email is required.');
+                        isValid = false;
+                    }
+                    if (form.querySelector('#id_email').value !== form.querySelector('#id_confirm_email').value) {
+                        errors.push('Emails do not match.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_password1').value) {
+                        errors.push('Password is required.');
+                        isValid = false;
+                    }
+                    if (form.querySelector('#id_password1').value !== form.querySelector('#id_password2').value) {
+                        errors.push('Passwords do not match.');
+                        isValid = false;
+                    }
+                    // Personal fields
+                    if (!form.querySelector('#id_first_name').value.trim()) {
+                        errors.push('First name is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_last_name').value.trim()) {
+                        errors.push('Last name is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_date_of_birth').value) {
+                        errors.push('Date of birth is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_gender').value) {
+                        errors.push('Gender is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_nationality').value) {
+                        errors.push('Nationality is required.');
+                        isValid = false;
+                    }
+                    break;
+                case 2:
+                    // Passport fields
+                    if (!form.querySelector('#id_passport_number').value.trim()) {
+                        errors.push('Passport number is required.');
+                        isValid = false;
+                    }
+                    if (form.querySelector('#id_passport_number').value !== form.querySelector('#id_confirm_passport_number').value) {
+                        errors.push('Passport numbers do not match.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_passport_issue_date').value) {
+                        errors.push('Passport issue date is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_passport_expiry_date').value) {
+                        errors.push('Passport expiry date is required.');
+                        isValid = false;
+                    }
+                    // Academic fields
+                    if (!form.querySelector('#id_highest_education_level').value) {
+                        errors.push('Education level is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_institution_name').value.trim()) {
+                        errors.push('Institution name is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_field_of_study').value.trim()) {
+                        errors.push('Field of study is required.');
+                        isValid = false;
+                    }
+                    if (!form.querySelector('#id_graduation_year').value) {
+                        errors.push('Graduation year is required.');
+                        isValid = false;
+                    }
+                    break;
+                case 3:
+                    // Optional fields, no validation needed
+                    break;
+            }
+            
+            // Use toast notification instead of inline error
+            if (!isValid) {
+                if (typeof showRegisterToast === 'function') {
+                    showRegisterToast(errors, 'error', true);
+                } else if (errorElement) {
+                    errorElement.innerHTML = errors.join('<br>');
+                    errorElement.classList.remove('d-none');
+                }
+            }
+            
+            return isValid;
+        }
+        
+        function handleNextClick() {
+            if (currentStep < totalSteps) {
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            } else {
+                // Submit the form on step 3
+                submitRegisterForm();
+            }
+        }
+        
+        function handlePrevClick() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+        
+        function setupRealTimeValidation() {
+            // Email confirmation
+            const emailInput = form.querySelector('#id_email');
+            const confirmEmailInput = form.querySelector('#id_confirm_email');
+            if (emailInput && confirmEmailInput) {
+                const validateEmails = () => {
+                    if (confirmEmailInput.value && emailInput.value !== confirmEmailInput.value) {
+                        confirmEmailInput.classList.add('is-invalid');
+                        confirmEmailInput.classList.remove('is-valid');
+                    } else if (confirmEmailInput.value) {
+                        confirmEmailInput.classList.remove('is-invalid');
+                        confirmEmailInput.classList.add('is-valid');
+                    }
+                };
+                confirmEmailInput.addEventListener('input', validateEmails);
+                emailInput.addEventListener('input', validateEmails);
+            }
+            
+            // Password confirmation
+            const password1Input = form.querySelector('#id_password1');
+            const password2Input = form.querySelector('#id_password2');
+            if (password1Input && password2Input) {
+                const validatePasswords = () => {
+                    if (password2Input.value && password1Input.value !== password2Input.value) {
+                        password2Input.classList.add('is-invalid');
+                        password2Input.classList.remove('is-valid');
+                    } else if (password2Input.value) {
+                        password2Input.classList.remove('is-invalid');
+                        password2Input.classList.add('is-valid');
+                    }
+                };
+                password2Input.addEventListener('input', validatePasswords);
+                password1Input.addEventListener('input', validatePasswords);
+            }
+            
+            // Passport confirmation
+            const passportInput = form.querySelector('#id_passport_number');
+            const confirmPassportInput = form.querySelector('#id_confirm_passport_number');
+            if (passportInput && confirmPassportInput) {
+                const validatePassports = () => {
+                    if (confirmPassportInput.value && passportInput.value !== confirmPassportInput.value) {
+                        confirmPassportInput.classList.add('is-invalid');
+                        confirmPassportInput.classList.remove('is-valid');
+                    } else if (confirmPassportInput.value) {
+                        confirmPassportInput.classList.remove('is-invalid');
+                        confirmPassportInput.classList.add('is-valid');
+                    }
+                };
+                confirmPassportInput.addEventListener('input', validatePassports);
+                passportInput.addEventListener('input', validatePassports);
+            }
+        }
+        
+        function submitRegisterForm() {
+            if (!validateStep(totalSteps)) return;
+            
+            const originalText = nextBtn.innerHTML;
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+            
+            // Hide any previous error messages
+            if (errorElement) {
+                errorElement.classList.add('d-none');
+            }
+            
+            // Get form data
+            const formData = new FormData(form);
+            
+            // Submit the form via AJAX
+            fetch(form.action || window.location.pathname, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCSRFToken() || ''
+                },
+                redirect: 'manual'
+            })
+            .then((response) => parseJsonSafe(response, 'Register'))
+            .then(data => {
+                if (data.success) {
+                    // Show success toast
+                    if (typeof showRegisterToast === 'function') {
+                        showRegisterToast(data.message || 'Account created successfully!', 'success', true);
+                    } else if (typeof showToast === 'function') {
+                        showToast('Success', data.message, 'success');
+                    }
                     
-                    // Show error message
-                    if (errorElement) {
-                        errorElement.innerHTML = 'An error occurred. Please try again.';
-                        errorElement.style.display = 'block';
+                    // Hide the modal
+                    const modalInstance = bootstrap.Modal.getInstance(registerModal);
+                    modalInstance.hide();
+                    
+                    // Redirect if specified
+                    if (data.redirect) {
+                        setTimeout(function() {
+                            window.location.href = data.redirect;
+                        }, 500);
+                    } else {
+                        // Reload the page
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 500);
+                    }
+                } else {
+                    // Show error messages using toast
+                    if (typeof showRegisterToast === 'function') {
+                        const errorMessage = data.errors || data.message || 'Registration failed. Please check your information.';
+                        showRegisterToast(errorMessage, 'error', true);
+                    } else if (errorElement) {
+                        errorElement.innerHTML = '';
+                        
+                        // Loop through all errors
+                        let errorHtml = '';
+                        for (const [field, fieldErrors] of Object.entries(data.errors || {})) {
+                            errorHtml += `<strong>${field}:</strong> ${Array.isArray(fieldErrors) ? fieldErrors.join('<br>') : fieldErrors}<br>`;
+                        }
+                        if (data.message) {
+                            errorHtml += `<br><strong>General:</strong> ${data.message}`;
+                        }
+                        errorElement.innerHTML = errorHtml || 'Registration failed. Please check your information.';
+                        errorElement.classList.remove('d-none');
                     }
                     
                     // Reset the button
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = originalText;
-                });
-            }
-        });
+                    nextBtn.disabled = false;
+                    nextBtn.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error during registration:', error);
+                
+                // Show error message using toast
+                const errorMsg = 'An error occurred. Please try again.';
+                if (typeof showRegisterToast === 'function') {
+                    showRegisterToast(errorMsg, 'error', true);
+                } else if (errorElement) {
+                    errorElement.innerHTML = errorMsg;
+                    errorElement.classList.remove('d-none');
+                }
+                
+                // Reset the button
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = originalText;
+            });
+        }
+        
+        // Remove the global submit listener for register form to avoid conflicts
+        // The submit is now handled manually
     }
 }
 

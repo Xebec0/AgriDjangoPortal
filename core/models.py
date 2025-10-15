@@ -32,6 +32,48 @@ class Profile(models.Model):
     has_international_license = models.BooleanField(default=False)
     license_scan = models.FileField(upload_to='licenses/', blank=True, null=True)
     
+    # Extended registration fields
+    address = models.TextField(blank=True, null=True, verbose_name="Address")
+    passport_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Passport Number")
+    passport_issue_date = models.DateField(blank=True, null=True, verbose_name="Passport Issue Date")
+    passport_expiry_date = models.DateField(blank=True, null=True, verbose_name="Passport Expiry Date")
+    place_of_issue = models.CharField(max_length=100, blank=True, null=True, verbose_name="Place of Issue")
+    
+    EDUCATION_LEVEL_CHOICES = [
+        ('high_school', 'High School'),
+        ('bachelor', "Bachelor's Degree"),
+        ('master', "Master's Degree"),
+        ('phd', 'PhD'),
+        ('other', 'Other'),
+    ]
+    highest_education_level = models.CharField(max_length=20, choices=EDUCATION_LEVEL_CHOICES, blank=True, null=True, verbose_name="Highest Education Level")
+    
+    institution_name = models.CharField(max_length=200, blank=True, null=True, verbose_name="Institution Name")
+    graduation_year = models.PositiveIntegerField(blank=True, null=True, verbose_name="Graduation Year")
+    field_of_study = models.CharField(max_length=100, blank=True, null=True, verbose_name="Field of Study")
+    
+    # Additional candidate-style fields for comprehensive profile
+    university = models.ForeignKey('University', on_delete=models.SET_NULL, blank=True, null=True, verbose_name="University")
+    specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Specialization")
+    secondary_specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Secondary Specialization")
+    
+    SMOKING_CHOICES = [
+        ('Never', 'Never'),
+        ('Sometimes', 'Sometimes'),
+        ('Often', 'Often'),
+    ]
+    smokes = models.CharField(max_length=10, choices=SMOKING_CHOICES, default='Never', verbose_name="Smoking Habits")
+    
+    shoes_size = models.CharField(max_length=10, blank=True, null=True, verbose_name="Shoes Size")
+    shirt_size = models.CharField(max_length=10, blank=True, null=True, verbose_name="Shirt Size")
+    
+    preferred_country = models.CharField(max_length=100, blank=True, null=True, verbose_name="Preferred Country")
+    willing_to_relocate = models.BooleanField(default=True, verbose_name="Willing to Relocate")
+    special_requirements = models.TextField(blank=True, null=True, verbose_name="Special Requirements")
+    
+    passport_scan = models.FileField(upload_to='passport_scans/', blank=True, null=True, verbose_name="Passport Scan")
+    academic_certificate = models.FileField(upload_to='academic_certificates/', blank=True, null=True, verbose_name="Academic Certificate")
+    
     def __str__(self):
         return f"{self.user.username}'s profile"
 

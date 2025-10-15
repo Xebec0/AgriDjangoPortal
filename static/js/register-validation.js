@@ -1,5 +1,89 @@
 // Client-side form validation for registration page
 
+// Toast notification function
+function showRegisterToast(message, type = 'error', autoHide = true) {
+    const toastEl = document.getElementById('registerToast');
+    const toastContent = document.getElementById('toastContent');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastHeader = document.getElementById('toastHeader');
+
+    if (!toastEl || !toastContent || !toastTitle || !toastIcon) return;
+
+    // Clear previous classes
+    toastEl.classList.remove('toast-success', 'toast-error', 'toast-warning', 'hiding');
+
+    // Set title and icon based on type
+    switch(type) {
+        case 'success':
+            toastEl.classList.add('toast-success');
+            toastTitle.textContent = 'Success';
+            toastIcon.className = 'fas fa-check-circle me-2';
+            break;
+        case 'warning':
+            toastEl.classList.add('toast-warning');
+            toastTitle.textContent = 'Warning';
+            toastIcon.className = 'fas fa-exclamation-triangle me-2';
+            break;
+        case 'error':
+        default:
+            toastEl.classList.add('toast-error');
+            toastTitle.textContent = 'Validation Error';
+            toastIcon.className = 'fas fa-exclamation-circle me-2';
+            break;
+    }
+
+    // Set content
+    if (typeof message === 'object' && message !== null && !Array.isArray(message)) {
+        // Handle error object with multiple fields
+        let html = '<ul>';
+        let errorCount = 0;
+        for (const [field, errors] of Object.entries(message)) {
+            const fieldName = field === '__all__' ? 'Form' : field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            if (Array.isArray(errors)) {
+                errors.forEach(error => {
+                    html += `<li><strong>${fieldName}:</strong> ${error}</li>`;
+                    errorCount++;
+                });
+            } else {
+                html += `<li><strong>${fieldName}:</strong> ${errors}</li>`;
+                errorCount++;
+            }
+        }
+        html += '</ul>';
+        toastContent.innerHTML = html;
+
+        // Update title to show count
+        if (errorCount > 1) {
+            toastTitle.textContent = `${errorCount} Validation Errors`;
+        }
+    } else if (Array.isArray(message)) {
+        // Handle array of errors
+        let html = '<ul>';
+        message.forEach(error => {
+            html += `<li>${error}</li>`;
+        });
+        html += '</ul>';
+        toastContent.innerHTML = html;
+    } else {
+        // Handle simple string message
+        toastContent.innerHTML = `<p>${message}</p>`;
+    }
+
+    // Initialize and show toast with animation
+    const toast = new bootstrap.Toast(toastEl, {
+        autohide: autoHide,
+        delay: autoHide ? (type === 'success' ? 3000 : 6000) : 999999
+    });
+
+    toast.show();
+
+    // Add hiding class before actual hide for animation
+    toastEl.addEventListener('hide.bs.toast', function() {
+        toastEl.classList.add('hiding');
+    }, { once: true });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Event delegation for dynamic content (modals)
     document.addEventListener('input', function(event) {
@@ -91,18 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirmPasswordEl && !validateField(confirmPasswordEl, () => passwordsMatch(passwordEl.value, confirmPasswordEl.value))) isValid = false;
         
         if (!isValid) {
-            // Show an error message at the top of the form
-            const errorDivId = form.id === 'registerModalForm' ? 'registerModalErrors' : 'formErrors';
-            let errorDiv = document.getElementById(errorDivId);
-            if (!errorDiv) {
-                errorDiv = document.createElement('div');
-                errorDiv.id = errorDivId;
-                errorDiv.className = 'alert alert-danger';
-                form.insertBefore(errorDiv, form.firstChild);
-            }
-            errorDiv.style.display = 'block';
-            errorDiv.textContent = 'Please correct the errors in the form before submitting.';
-            
+            // Show errors in toast notification
+            showRegisterToast('Please correct the errors in the form before submitting.', 'error', true);
+
             // Scroll to the first error
             const firstError = form.querySelector('.is-invalid');
             if (firstError) {

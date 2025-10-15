@@ -1,219 +1,646 @@
-<!-- Registration Modal Template -->
 <div class="modal-content">
-    <div class="modal-header bg-gradient-success-to-secondary text-white text-center" style="background: linear-gradient(45deg, #28a745, #17a2b8);">
-        <h5 class="modal-title w-100 text-center" id="registerModalLabel">CREATE ACCOUNT</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">
+            <i class="fas fa-user-plus me-2"></i> Create Comprehensive Account
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body p-4">
-        <div class="container p-0">
-            <div class="animate-border-box mx-auto" style="max-width: 700px;">
-                <form id="registerModalForm" class="register-form" method="POST" action="{% url 'ajax_register' %}">
-                    {% csrf_token %}
-                    
-                    <div class="alert alert-info mb-4" role="alert">
-                        <i class="fas fa-info-circle me-2"></i> Please fill in the following information to create your account
-                    </div>
+    <div class="modal-body">
+        <p class="text-muted mb-4">Complete your profile to apply for agricultural programs</p>
+        
+        <form id="registerModalForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Step 1: Account and Personal Information -->
+            <div id="step-1" class="form-step active">
+                <!-- Account Information -->
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-user-circle me-2"></i> Account Information
+                    </h6>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                <input type="text" name="{{ form.first_name.html_name }}" 
-                                       id="{{ form.first_name.id_for_label }}" 
-                                       class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" 
-                                       value="{{ form.first_name.value|default:'' }}"
-                                       required 
-                                       placeholder="Enter your first name">
-                            </div>
-                            <div class="valid-feedback">Looks good!</div>
-                            <div class="invalid-feedback">
-                                {% if form.first_name.errors %}
-                                    {{ form.first_name.errors }}
-                                {% else %}
-                                    Please enter your first name
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                <input type="text" name="{{ form.last_name.html_name }}" 
-                                       id="{{ form.last_name.id_for_label }}" 
-                                       class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" 
-                                       value="{{ form.last_name.value|default:'' }}"
-                                       required 
-                                       placeholder="Enter your last name">
-                            </div>
-                            <div class="valid-feedback">Looks good!</div>
-                            <div class="invalid-feedback">
-                                {% if form.last_name.errors %}
-                                    {{ form.last_name.errors }}
-                                {% else %}
-                                    Please enter your last name
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-at"></i></span>
-                            <input type="text" name="{{ form.username.html_name }}" 
-                                   id="{{ form.username.id_for_label }}" 
-                                   class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
-                                   value="{{ form.username.value|default:'' }}"
-                                   required 
-                                   placeholder="Choose a username (letters, numbers, underscores)">
-                        </div>
-                        <div class="valid-feedback">Username looks good!</div>
-                        <div class="invalid-feedback">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">Username <span class="text-danger">*</span></label>
+                            {{ form.username }}
+                            <div class="form-text small">3-20 characters: letters, numbers, underscores</div>
                             {% if form.username.errors %}
-                                {{ form.username.errors }}
-                            {% else %}
-                                Username must be 3-20 characters using only letters, numbers, and underscores
+                                <div class="text-danger small">{{ form.username.errors.0 }}</div>
                             {% endif %}
                         </div>
-                        <div id="username-feedback" class="mt-1 small"></div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" name="{{ form.email.html_name }}" 
-                                   id="{{ form.email.id_for_label }}" 
-                                   class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
-                                   value="{{ form.email.value|default:'' }}"
-                                   required 
-                                   placeholder="Enter your email address">
-                        </div>
-                        <div class="valid-feedback">Email format is valid!</div>
-                        <div class="invalid-feedback">
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email <span class="text-danger">*</span></label>
+                            {{ form.email }}
                             {% if form.email.errors %}
-                                {{ form.email.errors }}
-                            {% else %}
-                                Please enter a valid email address
+                                <div class="text-danger small">{{ form.email.errors.0 }}</div>
                             {% endif %}
                         </div>
                     </div>
                     
-                    <div class="mb-3">
-                        <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="{{ form.password1.html_name }}" 
-                                   id="{{ form.password1.id_for_label }}" 
-                                   class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
-                                   required 
-                                   placeholder="Create a strong password">
-                        </div>
-                        <div class="valid-feedback">Password is strong!</div>
-                        <div class="invalid-feedback">
-                            {% if form.password1.errors %}
-                                {{ form.password1.errors }}
-                            {% else %}
-                                Password must be at least 8 characters with uppercase, lowercase, and numbers
-                            {% endif %}
-                        </div>
-                        
-                        <!-- Password strength meter -->
-                        <div id="passwordStrengthMeter" class="password-strength-meter mt-2">
-                            <div></div>
-                        </div>
-                        <small id="passwordStrengthLabel" class="form-text"></small>
-                        
-                        <div class="form-text mt-2">
-                            <ul class="mb-0 ps-3 small">
-                                <li>Your password must be 8+ characters</li>
-                                <li>Include at least one uppercase letter</li>
-                                <li>Include at least one lowercase letter</li>
-                                <li>Include at least one number</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="{{ form.password2.html_name }}" 
-                                   id="{{ form.password2.id_for_label }}" 
-                                   class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
-                                   required 
-                                   placeholder="Confirm your password">
-                        </div>
-                        <div class="valid-feedback">Passwords match!</div>
-                        <div class="invalid-feedback">
-                            {% if form.password2.errors %}
-                                {{ form.password2.errors }}
-                            {% else %}
-                                Passwords do not match
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Passport Information Section -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="id_passport_number" class="form-label">Passport Number</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-passport"></i></span>
-                                <input type="text" name="passport_number" 
-                                       id="id_passport_number" 
-                                       class="form-control {% if form.passport_number.errors %}is-invalid{% endif %}" 
-                                       value="{{ form.passport_number.value|default:'' }}"
-                                       required 
-                                       placeholder="Enter your passport number">
-                            </div>
-                            <div class="valid-feedback">Looks good!</div>
-                            <div class="invalid-feedback">
-                                {% if form.passport_number.errors %}
-                                    {{ form.passport_number.errors }}
-                                {% else %}
-                                    Please enter your passport number
-                                {% endif %}
-                            </div>
+                            <label for="{{ form.confirm_email.id_for_label }}" class="form-label">Confirm Email <span class="text-danger">*</span></label>
+                            {{ form.confirm_email }}
+                            {% if form.confirm_email.errors %}
+                                <div class="text-danger small">{{ form.confirm_email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label">Password <span class="text-danger">*</span></label>
+                            {{ form.password1 }}
+                            <div class="form-text small">8+ chars, uppercase, lowercase, numbers</div>
+                            {% if form.password1.errors %}
+                                <div class="text-danger small">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="col-md-6 mb-3">
-                            <label for="id_confirm_passport_number" class="form-label">Confirm Passport Number</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-passport"></i></span>
-                                <input type="text" name="confirm_passport_number" 
-                                       id="id_confirm_passport_number" 
-                                       class="form-control {% if form.confirm_passport_number.errors %}is-invalid{% endif %}" 
-                                       value="{{ form.confirm_passport_number.value|default:'' }}"
-                                       required 
-                                       placeholder="Confirm your passport number">
-                            </div>
-                            <div class="valid-feedback">Passport numbers match!</div>
-                            <div class="invalid-feedback">
-                                {% if form.confirm_passport_number.errors %}
-                                    {{ form.confirm_passport_number.errors }}
-                                {% else %}
-                                    Please confirm your passport number
-                                {% endif %}
-                            </div>
-                            <div class="help-text">Confirmation must match the passport number exactly.</div>
+                            <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="text-danger small">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personal Information -->
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-id-card me-2"></i> Personal Information
+                    </h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name <span class="text-danger">*</span></label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-danger small">{{ form.first_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name <span class="text-danger">*</span></label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-danger small">{{ form.last_name.errors.0 }}</div>
+                            {% endif %}
                         </div>
                     </div>
                     
-                    <div id="registerModalErrors" class="alert alert-danger" style="display: none;"></div>
-                    
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="register-btn">Create Account</button>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                            {{ form.date_of_birth }}
+                            {% if form.date_of_birth.errors %}
+                                <div class="text-danger small">{{ form.date_of_birth.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.gender.id_for_label }}" class="form-label">Gender <span class="text-danger">*</span></label>
+                            {{ form.gender }}
+                            {% if form.gender.errors %}
+                                <div class="text-danger small">{{ form.gender.errors.0 }}</div>
+                            {% endif %}
+                        </div>
                     </div>
                     
-                    <div class="register-links text-center">
-                        <p>Already have an account? <a href="#" id="switchToLogin">Sign in</a></p>
-                        <p>Admin registration? <a href="#" id="openAdminRegister">Register as Admin</a></p>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.nationality.id_for_label }}" class="form-label">Nationality <span class="text-danger">*</span></label>
+                            {{ form.nationality }}
+                            {% if form.nationality.errors %}
+                                <div class="text-danger small">{{ form.nationality.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                <div class="text-danger small">{{ form.phone_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
                     </div>
-                </form>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            <div class="text-danger small">{{ form.address.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+            
+            <!-- Step 2: Passport and Academic Information -->
+            <div id="step-2" class="form-step">
+                <!-- Passport Information -->
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-passport me-2"></i> Passport Information
+                    </h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.passport_number.id_for_label }}" class="form-label">Passport Number <span class="text-danger">*</span></label>
+                            {{ form.passport_number }}
+                            {% if form.passport_number.errors %}
+                                <div class="text-danger small">{{ form.passport_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.confirm_passport_number.id_for_label }}" class="form-label">Confirm Passport <span class="text-danger">*</span></label>
+                            {{ form.confirm_passport_number }}
+                            {% if form.confirm_passport_number.errors %}
+                                <div class="text-danger small">{{ form.confirm_passport_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.passport_issue_date.id_for_label }}" class="form-label">Issue Date <span class="text-danger">*</span></label>
+                            {{ form.passport_issue_date }}
+                            {% if form.passport_issue_date.errors %}
+                                <div class="text-danger small">{{ form.passport_issue_date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.passport_expiry_date.id_for_label }}" class="form-label">Expiry Date <span class="text-danger">*</span></label>
+                            {{ form.passport_expiry_date }}
+                            {% if form.passport_expiry_date.errors %}
+                                <div class="text-danger small">{{ form.passport_expiry_date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.place_of_issue.id_for_label }}" class="form-label">Place of Issue</label>
+                            {{ form.place_of_issue }}
+                            {% if form.place_of_issue.errors %}
+                                <div class="text-danger small">{{ form.place_of_issue.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Academic Information -->
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-graduation-cap me-2"></i> Academic Information
+                    </h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.highest_education_level.id_for_label }}" class="form-label">Education Level <span class="text-danger">*</span></label>
+                            {{ form.highest_education_level }}
+                            {% if form.highest_education_level.errors %}
+                                <div class="text-danger small">{{ form.highest_education_level.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.institution_name.id_for_label }}" class="form-label">Institution Name <span class="text-danger">*</span></label>
+                            {{ form.institution_name }}
+                            {% if form.institution_name.errors %}
+                                <div class="text-danger small">{{ form.institution_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.field_of_study.id_for_label }}" class="form-label">Field of Study <span class="text-danger">*</span></label>
+                            {{ form.field_of_study }}
+                            {% if form.field_of_study.errors %}
+                                <div class="text-danger small">{{ form.field_of_study.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.graduation_year.id_for_label }}" class="form-label">Graduation Year <span class="text-danger">*</span></label>
+                            {{ form.graduation_year }}
+                            {% if form.graduation_year.errors %}
+                                <div class="text-danger small">{{ form.graduation_year.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Additional and Documents -->
+            <div id="step-3" class="form-step">
+                <!-- Additional Information -->
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-info-circle me-2"></i> Additional Information
+                    </h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.preferred_country.id_for_label }}" class="form-label">Preferred Country</label>
+                            {{ form.preferred_country }}
+                            {% if form.preferred_country.errors %}
+                                <div class="text-danger small">{{ form.preferred_country.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check mt-4">
+                                {{ form.willing_to_relocate }}
+                                <label class="form-check-label" for="{{ form.willing_to_relocate.id_for_label }}">
+                                    Willing to relocate
+                                </label>
+                            </div>
+                            {% if form.willing_to_relocate.errors %}
+                                <div class="text-danger small">{{ form.willing_to_relocate.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.special_requirements.id_for_label }}" class="form-label">Special Requirements</label>
+                        {{ form.special_requirements }}
+                        <div class="form-text small">Dietary restrictions, medical conditions, etc.</div>
+                        {% if form.special_requirements.errors %}
+                            <div class="text-danger small">{{ form.special_requirements.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Document Uploads -->
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-file-upload me-2"></i> Documents (Optional)
+                    </h6>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.profile_image.id_for_label }}" class="form-label">Profile Photo</label>
+                            {{ form.profile_image }}
+                            <div class="form-text small">Max 5MB</div>
+                            {% if form.profile_image.errors %}
+                                <div class="text-danger small">{{ form.profile_image.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.passport_scan.id_for_label }}" class="form-label">Passport Scan</label>
+                            {{ form.passport_scan }}
+                            <div class="form-text small">PDF/Image</div>
+                            {% if form.passport_scan.errors %}
+                                <div class="text-danger small">{{ form.passport_scan.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.academic_certificate.id_for_label }}" class="form-label">Certificate</label>
+                            {{ form.academic_certificate }}
+                            <div class="form-text small">PDF/Image</div>
+                            {% if form.academic_certificate.errors %}
+                                <div class="text-danger small">{{ form.academic_certificate.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
+        <span id="stepIndicator" class="align-self-center">Step 1 of 3</span>
+        <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+    </div>
+</div>
+
+<!-- Toast Container for Error Notifications -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11000;">
+    <div id="registerToast" class="toast border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header" id="toastHeader">
+            <i class="fas fa-exclamation-circle me-2" id="toastIcon"></i>
+            <strong class="me-auto" id="toastTitle">Validation Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastContent">
         </div>
     </div>
 </div>
+
+<style>
+.form-step {
+    display: none;
+}
+.form-step.active {
+    display: block;
+}
+.step-indicator {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+/* Toast notification styles */
+#registerToast {
+    min-width: 350px;
+    max-width: 500px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+#registerToast.hiding {
+    animation: slideOutRight 0.3s ease-in;
+}
+
+/* Success toast styling */
+#registerToast.toast-success .toast-header {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#registerToast.toast-success .toast-body {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#registerToast.toast-success #toastIcon {
+    color: #28a745;
+}
+
+/* Error toast styling */
+#registerToast.toast-error .toast-header {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+#registerToast.toast-error .toast-body {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+#registerToast.toast-error #toastIcon {
+    color: #dc3545;
+}
+
+/* Warning toast styling */
+#registerToast.toast-warning .toast-header {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+#registerToast.toast-warning .toast-body {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+#registerToast.toast-warning #toastIcon {
+    color: #ffc107;
+}
+
+#toastContent ul {
+    margin: 0.5rem 0 0 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+#toastContent ul li {
+    margin-bottom: 0.5rem;
+}
+
+#toastContent ul li:last-child {
+    margin-bottom: 0;
+}
+
+#toastContent p {
+    margin: 0;
+}
+
+/* Hide inline error messages - errors will show in toasts */
+.text-danger.small {
+    display: none !important;
+}
+
+/* Remove Bootstrap's default validation styles for cleaner look */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.is-valid {
+    border-color: #28a745 !important;
+}
+</style>
+
+<script>
+// Enhanced toast notification function
+function showRegisterToast(message, type = 'error', autoHide = true) {
+    const toastEl = document.getElementById('registerToast');
+    const toastContent = document.getElementById('toastContent');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastHeader = document.getElementById('toastHeader');
+    
+    if (!toastEl || !toastContent || !toastTitle || !toastIcon) return;
+    
+    // Clear previous classes
+    toastEl.classList.remove('toast-success', 'toast-error', 'toast-warning', 'hiding');
+    
+    // Set title and icon based on type
+    switch(type) {
+        case 'success':
+            toastEl.classList.add('toast-success');
+            toastTitle.textContent = 'Success';
+            toastIcon.className = 'fas fa-check-circle me-2';
+            break;
+        case 'warning':
+            toastEl.classList.add('toast-warning');
+            toastTitle.textContent = 'Warning';
+            toastIcon.className = 'fas fa-exclamation-triangle me-2';
+            break;
+        case 'error':
+        default:
+            toastEl.classList.add('toast-error');
+            toastTitle.textContent = 'Validation Error';
+            toastIcon.className = 'fas fa-exclamation-circle me-2';
+            break;
+    }
+    
+    // Set content
+    if (typeof message === 'object' && message !== null && !Array.isArray(message)) {
+        // Handle error object with multiple fields
+        let html = '<ul>';
+        let errorCount = 0;
+        for (const [field, errors] of Object.entries(message)) {
+            const fieldName = field === '__all__' ? 'Form' : field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            if (Array.isArray(errors)) {
+                errors.forEach(error => {
+                    html += `<li><strong>${fieldName}:</strong> ${error}</li>`;
+                    errorCount++;
+                });
+            } else {
+                html += `<li><strong>${fieldName}:</strong> ${errors}</li>`;
+                errorCount++;
+            }
+        }
+        html += '</ul>';
+        toastContent.innerHTML = html;
+        
+        // Update title to show count
+        if (errorCount > 1) {
+            toastTitle.textContent = `${errorCount} Validation Errors`;
+        }
+    } else if (Array.isArray(message)) {
+        // Handle array of errors
+        let html = '<ul>';
+        message.forEach(error => {
+            html += `<li>${error}</li>`;
+        });
+        html += '</ul>';
+        toastContent.innerHTML = html;
+    } else {
+        // Handle simple string message
+        toastContent.innerHTML = `<p>${message}</p>`;
+    }
+    
+    // Initialize and show toast with animation
+    const toast = new bootstrap.Toast(toastEl, {
+        autohide: autoHide,
+        delay: autoHide ? (type === 'success' ? 3000 : 6000) : 999999
+    });
+    
+    toast.show();
+    
+    // Add hiding class before actual hide for animation
+    toastEl.addEventListener('hide.bs.toast', function() {
+        toastEl.classList.add('hiding');
+    }, { once: true });
+}
+
+// Form validation on step navigation
+document.getElementById('nextBtn')?.addEventListener('click', function() {
+    const currentStep = document.querySelector('.form-step.active');
+    const stepNumber = currentStep.id.split('-')[1];
+    const requiredFields = currentStep.querySelectorAll('[required]');
+    
+    let errors = {};
+    let hasErrors = false;
+    
+    // Clear previous validation states
+    requiredFields.forEach(field => {
+        field.classList.remove('is-invalid', 'is-valid');
+    });
+    
+    // Validate required fields
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            const label = field.closest('.mb-3')?.querySelector('label')?.textContent.replace('*', '').trim() || field.name;
+            errors[label] = ['This field is required.'];
+            hasErrors = true;
+            field.classList.add('is-invalid');
+        } else {
+            field.classList.add('is-valid');
+        }
+    });
+    
+    // Additional validation for specific fields
+    if (stepNumber === '1') {
+        // Validate email match
+        const email = document.getElementById('id_email');
+        const confirmEmail = document.getElementById('id_confirm_email');
+        if (email && confirmEmail && email.value && confirmEmail.value && email.value !== confirmEmail.value) {
+            errors['Confirm Email'] = ['Emails do not match.'];
+            confirmEmail.classList.add('is-invalid');
+            hasErrors = true;
+        }
+        
+        // Validate password match
+        const password1 = document.getElementById('id_password1');
+        const password2 = document.getElementById('id_password2');
+        if (password1 && password2 && password1.value && password2.value && password1.value !== password2.value) {
+            errors['Confirm Password'] = ['Passwords do not match.'];
+            password2.classList.add('is-invalid');
+            hasErrors = true;
+        }
+    }
+    
+    if (stepNumber === '2') {
+        // Validate passport match
+        const passport = document.getElementById('id_passport_number');
+        const confirmPassport = document.getElementById('id_confirm_passport_number');
+        if (passport && confirmPassport && passport.value && confirmPassport.value && passport.value !== confirmPassport.value) {
+            errors['Confirm Passport'] = ['Passport numbers do not match.'];
+            confirmPassport.classList.add('is-invalid');
+            hasErrors = true;
+        }
+    }
+    
+    if (hasErrors) {
+        showRegisterToast(errors, 'error', true);
+        // Scroll to first invalid field
+        const firstInvalid = currentStep.querySelector('.is-invalid');
+        if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalid.focus();
+        }
+        return;
+    }
+    
+    // Move to next step or submit
+    if (stepNumber < 3) {
+        currentStep.classList.remove('active');
+        document.getElementById(`step-${parseInt(stepNumber) + 1}`).classList.add('active');
+        document.getElementById('stepIndicator').textContent = `Step ${parseInt(stepNumber) + 1} of 3`;
+        document.getElementById('prevBtn').style.display = 'inline-block';
+        
+        if (parseInt(stepNumber) + 1 === 3) {
+            this.textContent = 'Submit';
+        }
+    } else {
+        // Submit form
+        document.getElementById('registerModalForm').submit();
+    }
+});
+
+// Previous button handler
+document.getElementById('prevBtn')?.addEventListener('click', function() {
+    const currentStep = document.querySelector('.form-step.active');
+    const stepNumber = currentStep.id.split('-')[1];
+    
+    if (stepNumber > 1) {
+        currentStep.classList.remove('active');
+        document.getElementById(`step-${parseInt(stepNumber) - 1}`).classList.add('active');
+        document.getElementById('stepIndicator').textContent = `Step ${parseInt(stepNumber) - 1} of 3`;
+        document.getElementById('nextBtn').textContent = 'Next';
+        
+        if (parseInt(stepNumber) - 1 === 1) {
+            this.style.display = 'none';
+        }
+    }
+});
+</script>
