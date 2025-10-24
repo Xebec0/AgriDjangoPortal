@@ -12,45 +12,47 @@
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Search Candidates</h6>
             <div>
-                <div class="dropdown d-inline-block me-2">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-download"></i> Export Data
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <li>
-                            <button class="dropdown-item export-selected" data-format="csv">
-                                <i class="fas fa-file-csv me-1"></i> Export Selected as CSV
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item export-selected" data-format="excel">
-                                <i class="fas fa-file-excel me-1"></i> Export Selected as Excel
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item export-selected" data-format="pdf">
-                                <i class="fas fa-file-pdf me-1"></i> Export Selected as PDF
-                            </button>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <button class="dropdown-item export-all" data-format="csv">
-                                <i class="fas fa-file-csv me-1"></i> Export All as CSV
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item export-all" data-format="excel">
-                                <i class="fas fa-file-excel me-1"></i> Export All as Excel
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item export-all" data-format="pdf">
-                                <i class="fas fa-file-pdf me-1"></i> Export All as PDF
-                            </button>
-                        </li>
-                    </ul>
-                </div>
                 {% if user.is_staff %}
+                    <div class="dropdown d-inline-block me-2">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                            <li><h6 class="dropdown-header">Export Selected</h6></li>
+                            <li>
+                                <button class="dropdown-item export-selected" data-format="csv" type="button">
+                                    <i class="fas fa-file-csv me-1"></i> Export Selected as CSV
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item export-selected" data-format="excel" type="button">
+                                    <i class="fas fa-file-excel me-1"></i> Export Selected as Excel
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item export-selected" data-format="pdf" type="button">
+                                    <i class="fas fa-file-pdf me-1"></i> Export Selected as PDF
+                                </button>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Export All</h6></li>
+                            <li>
+                                <a class="dropdown-item" href="?export=csv{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                    <i class="fas fa-file-csv me-1"></i> Export All as CSV
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="?export=excel{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                    <i class="fas fa-file-excel me-1"></i> Export All as Excel
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="?export=pdf{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                    <i class="fas fa-file-pdf me-1"></i> Export All as PDF
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm">
                         <i class="fas fa-user-plus"></i> Add New Candidate
                     </a>

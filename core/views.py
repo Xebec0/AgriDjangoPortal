@@ -493,6 +493,7 @@ def program_list(request):
     if form.is_valid():
         query = form.cleaned_data.get('query')
         location = form.cleaned_data.get('location')
+        country = form.cleaned_data.get('country')
         gender = form.cleaned_data.get('gender')
 
         if query:
@@ -502,9 +503,18 @@ def program_list(request):
         
         if location:
             programs = programs.filter(location__icontains=location)
+            
+        if country:
+            programs = programs.filter(country__icontains=country)
         
         if gender:
             programs = programs.filter(required_gender=gender)
+            
+        # Filter out programs with expired registration deadlines
+        programs = programs.filter(
+            Q(registration_deadline__isnull=True) |  # No deadline set
+            Q(registration_deadline__gte=timezone.now().date())  # Or deadline not passed
+        )
 
     # Pagination
     paginator = Paginator(programs, 10)  # Show 10 programs per page
@@ -574,6 +584,12 @@ def program_register(request, program_id):
 @ajax_login_required
 def apply_candidate(request, program_id):
     """Applicant-facing: simplified confirmation flow that uses profile data."""
+    program = get_object_or_404(AgricultureProgram, id=program_id)
+    
+    # Check if registration is still open
+    if not program.is_registration_open():
+        messages.error(request, 'Registration for this program has ended.')
+        return redirect('program_detail', program_id=program_id)
     program = get_object_or_404(AgricultureProgram, id=program_id)
     profile = request.user.profile
 

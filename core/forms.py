@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.conf import settings
 from django.utils import timezone
 from .models import Profile, Registration, Candidate, University
@@ -115,6 +116,19 @@ class ProfileUpdateForm(forms.ModelForm):
             'class': 'form-control',
             'accept': '.pdf,.jpg,.jpeg,.png'
         })
+
+        # Add phone number validation
+        if 'phone_number' in self.fields:
+            self.fields['phone_number'].validators = [RegexValidator(
+                regex=r'^[\d\s\-\+\(\)\.]+$',
+                message="Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots."
+            )]
+            self.fields['phone_number'].widget.attrs.update({
+                'type': 'tel',
+                'pattern': r'^[\d\s\-\+\(\)\.]+$',
+                'placeholder': 'e.g., +63 912 345 6789',
+                'title': 'Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots.'
+            })
         
     def clean_profile_image(self):
         profile_image = self.cleaned_data.get('profile_image')
@@ -154,6 +168,13 @@ class ProfileUpdateForm(forms.ModelForm):
         cleaned_data = super().clean()
         has_license = cleaned_data.get("has_international_license")
         license_scan = cleaned_data.get("license_scan")
+
+        # Phone number validation
+        phone_number = cleaned_data.get('phone_number')
+        if phone_number:
+            import re
+            if not re.match(r'^[\d\s\-\+\(\)\.]+$', phone_number):
+                self.add_error('phone_number', "Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots.")
 
         if has_license and not license_scan:
             self.add_error('license_scan', "Please upload a scan of your license to verify.")
@@ -485,6 +506,11 @@ class ProgramSearchForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search by keyword...'}), 
         label=""
     )
+    country = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Filter by country...'}), 
+        label=""
+    )
     location = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Filter by location...'}), 
@@ -509,7 +535,21 @@ class ComprehensiveRegisterForm(UserCreationForm):
     confirm_email = forms.EmailField(required=True, label='Confirm Email')
     
     # Profile fields (existing + new)
-    phone_number = forms.CharField(max_length=20, required=False, help_text="Enter your phone number")
+    phone_number = forms.CharField(
+        max_length=20,
+        required=False,
+        help_text="Enter your phone number",
+        validators=[RegexValidator(
+            regex=r'^[\d\s\-\+\(\)\.]+$',
+            message="Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots."
+        )],
+        widget=forms.TextInput(attrs={
+            'type': 'tel',
+            'pattern': r'[\d\s\-\+\(\)\.]+',
+            'title': 'Phone number can only contain numbers and standard phone formatting characters',
+            'oninput': "this.value = this.value.replace(/[^0-9\s\-\+\(\)\.]/g, '')"
+        })
+    )
     date_of_birth = forms.DateField(required=True, help_text="Enter your date of birth")
     gender = forms.ChoiceField(choices=Profile.GENDER_CHOICES, required=True)
     NATIONALITY_CHOICES = [
@@ -762,6 +802,28 @@ class ComprehensiveRegisterForm(UserCreationForm):
                     'placeholder': self.fields[field_name].help_text or f'Enter {field_name.replace("_", " ")}'
                 })
 
+        # Add required attribute for HTML5 validation
+        required_fields = [
+            'username', 'first_name', 'last_name', 'email', 'confirm_email',
+            'password1', 'password2', 'date_of_birth', 'gender', 'nationality',
+            'passport_number', 'confirm_passport_number', 'passport_issue_date',
+            'passport_expiry_date', 'highest_education_level', 'institution_name',
+            'graduation_year', 'field_of_study'
+        ]
+
+        for field_name in required_fields:
+            if field_name in self.fields:
+                self.fields[field_name].widget.attrs['required'] = True
+
+        # Add special attributes for phone number field
+        if 'phone_number' in self.fields:
+            self.fields['phone_number'].widget.attrs.update({
+                'type': 'tel',
+                'pattern': r'^[\d\s\-\+\(\)\.]+$',
+                'placeholder': 'e.g., +63 912 345 6789',
+                'title': 'Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots.'
+            })
+
         # Specific placeholders
         self.fields['password1'].widget.attrs['placeholder'] = 'Create a strong password (8+ chars)'
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirm your password'
@@ -774,7 +836,30 @@ class ComprehensiveRegisterForm(UserCreationForm):
         passport_expiry_date = cleaned_data.get('passport_expiry_date')
         date_of_birth = cleaned_data.get('date_of_birth')
         graduation_year = cleaned_data.get('graduation_year')
-        
+
+        # Phone number validation
+        phone_number = cleaned_data.get('phone_number')
+        if phone_number:
+            import re
+            # Remove any whitespace first
+            phone_number = phone_number.strip()
+            # Check if the phone number contains only allowed characters
+            if not re.match(r'^[\d\s\-\+\(\)\.]+$', phone_number):
+                raise ValidationError({
+                    'phone_number': "Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots."
+                })
+            # Ensure there's at least one digit
+            if not re.search(r'\d', phone_number):
+                raise ValidationError({
+                    'phone_number': "Phone number must contain at least one digit."
+                })
+            # Check minimum length (excluding formatting characters)
+            digits_only = re.sub(r'[^\d]', '', phone_number)
+            if len(digits_only) < 6:
+                raise ValidationError({
+                    'phone_number': "Phone number must contain at least 6 digits."
+                })
+
         # Passport match
         if passport_number and confirm_passport_number and passport_number != confirm_passport_number:
             raise ValidationError("Passport numbers do not match.")

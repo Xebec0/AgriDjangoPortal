@@ -81,8 +81,11 @@ class AgricultureProgram(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     start_date = models.DateField()
-    location = models.CharField(max_length=100)
+    country = models.CharField(max_length=100, help_text='Country where the program is located')
+    location = models.CharField(max_length=100, help_text='Specific location within the country')
     capacity = models.PositiveIntegerField()
+    registration_deadline = models.DateTimeField(blank=True, null=True, 
+        help_text='Deadline for program registration. If not set, registration will be open until start date.')
     image = models.ImageField(upload_to='program_images/', blank=True, null=True, help_text='Program/Farm image')
     is_featured = models.BooleanField(default=False, help_text='Display on landing page as featured program')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -98,6 +101,17 @@ class AgricultureProgram(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def is_registration_open(self):
+        """Check if registration is still open for this program"""
+        now = timezone.now()
+        
+        # If registration deadline is set, use that
+        if self.registration_deadline:
+            return now <= self.registration_deadline
+            
+        # If no deadline set, use start date
+        return now.date() <= self.start_date
     
     def get_image_url(self):
         """Return image URL or placeholder"""

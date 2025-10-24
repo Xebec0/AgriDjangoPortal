@@ -16,14 +16,14 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(AgricultureProgram)
 class AgricultureProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'location', 'capacity', 'is_featured', 'required_gender', 'requires_license', 'has_image')
-    search_fields = ('title', 'description', 'location')
-    list_filter = ('start_date', 'location', 'is_featured', 'required_gender', 'requires_license')
+    list_display = ('title', 'country', 'location', 'start_date', 'registration_deadline', 'capacity', 'is_featured', 'required_gender', 'requires_license', 'has_image')
+    search_fields = ('title', 'description', 'country', 'location')
+    list_filter = ('country', 'start_date', 'is_featured', 'required_gender', 'requires_license')
     date_hierarchy = 'start_date'
     list_editable = ('is_featured',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'description', 'location', 'start_date', 'capacity')
+            'fields': ('title', 'description', 'country', 'location', 'start_date', 'registration_deadline', 'capacity')
         }),
         ('Display Settings', {
             'fields': ('image', 'is_featured'),

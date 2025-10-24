@@ -1,7 +1,7 @@
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title" id="registerModalLabel">
-            <i class="fas fa-user-plus me-2"></i> Create Comprehensive Account
+            <i class="fas fa-user-plus me-2"></i> Create Account
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -135,6 +135,23 @@
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
                             {{ form.phone_number }}
+                            <div class="form-text small">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Numbers only: e.g., +63 912 345 6789 (spaces, dashes, parentheses allowed) Typing letters is prevented
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a valid phone number (numbers and standard formatting only)
+                            </div>
+                            <script>
+                                document.getElementById('{{ form.phone_number.id_for_label }}').addEventListener('input', function(e) {
+                                    const value = this.value;
+                                    const isValid = /^[\d\s\-\+\(\)\.]*$/.test(value);
+                                    this.classList.toggle('is-invalid', !isValid);
+                                    if (!isValid) {
+                                        this.value = value.replace(/[^0-9\s\-\+\(\)\.]/g, '');
+                                    }
+                                });
+                            </script>
                             {% if form.phone_number.errors %}
                                 <div class="text-danger small">{{ form.phone_number.errors.0 }}</div>
                             {% endif %}
@@ -575,16 +592,55 @@ function showRegisterToast(message, type = 'error', autoHide = true) {
     }, { once: true });
 }
 
-// Email autofill functionality
-document.getElementById('id_confirm_email')?.addEventListener('focus', function() {
-    const emailField = document.getElementById('id_email');
-    const confirmEmailField = this;
-    const suggestionDiv = document.getElementById('emailSuggestion');
-    const suggestionText = document.getElementById('emailSuggestionText');
+// Phone number validation - prevent letters
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the phone field using Django's template variable
+    const phoneField = document.getElementById('{{ form.phone_number.id_for_label }}');
+    if (phoneField) {
+        console.log('Phone field found:', phoneField);
 
-    if (emailField && emailField.value.trim() && !confirmEmailField.value.trim()) {
-        suggestionText.textContent = emailField.value.trim();
-        suggestionDiv.style.display = 'block';
+        phoneField.addEventListener('keypress', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, and phone number characters
+            if (e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Tab' ||
+                e.key === 'Escape' || e.key === 'Enter' || e.key === 'ArrowLeft' ||
+                e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                return;
+            }
+
+            // Prevent input if it's not a number or phone formatting character
+            const allowedChars = /^[0-9\s\-\+\(\)\.]$/;
+            if (!allowedChars.test(e.key)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        phoneField.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pasteText = e.clipboardData.getData('text/plain');
+            // Only allow numbers and phone formatting characters
+            pasteText = pasteText.replace(/[^0-9\s\-\+\(\)\.]/g, '');
+            this.value = pasteText;
+        });
+
+        phoneField.addEventListener('input', function(e) {
+            // Remove any non-allowed characters as user types
+            let value = this.value;
+            let cleanValue = value.replace(/[^0-9\s\-\+\(\)\.]/g, '');
+            if (value !== cleanValue) {
+                this.value = cleanValue;
+            }
+        });
+
+        phoneField.addEventListener('focus', function() {
+            console.log('Phone field focused');
+        });
+
+        phoneField.addEventListener('keypress', function(e) {
+            console.log('Phone keypress:', e.key, 'Allowed:', /^[0-9\s\-\+\(\)\.]$/.test(e.key));
+        });
+    } else {
+        console.error('Phone field NOT found! Looking for {{ form.phone_number.id_for_label }}');
     }
 });
 
@@ -617,28 +673,52 @@ document.getElementById('useEmailSuggestion')?.addEventListener('click', functio
 document.getElementById('nextBtn')?.addEventListener('click', function() {
     const currentStep = document.querySelector('.form-step.active');
     const stepNumber = currentStep.id.split('-')[1];
-    const requiredFields = currentStep.querySelectorAll('[required]');
-    
+
     let errors = {};
     let hasErrors = false;
-    
+
+    // Define required fields for each step
+    const step1RequiredFields = [
+        'id_username', 'id_first_name', 'id_last_name', 'id_email', 'id_confirm_email',
+        'id_password1', 'id_password2', 'id_date_of_birth', 'id_gender', 'id_nationality'
+    ];
+
+    const step2RequiredFields = [
+        'id_passport_number', 'id_confirm_passport_number', 'id_passport_issue_date',
+        'id_passport_expiry_date', 'id_highest_education_level', 'id_institution_name',
+        'id_field_of_study', 'id_graduation_year'
+    ];
+
+    let requiredFields = [];
+    if (stepNumber === '1') {
+        requiredFields = step1RequiredFields;
+    } else if (stepNumber === '2') {
+        requiredFields = step2RequiredFields;
+    }
+
     // Clear previous validation states
-    requiredFields.forEach(field => {
-        field.classList.remove('is-invalid', 'is-valid');
-    });
-    
-    // Validate required fields
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            const label = field.closest('.mb-3')?.querySelector('label')?.textContent.replace('*', '').trim() || field.name;
-            errors[label] = ['This field is required.'];
-            hasErrors = true;
-            field.classList.add('is-invalid');
-        } else {
-            field.classList.add('is-valid');
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.classList.remove('is-invalid', 'is-valid');
         }
     });
-    
+
+    // Validate required fields
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            if (!field.value.trim()) {
+                const label = field.closest('.mb-3')?.querySelector('label')?.textContent.replace('*', '').trim() || field.name;
+                errors[label] = ['This field is required.'];
+                hasErrors = true;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.add('is-valid');
+            }
+        }
+    });
+
     // Additional validation for specific fields
     if (stepNumber === '1') {
         // Validate email match
@@ -679,7 +759,7 @@ document.getElementById('nextBtn')?.addEventListener('click', function() {
             }
         }
     }
-    
+
     if (stepNumber === '2') {
         // Validate passport match
         const passport = document.getElementById('id_passport_number');
@@ -712,7 +792,7 @@ document.getElementById('nextBtn')?.addEventListener('click', function() {
             }
         }
     }
-    
+
     if (hasErrors) {
         showRegisterToast(errors, 'error', true);
         // Scroll to first invalid field
@@ -723,14 +803,14 @@ document.getElementById('nextBtn')?.addEventListener('click', function() {
         }
         return;
     }
-    
+
     // Move to next step or submit
     if (stepNumber < 3) {
         currentStep.classList.remove('active');
         document.getElementById(`step-${parseInt(stepNumber) + 1}`).classList.add('active');
         document.getElementById('stepIndicator').textContent = `Step ${parseInt(stepNumber) + 1} of 3`;
         document.getElementById('prevBtn').style.display = 'inline-block';
-        
+
         if (parseInt(stepNumber) + 1 === 3) {
             this.textContent = 'Submit';
         }

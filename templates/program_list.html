@@ -25,26 +25,32 @@
     <div class="card-body">
         <form method="get" action="{% url 'program_list' %}" id="filterForm">
             <div class="row g-3">
-                <div class="col-12 col-md-5">
-                    <label class="form-label small text-muted d-none d-md-block">
+                <div class="col-12 col-md-4">
+                    <label class="form-label small text-muted mb-2">
                         <i class="fas fa-search me-1"></i>Search by keyword
                     </label>
                     {{ form.query }}
                 </div>
-                <div class="col-6 col-md-3">
-                    <label class="form-label small text-muted d-none d-md-block">
+                <div class="col-sm-6 col-md-2">
+                    <label class="form-label small text-muted mb-2">
+                        <i class="fas fa-globe me-1"></i>Country
+                    </label>
+                    {{ form.country }}
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <label class="form-label small text-muted mb-2">
                         <i class="fas fa-map-marker-alt me-1"></i>Location
                     </label>
                     {{ form.location }}
                 </div>
-                <div class="col-6 col-md-2">
-                    <label class="form-label small text-muted d-none d-md-block">
+                <div class="col-sm-6 col-md-2">
+                    <label class="form-label small text-muted mb-2">
                         <i class="fas fa-venus-mars me-1"></i>Gender
                     </label>
                     {{ form.gender }}
                 </div>
-                <div class="col-12 col-md-2">
-                    <label class="form-label small text-muted invisible d-none d-md-block">Action</label>
+                <div class="col-sm-6 col-md-2">
+                    <label class="form-label small text-muted invisible mb-2">Action</label>
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="fas fa-search me-2"></i>Search
                     </button>
@@ -96,9 +102,14 @@
                     </div>
                     
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title mb-2 fw-bold text-dark">{{ program.title }}</h5>
+                        <h5 class="card-title mb-3 fw-bold text-dark">{{ program.title }}</h5>
                         
                         <div class="mb-3">
+                            {% if program.country %}
+                            <span class="badge bg-info-subtle text-info mb-2 me-2">
+                                <i class="fas fa-globe me-1"></i>{{ program.country }}
+                            </span>
+                            {% endif %}
                             <span class="badge bg-success-subtle text-success mb-2">
                                 <i class="fas fa-map-marker-alt me-1"></i>{{ program.location }}
                             </span>
@@ -109,16 +120,24 @@
                         </p>
                         
                         <!-- Program Info Grid -->
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
+                        <div class="row g-3 mb-3">
+                            <div class="col-12">
                                 <div class="d-flex align-items-center text-muted small">
-                                    <i class="far fa-calendar-alt text-primary me-2"></i>
-                                    <span>{{ program.start_date|date:"M d, Y" }}</span>
+                                    <i class="far fa-calendar-alt text-success me-2"></i>
+                                    <span>Starts: {{ program.start_date|date:"M d, Y" }}</span>
                                 </div>
                             </div>
+                            {% if program.registration_deadline %}
+                            <div class="col-12">
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="fas fa-clock text-warning me-2"></i>
+                                    <span>Application Deadline: {{ program.registration_deadline|date:"M d, Y" }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="col-6">
                                 <div class="d-flex align-items-center text-muted small">
-                                    <i class="fas fa-users text-primary me-2"></i>
+                                    <i class="fas fa-users text-info me-2"></i>
                                     <span>{{ program.capacity }} spots</span>
                                 </div>
                             </div>
@@ -245,11 +264,13 @@
 <style>
 .program-card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .program-card-hover:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
 }
 
 .program-card-hover:hover .card-img-top {
@@ -258,6 +279,30 @@
 
 .bg-success-subtle {
     background-color: rgba(25, 135, 84, 0.1);
+}
+
+.bg-info-subtle {
+    background-color: rgba(13, 202, 240, 0.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    line-height: 1.4;
+}
+
+.badge {
+    padding: 0.5rem 0.8rem;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    padding: 1.25rem 1.5rem;
+    background-color: #f8f9fa;
 }
 
 /* Mobile optimizations */
@@ -272,6 +317,14 @@
     
     .program-card-hover:hover {
         transform: none;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .card-footer {
+        padding: 1rem 1.25rem;
     }
 }
 </style>
