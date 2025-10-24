@@ -767,23 +767,58 @@ def candidate_list(request):
         country = form.cleaned_data.get('country')
         if country:
             candidates = candidates.filter(country_of_birth=country)
-        
+
         # Filter by specialization
         specialization = form.cleaned_data.get('specialization')
         if specialization:
             candidates = candidates.filter(specialization=specialization)
-        
+
         # Filter by status
         status = form.cleaned_data.get('status')
         if status:
             candidates = candidates.filter(status=status)
 
-        # Filter by date range
+        # Filter by date range - handle both old format (separate dates) and new format (date_range)
         start_date = form.cleaned_data.get('start_date')
         end_date = form.cleaned_data.get('end_date')
-        if start_date:
+        date_range = form.cleaned_data.get('date_range')
+
+        # Handle new date_range format (takes priority over separate dates)
+        if date_range and date_range.strip():
+            # Parse the date range format "Aug 31 - Oct 24"
+            try:
+                import re
+                date_match = re.match(r'(\w+\s+\d+) - (\w+\s+\d+)', date_range.strip())
+                if date_match:
+                    start_str, end_str = date_match.groups()
+                    # Parse dates (assuming current year if not specified)
+                    from datetime import datetime
+                    current_year = datetime.now().year
+
+                    # Try to parse with year first
+                    try:
+                        start_date_parsed = datetime.strptime(f"{start_str} {current_year}", "%b %d %Y")
+                        end_date_parsed = datetime.strptime(f"{end_str} {current_year}", "%b %d %Y")
+                    except ValueError:
+                        # If parsing with current year fails, try with next year for end date
+                        try:
+                            start_date_parsed = datetime.strptime(f"{start_str} {current_year}", "%b %d %Y")
+                            end_date_parsed = datetime.strptime(f"{end_str} {current_year + 1}", "%b %d %Y")
+                        except ValueError:
+                            # Fallback: assume same year
+                            start_date_parsed = datetime.strptime(f"{start_str} {current_year}", "%b %d %Y")
+                            end_date_parsed = datetime.strptime(f"{end_str} {current_year}", "%b %d %Y")
+
+                    candidates = candidates.filter(created_at__date__gte=start_date_parsed.date())
+                    candidates = candidates.filter(created_at__date__lte=end_date_parsed.date())
+            except Exception as e:
+                logger.warning(f"Error parsing date range '{date_range}': {e}")
+                # Fall back to separate date fields if date_range parsing fails
+
+        # Handle old format (separate start_date and end_date) - for backward compatibility
+        if start_date and not date_range:
             candidates = candidates.filter(created_at__date__gte=start_date)
-        if end_date:
+        if end_date and not date_range:
             from datetime import timedelta
             # Include the entire end date by adding one day and using less than
             end_date_next = end_date + timedelta(days=1)

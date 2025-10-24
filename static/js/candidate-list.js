@@ -12,18 +12,95 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Date range validation
-    const startDate = document.getElementById('start_date');
-    const endDate = document.getElementById('end_date');
+    // Date range picker functionality
+    const dateRangeInput = document.getElementById('date_range');
+    const dateRangeToggle = document.getElementById('dateRangeToggle');
+    const startDateHidden = document.getElementById('start_date_hidden');
+    const endDateHidden = document.getElementById('end_date_hidden');
+    const startDatePicker = document.getElementById('startDatePicker');
+    const endDatePicker = document.getElementById('endDatePicker');
+    const applyDateRange = document.getElementById('applyDateRange');
 
-    if (startDate && endDate) {
-        startDate.addEventListener('change', function() {
-            endDate.min = startDate.value;
-        });
+    // Initialize date pickers with current values
+    if (startDateHidden && endDateHidden && startDatePicker && endDatePicker) {
+        startDatePicker.value = startDateHidden.value;
+        endDatePicker.value = endDateHidden.value;
+        updateDateRangeDisplay();
+    }
 
-        endDate.addEventListener('change', function() {
-            startDate.max = endDate.value;
+    // Date range toggle button
+    if (dateRangeToggle) {
+        dateRangeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log('Date range toggle clicked');
+            showDateRangeModal();
         });
+    }
+
+    // Apply date range
+    if (applyDateRange) {
+        applyDateRange.addEventListener('click', function() {
+            console.log('Apply date range clicked');
+            applyDateRange();
+        });
+    }
+
+    // Custom modal functions
+    function showDateRangeModal() {
+        const modal = document.getElementById('dateRangeModal');
+        if (modal) {
+            modal.style.display = 'block';
+            console.log('Date range modal shown');
+        } else {
+            console.error('Date range modal not found');
+            alert('Date picker is not available. Please use the filter form below.');
+        }
+    }
+
+    function closeDateRangeModal() {
+        const modal = document.getElementById('dateRangeModal');
+        if (modal) {
+            modal.style.display = 'none';
+            console.log('Date range modal closed');
+        }
+    }
+
+    function applyDateRange() {
+        console.log('Apply date range function called');
+
+        if (startDateHidden && endDateHidden && startDatePicker && endDatePicker) {
+            startDateHidden.value = startDatePicker.value;
+            endDateHidden.value = endDatePicker.value;
+            updateDateRangeDisplay();
+            closeDateRangeModal();
+
+            // Trigger form submission to refresh results
+            document.getElementById('candidateFilterForm').submit();
+        }
+    }
+
+    // Make functions globally available for onclick handlers
+    window.showDateRangeModal = showDateRangeModal;
+    window.closeDateRangeModal = closeDateRangeModal;
+    window.applyDateRange = applyDateRange;
+
+    // Update date range display text
+    function updateDateRangeDisplay() {
+        if (dateRangeInput && startDateHidden && endDateHidden) {
+            const startDate = startDateHidden.value;
+            const endDate = endDateHidden.value;
+
+            if (startDate && endDate) {
+                // Format dates for display
+                const start = new Date(startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const end = new Date(endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                dateRangeInput.value = `${start} - ${end}`;
+            } else {
+                dateRangeInput.value = '';
+            }
+        }
     }
 
     // Export functionality
@@ -76,64 +153,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Export buttons event listeners with error handling - using event delegation
-    document.addEventListener('click', function(e) {
-        const button = e.target.closest('.export-selected, .export-all');
-        if (button) {
-            e.preventDefault();
-            e.stopPropagation();
+    // Export Selected button functionality
+    const exportSelectedBtn = document.getElementById('exportSelectedBtn');
+    const exportSelectedModalEl = document.getElementById('exportSelectedModal');
+    const exportFormatButtons = document.querySelectorAll('#exportSelectedModal [data-format]');
 
-            const isSelected = button.classList.contains('export-selected');
-            const format = button.dataset.format || button.getAttribute('data-format');
+    // Export Selected button click handler
+    if (exportSelectedBtn) {
+        exportSelectedBtn.addEventListener('click', function() {
+            const selectedCount = document.querySelectorAll('.candidate-select:checked').length;
 
-            console.log('Export button clicked (delegated):', {
-                isSelected: isSelected,
-                format: format,
-                classList: button.classList.toString(),
-                tagName: button.tagName,
-                buttonText: button.textContent.trim()
-            });
-
-            if (format) {
-                handleExport(format, isSelected);
-            } else {
-                console.error('Export format not specified for button:', button);
-                alert('Export format not specified. Please try again.');
+            if (selectedCount === 0) {
+                alert('Please select at least one candidate to export.');
+                return;
             }
-        }
-    });
 
-    // Also add direct event listeners to export-selected buttons specifically
-    document.querySelectorAll('.export-selected').forEach(button => {
-        // Remove any existing event listeners first
-        button.onclick = null;
-        button.removeEventListener('click', handleExport);
+            // Update count in modal
+            document.getElementById('exportSelectedCount').textContent = selectedCount;
 
-        button.addEventListener('click', function(e) {
-            console.log('Direct export-selected button clicked');
-            e.preventDefault();
-            e.stopPropagation();
-
-            const format = this.dataset.format || this.getAttribute('data-format');
-            console.log('Direct click - Format:', format);
-            console.log('Button element:', this);
-
-            if (format) {
-                handleExport(format, true); // Force selected=true for these buttons
-            } else {
-                console.error('No format found on export-selected button');
-                alert('Export format not found. Please try again.');
+            // Show modal using Bootstrap
+            if (exportSelectedModalEl) {
+                const exportSelectedModal = new bootstrap.Modal(exportSelectedModalEl);
+                exportSelectedModal.show();
             }
         });
+    }
 
-        // Ensure button is not disabled and clickable
-        button.disabled = false;
-        button.style.pointerEvents = 'auto';
-        button.style.cursor = 'pointer';
-        button.style.userSelect = 'none';
+    // Export format buttons in modal
+    exportFormatButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const format = this.dataset.format;
+            console.log('Export format selected:', format);
 
-        // Override any Bootstrap dropdown interference
-        button.setAttribute('onclick', 'event.preventDefault(); event.stopPropagation();');
+            // Close modal using Bootstrap
+            if (exportSelectedModalEl) {
+                const exportSelectedModal = bootstrap.Modal.getInstance(exportSelectedModalEl);
+                if (exportSelectedModal) {
+                    exportSelectedModal.hide();
+                }
+            }
+
+            handleExport(format, true);
+        });
+    });
+
+    // Close date range modal when clicking outside
+    document.addEventListener('click', function(e) {
+        const dateRangeModal = document.getElementById('dateRangeModal');
+        if (dateRangeModal && dateRangeModal.style.display === 'block') {
+            const modalContent = dateRangeModal.querySelector('div[style*="background: white"]');
+            if (!modalContent.contains(e.target) && e.target !== dateRangeToggle) {
+                closeDateRangeModal();
+            }
+        }
     });
 
     // Add a global click listener as a fallback for debugging
@@ -146,18 +218,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update selected count display
     function updateSelectedCount() {
         const selectedCount = document.querySelectorAll('.candidate-select:checked').length;
+        const exportSelectedBtn = document.getElementById('exportSelectedBtn');
+        const selectedCountSpan = document.getElementById('selectedCount');
+
+        console.log('Update selected count:', selectedCount);
+
+        // Update Export Selected button visibility and count
+        if (exportSelectedBtn) {
+            if (selectedCount > 0) {
+                exportSelectedBtn.style.display = 'inline-block';
+                selectedCountSpan.textContent = selectedCount;
+            } else {
+                exportSelectedBtn.style.display = 'none';
+            }
+        }
+
+        // Update old export dropdown (keeping for backward compatibility)
         const exportDropdown = document.getElementById('exportDropdown');
-        const exportSelectedButtons = document.querySelectorAll('.export-selected');
-        
         if (exportDropdown) {
             const text = selectedCount > 0 ? ` (${selectedCount} selected)` : '';
             exportDropdown.innerHTML = `<i class="fas fa-download"></i> Export Data${text}`;
         }
-
-        // Update export selected buttons state
-        exportSelectedButtons.forEach(button => {
-            button.classList.toggle('disabled', selectedCount === 0);
-        });
     }
 
     // Add change event listeners to checkboxes
@@ -216,7 +297,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 1000);
 
-    // Final fallback: Add manual export functions to window for debugging
+    // Manual test functions for debugging
+    window.testDateRangeModal = function() {
+        console.log('Manual test date range modal');
+        showDateRangeModal();
+    };
+
     window.testExportSelected = function(format) {
         console.log('Manual test export called with format:', format);
         handleExport(format, true);
@@ -227,7 +313,8 @@ document.addEventListener('DOMContentLoaded', function() {
         handleExport(format, false);
     };
 
-    console.log('Export functions available for testing:');
+    console.log('Test functions available:');
+    console.log('- testDateRangeModal()');
     console.log('- testExportSelected(format)');
     console.log('- testExportAll(format)');
 });

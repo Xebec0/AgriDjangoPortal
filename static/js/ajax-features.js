@@ -83,21 +83,27 @@ function checkUsernameAvailability(username, feedbackElement) {
 
 /**
  * Setup AJAX form submissions for login and registration forms
+ * Note: Login and registration forms are handled by modal-login-register.js
+ * This function is kept for backward compatibility but forms are loaded dynamically
  */
 function setupAjaxFormSubmissions() {
-    // Login form
-    const loginForm = document.querySelector('form.login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+    // Login and registration forms are now handled by modal-login-register.js
+    // which loads the forms via AJAX and handles their submission
+    // This prevents conflicts and null reference errors
+
+    // Only set up forms that exist at page load (non-modal forms)
+    const staticLoginForm = document.querySelector('form.login-form:not([id*="Modal"])');
+    const staticRegisterForm = document.querySelector('form.register-form:not([id*="Modal"])');
+
+    if (staticLoginForm) {
+        staticLoginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             submitFormWithAjax(this, '/api/ajax-login/');
         });
     }
-    
-    // Registration form
-    const registerForm = document.querySelector('form.register-form');
-    if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
+
+    if (staticRegisterForm) {
+        staticRegisterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             submitFormWithAjax(this, '/api/ajax-register/');
         });

@@ -5,6 +5,38 @@
 {% block title %}Candidates - Agrostudies Registration System{% endblock %}
 
 {% block content %}
+<style>
+/* Override Bootstrap disabled styles for export buttons */
+.export-selected.disabled {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.export-selected.disabled:hover {
+    opacity: 0.8 !important;
+}
+
+/* Date range picker styles */
+.date-range-input {
+    cursor: pointer;
+}
+
+.date-range-input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Date range modal elements check:');
+    console.log('- dateRangeModal:', document.getElementById('dateRangeModal'));
+    console.log('- dateRangeToggle:', document.getElementById('dateRangeToggle'));
+    console.log('- startDatePicker:', document.getElementById('startDatePicker'));
+    console.log('- endDatePicker:', document.getElementById('endDatePicker'));
+    console.log('- applyDateRange:', document.getElementById('applyDateRange'));
+});
+</script>
 <div class="container-fluid">
     <h1 class="h3 mb-4">Candidate Management</h1>
     
@@ -13,29 +45,17 @@
             <h6 class="m-0 font-weight-bold text-primary">Search Candidates</h6>
             <div>
                 {% if user.is_staff %}
+                    <!-- Export Selected Button (separate from dropdown) -->
+                    <button type="button" class="btn btn-success btn-sm me-2" id="exportSelectedBtn" style="display: none;">
+                        <i class="fas fa-download me-1"></i> Export Selected (<span id="selectedCount">0</span>)
+                    </button>
+
+                    <!-- Export All Dropdown -->
                     <div class="dropdown d-inline-block me-2">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-download"></i> Export Data
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportAllDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-download"></i> Export All
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-                            <li><h6 class="dropdown-header">Export Selected</h6></li>
-                            <li>
-                                <button class="dropdown-item export-selected" data-format="csv" type="button">
-                                    <i class="fas fa-file-csv me-1"></i> Export Selected as CSV
-                                </button>
-                            </li>
-                            <li>
-                                <button class="dropdown-item export-selected" data-format="excel" type="button">
-                                    <i class="fas fa-file-excel me-1"></i> Export Selected as Excel
-                                </button>
-                            </li>
-                            <li>
-                                <button class="dropdown-item export-selected" data-format="pdf" type="button">
-                                    <i class="fas fa-file-pdf me-1"></i> Export Selected as PDF
-                                </button>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header">Export All</h6></li>
+                        <ul class="dropdown-menu" aria-labelledby="exportAllDropdown">
                             <li>
                                 <a class="dropdown-item" href="?export=csv{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
                                     <i class="fas fa-file-csv me-1"></i> Export All as CSV
@@ -80,16 +100,18 @@
                             {{ form.status }}
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="form-group mb-2">
-                            <label for="start_date">From Date</label>
-                            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ request.GET.start_date|default:'' }}">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group mb-2">
-                            <label for="end_date">To Date</label>
-                            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ request.GET.end_date|default:'' }}">
+                            <label for="date_range">Date Range</label>
+                            <div class="input-group">
+                                <input type="text" name="date_range" id="date_range" class="form-control" value="{{ request.GET.date_range|default:'' }}" placeholder="Select date range" readonly>
+                                <button class="btn btn-outline-secondary" type="button" id="dateRangeToggle">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </button>
+                            </div>
+                            <!-- Hidden inputs for actual date values -->
+                            <input type="hidden" name="start_date" id="start_date_hidden" value="{{ request.GET.start_date|default:'' }}">
+                            <input type="hidden" name="end_date" id="end_date_hidden" value="{{ request.GET.end_date|default:'' }}">
                         </div>
                     </div>
                     <div class="col-md-3 d-flex align-items-end">
@@ -248,6 +270,56 @@
                     <i class="fas fa-info-circle me-2"></i> No candidates found matching your criteria.
                 </div>
             {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Date Range Picker Modal (Custom Implementation) -->
+<div id="dateRangeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; min-width: 400px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h5 style="margin: 0;">Select Date Range</h5>
+            <button type="button" onclick="closeDateRangeModal()" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+        </div>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <div style="flex: 1;">
+                <label for="startDatePicker" style="display: block; margin-bottom: 5px;">Start Date</label>
+                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="startDatePicker" name="startDatePicker">
+            </div>
+            <div style="flex: 1;">
+                <label for="endDatePicker" style="display: block; margin-bottom: 5px;">End Date</label>
+                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="endDatePicker" name="endDatePicker">
+            </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" onclick="closeDateRangeModal()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+            <button type="button" onclick="applyDateRange()" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Apply</button>
+        </div>
+    </div>
+</div>
+
+<!-- Export Selected Modal -->
+<div class="modal fade" id="exportSelectedModal" tabindex="-1" aria-labelledby="exportSelectedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportSelectedModalLabel">Export Selected Candidates</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Choose the format to export <span id="exportSelectedCount">0</span> selected candidates:</p>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-primary" data-format="csv">
+                        <i class="fas fa-file-csv me-2"></i>Export as CSV
+                    </button>
+                    <button type="button" class="btn btn-outline-success" data-format="excel">
+                        <i class="fas fa-file-excel me-2"></i>Export as Excel
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" data-format="pdf">
+                        <i class="fas fa-file-pdf me-2"></i>Export as PDF
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

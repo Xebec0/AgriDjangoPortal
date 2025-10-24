@@ -451,11 +451,12 @@ class CandidateSearchForm(forms.Form):
         ('Approved', 'Approved'),
         ('Rejected', 'Rejected'),
     ]
-    
+
     country = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     # Removed university and passport fields
     specialization = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     status = forms.CharField(required=False, widget=forms.Select(choices=STATUSES, attrs={'class': 'form-control'}))
+    date_range = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Select date range'}))
     start_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='From Date')
     end_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='To Date')
     
