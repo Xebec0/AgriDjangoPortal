@@ -8,25 +8,61 @@
         content: " *";
         color: red;
     }
-    
+
     .form-section {
         border-bottom: 1px solid #eee;
         padding-bottom: 1.5rem;
         margin-bottom: 1.5rem;
     }
-    
+
     .form-section:last-child {
         border-bottom: none;
     }
-    
+
     .form-section-title {
         margin-bottom: 1.5rem;
         color: #0275d8;
     }
-    
+
     .help-text {
         font-size: 0.8rem;
         color: #6c757d;
+    }
+
+    /* Style for locked/readonly form fields */
+    input[readonly],
+    select:disabled,
+    textarea[readonly],
+    input[type="file"]:disabled {
+        background-color: #f8f9fa !important;
+        opacity: 0.65;
+        cursor: not-allowed;
+        border-color: #dee2e6;
+    }
+
+    /* Style for locked form sections */
+    .form-section.locked input[readonly],
+    .form-section.locked select:disabled,
+    .form-section.locked textarea[readonly],
+    .form-section.locked input[type="file"]:disabled {
+        background-color: #e9ecef !important;
+        color: #6c757d;
+    }
+
+    /* Remove the gray background when in modify mode */
+    .modify-mode input[readonly],
+    .modify-mode select:disabled,
+    .modify-mode textarea[readonly],
+    .modify-mode input[type="file"]:disabled {
+        background-color: #fff !important;
+        opacity: 1;
+        cursor: text;
+        border-color: #ced4da;
+        color: #495057;
+    }
+
+    .modify-mode select:disabled {
+        cursor: pointer;
     }
 </style>
 {% endblock %}
@@ -48,7 +84,14 @@
             <p class="text-muted mb-4">
                 <i class="fas fa-info-circle"></i> Fields marked with an asterisk (*) are required.
             </p>
-            
+
+            <!-- Modify Button -->
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" id="modifyBtn" class="btn btn-warning">
+                    <i class="fas fa-edit me-2"></i> Modify
+                </button>
+            </div>
+
             <form method="post" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 
@@ -66,33 +109,13 @@
                                 <div class="text-danger">{{ form.first_name.errors }}</div>
                             {% endif %}
                         </div>
-                        
-                        <div class="col-md-6 mb-3 required-field">
-                            <label for="{{ form.confirm_first_name.id_for_label }}" class="form-label">Confirm First Name</label>
-                            {{ form.confirm_first_name }}
-                            {% if form.confirm_first_name.errors %}
-                                <div class="text-danger">{{ form.confirm_first_name.errors }}</div>
-                            {% endif %}
-                            <div class="help-text">Confirmation must match the first name exactly.</div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
+
                         <div class="col-md-6 mb-3 required-field">
                             <label for="{{ form.last_name.id_for_label }}" class="form-label">Surname</label>
                             {{ form.last_name }}
                             {% if form.last_name.errors %}
                                 <div class="text-danger">{{ form.last_name.errors }}</div>
                             {% endif %}
-                        </div>
-                        
-                        <div class="col-md-6 mb-3 required-field">
-                            <label for="{{ form.confirm_surname.id_for_label }}" class="form-label">Confirm Surname</label>
-                            {{ form.confirm_surname }}
-                            {% if form.confirm_surname.errors %}
-                                <div class="text-danger">{{ form.confirm_surname.errors }}</div>
-                            {% endif %}
-                            <div class="help-text">Confirmation must match the surname exactly.</div>
                         </div>
                     </div>
                     
@@ -427,24 +450,77 @@
 <script>
     // Form validation
     document.addEventListener('DOMContentLoaded', function() {
+        // Get form elements
+        const modifyBtn = document.getElementById('modifyBtn');
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const form = document.querySelector('form');
+        const allInputs = form.querySelectorAll('input, select, textarea');
+        const allFileInputs = form.querySelectorAll('input[type="file"]');
+
+        let isModifyMode = false;
+        let originalValues = {};
+
+        // Store original values when page loads
+        function storeOriginalValues() {
+            originalValues = {};
+            allInputs.forEach(function(input) {
+                if (input.type === 'file') {
+                    // For file inputs, store the filename or empty if no file
+                    originalValues[input.id] = input.files.length > 0 ? input.files[0].name : '';
+                } else if (input.tagName.toLowerCase() === 'select') {
+                    originalValues[input.id] = input.value;
+                } else {
+                    originalValues[input.id] = input.value;
+                }
+            });
+        }
+
+        // Restore original values
+        function restoreOriginalValues() {
+            allInputs.forEach(function(input) {
+                if (input.type === 'file') {
+                    // For file inputs, we can't restore the actual file, but we can clear it
+                    input.value = '';
+                } else if (input.tagName.toLowerCase() === 'select') {
+                    input.value = originalValues[input.id] || '';
+                } else {
+                    input.value = originalValues[input.id] || '';
+                }
+            });
+
+            // Recalculate age if date of birth was changed
+            if (originalValues['{{ form.date_of_birth.id_for_label }}']) {
+                const age = calculateAge(originalValues['{{ form.date_of_birth.id_for_label }}']);
+                calculatedAge.textContent = age;
+                ageDisplay.style.display = 'block';
+            }
+        }
+
+        // Initially disable submit button and set fields as readonly
+        submitBtn.disabled = true;
+        submitBtn.style.display = 'none';
+
+        // Store original values on page load
+        storeOriginalValues();
+
         // Calculate age when date of birth is entered
         const dateOfBirthField = document.getElementById('{{ form.date_of_birth.id_for_label }}');
         const ageDisplay = document.getElementById('age-display');
         const calculatedAge = document.getElementById('calculated-age');
-        
+
         function calculateAge(birthdate) {
             const today = new Date();
             const birthDate = new Date(birthdate);
             let age = today.getFullYear() - birthDate.getFullYear();
             const monthDiff = today.getMonth() - birthDate.getMonth();
-            
+
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
                 age--;
             }
-            
+
             return age;
         }
-        
+
         dateOfBirthField.addEventListener('change', function() {
             if (this.value) {
                 const age = calculateAge(this.value);
@@ -454,43 +530,75 @@
                 ageDisplay.style.display = 'none';
             }
         });
-        
+
         // If date is already filled (e.g., on edit form), calculate age on page load
         if (dateOfBirthField.value) {
             const age = calculateAge(dateOfBirthField.value);
             calculatedAge.textContent = age;
             ageDisplay.style.display = 'block';
         }
-        
-        // Confirm matching fields
-        const form = document.querySelector('form');
+
+        // Modify button click handler
+        modifyBtn.addEventListener('click', function() {
+            if (!isModifyMode) {
+                // Enter modify mode
+                isModifyMode = true;
+                modifyBtn.innerHTML = '<i class="fas fa-times me-2"></i> Cancel';
+                modifyBtn.classList.remove('btn-warning');
+                modifyBtn.classList.add('btn-secondary');
+                submitBtn.disabled = false;
+                submitBtn.style.display = 'inline-block';
+
+                // Enable all form fields
+                allInputs.forEach(function(input) {
+                    if (input.type === 'file') {
+                        input.disabled = false;
+                    } else if (input.tagName.toLowerCase() === 'select') {
+                        input.disabled = false;
+                    } else {
+                        input.readOnly = false;
+                    }
+                });
+
+                // Add visual indication that fields are editable
+                form.classList.add('modify-mode');
+            } else {
+                // Exit modify mode - restore original values
+                restoreOriginalValues();
+
+                isModifyMode = false;
+                modifyBtn.innerHTML = '<i class="fas fa-edit me-2"></i> Modify';
+                modifyBtn.classList.remove('btn-secondary');
+                modifyBtn.classList.add('btn-warning');
+                submitBtn.disabled = true;
+                submitBtn.style.display = 'none';
+
+                // Disable all form fields
+                allInputs.forEach(function(input) {
+                    if (input.type === 'file') {
+                        input.disabled = true;
+                    } else if (input.tagName.toLowerCase() === 'select') {
+                        input.disabled = true;
+                    } else {
+                        input.readOnly = true;
+                    }
+                });
+
+                // Remove visual indication
+                form.classList.remove('modify-mode');
+            }
+        });
+
+        // Form submission validation (only for passport confirmation)
         form.addEventListener('submit', function(event) {
-            const firstName = document.getElementById('{{ form.first_name.id_for_label }}').value;
-            const confirmFirstName = document.getElementById('{{ form.confirm_first_name.id_for_label }}').value;
-            const lastName = document.getElementById('{{ form.last_name.id_for_label }}').value;
-            const confirmLastName = document.getElementById('{{ form.confirm_surname.id_for_label }}').value;
-            const passport = document.getElementById('{{ form.passport_number.id_for_label }}').value;
-            const confirmPassport = document.getElementById('{{ form.confirm_passport_number.id_for_label }}').value;
-            
-            let hasError = false;
-            
-            if (firstName !== confirmFirstName) {
-                alert('First name and confirmation do not match.');
-                hasError = true;
-            }
-            
-            if (lastName !== confirmLastName) {
-                alert('Surname and confirmation do not match.');
-                hasError = true;
-            }
-            
-            if (passport !== confirmPassport) {
-                alert('Passport number and confirmation do not match.');
-                hasError = true;
-            }
-            
-            if (hasError) {
-                event.preventDefault();
+            if (isModifyMode) {
+                const passport = document.getElementById('{{ form.passport_number.id_for_label }}').value;
+                const confirmPassport = document.getElementById('{{ form.confirm_passport_number.id_for_label }}').value;
+
+                if (passport !== confirmPassport) {
+                    alert('Passport number and confirmation do not match.');
+                    event.preventDefault();
+                }
             }
         });
     });

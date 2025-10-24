@@ -265,19 +265,17 @@ class ProgramRegistrationForm(forms.ModelForm):
 
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""
-    
+
     # Add custom validation and formatting
     confirm_passport_number = forms.CharField(max_length=20, required=True, label='Confirm Passport Number')
-    confirm_first_name = forms.CharField(max_length=100, required=True)
-    confirm_surname = forms.CharField(max_length=100, required=True)
     
     class Meta:
         model = Candidate
         fields = [
             # Basic information
             'passport_number', 'confirm_passport_number',
-            'first_name', 'confirm_first_name',
-            'last_name', 'confirm_surname',
+            'first_name',
+            'last_name',
             'email',
             'date_of_birth', 'country_of_birth', 'nationality', 'religion',
             'gender',
@@ -297,36 +295,34 @@ class CandidateForm(forms.ModelForm):
             'passport_scan', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance',
         ]
         widgets = {
-            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number'}),
-            'confirm_passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm passport number'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}),
-            'confirm_first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm first name'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname'}),
-            'confirm_surname': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm surname'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address'}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'country_of_birth': forms.Select(attrs={'class': 'form-control'}),
-            'nationality': forms.Select(attrs={'class': 'form-control'}),
-            'religion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Religion'}),
-            'gender': forms.Select(attrs={'class': 'form-control'}),
-            'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Father's name"}),
-            'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Mother's name"}),
-            'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'shoes_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shoes size'}),
-            'shirt_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shirt size'}),
-            'university': forms.Select(attrs={'class': 'form-control'}),
-            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
-            'specialization': forms.Select(attrs={'class': 'form-control'}),
-            'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization'}),
-            'smokes': forms.Select(attrs={'class': 'form-control'}),
-            'program': forms.Select(attrs={'class': 'form-control'}),
-            'passport_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
-            'tor': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
-            'nc2_tesda': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
-            'diploma': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
-            'good_moral': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
-            'nbi_clearance': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
+            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number', 'readonly': True}),
+            'confirm_passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm passport number', 'readonly': True}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'readonly': True}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname', 'readonly': True}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address', 'readonly': True}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
+            'country_of_birth': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'nationality': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'religion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Religion', 'readonly': True}),
+            'gender': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Father's name", 'readonly': True}),
+            'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Mother's name", 'readonly': True}),
+            'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
+            'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
+            'shoes_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shoes size', 'readonly': True}),
+            'shirt_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shirt size', 'readonly': True}),
+            'university': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated', 'readonly': True}),
+            'specialization': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization', 'readonly': True}),
+            'smokes': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'program': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'passport_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png', 'disabled': True}),
+            'tor': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
+            'nc2_tesda': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
+            'diploma': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
+            'good_moral': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
+            'nbi_clearance': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -392,28 +388,14 @@ class CandidateForm(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super().clean()
-        
+
         passport_number = cleaned_data.get("passport_number")
         confirm_passport_number = cleaned_data.get("confirm_passport_number")
-        
-        first_name = cleaned_data.get("first_name")
-        confirm_first_name = cleaned_data.get("confirm_first_name")
-        
-        last_name = cleaned_data.get("last_name")
-        confirm_surname = cleaned_data.get("confirm_surname")
-        
+
         # Validate matching passport numbers
         if passport_number and confirm_passport_number and passport_number != confirm_passport_number:
             self.add_error('confirm_passport_number', "Passport numbers do not match")
-        
-        # Validate matching first names
-        if first_name and confirm_first_name and first_name != confirm_first_name:
-            self.add_error('confirm_first_name', "First names do not match")
-        
-        # Validate matching surnames
-        if last_name and confirm_surname and last_name != confirm_surname:
-            self.add_error('confirm_surname', "Surnames do not match")
-        
+
         return cleaned_data
 
     # Add custom clean methods for file fields
