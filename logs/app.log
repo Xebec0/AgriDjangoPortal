@@ -42687,3 +42687,53 @@ django.db.utils.OperationalError: no such column: core_agricultureprogram.countr
 [2025-10-24 13:03:13,254] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
 [2025-10-24 13:03:21,250] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=4
 [2025-10-24 13:03:22,243] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:04:12,250] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=3
+[2025-10-24 13:04:13,250] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:04:21,241] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=4
+[2025-10-24 13:04:22,248] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:05:06,242] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=4
+[2025-10-24 13:05:07,254] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:05:12,251] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:05:13,247] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:06:06,248] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-24 13:06:07,243] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:06:12,251] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:06:13,247] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:07:07,240] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:07:08,254] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:07:12,243] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:07:13,252] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:08:03,271] INFO core.middleware request GET /candidates/3/edit/ 200 user=admin ip=127.0.0.1 duration_ms=12
+[2025-10-24 13:08:06,252] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-24 13:08:07,252] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:08:33,763] INFO core.middleware request GET /candidates/3/edit/ 200 user=admin ip=127.0.0.1 duration_ms=11
+[2025-10-24 13:09:07,245] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=3
+[2025-10-24 13:09:08,254] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:09:34,250] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:09:35,252] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:10:08,253] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=4
+[2025-10-24 13:10:09,246] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:10:22,029] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-24 13:10:22,109] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-24 13:10:23,088] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-24 13:10:23,149] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-24 13:15:48,249] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-24 13:16:04,195] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=8
+[2025-10-24 13:16:05,455] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:05,673] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:09,700] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-24 13:16:09,795] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-24 13:16:09,886] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-24 13:16:10,109] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:12,540] INFO core.middleware request POST /api/ajax-login/ 200 user= ip=127.0.0.1 duration_ms=528
+[2025-10-24 13:16:12,762] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:14,259] INFO core.middleware request GET /api/notifications/ 200 user=buchugan ip=127.0.0.1 duration_ms=7
+[2025-10-24 13:16:15,252] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=buchugan ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:16,679] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=820
+[2025-10-24 13:16:16,951] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:17,269] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=15
+[2025-10-24 13:16:17,305] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:17,307] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-24 13:16:17,319] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-24 13:16:20,378] INFO core.middleware request GET /candidates/ 200 user=admin ip=127.0.0.1 duration_ms=16
+[2025-10-24 13:16:21,568] INFO core.middleware request GET /candidates/3/edit/ 200 user=admin ip=127.0.0.1 duration_ms=44

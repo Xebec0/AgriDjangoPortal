@@ -265,15 +265,12 @@ class ProgramRegistrationForm(forms.ModelForm):
 
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""
-
-    # Add custom validation and formatting
-    confirm_passport_number = forms.CharField(max_length=20, required=True, label='Confirm Passport Number')
     
     class Meta:
         model = Candidate
         fields = [
             # Basic information
-            'passport_number', 'confirm_passport_number',
+            'passport_number',
             'first_name',
             'last_name',
             'email',
@@ -296,7 +293,6 @@ class CandidateForm(forms.ModelForm):
         ]
         widgets = {
             'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number', 'readonly': True}),
-            'confirm_passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirm passport number', 'readonly': True}),
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'readonly': True}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname', 'readonly': True}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address', 'readonly': True}),
@@ -388,14 +384,6 @@ class CandidateForm(forms.ModelForm):
     
     def clean(self):
         cleaned_data = super().clean()
-
-        passport_number = cleaned_data.get("passport_number")
-        confirm_passport_number = cleaned_data.get("confirm_passport_number")
-
-        # Validate matching passport numbers
-        if passport_number and confirm_passport_number and passport_number != confirm_passport_number:
-            self.add_error('confirm_passport_number', "Passport numbers do not match")
-
         return cleaned_data
 
     # Add custom clean methods for file fields
