@@ -5,15 +5,26 @@
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+    <!-- Progress Bar -->
+    <div class="px-3 pt-3">
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="d-flex justify-content-between px-2 mt-1">
+            <small class="text-muted step-label" data-step="1">Account</small>
+            <small class="text-muted step-label" data-step="2">Personal</small>
+            <small class="text-muted step-label" data-step="3">Contact</small>
+            <small class="text-muted step-label" data-step="4">Academic</small>
+        </div>
+    </div>
     <div class="modal-body">
         <p class="text-muted mb-4">Complete your profile to apply for agricultural programs</p>
         
         <form id="registerModalForm" action="/api/ajax-register/" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             
-            <!-- Step 1: Account and Personal Information -->
+            <!-- Step 1: Account Information -->
             <div id="step-1" class="form-step active">
-                <!-- Account Information -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
                         <i class="fas fa-user-circle me-2"></i> Account Information
@@ -61,7 +72,17 @@
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.password1.id_for_label }}" class="form-label">Password <span class="text-danger">*</span></label>
                             {{ form.password1 }}
-                            <div class="form-text small">8+ chars, uppercase, lowercase, numbers</div>
+                            <div class="password-strength mt-2" style="display: none;">
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="requirements mt-2">
+                                    <small class="requirement" data-requirement="length"><i class="fas fa-times text-danger"></i> 8+ characters</small>
+                                    <small class="requirement" data-requirement="uppercase"><i class="fas fa-times text-danger"></i> Uppercase letter</small>
+                                    <small class="requirement" data-requirement="lowercase"><i class="fas fa-times text-danger"></i> Lowercase letter</small>
+                                    <small class="requirement" data-requirement="number"><i class="fas fa-times text-danger"></i> Number</small>
+                                </div>
+                            </div>
                             {% if form.password1.errors %}
                                 <div class="text-danger small">{{ form.password1.errors.0 }}</div>
                             {% endif %}
@@ -70,14 +91,19 @@
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password <span class="text-danger">*</span></label>
                             {{ form.password2 }}
+                            <div class="password-match mt-2" style="display: none;">
+                                <small class="text-success"><i class="fas fa-check"></i> Passwords match</small>
+                            </div>
                             {% if form.password2.errors %}
                                 <div class="text-danger small">{{ form.password2.errors.0 }}</div>
                             {% endif %}
                         </div>
                     </div>
                 </div>
-                
-                <!-- Personal Information -->
+            </div>
+
+            <!-- Step 2: Personal Information -->
+            <div id="step-2" class="form-step">
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
                         <i class="fas fa-id-card me-2"></i> Personal Information
@@ -131,27 +157,28 @@
                                 <div class="text-danger small">{{ form.nationality.errors.0 }}</div>
                             {% endif %}
                         </div>
-                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Contact and Passport Information -->
+            <div id="step-3" class="form-step">
+                <div class="mb-4">
+                    <h6 class="border-bottom pb-2 mb-3">
+                        <i class="fas fa-address-card me-2"></i> Contact Information
+                    </h6>
+                    
+                    <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
                             {{ form.phone_number }}
                             <div class="form-text small">
                                 <i class="fas fa-info-circle me-1"></i>
-                                Numbers only: e.g., +63 912 345 6789 (spaces, dashes, parentheses allowed) Typing letters is prevented
+                                Numbers only: e.g., +63 912 345 6789
                             </div>
                             <div class="invalid-feedback">
-                                Please enter a valid phone number (numbers and standard formatting only)
+                                Please enter a valid phone number
                             </div>
-                            <script>
-                                document.getElementById('{{ form.phone_number.id_for_label }}').addEventListener('input', function(e) {
-                                    const value = this.value;
-                                    const isValid = /^[\d\s\-\+\(\)\.]*$/.test(value);
-                                    this.classList.toggle('is-invalid', !isValid);
-                                    if (!isValid) {
-                                        this.value = value.replace(/[^0-9\s\-\+\(\)\.]/g, '');
-                                    }
-                                });
-                            </script>
                             {% if form.phone_number.errors %}
                                 <div class="text-danger small">{{ form.phone_number.errors.0 }}</div>
                             {% endif %}
@@ -166,10 +193,7 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            
-            <!-- Step 2: Passport and Academic Information -->
-            <div id="step-2" class="form-step">
+
                 <!-- Passport Information -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
@@ -228,7 +252,10 @@
                         </div>
                     </div>
                 </div>
-                
+            </div>
+
+            <!-- Step 4: Academic Information and Documents -->
+            <div id="step-4" class="form-step">
                 <!-- Academic Information -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
@@ -271,10 +298,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Step 3: Additional and Documents -->
-            <div id="step-3" class="form-step">
+                
                 <!-- Additional Information -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
@@ -344,7 +368,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
-        <span id="stepIndicator" class="align-self-center">Step 1 of 3</span>
+        <span id="stepIndicator" class="align-self-center">Step 1 of 4</span>
         <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
     </div>
 </div>
@@ -361,6 +385,133 @@
         </div>
     </div>
 </div>
+
+<script>
+// Initialize form event handlers when modal is shown
+// Form data persistence
+function saveFormData() {
+    const form = document.getElementById('registerModalForm');
+    const formData = new FormData(form);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        // Don't save sensitive data like passwords
+        if (!key.includes('password')) {
+            data[key] = value;
+        }
+    }
+    sessionStorage.setItem('registerFormData', JSON.stringify(data));
+}
+
+function loadFormData() {
+    const savedData = sessionStorage.getItem('registerFormData');
+    if (savedData) {
+        const data = JSON.parse(savedData);
+        const form = document.getElementById('registerModalForm');
+        for (let key in data) {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input) {
+                input.value = data[key];
+            }
+        }
+    }
+}
+
+// Password strength checker
+function checkPasswordStrength(password) {
+    const requirements = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password)
+    };
+    
+    let strength = 0;
+    Object.values(requirements).forEach(req => {
+        if (req) strength += 25;
+    });
+    
+    return { strength, requirements };
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const registerModal = document.getElementById('registerModal');
+    if (registerModal) {
+        // Initialize password strength indicator
+        const password1 = document.getElementById('id_password1');
+        const password2 = document.getElementById('id_password2');
+        const strengthDiv = password1.parentElement.querySelector('.password-strength');
+        const progressBar = strengthDiv?.querySelector('.progress-bar');
+        const matchDiv = password2.parentElement.querySelector('.password-match');
+
+        if (password1 && strengthDiv) {
+            password1.addEventListener('input', function() {
+                strengthDiv.style.display = 'block';
+                const { strength, requirements } = checkPasswordStrength(this.value);
+                
+                // Update progress bar
+                if (progressBar) {
+                    progressBar.style.width = `${strength}%`;
+                    progressBar.className = `progress-bar ${
+                        strength < 50 ? 'bg-danger' :
+                        strength < 75 ? 'bg-warning' :
+                        'bg-success'
+                    }`;
+                }
+                
+                // Update requirement checks
+                Object.entries(requirements).forEach(([req, met]) => {
+                    const reqEl = strengthDiv.querySelector(`[data-requirement="${req}"]`);
+                    if (reqEl) {
+                        const icon = reqEl.querySelector('i');
+                        icon.className = met ? 'fas fa-check text-success' : 'fas fa-times text-danger';
+                    }
+                });
+            });
+        }
+
+        // Password match checker
+        if (password2 && matchDiv) {
+            password2.addEventListener('input', function() {
+                matchDiv.style.display = 'block';
+                const match = this.value === password1.value;
+                matchDiv.innerHTML = match ?
+                    '<small class="text-success"><i class="fas fa-check"></i> Passwords match</small>' :
+                    '<small class="text-danger"><i class="fas fa-times"></i> Passwords do not match</small>';
+            });
+        }
+
+        // Form data persistence
+        registerModal.addEventListener('shown.bs.modal', function() {
+            console.log('Modal shown, initializing step handlers...');
+            loadFormData();
+            
+            // Initialize step handlers
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            
+            // Progress bar will be updated by the main modal script
+
+            // Reset form to first step
+            const currentStep = document.querySelector('.form-step.active');
+            if (currentStep && currentStep.id !== 'step-1') {
+                currentStep.classList.remove('active');
+                document.getElementById('step-1').classList.add('active');
+                document.getElementById('stepIndicator').textContent = 'Step 1 of 4';
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.textContent = 'Next';
+            }
+
+            // Initialize progress bar for step 1
+            const progressBar = registerModal.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.width = '25%';
+                progressBar.setAttribute('aria-valuenow', '25');
+            }
+            // Click handlers are already bound in the main script
+        });
+    }
+});
+</script>
 
 <style>
 .form-step {
@@ -644,56 +795,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-document.getElementById('id_confirm_email')?.addEventListener('blur', function() {
-    // Hide suggestion after a short delay to allow clicking the "Use this" button
-    setTimeout(() => {
-        const suggestionDiv = document.getElementById('emailSuggestion');
-        if (suggestionDiv) {
-            suggestionDiv.style.display = 'none';
-        }
-    }, 150);
-});
+//Event listeners for email suggestion are now moved into DOMContentLoaded
 
-document.getElementById('useEmailSuggestion')?.addEventListener('click', function(e) {
-    e.preventDefault();
-    const emailField = document.getElementById('id_email');
-    const confirmEmailField = document.getElementById('id_confirm_email');
-    const suggestionDiv = document.getElementById('emailSuggestion');
-
-    if (emailField && confirmEmailField) {
-        confirmEmailField.value = emailField.value.trim();
-        confirmEmailField.classList.remove('is-invalid');
-        confirmEmailField.classList.add('is-valid');
-        suggestionDiv.style.display = 'none';
-        confirmEmailField.focus();
-    }
-});
-
-// Form validation on step navigation
-document.getElementById('nextBtn')?.addEventListener('click', function() {
-    const currentStep = document.querySelector('.form-step.active');
-    const stepNumber = currentStep.id.split('-')[1];
+// Initialize form handlers when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Form validation on step navigation
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            const currentStep = document.querySelector('.form-step.active');
+            if (!currentStep) return;
+            const stepNumber = currentStep.id.split('-')[1];
 
     let errors = {};
     let hasErrors = false;
 
     // Define required fields for each step
     const step1RequiredFields = [
-        'id_username', 'id_first_name', 'id_last_name', 'id_email', 'id_confirm_email',
-        'id_password1', 'id_password2', 'id_date_of_birth', 'id_gender', 'id_nationality'
+        'id_username', 'id_email', 'id_confirm_email',
+        'id_password1', 'id_password2'
     ];
 
     const step2RequiredFields = [
+        'id_first_name', 'id_last_name', 'id_date_of_birth',
+        'id_gender', 'id_nationality'
+    ];
+
+    const step3RequiredFields = [
         'id_passport_number', 'id_confirm_passport_number', 'id_passport_issue_date',
-        'id_passport_expiry_date', 'id_highest_education_level', 'id_institution_name',
+        'id_passport_expiry_date'
+    ];
+
+    const step4RequiredFields = [
+        'id_highest_education_level', 'id_institution_name',
         'id_field_of_study', 'id_graduation_year'
     ];
 
     let requiredFields = [];
-    if (stepNumber === '1') {
-        requiredFields = step1RequiredFields;
-    } else if (stepNumber === '2') {
-        requiredFields = step2RequiredFields;
+    switch(stepNumber) {
+        case '1':
+            requiredFields = step1RequiredFields;
+            break;
+        case '2':
+            requiredFields = step2RequiredFields;
+            break;
+        case '3':
+            requiredFields = step3RequiredFields;
+            break;
+        case '4':
+            requiredFields = step4RequiredFields;
+            break;
     }
 
     // Clear previous validation states
@@ -760,7 +911,7 @@ document.getElementById('nextBtn')?.addEventListener('click', function() {
         }
     }
 
-    if (stepNumber === '2') {
+    if (stepNumber === '3') {
         // Validate passport match
         const passport = document.getElementById('id_passport_number');
         const confirmPassport = document.getElementById('id_confirm_passport_number');
@@ -804,14 +955,42 @@ document.getElementById('nextBtn')?.addEventListener('click', function() {
         return;
     }
 
+    // Save form data before proceeding
+    saveFormData();
+
     // Move to next step or submit
-    if (stepNumber < 3) {
+    if (stepNumber < 4) {
+        const nextStepNum = parseInt(stepNumber) + 1;
         currentStep.classList.remove('active');
-        document.getElementById(`step-${parseInt(stepNumber) + 1}`).classList.add('active');
-        document.getElementById('stepIndicator').textContent = `Step ${parseInt(stepNumber) + 1} of 3`;
+        document.getElementById(`step-${nextStepNum}`).classList.add('active');
+        document.getElementById('stepIndicator').textContent = `Step ${nextStepNum} of 4`;
         document.getElementById('prevBtn').style.display = 'inline-block';
 
-        if (parseInt(stepNumber) + 1 === 3) {
+        // Update progress bar
+        const progressBar = document.querySelector('.progress-bar');
+        if (progressBar) {
+            progressBar.style.width = `${nextStepNum * 25}%`;
+            // Add animation class
+            progressBar.classList.add('progress-bar-animated');
+            setTimeout(() => progressBar.classList.remove('progress-bar-animated'), 1000);
+        }
+
+        // Update step labels
+        document.querySelectorAll('.step-label').forEach(label => {
+            const labelStep = parseInt(label.dataset.step);
+            if (labelStep === nextStepNum) {
+                label.classList.remove('text-muted');
+                label.classList.add('text-primary', 'fw-bold');
+            } else if (labelStep < nextStepNum) {
+                label.classList.remove('text-muted', 'text-primary', 'fw-bold');
+                label.classList.add('text-success');
+            } else {
+                label.classList.remove('text-primary', 'text-success', 'fw-bold');
+                label.classList.add('text-muted');
+            }
+        });
+
+        if (nextStepNum === 4) {
             this.textContent = 'Submit';
         }
     } else {
@@ -820,20 +999,80 @@ document.getElementById('nextBtn')?.addEventListener('click', function() {
     }
 });
 
-// Previous button handler
-document.getElementById('prevBtn')?.addEventListener('click', function() {
-    const currentStep = document.querySelector('.form-step.active');
-    const stepNumber = currentStep.id.split('-')[1];
+    // Previous button handler
+    const prevBtn = document.getElementById('prevBtn');
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            const currentStep = document.querySelector('.form-step.active');
+            if (!currentStep) return;
+            const stepNumber = currentStep.id.split('-')[1];
 
-    if (stepNumber > 1) {
-        currentStep.classList.remove('active');
-        document.getElementById(`step-${parseInt(stepNumber) - 1}`).classList.add('active');
-        document.getElementById('stepIndicator').textContent = `Step ${parseInt(stepNumber) - 1} of 3`;
-        document.getElementById('nextBtn').textContent = 'Next';
+            if (stepNumber > 1) {
+                const prevStepNum = parseInt(stepNumber) - 1;
+                currentStep.classList.remove('active');
+                document.getElementById(`step-${prevStepNum}`).classList.add('active');
+                document.getElementById('stepIndicator').textContent = `Step ${prevStepNum} of 4`;
+                document.getElementById('nextBtn').textContent = 'Next';
 
-        if (parseInt(stepNumber) - 1 === 1) {
-            this.style.display = 'none';
-        }
+                // Update progress bar
+                const progressBar = document.querySelector('.progress-bar');
+                if (progressBar) {
+                    progressBar.style.width = `${prevStepNum * 25}%`;
+                }
+
+                // Update step labels
+                document.querySelectorAll('.step-label').forEach(label => {
+                    const labelStep = parseInt(label.dataset.step);
+                    if (labelStep === prevStepNum) {
+                        label.classList.remove('text-muted', 'text-success');
+                        label.classList.add('text-primary', 'fw-bold');
+                    } else if (labelStep < prevStepNum) {
+                        label.classList.remove('text-muted', 'text-primary', 'fw-bold');
+                        label.classList.add('text-success');
+                    } else {
+                        label.classList.remove('text-primary', 'text-success', 'fw-bold');
+                        label.classList.add('text-muted');
+                    }
+                });
+
+                if (prevStepNum === 1) {
+                    this.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    // Initialize any email-related handlers
+    const emailConfirmField = document.getElementById('id_confirm_email');
+    if (emailConfirmField) {
+        emailConfirmField.addEventListener('blur', function() {
+            setTimeout(() => {
+                const suggestionDiv = document.getElementById('emailSuggestion');
+                if (suggestionDiv) {
+                    suggestionDiv.style.display = 'none';
+                }
+            }, 150);
+        });
+    }
+
+    const useEmailSuggestionBtn = document.getElementById('useEmailSuggestion');
+    if (useEmailSuggestionBtn) {
+        useEmailSuggestionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const emailField = document.getElementById('id_email');
+            const confirmEmailField = document.getElementById('id_confirm_email');
+            const suggestionDiv = document.getElementById('emailSuggestion');
+
+            if (emailField && confirmEmailField) {
+                confirmEmailField.value = emailField.value.trim();
+                confirmEmailField.classList.remove('is-invalid');
+                confirmEmailField.classList.add('is-valid');
+                if (suggestionDiv) {
+                    suggestionDiv.style.display = 'none';
+                }
+                confirmEmailField.focus();
+            }
+        });
     }
 });
 

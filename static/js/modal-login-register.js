@@ -244,7 +244,7 @@ function setupRegisterModal() {
     
     if (registerModal) {
         let currentStep = 1;
-        const totalSteps = 3;
+        const totalSteps = 4;
         let nextBtn, prevBtn, stepIndicator, form, errorElement;
         
         // Load the registration form when the modal is shown
@@ -329,9 +329,9 @@ function setupRegisterModal() {
             formSteps.forEach((step, index) => {
                 step.classList.toggle('active', index + 1 === n);
             });
-            
+
             prevBtn.style.display = n === 1 ? 'none' : 'inline-block';
-            
+
             if (n === totalSteps) {
                 nextBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i> Create Account';
                 nextBtn.classList.add('submit-btn');
@@ -339,9 +339,33 @@ function setupRegisterModal() {
                 nextBtn.innerHTML = 'Next';
                 nextBtn.classList.remove('submit-btn');
             }
-            
+
             stepIndicator.textContent = `Step ${n} of ${totalSteps}`;
-            
+
+            // Update progress bar
+            const progressBar = registerModalContent.querySelector('.progress-bar');
+            if (progressBar) {
+                const progressPercentage = (n / totalSteps) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.setAttribute('aria-valuenow', progressPercentage);
+            }
+
+            // Update step labels
+            const stepLabels = registerModalContent.querySelectorAll('.step-label');
+            stepLabels.forEach((label, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber === n) {
+                    label.classList.remove('text-muted', 'text-success');
+                    label.classList.add('text-primary', 'fw-bold');
+                } else if (stepNumber < n) {
+                    label.classList.remove('text-muted', 'text-primary', 'fw-bold');
+                    label.classList.add('text-success');
+                } else {
+                    label.classList.remove('text-primary', 'text-success', 'fw-bold');
+                    label.classList.add('text-muted');
+                }
+            });
+
             // Scroll to top of modal body
             const modalBody = registerModal.querySelector('.modal-body');
             if (modalBody) {
@@ -352,16 +376,16 @@ function setupRegisterModal() {
         function validateStep(step) {
             let isValid = true;
             const errors = [];
-            
+
             // Clear previous step errors
             if (errorElement) {
                 errorElement.innerHTML = '';
                 errorElement.classList.add('d-none');
             }
-            
+
             switch (step) {
                 case 1:
-                    // Account fields
+                    // Only validate Step 1 fields (Account Information)
                     if (!form.querySelector('#id_username').value.trim()) {
                         errors.push('Username is required.');
                         isValid = false;
@@ -382,7 +406,9 @@ function setupRegisterModal() {
                         errors.push('Passwords do not match.');
                         isValid = false;
                     }
-                    // Personal fields
+                    break;
+                case 2:
+                    // Only validate Step 2 fields (Personal Information)
                     if (!form.querySelector('#id_first_name').value.trim()) {
                         errors.push('First name is required.');
                         isValid = false;
@@ -404,8 +430,8 @@ function setupRegisterModal() {
                         isValid = false;
                     }
                     break;
-                case 2:
-                    // Passport fields
+                case 3:
+                    // Only validate Step 3 fields (Contact & Passport Information)
                     if (!form.querySelector('#id_passport_number').value.trim()) {
                         errors.push('Passport number is required.');
                         isValid = false;
@@ -422,7 +448,9 @@ function setupRegisterModal() {
                         errors.push('Passport expiry date is required.');
                         isValid = false;
                     }
-                    // Academic fields
+                    break;
+                case 4:
+                    // Only validate Step 4 fields (Academic Information)
                     if (!form.querySelector('#id_highest_education_level').value) {
                         errors.push('Education level is required.');
                         isValid = false;
@@ -439,9 +467,6 @@ function setupRegisterModal() {
                         errors.push('Graduation year is required.');
                         isValid = false;
                     }
-                    break;
-                case 3:
-                    // Optional fields, no validation needed
                     break;
             }
             
@@ -465,7 +490,7 @@ function setupRegisterModal() {
                     showStep(currentStep);
                 }
             } else {
-                // Submit the form on step 3
+                // Submit the form on step 4
                 submitRegisterForm();
             }
         }
@@ -531,7 +556,7 @@ function setupRegisterModal() {
         }
         
         function submitRegisterForm() {
-            if (!validateStep(totalSteps)) return;
+            if (!validateStep(4)) return;
             
             const originalText = nextBtn.innerHTML;
             nextBtn.disabled = true;

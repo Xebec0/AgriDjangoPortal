@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form submission validation
+    // Form submission validation - only for non-modal forms
     document.addEventListener('submit', function(event) {
         const form = event.target;
-        if (form.id === 'registerForm' || form.id === 'registerModalForm') {
+        if (form.id === 'registerForm' && !form.closest('.modal')) {
             event.preventDefault(); // Always prevent default to handle manually
             if (validateEntireForm(form)) {
                 form.submit(); // Submit if valid
