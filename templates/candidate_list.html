@@ -29,12 +29,19 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Date range modal elements check:');
+    console.log('=== Date Range Modal Debug ===');
     console.log('- dateRangeModal:', document.getElementById('dateRangeModal'));
     console.log('- dateRangeToggle:', document.getElementById('dateRangeToggle'));
     console.log('- startDatePicker:', document.getElementById('startDatePicker'));
     console.log('- endDatePicker:', document.getElementById('endDatePicker'));
-    console.log('- applyDateRange:', document.getElementById('applyDateRange'));
+    console.log('- applyDateRange button:', document.getElementById('applyDateRange'));
+    console.log('- closeDateRangeBtn:', document.getElementById('closeDateRangeBtn'));
+    
+    // Test if global functions are available
+    console.log('- showDateRangeModal function:', typeof window.showDateRangeModal);
+    console.log('- closeDateRangeModal function:', typeof window.closeDateRangeModal);
+    console.log('- applyDateRange function:', typeof window.applyDateRange);
+    console.log('==============================');
 });
 </script>
 <div class="container-fluid">
@@ -275,25 +282,25 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <!-- Date Range Picker Modal (Custom Implementation) -->
-<div id="dateRangeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; min-width: 400px;">
+<div id="dateRangeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; cursor: pointer;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; min-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); cursor: default;" onclick="event.stopPropagation();">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h5 style="margin: 0;">Select Date Range</h5>
-            <button type="button" onclick="closeDateRangeModal()" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+            <h5 style="margin: 0; color: #333;">Select Date Range</h5>
+            <button type="button" id="closeDateRangeBtn" onclick="closeDateRangeModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666; line-height: 1;">&times;</button>
         </div>
         <div style="display: flex; gap: 15px; margin-bottom: 20px;">
             <div style="flex: 1;">
-                <label for="startDatePicker" style="display: block; margin-bottom: 5px;">Start Date</label>
+                <label for="startDatePicker" style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">Start Date</label>
                 <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="startDatePicker" name="startDatePicker">
             </div>
             <div style="flex: 1;">
-                <label for="endDatePicker" style="display: block; margin-bottom: 5px;">End Date</label>
+                <label for="endDatePicker" style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">End Date</label>
                 <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="endDatePicker" name="endDatePicker">
             </div>
         </div>
         <div style="display: flex; justify-content: flex-end; gap: 10px;">
-            <button type="button" onclick="closeDateRangeModal()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
-            <button type="button" onclick="applyDateRange()" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Apply</button>
+            <button type="button" onclick="closeDateRangeModal()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">Cancel</button>
+            <button type="button" id="applyDateRange" onclick="applyDateRange()" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#0056b3'" onmouseout="this.style.background='#007bff'">Apply</button>
         </div>
     </div>
 </div>
@@ -323,4 +330,8 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/candidate-list.js' %}"></script>
 {% endblock %}

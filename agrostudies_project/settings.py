@@ -22,8 +22,8 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '0.0.0.0,localhost,127.0.0.1').split(
 # Always include Render domain for deployment
 ALLOWED_HOSTS.append('agridjangoportal.onrender.com')
 if DEBUG:
-    # Development hosts
-    ALLOWED_HOSTS.extend(['97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev', '.replit.dev'])
+    # Development hosts - allow all localhost and 127.0.0.1 with any port
+    ALLOWED_HOSTS.extend(['97c4d0ce-8162-4751-a7b9-9bdc67fea09e-00-1fmmcvyer92ik.kirk.replit.dev', '.replit.dev', '*'])
 
 # CSRF Trusted Origins for secure form submissions
 CSRF_TRUSTED_ORIGINS = [
@@ -32,10 +32,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.replit.dev',
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://127.0.0.1:8000',
-    'https://localhost:8000',
     'https://127.0.0.1:50804',
     'https://127.0.0.1:53543',  # Added for development server
+    'http://127.0.0.1:52856',  # Browser preview proxy
+    'http://localhost:52856',  # Browser preview proxy
 ]
 
 # Application definition

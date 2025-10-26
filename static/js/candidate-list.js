@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const endDateHidden = document.getElementById('end_date_hidden');
     const startDatePicker = document.getElementById('startDatePicker');
     const endDatePicker = document.getElementById('endDatePicker');
-    const applyDateRange = document.getElementById('applyDateRange');
+    const applyDateRangeBtn = document.getElementById('applyDateRange');
 
     // Initialize date pickers with current values
     if (startDateHidden && endDateHidden && startDatePicker && endDatePicker) {
@@ -39,10 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Apply date range
-    if (applyDateRange) {
-        applyDateRange.addEventListener('click', function() {
-            console.log('Apply date range clicked');
+    // Apply date range button - Note: This button has onclick in HTML, so this is redundant
+    // but keeping for programmatic access if needed
+    if (applyDateRangeBtn) {
+        applyDateRangeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Apply date range button clicked');
             applyDateRange();
         });
     }
@@ -197,14 +199,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Close date range modal when clicking outside
-    document.addEventListener('click', function(e) {
-        const dateRangeModal = document.getElementById('dateRangeModal');
-        if (dateRangeModal && dateRangeModal.style.display === 'block') {
-            const modalContent = dateRangeModal.querySelector('div[style*="background: white"]');
-            if (!modalContent.contains(e.target) && e.target !== dateRangeToggle) {
+    // Close date range modal when clicking on overlay (outside the modal content)
+    const dateRangeModal = document.getElementById('dateRangeModal');
+    if (dateRangeModal) {
+        dateRangeModal.addEventListener('click', function(e) {
+            // Only close if clicking directly on the overlay (not on the modal content)
+            if (e.target === dateRangeModal) {
+                console.log('Clicked outside modal, closing...');
                 closeDateRangeModal();
             }
+        });
+    }
+
+    // Close modal on ESC key press
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && dateRangeModal && dateRangeModal.style.display === 'block') {
+            console.log('ESC key pressed, closing modal...');
+            closeDateRangeModal();
         }
     });
 
