@@ -1,8 +1,10 @@
-{% extends "unfold/base_site.html" %}
-{% load static %}
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans "AgroStudies Admin" %}{% endblock %}
 
 {% block branding %}
-<div class="flex items-center gap-3">
-    <h1 class="font-semibold text-2xl">AgroStudies Admin</h1>
-</div>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{% trans "AgroStudies Admin" %}</a></h1>
 {% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -327,11 +327,36 @@ CACHE_TTL = {
     'static_content': 3600,  # 1 hour
 }
 
+# Admin Site Configuration
+ADMIN_SITE_HEADER = "AgroStudies Admin"
+ADMIN_SITE_TITLE = "AgroStudies Admin"
+ADMIN_SITE_INDEX_TITLE = "Welcome to AgroStudies Admin"
+
 # Unfold Admin Theme Settings
 UNFOLD = {
-    "SITE_TITLE": "AgroStudies Admin",
-    "SITE_HEADER": "AgroStudies Admin",
-    "SITE_URL": "/admin"
+    "SITE_HEADER": ADMIN_SITE_HEADER,
+    "SITE_TITLE": ADMIN_SITE_TITLE,
+    "SITE_INDEX_TITLE": ADMIN_SITE_INDEX_TITLE,
+    "SITE_URL": "/admin",
+    "SITE_SYMBOL": "eco",  # Material icon name (changed to a leaf/eco icon)
+    "ENVIRONMENT": "production",
+    "DASHBOARD_CALLBACK": "core.utils.admin_dashboard",  # Optional: path to dashboard callback
+    "STYLES": ["css/admin-theme.css"],  # Custom CSS for admin theme
+    "SCRIPTS": [],  # Optional: custom JS files
+    "COLORS": {
+        "primary": {
+            "50": "#f0fdf4",
+            "100": "#dcfce7",
+            "200": "#bbf7d0",
+            "300": "#86efac",
+            "400": "#4ade80",
+            "500": "#067d17",  # Main brand color
+            "600": "#057014",
+            "700": "#046612",
+            "800": "#034d0e",
+            "900": "#022706"
+        }
+    }
 }
 
 # ----- Sentry Error Tracking -----
