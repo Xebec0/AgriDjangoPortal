@@ -1152,6 +1152,8 @@ def add_candidate(request):
     
     if request.method == 'POST':
         form = CandidateForm(request.POST, request.FILES)
+        # Set created_by on form for duplicate file validation
+        form.created_by = request.user
         if form.is_valid():
             candidate = form.save(commit=False)
             candidate.created_by = request.user
@@ -1204,12 +1206,16 @@ def edit_candidate(request, candidate_id):
     
     if request.method == 'POST':
         form = CandidateForm(request.POST, request.FILES, instance=candidate)
+        # Set created_by on form for duplicate file validation
+        form.created_by = candidate.created_by
         if form.is_valid():
             form.save()
             messages.success(request, f'Candidate {candidate.first_name} {candidate.last_name} has been updated successfully.')
             return redirect('candidate_list')
     else:
         form = CandidateForm(instance=candidate)
+        # Set created_by on form for duplicate file validation
+        form.created_by = candidate.created_by
     
     return render(request, 'candidate_form.html', {
         'form': form,

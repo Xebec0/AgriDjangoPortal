@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.core.management import call_command
 from django.utils import timezone
 from datetime import timedelta
-from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog
+from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog, UploadedFile
 
 
 @admin.register(Profile)
@@ -170,3 +170,63 @@ class CandidateAdmin(admin.ModelAdmin):
             'fields': ('status', 'created_by')
         }),
     )
+
+
+@admin.register(UploadedFile)
+class UploadedFileAdmin(admin.ModelAdmin):
+    """Admin interface for tracking uploaded files and detecting duplicates."""
+    
+    list_display = ('user', 'document_type', 'file_name', 'file_size_kb', 'uploaded_at', 'is_active', 'model_name', 'model_id')
+    list_filter = ('document_type', 'model_name', 'is_active', 'uploaded_at', 'user')
+    search_fields = ('user__username', 'file_name', 'file_hash', 'model_id')
+    readonly_fields = ('file_hash', 'file_size', 'mime_type', 'uploaded_at', 'updated_at')
+    date_hierarchy = 'uploaded_at'
+    
+    fieldsets = (
+        ('File Information', {
+            'fields': ('user', 'document_type', 'file_name', 'file_path', 'file_size', 'mime_type')
+        }),
+        ('File Integrity', {
+            'fields': ('file_hash', 'is_active')
+        }),
+        ('Model Reference', {
+            'fields': ('model_name', 'model_id')
+        }),
+        ('Timestamps', {
+            'fields': ('uploaded_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def file_size_kb(self, obj):
+        """Display file size in KB."""
+        return f"{obj.file_size / 1024:.2f} KB"
+    file_size_kb.short_description = 'File Size'
+    
+    actions = ['mark_as_inactive', 'mark_as_active', 'cleanup_orphaned']
+    
+    def mark_as_inactive(self, request, queryset):
+        """Mark selected files as inactive."""
+        updated = queryset.update(is_active=False)
+        self.message_user(request, f"{updated} file(s) marked as inactive.", messages.SUCCESS)
+    mark_as_inactive.short_description = "Mark selected files as inactive"
+    
+    def mark_as_active(self, request, queryset):
+        """Mark selected files as active."""
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f"{updated} file(s) marked as active.", messages.SUCCESS)
+    mark_as_active.short_description = "Mark selected files as active"
+    
+    def cleanup_orphaned(self, request, queryset):
+        """Remove records for files that no longer exist in storage."""
+        count = UploadedFile.cleanup_orphaned_records()
+        self.message_user(request, f"{count} orphaned file record(s) cleaned up.", messages.SUCCESS)
+    cleanup_orphaned.short_description = "Clean up orphaned file records"
+    
+    def has_add_permission(self, request):
+        """Prevent manual creation - files are tracked automatically."""
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        """Only superusers can delete file tracking records."""
+        return request.user.is_superuser

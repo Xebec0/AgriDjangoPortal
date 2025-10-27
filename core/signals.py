@@ -6,8 +6,9 @@ from django.dispatch import receiver
 from django.forms.models import model_to_dict
 from django.apps import apps
 from django.db import connection
-from .models import Profile, ActivityLog
+from .models import Profile, ActivityLog, Registration, Candidate
 from .middleware import get_request_user, get_request_ip, get_request_session_key
+from .utils.file_tracker import register_model_files
 
 logger = logging.getLogger(__name__)
 
@@ -189,4 +190,43 @@ def save_profile(sender, instance, **kwargs):
         instance.profile.save()
     except Profile.DoesNotExist:
         # Create the profile if it doesn't exist
-        Profile.objects.create(user=instance) 
+        Profile.objects.create(user=instance)
+
+
+# -------- File Upload Tracking ---------
+
+@receiver(post_save, sender=Profile)
+def track_profile_files(sender, instance, created, **kwargs):
+    """
+    Automatically register file uploads from Profile model to UploadedFile tracking system.
+    """
+    if instance.user and instance.pk:
+        try:
+            register_model_files(instance, instance.user, 'Profile')
+        except Exception as e:
+            logger.error(f"Error tracking Profile files for user {instance.user.username}: {str(e)}")
+
+
+@receiver(post_save, sender=Registration)
+def track_registration_files(sender, instance, created, **kwargs):
+    """
+    Automatically register file uploads from Registration model to UploadedFile tracking system.
+    """
+    if instance.user and instance.pk:
+        try:
+            register_model_files(instance, instance.user, 'Registration')
+        except Exception as e:
+            logger.error(f"Error tracking Registration files for user {instance.user.username}: {str(e)}")
+
+
+@receiver(post_save, sender=Candidate)
+def track_candidate_files(sender, instance, created, **kwargs):
+    """
+    Automatically register file uploads from Candidate model to UploadedFile tracking system.
+    Uses created_by (staff member) as the tracking user.
+    """
+    if instance.created_by and instance.pk:
+        try:
+            register_model_files(instance, instance.created_by, 'Candidate')
+        except Exception as e:
+            logger.error(f"Error tracking Candidate files for candidate {instance.pk}: {str(e)}") 

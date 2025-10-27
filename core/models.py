@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.apps import apps
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils import timezone
+import hashlib
+import os
 
 
 class Profile(models.Model):
@@ -411,3 +413,173 @@ class ActivityLog(models.Model):
                 return instance
         except Model.DoesNotExist:
             return None
+
+
+class UploadedFile(models.Model):
+    """Track all uploaded files with metadata to prevent duplicates and manage file integrity."""
+    
+    # Document type choices - maps to the field names in Profile, Registration, Candidate models
+    DOCUMENT_TYPES = [
+        ('profile_image', 'Profile Image'),
+        ('license_scan', 'License Scan'),
+        ('passport_scan', 'Passport Scan'),
+        ('academic_certificate', 'Academic Certificate'),
+        ('tor', 'Transcript of Records (TOR)'),
+        ('nc2_tesda', 'NC2 from TESDA'),
+        ('diploma', 'Diploma'),
+        ('good_moral', 'Good Moral Character'),
+        ('nbi_clearance', 'NBI Clearance'),
+    ]
+    
+    # User who uploaded the file
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='uploaded_files', db_index=True)
+    
+    # Document type/field name
+    document_type = models.CharField(max_length=50, choices=DOCUMENT_TYPES, db_index=True)
+    
+    # File metadata
+    file_name = models.CharField(max_length=255, help_text="Original filename")
+    file_path = models.CharField(max_length=500, help_text="Path to the file in storage")
+    file_size = models.PositiveIntegerField(help_text="File size in bytes")
+    file_hash = models.CharField(max_length=64, db_index=True, help_text="SHA-256 hash of file content")
+    mime_type = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Model reference - which model instance this file is attached to
+    model_name = models.CharField(max_length=50, help_text="Model name: Profile, Registration, or Candidate")
+    model_id = models.PositiveIntegerField(help_text="ID of the model instance")
+    
+    # Timestamps
+    uploaded_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    # Status
+    is_active = models.BooleanField(default=True, help_text="False if file has been replaced or deleted")
+    
+    class Meta:
+        ordering = ['-uploaded_at']
+        indexes = [
+            models.Index(fields=['user', 'document_type']),
+            models.Index(fields=['user', 'file_hash']),
+            models.Index(fields=['file_hash']),
+        ]
+        # Prevent duplicate uploads: same user can't upload same file hash to same document type
+        unique_together = [['user', 'document_type', 'file_hash']]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.get_document_type_display()} - {self.file_name}"
+    
+    @staticmethod
+    def calculate_file_hash(file_obj):
+        """Calculate SHA-256 hash of a file object."""
+        hasher = hashlib.sha256()
+        
+        # Reset file pointer to beginning
+        if hasattr(file_obj, 'seek'):
+            file_obj.seek(0)
+        
+        # Read and hash file in chunks for memory efficiency
+        for chunk in file_obj.chunks():
+            hasher.update(chunk)
+        
+        # Reset file pointer again for subsequent operations
+        if hasattr(file_obj, 'seek'):
+            file_obj.seek(0)
+        
+        return hasher.hexdigest()
+    
+    @classmethod
+    def check_duplicate_upload(cls, user, document_type, file_obj):
+        """
+        Check if user is trying to upload a file they've already uploaded to ANY document field.
+        Returns tuple: (is_duplicate, existing_upload, error_message)
+        """
+        file_hash = cls.calculate_file_hash(file_obj)
+        
+        # Check if this exact file (by hash) has been uploaded by this user to ANY field
+        existing_upload = cls.objects.filter(
+            user=user,
+            file_hash=file_hash,
+            is_active=True
+        ).exclude(
+            document_type=document_type  # Allow re-uploading to same field
+        ).first()
+        
+        if existing_upload:
+            error_msg = (
+                f"This file has already been uploaded as your {existing_upload.get_document_type_display()}. "
+                f"Each document must be unique. Please upload a different file."
+            )
+            return True, existing_upload, error_msg
+        
+        # Check if user already has a file uploaded for this specific document type
+        existing_doc = cls.objects.filter(
+            user=user,
+            document_type=document_type,
+            is_active=True
+        ).first()
+        
+        if existing_doc and existing_doc.file_hash != file_hash:
+            # User is replacing an existing document with a new one - this is allowed
+            return False, existing_doc, None
+        
+        return False, None, None
+    
+    @classmethod
+    def register_upload(cls, user, document_type, file_obj, model_name, model_id):
+        """
+        Register a new file upload or update existing record.
+        Deactivates old file records for the same document type.
+        """
+        file_hash = cls.calculate_file_hash(file_obj)
+        file_name = getattr(file_obj, 'name', 'unknown')
+        file_size = getattr(file_obj, 'size', 0)
+        file_path = getattr(file_obj, 'name', '')
+        
+        # Get MIME type if available
+        mime_type = getattr(file_obj, 'content_type', None)
+        
+        # Deactivate any existing uploads for this user and document type
+        cls.objects.filter(
+            user=user,
+            document_type=document_type,
+            is_active=True
+        ).update(is_active=False)
+        
+        # Create new record
+        uploaded_file = cls.objects.create(
+            user=user,
+            document_type=document_type,
+            file_name=file_name,
+            file_path=file_path,
+            file_size=file_size,
+            file_hash=file_hash,
+            mime_type=mime_type,
+            model_name=model_name,
+            model_id=model_id,
+            is_active=True
+        )
+        
+        return uploaded_file
+    
+    @classmethod
+    def get_user_documents(cls, user, active_only=True):
+        """Get all documents uploaded by a user."""
+        queryset = cls.objects.filter(user=user)
+        if active_only:
+            queryset = queryset.filter(is_active=True)
+        return queryset.order_by('document_type', '-uploaded_at')
+    
+    @classmethod
+    def cleanup_orphaned_records(cls):
+        """Remove records for files that no longer exist in storage."""
+        from django.conf import settings
+        count = 0
+        
+        for record in cls.objects.filter(is_active=True):
+            file_path = os.path.join(settings.MEDIA_ROOT, record.file_path)
+            if not os.path.exists(file_path):
+                record.is_active = False
+                record.save()
+                count += 1
+        
+        return count

@@ -43650,3 +43650,360 @@ ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.Anonym
 [2025-10-27 10:49:50,880] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=56
 [2025-10-27 10:50:05,525] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
 [2025-10-27 10:50:06,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=1
+[2025-10-27 10:59:05,996] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 10:59:11,890] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=1957
+[2025-10-27 10:59:19,911] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 10:59:19,957] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=18
+[2025-10-27 10:59:20,909] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=5
+[2025-10-27 10:59:28,647] INFO core.middleware request GET / 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 10:59:32,884] INFO core.middleware request GET /favicon.ico 404 user= ip=127.0.0.1 duration_ms=8
+[2025-10-27 10:59:32,933] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 10:59:39,242] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-27 10:59:39,467] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-27 10:59:42,911] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 10:59:43,142] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=4
+[2025-10-27 10:59:46,910] INFO core.middleware request GET /api/notifications/ 302 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 10:59:46,936] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=8
+[2025-10-27 10:59:47,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=3
+[2025-10-27 10:59:57,223] INFO core.middleware request POST /api/ajax-login/ 200 user=cbrooks ip=127.0.0.1 duration_ms=1684
+[2025-10-27 10:59:57,469] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 10:59:57,812] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=37
+[2025-10-27 10:59:57,885] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=29
+[2025-10-27 10:59:57,928] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=18
+[2025-10-27 10:59:57,937] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=21
+[2025-10-27 10:59:58,025] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 10:59:58,037] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 10:59:58,052] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:00:02,022] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=125
+[2025-10-27 11:00:20,914] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:00:21,922] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:00:33,047] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=16
+[2025-10-27 11:00:33,142] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=19
+[2025-10-27 11:00:33,179] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=22
+[2025-10-27 11:00:33,180] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=32
+[2025-10-27 11:00:33,273] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:00:33,281] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:00:33,294] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:00:37,318] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=54
+[2025-10-27 11:00:37,425] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:00:37,426] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=20
+[2025-10-27 11:00:37,488] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:00:37,500] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:00:39,350] INFO core.middleware request GET /programs/5/apply/ 200 user=cbrooks ip=127.0.0.1 duration_ms=31
+[2025-10-27 11:00:47,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:00:48,910] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:00:50,270] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=34
+[2025-10-27 11:01:21,923] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:01:22,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:01:48,930] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=12
+[2025-10-27 11:01:49,917] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:01:50,338] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:01:50,568] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:02:00,758] INFO core.middleware request POST /profile/ 302 user=cbrooks ip=127.0.0.1 duration_ms=200
+[2025-10-27 11:02:00,831] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=49
+[2025-10-27 11:02:07,616] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=19
+[2025-10-27 11:02:07,711] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=12
+[2025-10-27 11:02:07,714] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=22
+[2025-10-27 11:02:07,780] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:02:07,790] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:02:09,265] INFO core.middleware request GET /programs/5/apply/ 200 user=cbrooks ip=127.0.0.1 duration_ms=24
+[2025-10-27 11:02:22,914] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:02:23,927] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:02:46,628] INFO core.middleware request GET /media/academic_certificates/sample-local-pdf_heBm0em.pdf 200 user=cbrooks ip=127.0.0.1 duration_ms=27
+[2025-10-27 11:02:49,923] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:02:50,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:03:09,324] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:03:09,570] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:03:23,924] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:03:24,914] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:03:43,638] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=15
+[2025-10-27 11:03:43,725] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=29
+[2025-10-27 11:03:43,728] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=19
+[2025-10-27 11:03:43,740] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=15
+[2025-10-27 11:03:43,856] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:03:43,864] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:03:43,873] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:03:49,449] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=15
+[2025-10-27 11:03:49,529] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=12
+[2025-10-27 11:03:49,569] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=10
+[2025-10-27 11:03:49,610] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=27
+[2025-10-27 11:03:49,653] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:03:49,668] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:03:49,681] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:03:50,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:03:51,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:03:52,490] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:03:52,737] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:03:57,187] INFO core.middleware request GET /notifications/mark-all-read/ 302 user=cbrooks ip=127.0.0.1 duration_ms=13
+[2025-10-27 11:03:57,237] INFO core.middleware request GET /notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=28
+[2025-10-27 11:04:02,414] INFO core.middleware request GET /notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=18
+[2025-10-27 11:04:06,492] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=28
+[2025-10-27 11:04:06,589] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=34
+[2025-10-27 11:04:06,636] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=38
+[2025-10-27 11:04:06,639] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=47
+[2025-10-27 11:04:06,736] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:04:06,748] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:04:06,758] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:04:24,919] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:04:25,927] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:04:46,925] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:04:47,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=11
+[2025-10-27 11:05:07,589] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:05:07,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:05:19,348] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:05:19,582] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:05:21,969] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=40
+[2025-10-27 11:05:47,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:05:48,911] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:05:53,658] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=22
+[2025-10-27 11:05:53,758] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=17
+[2025-10-27 11:05:53,784] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=10
+[2025-10-27 11:05:53,824] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:05:53,834] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:06:06,913] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:06:07,922] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:06:16,066] INFO core.middleware request GET /programs/5/apply/ 200 user=cbrooks ip=127.0.0.1 duration_ms=23
+[2025-10-27 11:06:20,626] INFO core.middleware request POST /programs/5/apply/ 302 user=cbrooks ip=127.0.0.1 duration_ms=54
+[2025-10-27 11:06:20,726] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=70
+[2025-10-27 11:06:25,226] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=21
+[2025-10-27 11:06:25,351] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=29
+[2025-10-27 11:06:25,352] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=28
+[2025-10-27 11:06:25,355] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=42
+[2025-10-27 11:06:25,488] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:06:25,504] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:06:25,507] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:06:29,714] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=11
+[2025-10-27 11:06:29,787] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=11
+[2025-10-27 11:06:29,803] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=27
+[2025-10-27 11:06:29,822] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=16
+[2025-10-27 11:06:29,905] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:06:29,916] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:06:29,929] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:06:31,921] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=26
+[2025-10-27 11:06:32,017] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=11
+[2025-10-27 11:06:32,037] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=17
+[2025-10-27 11:06:32,087] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:06:32,096] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:06:36,068] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=37
+[2025-10-27 11:06:38,538] INFO core.middleware request GET /candidates/6/cancel/ 200 user=cbrooks ip=127.0.0.1 duration_ms=18
+[2025-10-27 11:06:41,252] INFO core.middleware request POST /candidates/6/cancel/ 302 user=cbrooks ip=127.0.0.1 duration_ms=34
+[2025-10-27 11:06:41,310] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=29
+[2025-10-27 11:06:41,410] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=17
+[2025-10-27 11:06:41,429] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=13
+[2025-10-27 11:06:41,473] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:06:41,481] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:06:46,303] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=25
+[2025-10-27 11:06:46,404] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=15
+[2025-10-27 11:06:46,430] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=21
+[2025-10-27 11:06:46,490] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:06:46,500] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:06:48,916] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:06:49,920] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:06:50,457] INFO core.middleware request GET /programs/3/apply/ 302 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:06:50,503] INFO core.middleware request GET /programs/3/ 200 user=cbrooks ip=127.0.0.1 duration_ms=24
+[2025-10-27 11:07:06,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:07:07,910] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:07:46,927] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:07:47,928] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:07:49,916] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:07:50,931] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:08:06,922] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:08:07,922] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:08:46,921] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:08:47,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:08:50,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:08:51,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:09:06,561] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:09:06,793] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:09:24,597] INFO core.middleware request GET /programs/ 200 user=cbrooks ip=127.0.0.1 duration_ms=21
+[2025-10-27 11:09:24,705] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=10
+[2025-10-27 11:09:24,707] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=24
+[2025-10-27 11:09:24,773] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:09:24,781] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:09:46,913] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:09:47,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:09:51,909] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:09:52,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:10:24,928] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:10:25,918] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:10:46,922] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:10:47,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:10:52,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:10:53,911] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:11:24,924] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:11:26,490] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=12
+[2025-10-27 11:11:46,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:11:47,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:11:53,927] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:11:55,029] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:12:24,925] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:12:25,917] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:12:46,911] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:12:46,944] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:12:47,920] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:12:47,930] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:13:24,914] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:13:25,922] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:13:46,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:13:47,915] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:13:47,921] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:13:48,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:14:24,916] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:14:25,927] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:14:47,913] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:14:48,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:14:48,929] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:14:49,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:14:54,560] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\models.py changed, reloading.
+[2025-10-27 11:14:55,819] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:15:25,163] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=236
+[2025-10-27 11:15:25,923] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:15:31,994] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\models.py changed, reloading.
+[2025-10-27 11:15:33,097] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:15:46,342] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 11:15:47,466] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:15:49,184] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=270
+[2025-10-27 11:15:49,924] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:15:49,936] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:15:50,923] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:15:58,667] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 11:15:59,724] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:16:20,117] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 11:16:21,234] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:16:25,173] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=242
+[2025-10-27 11:16:25,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:16:47,275] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 11:16:49,859] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:16:50,687] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=262
+[2025-10-27 11:16:50,921] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:16:51,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:16:51,928] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:17:19,612] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 11:17:20,668] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:17:26,151] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=233
+[2025-10-27 11:17:26,924] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:17:50,917] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:17:51,925] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:17:51,935] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:17:52,921] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:18:26,927] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:18:27,912] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:18:43,316] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 11:18:45,736] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:18:52,159] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=241
+[2025-10-27 11:18:52,938] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:18:52,944] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:18:53,917] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:18:58,232] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 11:18:59,271] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:19:19,722] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-27 11:19:20,785] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:19:28,185] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=262
+[2025-10-27 11:19:30,790] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:19:42,514] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\admin.py changed, reloading.
+[2025-10-27 11:19:43,741] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:19:53,182] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=258
+[2025-10-27 11:19:53,916] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:19:53,927] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:19:54,912] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:20:28,919] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:20:29,924] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:20:35,578] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-27 11:20:36,795] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:20:44,837] INFO django.utils.autoreload C:\Users\NITROV15\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-27 11:20:45,960] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:20:54,254] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=329
+[2025-10-27 11:20:54,932] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:20:54,942] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=12
+[2025-10-27 11:20:55,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:21:29,914] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:21:30,932] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:21:54,924] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:21:55,928] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:21:55,937] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=10
+[2025-10-27 11:21:56,910] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:22:30,922] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:22:31,915] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:22:55,919] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:22:56,915] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:22:56,937] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:22:57,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:23:31,921] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:23:32,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:23:56,918] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:23:57,930] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:23:57,936] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:23:58,924] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:24:32,920] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:24:33,915] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:24:57,917] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:24:58,914] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:24:58,920] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:24:59,926] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:25:33,922] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:25:34,924] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:25:58,928] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:25:59,936] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:25:59,943] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=8
+[2025-10-27 11:26:00,909] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:26:34,915] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:26:35,925] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:28:05,050] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:28:26,498] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=338
+[2025-10-27 11:28:26,656] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=26
+[2025-10-27 11:28:26,695] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=21
+[2025-10-27 11:28:26,697] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=15
+[2025-10-27 11:28:26,795] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:28:26,795] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:28:26,807] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:28:27,728] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=17
+[2025-10-27 11:28:31,459] INFO core.middleware request GET / 200 user=cbrooks ip=127.0.0.1 duration_ms=18
+[2025-10-27 11:28:31,569] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=11
+[2025-10-27 11:28:31,616] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=23
+[2025-10-27 11:28:31,617] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 404 user=cbrooks ip=127.0.0.1 duration_ms=35
+[2025-10-27 11:28:31,717] WARNING django.request Not Found: /media/program_images/photo-1454179083322-198bb4daae41.avif
+[2025-10-27 11:28:31,719] WARNING django.request Not Found: /media/program_images/photo-1495107334309-fcf20504a5ab.avif
+[2025-10-27 11:28:31,730] WARNING django.request Not Found: /media/program_images/photo-1464226184884-fa280b87c399.avif
+[2025-10-27 11:28:35,069] INFO core.middleware request GET /favicon.ico 404 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:28:35,097] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 11:28:37,864] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=157
+[2025-10-27 11:28:42,691] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=51
+[2025-10-27 11:28:44,012] INFO core.middleware request GET /favicon.ico 404 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:28:44,039] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 11:28:47,317] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=38
+[2025-10-27 11:28:47,711] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=37
+[2025-10-27 11:28:49,205] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=73
+[2025-10-27 11:28:49,975] INFO core.middleware request GET /favicon.ico 404 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:28:50,009] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 11:28:59,921] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:29:00,925] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:29:11,621] ERROR core.utils.file_tracker Error registering file passport_scan for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,627] ERROR core.utils.file_tracker Error registering file academic_certificate for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,636] ERROR core.utils.file_tracker Error registering file tor for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,647] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,658] ERROR core.utils.file_tracker Error registering file diploma for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,667] ERROR core.utils.file_tracker Error registering file good_moral for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,676] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:29:11,696] INFO core.middleware request POST /profile/ 302 user=cbrooks ip=127.0.0.1 duration_ms=479
+[2025-10-27 11:29:11,783] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=54
+[2025-10-27 11:29:59,929] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=10
+[2025-10-27 11:30:00,919] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:30:10,882] ERROR core.utils.file_tracker Error registering file passport_scan for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:10,914] ERROR core.utils.file_tracker Error registering file academic_certificate for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:10,941] ERROR core.utils.file_tracker Error registering file tor for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:10,969] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,003] ERROR core.utils.file_tracker Error registering file diploma for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,028] ERROR core.utils.file_tracker Error registering file good_moral for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,053] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,086] ERROR core.utils.file_tracker Error registering file passport_scan for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,090] ERROR core.utils.file_tracker Error registering file academic_certificate for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,094] ERROR core.utils.file_tracker Error registering file tor for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,099] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,104] ERROR core.utils.file_tracker Error registering file diploma for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,109] ERROR core.utils.file_tracker Error registering file good_moral for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,115] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 24: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:30:11,133] INFO core.middleware request POST /profile/ 302 user=cbrooks ip=127.0.0.1 duration_ms=385
+[2025-10-27 11:30:11,210] INFO core.middleware request GET /profile/ 200 user=cbrooks ip=127.0.0.1 duration_ms=48
+[2025-10-27 11:30:37,078] INFO core.middleware request GET /media/documents/tor/sample-local-pdf_E6FwxJo.pdf 200 user=cbrooks ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:30:46,925] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
+[2025-10-27 11:30:47,925] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6

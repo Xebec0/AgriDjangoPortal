@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.conf import settings
 from django.utils import timezone
-from .models import Profile, Registration, Candidate, University
+from .models import Profile, Registration, Candidate, University, UploadedFile
 import os
 
 
@@ -223,6 +223,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if license_scan:
             validate_file_size(license_scan)
             validate_file_extension(license_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'license_scan', license_scan)
         return license_scan
 
     def clean_passport_scan(self):
@@ -230,6 +233,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if passport_scan:
             validate_file_size(passport_scan)
             validate_file_extension(passport_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'passport_scan', passport_scan)
         return passport_scan
 
     def clean_academic_certificate(self):
@@ -237,6 +243,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if academic_certificate:
             validate_file_size(academic_certificate)
             validate_file_extension(academic_certificate, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'academic_certificate', academic_certificate)
         return academic_certificate
 
     def clean_tor(self):
@@ -244,6 +253,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if tor:
             validate_file_size(tor)
             validate_file_extension(tor, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'tor', tor)
         return tor
 
     def clean_nc2_tesda(self):
@@ -251,6 +263,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if nc2_tesda:
             validate_file_size(nc2_tesda)
             validate_file_extension(nc2_tesda, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'nc2_tesda', nc2_tesda)
         return nc2_tesda
 
     def clean_diploma(self):
@@ -258,6 +273,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if diploma:
             validate_file_size(diploma)
             validate_file_extension(diploma, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'diploma', diploma)
         return diploma
 
     def clean_good_moral(self):
@@ -265,6 +283,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if good_moral:
             validate_file_size(good_moral)
             validate_file_extension(good_moral, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'good_moral', good_moral)
         return good_moral
 
     def clean_nbi_clearance(self):
@@ -272,6 +293,9 @@ class ProfileUpdateForm(forms.ModelForm):
         if nbi_clearance:
             validate_file_size(nbi_clearance)
             validate_file_extension(nbi_clearance, ['.pdf', '.jpg', '.jpeg', '.png'])
+            # Check for duplicates across user's documents
+            if self.instance and self.instance.user:
+                validate_no_duplicate(self.instance.user, 'nbi_clearance', nbi_clearance)
         return nbi_clearance
 
     def clean(self):
@@ -311,6 +335,24 @@ def validate_pdf(value):
     return validate_file_extension(value, ['.pdf'])
 
 
+def validate_no_duplicate(user, document_type, file_obj):
+    """
+    Validate that a file hasn't been uploaded to another document field by the same user.
+    This prevents users from uploading the same file (e.g., NBI) to multiple different fields.
+    """
+    if not file_obj or not user or not user.is_authenticated:
+        return file_obj
+    
+    is_duplicate, existing_upload, error_msg = UploadedFile.check_duplicate_upload(
+        user, document_type, file_obj
+    )
+    
+    if is_duplicate:
+        raise ValidationError(error_msg)
+    
+    return file_obj
+
+
 class ProgramRegistrationForm(forms.ModelForm):
     # Add file fields with validators
     tor = forms.FileField(
@@ -348,28 +390,44 @@ class ProgramRegistrationForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Any additional information you want to provide...'}),
         }
     
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+    
     def clean_tor(self):
         file = self.cleaned_data.get('tor')
         if file:
             validate_file_extension(file, ['.pdf'])
+            # Check for duplicates across user's documents
+            if self.user:
+                validate_no_duplicate(self.user, 'tor', file)
         return file
     
     def clean_nc2_tesda(self):
         file = self.cleaned_data.get('nc2_tesda')
         if file:
             validate_file_extension(file, ['.pdf'])
+            # Check for duplicates across user's documents
+            if self.user:
+                validate_no_duplicate(self.user, 'nc2_tesda', file)
         return file
     
     def clean_good_moral(self):
         file = self.cleaned_data.get('good_moral')
         if file:
             validate_file_extension(file, ['.pdf'])
+            # Check for duplicates across user's documents
+            if self.user:
+                validate_no_duplicate(self.user, 'good_moral', file)
         return file
     
     def clean_nbi_clearance(self):
         file = self.cleaned_data.get('nbi_clearance')
         if file:
             validate_file_extension(file, ['.pdf'])
+            # Check for duplicates across user's documents
+            if self.user:
+                validate_no_duplicate(self.user, 'nbi_clearance', file)
         return file
 
 
@@ -502,6 +560,9 @@ class CandidateForm(forms.ModelForm):
         if passport_scan:
             validate_file_size(passport_scan)
             validate_pdf(passport_scan)
+            # For candidates created by staff, check against staff member's uploads
+            if hasattr(self, 'created_by') and self.created_by:
+                validate_no_duplicate(self.created_by, 'passport_scan', passport_scan)
         return passport_scan
         
     def clean_tor(self):
@@ -509,6 +570,9 @@ class CandidateForm(forms.ModelForm):
         if tor:
             validate_file_size(tor)
             validate_pdf(tor)
+            # Check for duplicates
+            if hasattr(self, 'created_by') and self.created_by:
+                validate_no_duplicate(self.created_by, 'tor', tor)
         return tor
         
     def clean_nc2_tesda(self):
@@ -516,6 +580,9 @@ class CandidateForm(forms.ModelForm):
         if nc2_tesda:
             validate_file_size(nc2_tesda)
             validate_pdf(nc2_tesda)
+            # Check for duplicates
+            if hasattr(self, 'created_by') and self.created_by:
+                validate_no_duplicate(self.created_by, 'nc2_tesda', nc2_tesda)
         return nc2_tesda
         
     def clean_diploma(self):
@@ -523,6 +590,9 @@ class CandidateForm(forms.ModelForm):
         if diploma:
             validate_file_size(diploma)
             validate_pdf(diploma)
+            # Check for duplicates
+            if hasattr(self, 'created_by') and self.created_by:
+                validate_no_duplicate(self.created_by, 'diploma', diploma)
         return diploma
         
     def clean_good_moral(self):
@@ -530,6 +600,9 @@ class CandidateForm(forms.ModelForm):
         if good_moral:
             validate_file_size(good_moral)
             validate_pdf(good_moral)
+            # Check for duplicates
+            if hasattr(self, 'created_by') and self.created_by:
+                validate_no_duplicate(self.created_by, 'good_moral', good_moral)
         return good_moral
         
     def clean_nbi_clearance(self):
@@ -537,6 +610,9 @@ class CandidateForm(forms.ModelForm):
         if nbi_clearance:
             validate_file_size(nbi_clearance)
             validate_pdf(nbi_clearance)
+            # Check for duplicates
+            if hasattr(self, 'created_by') and self.created_by:
+                validate_no_duplicate(self.created_by, 'nbi_clearance', nbi_clearance)
         return nbi_clearance
 
 
