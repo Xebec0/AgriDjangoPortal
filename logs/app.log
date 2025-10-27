@@ -44007,3 +44007,908 @@ ValueError: Cannot assign "<SimpleLazyObject: <django.contrib.auth.models.Anonym
 [2025-10-27 11:30:37,078] INFO core.middleware request GET /media/documents/tor/sample-local-pdf_E6FwxJo.pdf 200 user=cbrooks ip=127.0.0.1 duration_ms=0
 [2025-10-27 11:30:46,925] INFO core.middleware request GET /api/notifications/ 200 user=cbrooks ip=127.0.0.1 duration_ms=9
 [2025-10-27 11:30:47,925] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=cbrooks ip=127.0.0.1 duration_ms=6
+[2025-10-27 11:36:14,012] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:36:17,951] INFO core.middleware request GET /auth-required/ 200 user= ip=127.0.0.1 duration_ms=129
+[2025-10-27 11:36:17,987] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:17,996] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:17,996] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:36:18,141] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:36:20,231] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=14
+[2025-10-27 11:36:21,470] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:21,686] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:24,471] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:24,639] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:24,759] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:24,911] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:25,039] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:25,175] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:25,399] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:36:30,508] INFO core.middleware request POST /api/ajax-login/ 200 user= ip=127.0.0.1 duration_ms=389
+[2025-10-27 11:36:30,734] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:33,990] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:34,205] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:36,225] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:36,329] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:36,424] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:36,433] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:36,648] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:36,871] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:37,089] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:39,830] INFO core.middleware request POST /api/ajax-login/ 200 user=admin ip=127.0.0.1 duration_ms=863
+[2025-10-27 11:36:40,120] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=admin ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:36:40,436] INFO core.middleware request GET / 200 user=admin ip=127.0.0.1 duration_ms=14
+[2025-10-27 11:36:42,812] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=18
+[2025-10-27 11:36:44,292] INFO core.middleware request GET /admin/auth/user/ 200 user=admin ip=127.0.0.1 duration_ms=36
+[2025-10-27 11:36:44,340] INFO core.middleware request GET /admin/jsi18n/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:36:54,200] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:54,416] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:36:56,900] INFO core.middleware request GET /programs/ 200 user= ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:36:57,126] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:36:57,126] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:57,313] INFO core.middleware request GET /favicon.ico 404 user= ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:36:57,326] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 11:36:58,214] INFO core.middleware request GET /modal/login/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:36:58,437] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:37:00,247] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:00,408] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:00,543] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:00,760] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:37:00,799] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:01,022] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:37:01,528] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:01,742] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:37:01,791] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:01,935] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:02,087] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:02,223] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:02,408] INFO core.middleware request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:02,627] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user= ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:37:06,377] INFO core.middleware request POST /api/ajax-login/ 200 user=brownstephen ip=127.0.0.1 duration_ms=833
+[2025-10-27 11:37:06,647] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:37:06,963] INFO core.middleware request GET / 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 11:37:06,995] INFO core.middleware request GET /media/program_images/photo-1454179083322-198bb4daae41.avif 200 user=brownstephen ip=127.0.0.1 duration_ms=0
+[2025-10-27 11:37:08,782] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=30
+[2025-10-27 11:38:57,243] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 11:39:00,448] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:39:00,461] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=89
+[2025-10-27 11:39:00,532] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 11:39:00,635] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:39:00,646] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=293
+[2025-10-27 11:39:00,740] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:39:01,952] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=43
+[2025-10-27 11:39:14,768] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=122
+[2025-10-27 11:39:14,825] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=22
+[2025-10-27 11:39:23,155] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:39:23,171] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:39:23,186] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=65
+[2025-10-27 11:39:23,251] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=24
+[2025-10-27 11:39:35,378] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:39:35,445] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:39:35,462] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:39:35,490] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=174
+[2025-10-27 11:39:35,574] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=24
+[2025-10-27 11:39:38,698] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:39:38,913] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:40:03,543] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:03,546] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:03,610] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:03,612] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:03,628] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:03,656] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=177
+[2025-10-27 11:40:03,747] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=23
+[2025-10-27 11:40:05,425] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:40:05,640] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:40:20,772] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=28
+[2025-10-27 11:40:32,555] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:32,557] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:32,559] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:32,585] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:32,587] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:32,590] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 11:40:32,604] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=114
+[2025-10-27 11:40:32,684] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=27
+[2025-10-27 11:41:33,527] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:41:34,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:42:33,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:42:34,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:43:33,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:43:34,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:44:33,526] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:44:34,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:45:33,535] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:45:34,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:46:33,526] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:46:34,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:47:33,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:47:34,519] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:48:34,526] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:48:35,519] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:49:35,530] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 11:49:36,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:50:36,532] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:50:37,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:51:37,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 11:51:38,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:52:38,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:52:39,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 11:53:39,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:53:40,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:54:40,530] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:54:41,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:55:41,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:55:42,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:56:42,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:56:43,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:57:43,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:57:44,529] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:58:44,532] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:58:45,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 11:59:45,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 11:59:46,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:00:46,526] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:00:47,526] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:01:47,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:01:48,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:02:48,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:02:49,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:03:49,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:03:50,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:04:50,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:04:51,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:05:51,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:05:52,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:06:52,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:06:53,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:07:53,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:07:54,537] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:08:54,526] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:08:55,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:09:55,527] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:09:56,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:10:56,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:10:57,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:11:57,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:11:58,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:12:58,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:12:59,526] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:13:59,535] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 12:14:00,528] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:15:00,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:15:01,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:16:01,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:16:02,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:17:02,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:17:03,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:18:03,527] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:18:04,526] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:19:04,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:19:05,519] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:20:05,534] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:20:06,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:21:06,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:21:07,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:22:07,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:22:08,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:23:08,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:23:09,530] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:24:09,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:24:10,529] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:25:10,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:25:11,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:26:11,530] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:26:12,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:27:12,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:27:13,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:28:13,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:28:14,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:29:14,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:29:15,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:30:15,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:30:16,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:31:16,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:31:17,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:32:17,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:32:18,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:33:18,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:33:19,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:34:19,532] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:34:20,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:35:20,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:35:21,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:36:21,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:36:22,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:37:22,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:37:23,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:38:23,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:38:24,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:39:24,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:39:25,530] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:40:25,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:40:26,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:41:26,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:41:27,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:42:27,530] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:42:28,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:43:28,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:43:29,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:44:29,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:44:30,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:45:30,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 12:45:31,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:46:33,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:46:34,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:47:34,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:47:35,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:48:35,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:48:36,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:49:36,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:49:37,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:50:37,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:50:38,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:51:38,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:51:39,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:52:39,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:52:40,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:53:40,517] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:53:41,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:54:41,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:54:42,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:55:42,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 12:55:43,533] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:56:43,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:56:44,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:57:44,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 12:57:45,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:58:45,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:58:46,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 12:59:46,527] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 12:59:47,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:00:47,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:00:48,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:01:48,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:01:49,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:02:49,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:02:50,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:03:50,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:03:51,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:04:51,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:04:52,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:05:52,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:05:53,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:06:53,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:06:54,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:07:54,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:07:55,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:08:55,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:08:56,532] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:09:56,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:09:57,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:10:57,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:10:58,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:11:58,532] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:11:59,530] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:12:59,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:13:00,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:14:00,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 13:14:01,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:15:01,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:15:02,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:16:02,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:16:03,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:17:03,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:17:04,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:18:04,527] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:18:05,529] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:19:05,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:19:06,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:20:06,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:20:07,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:21:07,532] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:21:08,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:22:08,517] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:22:09,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:23:09,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:23:10,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:24:10,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:24:11,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:25:11,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:25:12,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:26:12,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:26:13,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:27:13,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:27:14,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:28:14,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:28:15,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:29:15,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:29:16,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:30:16,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:30:17,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:31:17,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:31:18,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:32:18,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:32:19,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:33:19,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:33:20,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:34:20,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:34:21,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:35:21,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:35:22,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:36:22,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:36:23,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:37:23,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:37:24,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:38:24,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:38:25,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:39:25,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:39:26,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:40:26,519] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:40:27,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:41:27,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:41:28,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:42:28,531] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:42:29,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:43:29,530] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:43:30,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:44:26,821] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:44:27,043] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:44:28,856] INFO core.middleware request GET /programs/ 200 user=brownstephen ip=127.0.0.1 duration_ms=41
+[2025-10-27 13:44:29,094] INFO core.middleware request GET /media/program_images/photo-1464226184884-fa280b87c399.avif 200 user=brownstephen ip=127.0.0.1 duration_ms=9
+[2025-10-27 13:44:29,097] INFO core.middleware request GET /media/program_images/photo-1495107334309-fcf20504a5ab.avif 200 user=brownstephen ip=127.0.0.1 duration_ms=6
+[2025-10-27 13:44:30,453] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:44:30,677] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:44:31,625] INFO core.middleware request GET /notifications/mark-all-read/ 302 user=brownstephen ip=127.0.0.1 duration_ms=17
+[2025-10-27 13:44:31,659] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=22
+[2025-10-27 13:44:36,671] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:37,408] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=8
+[2025-10-27 13:44:38,087] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:38,702] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:39,188] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=6
+[2025-10-27 13:44:39,703] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:40,380] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:40,756] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=6
+[2025-10-27 13:44:41,172] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=6
+[2025-10-27 13:44:41,652] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=6
+[2025-10-27 13:44:41,950] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:42,436] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:43,006] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 13:44:45,111] INFO core.middleware request GET /programs/ 200 user=brownstephen ip=127.0.0.1 duration_ms=9
+[2025-10-27 13:44:48,042] INFO core.middleware request GET /programs/1/apply/ 302 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 13:44:48,075] INFO core.middleware request GET /programs/1/ 200 user=brownstephen ip=127.0.0.1 duration_ms=19
+[2025-10-27 13:44:51,319] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=18
+[2025-10-27 13:44:52,719] INFO core.middleware request GET /programs/ 200 user=brownstephen ip=127.0.0.1 duration_ms=9
+[2025-10-27 13:44:54,021] INFO core.middleware request GET /programs/5/apply/ 200 user=brownstephen ip=127.0.0.1 duration_ms=37
+[2025-10-27 13:44:56,451] INFO core.middleware request GET /media/documents/tor/candidates_6PMMMHL.pdf 200 user=brownstephen ip=127.0.0.1 duration_ms=11
+[2025-10-27 13:45:07,231] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=15
+[2025-10-27 13:46:07,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:46:08,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:47:07,532] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:47:08,524] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:48:07,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:48:08,526] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:49:07,521] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:49:08,520] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:50:07,522] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:50:08,530] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:50:13,713] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 13:50:14,536] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 13:50:56,782] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 13:50:57,357] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 13:51:07,715] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=176
+[2025-10-27 13:51:08,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:52:07,520] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:52:08,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:52:16,116] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=146
+[2025-10-27 13:52:16,532] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:52:16,547] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 13:52:37,683] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=185
+[2025-10-27 13:52:37,751] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=21
+[2025-10-27 13:52:52,349] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=34
+[2025-10-27 13:53:04,989] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:53:05,021] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:53:05,050] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=122
+[2025-10-27 13:53:05,115] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=21
+[2025-10-27 13:53:38,055] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:53:38,119] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:53:38,134] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:53:38,163] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=169
+[2025-10-27 13:53:38,241] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=21
+[2025-10-27 13:54:38,529] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:54:39,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:55:16,447] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 13:55:17,024] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 13:55:38,650] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=123
+[2025-10-27 13:55:39,528] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 13:55:43,020] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 13:55:43,661] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 13:56:02,565] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:56:02,568] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:56:02,601] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:56:02,604] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:56:02,632] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=307
+[2025-10-27 13:56:02,788] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=55
+[2025-10-27 13:56:04,326] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:56:04,548] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:56:05,205] INFO core.middleware request GET /notifications/mark-all-read/ 302 user=brownstephen ip=127.0.0.1 duration_ms=28
+[2025-10-27 13:56:05,232] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=12
+[2025-10-27 13:56:07,475] INFO core.middleware request GET /notifications/mark-all-read/ 302 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:56:07,497] INFO core.middleware request GET /notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=10
+[2025-10-27 13:56:13,613] INFO core.middleware request GET /programs/ 200 user=brownstephen ip=127.0.0.1 duration_ms=15
+[2025-10-27 13:56:16,693] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=15
+[2025-10-27 13:56:39,983] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=15
+[2025-10-27 13:56:40,228] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 13:56:40,242] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 13:56:51,870] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=33
+[2025-10-27 13:57:11,734] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:57:11,737] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:57:11,740] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:57:11,771] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:57:11,773] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:57:11,775] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 13:57:11,803] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=128
+[2025-10-27 13:57:11,881] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=22
+[2025-10-27 13:58:11,917] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:58:12,135] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 13:59:12,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 13:59:13,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:00:12,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:00:13,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:01:12,214] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 14:01:12,844] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:01:13,413] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=118
+[2025-10-27 14:01:14,530] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:01:40,610] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=42
+[2025-10-27 14:01:41,086] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:01:41,101] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 14:01:42,892] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:01:43,106] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:01:55,523] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,526] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,528] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,532] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,549] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,552] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,554] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,556] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:01:55,569] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=113
+[2025-10-27 14:01:55,684] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=24
+[2025-10-27 14:02:10,539] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=32
+[2025-10-27 14:02:43,459] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,461] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,463] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,465] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,480] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,482] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,484] ERROR core.utils.file_tracker Error registering file diploma for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,486] ERROR core.utils.file_tracker Error registering file nbi_clearance for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:02:43,498] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=80
+[2025-10-27 14:02:43,568] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=21
+[2025-10-27 14:03:44,533] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=7
+[2025-10-27 14:03:45,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:04:44,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:04:45,521] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:05:11,681] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-27 14:05:12,441] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:05:32,298] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\urls.py changed, reloading.
+[2025-10-27 14:05:32,901] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:05:43,741] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=135
+[2025-10-27 14:05:43,991] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:05:57,995] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=43
+[2025-10-27 14:05:58,467] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:05:58,482] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 14:06:17,028] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=96
+[2025-10-27 14:06:17,086] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=17
+[2025-10-27 14:06:31,268] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:06:31,299] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:06:31,328] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=148
+[2025-10-27 14:06:31,400] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=21
+[2025-10-27 14:06:43,232] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:06:43,235] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:06:43,268] ERROR core.utils.file_tracker Error registering file tor for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:06:43,270] ERROR core.utils.file_tracker Error registering file nc2_tesda for Profile 29: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:06:43,298] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=122
+[2025-10-27 14:06:43,373] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=23
+[2025-10-27 14:07:43,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:07:44,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:08:43,525] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:08:44,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:09:43,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:09:44,533] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:10:22,445] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:10:23,003] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:10:33,608] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:10:34,145] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:10:43,645] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=125
+[2025-10-27 14:10:44,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:10:51,090] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=42
+[2025-10-27 14:10:51,512] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:10:51,527] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 14:10:58,769] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=39
+[2025-10-27 14:10:58,828] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=19
+[2025-10-27 14:11:11,557] WARNING core.signals Error registering file tor: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:11:11,577] WARNING core.signals Error registering file tor: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:11:11,592] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=115
+[2025-10-27 14:11:11,680] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=25
+[2025-10-27 14:11:19,873] WARNING core.signals Error registering file tor: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:11:19,879] WARNING core.signals Error registering file nc2_tesda: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:11:19,896] WARNING core.signals Error registering file tor: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:11:19,900] WARNING core.signals Error registering file nc2_tesda: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:11:19,913] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=77
+[2025-10-27 14:11:19,996] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=26
+[2025-10-27 14:12:20,533] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:12:21,525] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:13:20,518] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:13:21,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:14:20,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:14:21,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:14:51,420] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:14:52,036] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:15:20,654] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=133
+[2025-10-27 14:15:21,519] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:15:26,163] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 14:15:26,701] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:16:16,966] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:16:17,502] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:16:20,645] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=118
+[2025-10-27 14:16:21,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:16:33,331] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:16:33,897] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:17:08,905] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:17:09,447] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:17:20,651] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=128
+[2025-10-27 14:17:21,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:17:25,271] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:17:25,828] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:17:52,539] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=176
+[2025-10-27 14:17:52,991] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 14:17:53,006] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 14:17:57,640] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:17:57,640] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:17:57,640] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:17:57,640] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:17:57,640] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:17:57,641] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:17:57,641] INFO core.signals Checking field tor: no file
+[2025-10-27 14:17:57,641] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:17:57,641] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:17:57,641] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:17:57,641] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:17:57,654] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=41
+[2025-10-27 14:17:57,715] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=19
+[2025-10-27 14:18:02,222] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 14:18:02,448] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:18:04,543] INFO core.middleware request POST /api/notifications/clear-all/ 200 user=brownstephen ip=127.0.0.1 duration_ms=24
+[2025-10-27 14:18:04,809] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:18:05,565] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 14:18:05,792] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:18:57,752] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:18:57,965] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:19:24,401] INFO core.forms Validating tor for user brownstephen, hash: 16105e5c128f4297...
+[2025-10-27 14:19:24,402] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:19:24,407] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:19:24,454] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:19:24,484] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:19:24,513] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=145
+[2025-10-27 14:19:24,586] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=24
+[2025-10-27 14:20:11,577] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:20:22,800] INFO core.forms Validating nc2_tesda for user brownstephen, hash: 16105e5c128f4297...
+[2025-10-27 14:20:22,802] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:20:22,807] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:20:22,851] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:20:22,880] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:20:22,909] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=115
+[2025-10-27 14:20:22,972] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=24
+[2025-10-27 14:23:20,143] INFO core.signals Signal fired for user admin, created=False, pk=2
+[2025-10-27 14:23:20,143] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:23:20,143] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field tor: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:23:20,143] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:25:10,054] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:25:10,549] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=179
+[2025-10-27 14:25:10,704] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:25:10,717] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 14:25:24,990] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:25:24,990] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:25:24,990] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field tor: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:25:24,991] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:25:24,992] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:25:25,022] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=78
+[2025-10-27 14:25:25,083] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=17
+[2025-10-27 14:25:47,152] INFO core.forms Validating tor for user brownstephen, hash: 16105e5c128f4297...
+[2025-10-27 14:25:47,154] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:25:47,159] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:25:47,206] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:25:47,207] INFO core.views === Profile Save Debug ===
+[2025-10-27 14:25:47,207] INFO core.views User: brownstephen
+[2025-10-27 14:25:47,207] INFO core.views   tor: candidates.pdf
+[2025-10-27 14:25:47,207] INFO core.views   nc2_tesda: None
+[2025-10-27 14:25:47,207] INFO core.views   nbi_clearance: None
+[2025-10-27 14:25:47,208] INFO core.views   diploma: None
+[2025-10-27 14:25:47,239] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:25:47,239] INFO core.views After save:
+[2025-10-27 14:25:47,241] INFO core.views   tor: documents/tor/candidates_5GOCpBQ.pdf
+[2025-10-27 14:25:47,242] INFO core.views   nc2_tesda: None
+[2025-10-27 14:25:47,242] INFO core.views   nbi_clearance: None
+[2025-10-27 14:25:47,242] INFO core.views   diploma: None
+[2025-10-27 14:25:47,242] INFO core.views === End Debug ===
+[2025-10-27 14:25:47,273] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=157
+[2025-10-27 14:25:47,348] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=22
+[2025-10-27 14:26:31,158] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:26:31,158] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:26:31,159] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field tor: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:26:31,159] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:26:31,187] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=63
+[2025-10-27 14:26:31,222] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=17
+[2025-10-27 14:26:39,336] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:26:50,380] INFO core.forms Validating tor for user brownstephen, hash: c2e1c35ed89dc4b1...
+[2025-10-27 14:26:50,382] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:26:50,388] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:26:50,437] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:26:50,438] INFO core.views === Profile Save Debug ===
+[2025-10-27 14:26:50,438] INFO core.views User: brownstephen
+[2025-10-27 14:26:50,438] INFO core.views   tor: ccs.jpg
+[2025-10-27 14:26:50,438] INFO core.views   nc2_tesda: None
+[2025-10-27 14:26:50,438] INFO core.views   nbi_clearance: None
+[2025-10-27 14:26:50,438] INFO core.views   diploma: None
+[2025-10-27 14:26:50,469] INFO core.signals Skipping file tracking - save triggered by User signal
+[2025-10-27 14:26:50,469] INFO core.views After save:
+[2025-10-27 14:26:50,472] INFO core.views   tor: documents/tor/ccs.jpg
+[2025-10-27 14:26:50,472] INFO core.views   nc2_tesda: None
+[2025-10-27 14:26:50,472] INFO core.views   nbi_clearance: None
+[2025-10-27 14:26:50,472] INFO core.views   diploma: None
+[2025-10-27 14:26:50,472] INFO core.views === End Debug ===
+[2025-10-27 14:26:50,499] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=285
+[2025-10-27 14:26:50,616] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=41
+[2025-10-27 14:27:30,676] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:27:31,258] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:27:51,653] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=127
+[2025-10-27 14:27:52,519] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:27:59,273] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:27:59,882] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:28:12,538] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:28:13,144] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:28:51,657] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=127
+[2025-10-27 14:28:52,527] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 14:29:19,896] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:29:29,169] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:29:29,169] INFO core.signals No files to track, skipping
+[2025-10-27 14:29:29,199] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=194
+[2025-10-27 14:29:29,303] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=47
+[2025-10-27 14:29:37,721] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:29:57,222] INFO core.forms Validating tor for user brownstephen, hash: c2e1c35ed89dc4b1...
+[2025-10-27 14:29:57,224] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:29:57,230] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:29:57,291] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:29:57,291] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:29:57,291] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:29:57,291] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:29:57,291] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:29:57,292] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:29:57,292] INFO core.signals Checking field tor: has file
+[2025-10-27 14:29:57,302] INFO core.signals   tor: No existing record, will register
+[2025-10-27 14:29:57,302] INFO core.signals   Registering tor...
+[2025-10-27 14:29:57,332] INFO core.signals   tor registered successfully!
+[2025-10-27 14:29:57,332] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:29:57,332] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:29:57,333] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:29:57,333] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:29:57,333] INFO core.views === Profile Save Debug ===
+[2025-10-27 14:29:57,333] INFO core.views User: brownstephen
+[2025-10-27 14:29:57,333] INFO core.views   tor: ccs.jpg
+[2025-10-27 14:29:57,333] INFO core.views   nc2_tesda: None
+[2025-10-27 14:29:57,334] INFO core.views   nbi_clearance: None
+[2025-10-27 14:29:57,334] INFO core.views   diploma: None
+[2025-10-27 14:29:57,367] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:29:57,367] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:29:57,367] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:29:57,367] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:29:57,367] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:29:57,367] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:29:57,368] INFO core.signals Checking field tor: has file
+[2025-10-27 14:29:57,372] INFO core.signals   tor: Same file, skipping registration
+[2025-10-27 14:29:57,372] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:29:57,372] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:29:57,373] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:29:57,373] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:29:57,373] INFO core.views After save:
+[2025-10-27 14:29:57,376] INFO core.views   tor: documents/tor/ccs.jpg
+[2025-10-27 14:29:57,376] INFO core.views   nc2_tesda: None
+[2025-10-27 14:29:57,376] INFO core.views   nbi_clearance: None
+[2025-10-27 14:29:57,376] INFO core.views   diploma: None
+[2025-10-27 14:29:57,376] INFO core.views === End Debug ===
+[2025-10-27 14:29:57,406] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=389
+[2025-10-27 14:29:57,550] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=53
+[2025-10-27 14:30:39,220] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:30:39,220] INFO core.signals No files to track, skipping
+[2025-10-27 14:30:39,263] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=75
+[2025-10-27 14:30:39,308] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=16
+[2025-10-27 14:30:45,846] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:30:54,040] INFO core.forms Validating tor for user brownstephen, hash: c2e1c35ed89dc4b1...
+[2025-10-27 14:30:54,042] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:30:54,048] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:30:54,101] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:30:54,101] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:30:54,101] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:30:54,101] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:30:54,101] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:30:54,101] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:30:54,102] INFO core.signals Checking field tor: has file
+[2025-10-27 14:30:54,111] INFO core.signals   tor: No existing record, will register
+[2025-10-27 14:30:54,111] INFO core.signals   Registering tor...
+[2025-10-27 14:30:54,115] WARNING core.signals Error processing file tor: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:30:54,115] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:30:54,115] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:30:54,115] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:30:54,115] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:30:54,116] INFO core.views === Profile Save Debug ===
+[2025-10-27 14:30:54,116] INFO core.views User: brownstephen
+[2025-10-27 14:30:54,116] INFO core.views   tor: ccs.jpg
+[2025-10-27 14:30:54,116] INFO core.views   nc2_tesda: None
+[2025-10-27 14:30:54,116] INFO core.views   nbi_clearance: None
+[2025-10-27 14:30:54,116] INFO core.views   diploma: None
+[2025-10-27 14:30:54,147] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:30:54,147] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:30:54,147] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:30:54,147] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:30:54,147] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:30:54,147] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:30:54,148] INFO core.signals Checking field tor: has file
+[2025-10-27 14:30:54,150] INFO core.signals   tor: No existing record, will register
+[2025-10-27 14:30:54,150] INFO core.signals   Registering tor...
+[2025-10-27 14:30:54,153] WARNING core.signals Error processing file tor: UNIQUE constraint failed: core_uploadedfile.user_id, core_uploadedfile.document_type, core_uploadedfile.file_hash
+[2025-10-27 14:30:54,153] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:30:54,153] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:30:54,153] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:30:54,153] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:30:54,153] INFO core.views After save:
+[2025-10-27 14:30:54,155] INFO core.views   tor: documents/tor/ccs.jpg
+[2025-10-27 14:30:54,155] INFO core.views   nc2_tesda: None
+[2025-10-27 14:30:54,155] INFO core.views   nbi_clearance: None
+[2025-10-27 14:30:54,156] INFO core.views   diploma: None
+[2025-10-27 14:30:54,156] INFO core.views === End Debug ===
+[2025-10-27 14:30:54,188] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=330
+[2025-10-27 14:30:54,318] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=44
+[2025-10-27 14:31:54,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:31:55,516] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:32:54,523] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:32:55,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:33:56,989] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:33:57,525] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=159
+[2025-10-27 14:33:57,676] INFO core.middleware request GET /favicon.ico 404 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 14:33:57,689] WARNING django.request Not Found: /favicon.ico
+[2025-10-27 14:34:17,844] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:34:17,845] INFO core.signals No files to track, skipping
+[2025-10-27 14:34:17,878] INFO core.middleware request POST /profile/clear-documents/ 302 user=brownstephen ip=127.0.0.1 duration_ms=73
+[2025-10-27 14:34:17,937] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=18
+[2025-10-27 14:34:24,257] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:34:34,253] INFO core.forms Validating tor for user brownstephen, hash: 2fd39f42f79b2342...
+[2025-10-27 14:34:34,256] INFO core.forms Found 0 active records for user brownstephen
+[2025-10-27 14:34:34,262] INFO core.forms Duplicate check result: is_duplicate=False, existing=None
+[2025-10-27 14:34:34,314] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:34:34,314] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:34:34,315] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:34:34,315] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:34:34,315] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:34:34,315] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:34:34,315] INFO core.signals Checking field tor: has file
+[2025-10-27 14:34:34,333] INFO core.signals   tor: No existing record, will register
+[2025-10-27 14:34:34,333] INFO core.signals   Registering tor...
+[2025-10-27 14:34:34,366] INFO core.signals   tor registered successfully!
+[2025-10-27 14:34:34,366] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:34:34,366] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:34:34,366] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:34:34,367] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:34:34,367] INFO core.views === Profile Save Debug ===
+[2025-10-27 14:34:34,367] INFO core.views User: brownstephen
+[2025-10-27 14:34:34,367] INFO core.views   tor: CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:34:34,367] INFO core.views   nc2_tesda: None
+[2025-10-27 14:34:34,367] INFO core.views   nbi_clearance: None
+[2025-10-27 14:34:34,368] INFO core.views   diploma: None
+[2025-10-27 14:34:34,386] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:34:34,387] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:34:34,387] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:34:34,387] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:34:34,387] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:34:34,387] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:34:34,387] INFO core.signals Checking field tor: has file
+[2025-10-27 14:34:34,390] INFO core.signals   tor: Same file, skipping registration
+[2025-10-27 14:34:34,390] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:34:34,390] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:34:34,390] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:34:34,391] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:34:34,391] INFO core.views After save:
+[2025-10-27 14:34:34,393] INFO core.views   tor: documents/tor/CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:34:34,393] INFO core.views   nc2_tesda: None
+[2025-10-27 14:34:34,393] INFO core.views   nbi_clearance: None
+[2025-10-27 14:34:34,393] INFO core.views   diploma: None
+[2025-10-27 14:34:34,393] INFO core.views === End Debug ===
+[2025-10-27 14:34:34,408] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=314
+[2025-10-27 14:34:34,547] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=46
+[2025-10-27 14:35:35,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:35:36,530] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:36:14,799] INFO core.forms Validating nc2_tesda for user brownstephen, hash: 2fd39f42f79b2342...
+[2025-10-27 14:36:14,801] INFO core.forms Found 1 active records for user brownstephen
+[2025-10-27 14:36:14,802] INFO core.forms   - tor: hash 2fd39f42f79b2342... (active: True)
+[2025-10-27 14:36:14,805] INFO core.forms Duplicate check result: is_duplicate=True, existing=brownstephen - Transcript of Records (TOR) - documents/tor/CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:36:14,805] WARNING core.forms DUPLICATE DETECTED: This file has already been uploaded as your Transcript of Records (TOR). Each document must be unique. Please upload a different file.
+[2025-10-27 14:36:14,819] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=27
+[2025-10-27 14:36:40,330] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:36:40,330] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:36:40,330] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:36:40,330] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:36:40,330] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:36:40,330] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:36:40,330] INFO core.signals Checking field tor: has file
+[2025-10-27 14:36:40,332] INFO core.signals   tor: Same file, skipping registration
+[2025-10-27 14:36:40,333] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:36:40,333] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:36:40,333] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:36:40,333] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:36:40,333] INFO core.views === Profile Save Debug ===
+[2025-10-27 14:36:40,333] INFO core.views User: brownstephen
+[2025-10-27 14:36:40,333] INFO core.views   tor: documents/tor/CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:36:40,333] INFO core.views   nc2_tesda: None
+[2025-10-27 14:36:40,334] INFO core.views   nbi_clearance: None
+[2025-10-27 14:36:40,334] INFO core.views   diploma: None
+[2025-10-27 14:36:40,363] INFO core.signals Signal fired for user brownstephen, created=False, pk=29
+[2025-10-27 14:36:40,363] INFO core.signals Processing 9 document fields...
+[2025-10-27 14:36:40,363] INFO core.signals Checking field profile_image: no file
+[2025-10-27 14:36:40,363] INFO core.signals Checking field license_scan: no file
+[2025-10-27 14:36:40,363] INFO core.signals Checking field passport_scan: no file
+[2025-10-27 14:36:40,364] INFO core.signals Checking field academic_certificate: no file
+[2025-10-27 14:36:40,364] INFO core.signals Checking field tor: has file
+[2025-10-27 14:36:40,365] INFO core.signals   tor: Same file, skipping registration
+[2025-10-27 14:36:40,365] INFO core.signals Checking field nc2_tesda: no file
+[2025-10-27 14:36:40,365] INFO core.signals Checking field diploma: no file
+[2025-10-27 14:36:40,365] INFO core.signals Checking field good_moral: no file
+[2025-10-27 14:36:40,365] INFO core.signals Checking field nbi_clearance: no file
+[2025-10-27 14:36:40,366] INFO core.views After save:
+[2025-10-27 14:36:40,367] INFO core.views   tor: documents/tor/CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:36:40,367] INFO core.views   nc2_tesda: None
+[2025-10-27 14:36:40,367] INFO core.views   nbi_clearance: None
+[2025-10-27 14:36:40,368] INFO core.views   diploma: None
+[2025-10-27 14:36:40,368] INFO core.views === End Debug ===
+[2025-10-27 14:36:40,397] INFO core.middleware request POST /profile/ 302 user=brownstephen ip=127.0.0.1 duration_ms=116
+[2025-10-27 14:36:40,438] INFO core.middleware request GET /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=20
+[2025-10-27 14:36:52,937] INFO core.forms Validating good_moral for user brownstephen, hash: 2fd39f42f79b2342...
+[2025-10-27 14:36:52,938] INFO core.forms Found 1 active records for user brownstephen
+[2025-10-27 14:36:52,940] INFO core.forms   - tor: hash 2fd39f42f79b2342... (active: True)
+[2025-10-27 14:36:52,942] INFO core.forms Duplicate check result: is_duplicate=True, existing=brownstephen - Transcript of Records (TOR) - documents/tor/CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:36:52,943] WARNING core.forms DUPLICATE DETECTED: This file has already been uploaded as your Transcript of Records (TOR). Each document must be unique. Please upload a different file.
+[2025-10-27 14:36:52,955] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=25
+[2025-10-27 14:37:00,676] INFO core.forms Validating diploma for user brownstephen, hash: 2fd39f42f79b2342...
+[2025-10-27 14:37:00,677] INFO core.forms Found 1 active records for user brownstephen
+[2025-10-27 14:37:00,678] INFO core.forms   - tor: hash 2fd39f42f79b2342... (active: True)
+[2025-10-27 14:37:00,681] INFO core.forms Duplicate check result: is_duplicate=True, existing=brownstephen - Transcript of Records (TOR) - documents/tor/CURRENT-TRENDS-REPORT.pdf
+[2025-10-27 14:37:00,681] WARNING core.forms DUPLICATE DETECTED: This file has already been uploaded as your Transcript of Records (TOR). Each document must be unique. Please upload a different file.
+[2025-10-27 14:37:00,693] INFO core.middleware request POST /profile/ 200 user=brownstephen ip=127.0.0.1 duration_ms=23
+[2025-10-27 14:37:29,716] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\forms.py changed, reloading.
+[2025-10-27 14:37:30,260] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:38:01,653] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=127
+[2025-10-27 14:38:02,518] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:38:12,495] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\signals.py changed, reloading.
+[2025-10-27 14:38:13,081] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:38:24,724] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\core\views.py changed, reloading.
+[2025-10-27 14:38:25,301] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 14:39:01,658] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=135
+[2025-10-27 14:39:02,522] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 14:40:01,528] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=3
+[2025-10-27 14:40:02,544] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2

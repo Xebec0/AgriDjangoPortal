@@ -469,6 +469,60 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
+@login_required
+@require_POST
+def clear_all_documents(request):
+    """Clear all required documents from user's profile"""
+    try:
+        profile = request.user.profile
+        
+        # List of document fields to clear
+        document_fields = [
+            'tor', 'nc2_tesda', 'diploma', 'good_moral', 
+            'nbi_clearance', 'passport_scan', 'academic_certificate'
+        ]
+        
+        # Delete files and clear fields
+        for field_name in document_fields:
+            file_field = getattr(profile, field_name, None)
+            if file_field:
+                # Delete the physical file if it exists
+                try:
+                    if file_field.name and os.path.exists(file_field.path):
+                        os.remove(file_field.path)
+                except Exception as e:
+                    logger.warning(f"Could not delete file {field_name}: {str(e)}")
+                
+                # Clear the field
+                setattr(profile, field_name, None)
+        
+        # Save the profile
+        profile.save()
+        
+        # Deactivate all file records in UploadedFile tracking system
+        from core.models import UploadedFile
+        UploadedFile.objects.filter(
+            user=request.user,
+            document_type__in=document_fields,
+            is_active=True
+        ).update(is_active=False)
+        
+        messages.success(request, 'All required documents have been cleared successfully.')
+        
+        # Create a notification
+        Notification.add_notification(
+            request.user,
+            "All required documents have been cleared from your profile.",
+            Notification.INFO
+        )
+        
+    except Exception as e:
+        logger.exception(f"Error clearing documents for user {request.user.id}: {str(e)}")
+        messages.error(request, 'An error occurred while clearing documents. Please try again.')
+    
+    return redirect('profile')
+
+
 def program_list(request):
     """List all available programs"""
     # Try to get from cache first, but only if no filters are applied

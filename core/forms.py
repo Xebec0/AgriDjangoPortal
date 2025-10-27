@@ -219,82 +219,90 @@ class ProfileUpdateForm(forms.ModelForm):
         return phone_number
 
     def clean_license_scan(self):
+        from django.db.models.fields.files import FieldFile
         license_scan = self.cleaned_data.get('license_scan')
         if license_scan:
             validate_file_size(license_scan)
             validate_file_extension(license_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(license_scan, FieldFile):
                 validate_no_duplicate(self.instance.user, 'license_scan', license_scan)
         return license_scan
 
     def clean_passport_scan(self):
+        from django.db.models.fields.files import FieldFile
         passport_scan = self.cleaned_data.get('passport_scan')
         if passport_scan:
             validate_file_size(passport_scan)
             validate_file_extension(passport_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(passport_scan, FieldFile):
                 validate_no_duplicate(self.instance.user, 'passport_scan', passport_scan)
         return passport_scan
 
     def clean_academic_certificate(self):
+        from django.db.models.fields.files import FieldFile
         academic_certificate = self.cleaned_data.get('academic_certificate')
         if academic_certificate:
             validate_file_size(academic_certificate)
             validate_file_extension(academic_certificate, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(academic_certificate, FieldFile):
                 validate_no_duplicate(self.instance.user, 'academic_certificate', academic_certificate)
         return academic_certificate
 
     def clean_tor(self):
+        from django.db.models.fields.files import FieldFile
         tor = self.cleaned_data.get('tor')
         if tor:
             validate_file_size(tor)
             validate_file_extension(tor, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(tor, FieldFile):
                 validate_no_duplicate(self.instance.user, 'tor', tor)
         return tor
 
     def clean_nc2_tesda(self):
+        from django.db.models.fields.files import FieldFile
         nc2_tesda = self.cleaned_data.get('nc2_tesda')
         if nc2_tesda:
             validate_file_size(nc2_tesda)
             validate_file_extension(nc2_tesda, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(nc2_tesda, FieldFile):
                 validate_no_duplicate(self.instance.user, 'nc2_tesda', nc2_tesda)
         return nc2_tesda
 
     def clean_diploma(self):
+        from django.db.models.fields.files import FieldFile
         diploma = self.cleaned_data.get('diploma')
         if diploma:
             validate_file_size(diploma)
             validate_file_extension(diploma, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(diploma, FieldFile):
                 validate_no_duplicate(self.instance.user, 'diploma', diploma)
         return diploma
 
     def clean_good_moral(self):
+        from django.db.models.fields.files import FieldFile
         good_moral = self.cleaned_data.get('good_moral')
         if good_moral:
             validate_file_size(good_moral)
             validate_file_extension(good_moral, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(good_moral, FieldFile):
                 validate_no_duplicate(self.instance.user, 'good_moral', good_moral)
         return good_moral
 
     def clean_nbi_clearance(self):
+        from django.db.models.fields.files import FieldFile
         nbi_clearance = self.cleaned_data.get('nbi_clearance')
         if nbi_clearance:
             validate_file_size(nbi_clearance)
             validate_file_extension(nbi_clearance, ['.pdf', '.jpg', '.jpeg', '.png'])
-            # Check for duplicates across user's documents
-            if self.instance and self.instance.user:
+            # Check for duplicates across user's documents (only for NEW uploads)
+            if self.instance and self.instance.user and not isinstance(nbi_clearance, FieldFile):
                 validate_no_duplicate(self.instance.user, 'nbi_clearance', nbi_clearance)
         return nbi_clearance
 
@@ -312,6 +320,41 @@ class ProfileUpdateForm(forms.ModelForm):
 
         if has_license and not license_scan:
             self.add_error('license_scan', "Please upload a scan of your license to verify.")
+
+        # Check for duplicate files within the same form submission
+        from core.models import UploadedFile
+        from django.db.models.fields.files import FieldFile
+        
+        document_fields = ['license_scan', 'passport_scan', 'academic_certificate', 
+                          'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
+        
+        # Calculate hashes for all uploaded files in this submission
+        file_hashes = {}  # {field_name: hash}
+        for field_name in document_fields:
+            file_obj = cleaned_data.get(field_name)
+            # Only check NEW uploads (not existing saved files)
+            # FieldFile = existing file, anything else with chunks() = new upload
+            if file_obj and hasattr(file_obj, 'chunks') and not isinstance(file_obj, FieldFile):
+                # Calculate hash for this file
+                file_hash = UploadedFile.calculate_file_hash(file_obj)
+                
+                # Check if this hash already appeared in another field
+                for existing_field, existing_hash in file_hashes.items():
+                    if existing_hash == file_hash:
+                        # Get human-readable names
+                        field_display = dict(UploadedFile.DOCUMENT_TYPES).get(field_name, field_name)
+                        existing_display = dict(UploadedFile.DOCUMENT_TYPES).get(existing_field, existing_field)
+                        
+                        error_msg = (
+                            f"You uploaded the same file to both '{existing_display}' and '{field_display}'. "
+                            f"Each document must be unique. Please upload different files."
+                        )
+                        self.add_error(field_name, error_msg)
+                        self.add_error(existing_field, error_msg)
+                        break
+                
+                # Store this file's hash
+                file_hashes[field_name] = file_hash
 
         return cleaned_data
 

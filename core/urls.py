@@ -15,6 +15,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
+    path('profile/clear-documents/', views.clear_all_documents, name='clear_all_documents'),
     
     # Password Reset URLs
     path('password_reset/', views.custom_password_reset, name='password_reset'),

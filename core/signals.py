@@ -199,10 +199,75 @@ def save_profile(sender, instance, **kwargs):
 def track_profile_files(sender, instance, created, **kwargs):
     """
     Automatically register file uploads from Profile model to UploadedFile tracking system.
+    Only registers NEW or CHANGED files by comparing file hash.
     """
     if instance.user and instance.pk:
         try:
-            register_model_files(instance, instance.user, 'Profile')
+            from core.models import UploadedFile
+            
+            document_fields = [
+                'profile_image', 'license_scan', 'passport_scan', 'academic_certificate',
+                'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance'
+            ]
+            
+            # Quick check: does this profile have ANY files at all?
+            has_any_file = False
+            for field_name in document_fields:
+                current_file = getattr(instance, field_name, None)
+                if current_file and hasattr(current_file, 'name') and current_file.name:
+                    has_any_file = True
+                    break
+            
+            if not has_any_file:
+                return
+            
+            # Track which files we process to avoid duplicate processing
+            for field_name in document_fields:
+                current_file = getattr(instance, field_name, None)
+                
+                # Only process if there's a file
+                if current_file and hasattr(current_file, 'name') and current_file.name:
+                    try:
+                        # Get existing record for this field
+                        existing_record = UploadedFile.objects.filter(
+                            user=instance.user,
+                            document_type=field_name,
+                            is_active=True
+                        ).first()
+                        
+                        # Calculate hash of current file
+                        current_file.open('rb')
+                        current_hash = UploadedFile.calculate_file_hash(current_file)
+                        current_file.close()
+                        
+                        # Check if this file is different from what we have recorded
+                        should_register = False
+                        
+                        if not existing_record:
+                            # No existing record - this is a new upload
+                            should_register = True
+                        elif existing_record.file_hash != current_hash:
+                            # Hash changed - user replaced the file
+                            should_register = True
+                            # Deactivate the old record since it's being replaced
+                            existing_record.is_active = False
+                            existing_record.save()
+                        # else: Same file, same field - don't re-register
+                        
+                        if should_register:
+                            current_file.open('rb')
+                            UploadedFile.register_upload(
+                                user=instance.user,
+                                document_type=field_name,
+                                file_obj=current_file,
+                                model_name='Profile',
+                                model_id=instance.pk
+                            )
+                            current_file.close()
+                            
+                    except Exception as file_error:
+                        logger.warning(f"Error processing file {field_name}: {str(file_error)}")
+                        
         except Exception as e:
             logger.error(f"Error tracking Profile files for user {instance.user.username}: {str(e)}")
 
