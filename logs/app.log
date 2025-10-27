@@ -45956,3 +45956,56 @@ django.template.exceptions.TemplateDoesNotExist: unfold/base_site.html
 [2025-10-27 17:53:41,312] INFO django.utils.autoreload Watching for file changes with StatReloader
 [2025-10-27 17:54:06,288] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
 [2025-10-27 17:54:06,852] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 17:54:30,645] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=126
+[2025-10-27 17:54:30,645] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=125
+[2025-10-27 17:54:31,531] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 17:55:30,530] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 17:55:30,532] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=7
+[2025-10-27 17:55:31,517] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=2
+[2025-10-27 17:56:30,523] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=4
+[2025-10-27 17:56:30,524] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=4
+[2025-10-27 17:56:31,523] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=1
+[2025-10-27 17:57:07,479] INFO core.middleware request GET /admin 404 user=admin ip=127.0.0.1 duration_ms=6
+[2025-10-27 17:57:07,576] ERROR django.request Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 16, in cached_import
+    return getattr(module, class_name)
+AttributeError: module 'core.utils' has no attribute 'admin_dashboard'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\sites.py", line 265, in wrapper
+    return self.admin_view(view, cacheable)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\unfold\sites.py", line 161, in index
+    context = import_string(dashboard_callback)(request, context)
+              ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\utils\module_loading.py", line 32, in import_string
+    raise ImportError(
+    ...<2 lines>...
+    ) from err
+ImportError: Module "core.utils" does not define a "admin_dashboard" attribute/class
+[2025-10-27 17:57:07,579] INFO core.middleware request GET /admin/ 500 user=admin ip=127.0.0.1 duration_ms=76
+[2025-10-27 17:57:30,526] INFO core.middleware request GET /api/notifications/ 200 user=admin ip=127.0.0.1 duration_ms=5
+[2025-10-27 17:57:30,527] INFO core.middleware request GET /api/notifications/ 200 user=brownstephen ip=127.0.0.1 duration_ms=5
+[2025-10-27 17:57:31,050] INFO django.utils.autoreload C:\Users\PC\Documents\GitHub\AgriDjangoPortal\agrostudies_project\settings.py changed, reloading.
+[2025-10-27 17:57:31,663] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-27 17:57:32,035] INFO core.middleware request GET /__debug__/history_sidebar/ 200 user=brownstephen ip=127.0.0.1 duration_ms=0
+[2025-10-27 17:57:37,799] INFO core.middleware request GET /admin/ 200 user=admin ip=127.0.0.1 duration_ms=174
+[2025-10-27 17:57:37,860] INFO core.middleware request GET /admin/css/admin-theme.css 404 user=admin ip=127.0.0.1 duration_ms=11
+[2025-10-27 17:57:37,878] WARNING django.request Not Found: /admin/css/admin-theme.css
