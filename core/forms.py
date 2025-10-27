@@ -91,7 +91,8 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile
         fields = ['bio', 'location', 'phone_number', 'profile_image',
                   'father_name', 'mother_name', 'date_of_birth', 'gender',
-                  'country_of_birth', 'nationality', 'religion', 'has_international_license', 'license_scan']
+                  'country_of_birth', 'nationality', 'religion', 'has_international_license', 'license_scan',
+                  'passport_scan', 'academic_certificate', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
@@ -116,6 +117,15 @@ class ProfileUpdateForm(forms.ModelForm):
             'class': 'form-control',
             'accept': '.pdf,.jpg,.jpeg,.png'
         })
+
+        # Set styling for new document fields
+        document_fields = ['passport_scan', 'academic_certificate', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
+        for field_name in document_fields:
+            if field_name in self.fields:
+                self.fields[field_name].widget.attrs.update({
+                    'class': 'form-control',
+                    'accept': '.pdf,.jpg,.jpeg,.png'
+                })
 
         # Add phone number validation
         if 'phone_number' in self.fields:
@@ -163,6 +173,55 @@ class ProfileUpdateForm(forms.ModelForm):
             validate_file_size(license_scan)
             validate_file_extension(license_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
         return license_scan
+
+    def clean_passport_scan(self):
+        passport_scan = self.cleaned_data.get('passport_scan')
+        if passport_scan:
+            validate_file_size(passport_scan)
+            validate_file_extension(passport_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return passport_scan
+
+    def clean_academic_certificate(self):
+        academic_certificate = self.cleaned_data.get('academic_certificate')
+        if academic_certificate:
+            validate_file_size(academic_certificate)
+            validate_file_extension(academic_certificate, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return academic_certificate
+
+    def clean_tor(self):
+        tor = self.cleaned_data.get('tor')
+        if tor:
+            validate_file_size(tor)
+            validate_file_extension(tor, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return tor
+
+    def clean_nc2_tesda(self):
+        nc2_tesda = self.cleaned_data.get('nc2_tesda')
+        if nc2_tesda:
+            validate_file_size(nc2_tesda)
+            validate_file_extension(nc2_tesda, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return nc2_tesda
+
+    def clean_diploma(self):
+        diploma = self.cleaned_data.get('diploma')
+        if diploma:
+            validate_file_size(diploma)
+            validate_file_extension(diploma, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return diploma
+
+    def clean_good_moral(self):
+        good_moral = self.cleaned_data.get('good_moral')
+        if good_moral:
+            validate_file_size(good_moral)
+            validate_file_extension(good_moral, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return good_moral
+
+    def clean_nbi_clearance(self):
+        nbi_clearance = self.cleaned_data.get('nbi_clearance')
+        if nbi_clearance:
+            validate_file_size(nbi_clearance)
+            validate_file_extension(nbi_clearance, ['.pdf', '.jpg', '.jpeg', '.png'])
+        return nbi_clearance
 
     def clean(self):
         cleaned_data = super().clean()

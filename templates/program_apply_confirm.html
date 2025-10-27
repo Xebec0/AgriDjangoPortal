@@ -214,7 +214,7 @@
                     <h4 class="info-section-title">
                         <i class="fas fa-graduation-cap me-2"></i> Academic Information
                     </h4>
-                    
+
                     <div class="info-row">
                         <div class="info-label">University:</div>
                         <div class="info-value">
@@ -225,7 +225,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="info-row">
                         <div class="info-label">Specialization:</div>
                         <div class="info-value">
@@ -236,20 +236,111 @@
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     {% if profile.graduation_year %}
                     <div class="info-row">
                         <div class="info-label">Graduation Year:</div>
                         <div class="info-value">{{ profile.graduation_year }}</div>
                     </div>
                     {% endif %}
-                    
+
                     <div class="info-row">
                         <div class="info-label">Academic Certificate:</div>
                         <div class="info-value">
                             {% if profile.academic_certificate %}
                                 <span class="badge bg-success">Uploaded</span>
                                 <a href="{{ profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Required Documents Section -->
+                <div class="info-section">
+                    <h4 class="info-section-title">
+                        <i class="fas fa-file-upload me-2"></i> Required Documents
+                    </h4>
+
+                    <div class="info-row">
+                        <div class="info-label">Transcript of Records (TOR):</div>
+                        <div class="info-value">
+                            {% if profile.tor %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.tor.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">NC2 from TESDA:</div>
+                        <div class="info-value">
+                            {% if profile.nc2_tesda %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.nc2_tesda.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">Diploma:</div>
+                        <div class="info-value">
+                            {% if profile.diploma %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.diploma.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">Good Moral Character:</div>
+                        <div class="info-value">
+                            {% if profile.good_moral %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.good_moral.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">NBI Clearance:</div>
+                        <div class="info-value">
+                            {% if profile.nbi_clearance %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.nbi_clearance.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            {% else %}
+                                <span class="missing-info">Not uploaded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">Passport Scan:</div>
+                        <div class="info-value">
+                            {% if profile.passport_scan %}
+                                <span class="badge bg-success">Uploaded</span>
+                                <a href="{{ profile.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
                                     <i class="fas fa-eye"></i> View
                                 </a>
                             {% else %}

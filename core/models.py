@@ -72,6 +72,13 @@ class Profile(models.Model):
     
     passport_scan = models.FileField(upload_to='passport_scans/', blank=True, null=True, verbose_name="Passport Scan")
     academic_certificate = models.FileField(upload_to='academic_certificates/', blank=True, null=True, verbose_name="Academic Certificate")
+
+    # Additional required documents for registration
+    tor = models.FileField(upload_to='documents/tor/', blank=True, null=True, verbose_name="Transcript of Records (TOR)")
+    nc2_tesda = models.FileField(upload_to='documents/tesda/', blank=True, null=True, verbose_name="NC2 from TESDA")
+    diploma = models.FileField(upload_to='documents/diploma/', blank=True, null=True, verbose_name="Diploma")
+    good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True, verbose_name="Good Moral Character")
+    nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True, verbose_name="NBI Clearance")
     
     def __str__(self):
         return f"{self.user.username}'s profile"

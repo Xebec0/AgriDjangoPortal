@@ -445,6 +445,131 @@
                         {% endif %}
                     </div>
                 </div>
+
+                <div class="form-section-title mt-4"><i class="fas fa-file-upload me-2"></i>Required Documents</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.tor.id_for_label }}" class="form-label">Transcript of Records (TOR)</label>
+                        {{ p_form.tor }}
+                        {% if p_form.tor.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.tor.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload your Transcript of Records (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.tor %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.tor.url }}" target="_blank">{{ user.profile.tor.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.nc2_tesda.id_for_label }}" class="form-label">NC2 from TESDA</label>
+                        {{ p_form.nc2_tesda }}
+                        {% if p_form.nc2_tesda.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.nc2_tesda.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload your NC2 from TESDA certificate (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.nc2_tesda %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.nc2_tesda.url }}" target="_blank">{{ user.profile.nc2_tesda.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.diploma.id_for_label }}" class="form-label">Diploma</label>
+                        {{ p_form.diploma }}
+                        {% if p_form.diploma.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.diploma.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload your diploma (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.diploma %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.diploma.url }}" target="_blank">{{ user.profile.diploma.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.good_moral.id_for_label }}" class="form-label">Good Moral Character</label>
+                        {{ p_form.good_moral }}
+                        {% if p_form.good_moral.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.good_moral.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload your Good Moral Character certificate (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.good_moral %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.good_moral.url }}" target="_blank">{{ user.profile.good_moral.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.nbi_clearance.id_for_label }}" class="form-label">NBI Clearance</label>
+                        {{ p_form.nbi_clearance }}
+                        {% if p_form.nbi_clearance.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.nbi_clearance.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload your NBI Clearance (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.nbi_clearance %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.nbi_clearance.url }}" target="_blank">{{ user.profile.nbi_clearance.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.passport_scan.id_for_label }}" class="form-label">Passport Scan</label>
+                        {{ p_form.passport_scan }}
+                        {% if p_form.passport_scan.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.passport_scan.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload a clear scan of your passport (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.passport_scan %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.passport_scan.url }}" target="_blank">{{ user.profile.passport_scan.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.academic_certificate.id_for_label }}" class="form-label">Academic Certificate</label>
+                        {{ p_form.academic_certificate }}
+                        {% if p_form.academic_certificate.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.academic_certificate.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Upload your academic certificate or diploma (PDF/JPG/PNG, max 5MB)</div>
+                        {% if user.profile.academic_certificate %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-check-circle text-success me-1"></i>
+                                    Current file: <a href="{{ user.profile.academic_certificate.url }}" target="_blank">{{ user.profile.academic_certificate.name|truncatechars:30 }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
                 {% endif %}
 
                 <div class="d-grid gap-2 mt-4">
