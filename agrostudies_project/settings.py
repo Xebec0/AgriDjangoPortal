@@ -337,7 +337,7 @@ UNFOLD = {
     "SITE_HEADER": ADMIN_SITE_HEADER,
     "SITE_TITLE": ADMIN_SITE_TITLE,
     "SITE_INDEX_TITLE": ADMIN_SITE_INDEX_TITLE,
-    "SITE_URL": "/admin",
+    "SITE_URL": "/",
     "SITE_SYMBOL": "eco",  # Material icon name (changed to a leaf/eco icon)
     "ENVIRONMENT": "production",
     "STYLES": ["css/admin-theme.css"],  # Custom CSS for admin theme
