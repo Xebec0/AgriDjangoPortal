@@ -53,8 +53,9 @@ class Profile(models.Model):
     
     # Additional candidate-style fields for comprehensive profile
     university = models.ForeignKey('University', on_delete=models.SET_NULL, blank=True, null=True, verbose_name="University")
-    specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Specialization")
+    specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Primary Specialization")
     secondary_specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Secondary Specialization")
+    year_graduated = models.PositiveIntegerField(blank=True, null=True, verbose_name="Year Graduated")
     
     SMOKING_CHOICES = [
         ('Never', 'Never'),

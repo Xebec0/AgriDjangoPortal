@@ -406,6 +406,122 @@
                     </div>
                 </div>
 
+                <div class="form-section-title mt-4"><i class="fas fa-address-card me-2"></i>Address Information</div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="{{ p_form.address.id_for_label }}" class="form-label">Address</label>
+                        {{ p_form.address }}
+                        {% if p_form.address.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.address.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-section-title mt-4"><i class="fas fa-passport me-2"></i>Passport Information</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.passport_number.id_for_label }}" class="form-label">Passport Number</label>
+                        {{ p_form.passport_number }}
+                        {% if p_form.passport_number.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.passport_number.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.place_of_issue.id_for_label }}" class="form-label">Place of Issue</label>
+                        {{ p_form.place_of_issue }}
+                        {% if p_form.place_of_issue.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.place_of_issue.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.passport_issue_date.id_for_label }}" class="form-label">Passport Issue Date</label>
+                        {{ p_form.passport_issue_date }}
+                        {% if p_form.passport_issue_date.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.passport_issue_date.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.passport_expiry_date.id_for_label }}" class="form-label">Passport Expiry Date</label>
+                        {{ p_form.passport_expiry_date }}
+                        {% if p_form.passport_expiry_date.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.passport_expiry_date.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">Passport must be valid for at least 6 months after the program start date.</div>
+                    </div>
+                </div>
+
+                <div class="form-section-title mt-4"><i class="fas fa-graduation-cap me-2"></i>Academic Information</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.highest_education_level.id_for_label }}" class="form-label">Highest Education Level</label>
+                        {{ p_form.highest_education_level }}
+                        {% if p_form.highest_education_level.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.highest_education_level.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.graduation_year.id_for_label }}" class="form-label">Graduation Year</label>
+                        {{ p_form.graduation_year }}
+                        {% if p_form.graduation_year.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.graduation_year.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.institution_name.id_for_label }}" class="form-label">Institution Name</label>
+                        {{ p_form.institution_name }}
+                        {% if p_form.institution_name.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.institution_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.field_of_study.id_for_label }}" class="form-label">Field of Study</label>
+                        {{ p_form.field_of_study }}
+                        {% if p_form.field_of_study.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.field_of_study.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.university.id_for_label }}" class="form-label">University</label>
+                        {{ p_form.university }}
+                        {% if p_form.university.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.university.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.year_graduated.id_for_label }}" class="form-label">Year Graduated</label>
+                        {{ p_form.year_graduated }}
+                        {% if p_form.year_graduated.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.year_graduated.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.specialization.id_for_label }}" class="form-label">Primary Specialization</label>
+                        {{ p_form.specialization }}
+                        {% if p_form.specialization.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.specialization.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ p_form.secondary_specialization.id_for_label }}" class="form-label">Secondary Specialization</label>
+                        {{ p_form.secondary_specialization }}
+                        {% if p_form.secondary_specialization.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.secondary_specialization.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
                 <div class="form-section-title mt-4"><i class="fas fa-image me-2"></i>Profile Picture</div>
                 <div class="row">
                     <div class="col-md-12 mb-3">
@@ -667,6 +783,113 @@
                             <span class="badge bg-secondary">No</span>
                         {% endif %}
                     </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Passport and Academic Information -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-card-icon" style="background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <h5 class="info-card-title">Passport Information</h5>
+                </div>
+                {% if user.profile.passport_number %}
+                <div class="info-item">
+                    <div class="info-label">Passport Number:</div>
+                    <div class="info-value">{{ user.profile.passport_number }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.place_of_issue %}
+                <div class="info-item">
+                    <div class="info-label">Place of Issue:</div>
+                    <div class="info-value">{{ user.profile.place_of_issue }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.passport_issue_date %}
+                <div class="info-item">
+                    <div class="info-label">Issue Date:</div>
+                    <div class="info-value">{{ user.profile.passport_issue_date|date:"F j, Y" }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.passport_expiry_date %}
+                <div class="info-item">
+                    <div class="info-label">Expiry Date:</div>
+                    <div class="info-value">{{ user.profile.passport_expiry_date|date:"F j, Y" }}</div>
+                </div>
+                {% endif %}
+                {% if not user.profile.passport_number and not user.profile.place_of_issue and not user.profile.passport_issue_date and not user.profile.passport_expiry_date %}
+                <div class="info-item">
+                    <div class="info-value text-muted">No passport information provided</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-card-icon" style="background: linear-gradient(135deg, #fd7e14 0%, #e8680d 100%);">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h5 class="info-card-title">Academic Information</h5>
+                </div>
+                {% if user.profile.highest_education_level %}
+                <div class="info-item">
+                    <div class="info-label">Education Level:</div>
+                    <div class="info-value">{{ user.profile.get_highest_education_level_display }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.institution_name %}
+                <div class="info-item">
+                    <div class="info-label">Institution:</div>
+                    <div class="info-value">{{ user.profile.institution_name }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.graduation_year %}
+                <div class="info-item">
+                    <div class="info-label">Graduation Year:</div>
+                    <div class="info-value">{{ user.profile.graduation_year }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.field_of_study %}
+                <div class="info-item">
+                    <div class="info-label">Field of Study:</div>
+                    <div class="info-value">{{ user.profile.field_of_study }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.university %}
+                <div class="info-item">
+                    <div class="info-label">University:</div>
+                    <div class="info-value">{{ user.profile.university.name }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.specialization %}
+                <div class="info-item">
+                    <div class="info-label">Primary Specialization:</div>
+                    <div class="info-value">{{ user.profile.specialization }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.secondary_specialization %}
+                <div class="info-item">
+                    <div class="info-label">Secondary Specialization:</div>
+                    <div class="info-value">{{ user.profile.secondary_specialization }}</div>
+                </div>
+                {% endif %}
+                {% if user.profile.year_graduated %}
+                <div class="info-item">
+                    <div class="info-label">Year Graduated:</div>
+                    <div class="info-value">{{ user.profile.year_graduated }}</div>
+                </div>
+                {% endif %}
+                {% if not user.profile.highest_education_level and not user.profile.institution_name and not user.profile.graduation_year and not user.profile.field_of_study and not user.profile.university and not user.profile.specialization and not user.profile.secondary_specialization and not user.profile.year_graduated %}
+                <div class="info-item">
+                    <div class="info-value text-muted">No academic information provided</div>
                 </div>
                 {% endif %}
             </div>

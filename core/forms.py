@@ -92,6 +92,9 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ['bio', 'location', 'phone_number', 'profile_image',
                   'father_name', 'mother_name', 'date_of_birth', 'gender',
                   'country_of_birth', 'nationality', 'religion', 'has_international_license', 'license_scan',
+                  'address', 'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
+                  'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
+                  'university', 'specialization', 'secondary_specialization', 'year_graduated',
                   'passport_scan', 'academic_certificate', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
@@ -104,10 +107,24 @@ class ProfileUpdateForm(forms.ModelForm):
             'country_of_birth': forms.TextInput(attrs={'class': 'form-control'}),
             'nationality': forms.TextInput(attrs={'class': 'form-control'}),
             'religion': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter passport number'}),
+            'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'place_of_issue': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Place of issue'}),
+            'highest_education_level': forms.Select(attrs={'class': 'form-control'}),
+            'institution_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Institution name'}),
+            'graduation_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
+            'field_of_study': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Field of study'}),
+            'university': forms.Select(attrs={'class': 'form-control'}),
+            'specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primary specialization'}),
+            'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization'}),
+            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
         }
     
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+
         # Set form control classes for Bootstrap styling
         self.fields['profile_image'].widget.attrs.update({
             'class': 'form-control',
@@ -126,6 +143,40 @@ class ProfileUpdateForm(forms.ModelForm):
                     'class': 'form-control',
                     'accept': '.pdf,.jpg,.jpeg,.png'
                 })
+
+        # Set styling for new fields
+        new_fields = ['address', 'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
+                      'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
+                      'university', 'specialization', 'secondary_specialization', 'year_graduated']
+        for field_name in new_fields:
+            if field_name in self.fields:
+                if field_name in ['passport_issue_date', 'passport_expiry_date']:
+                    self.fields[field_name].widget.attrs.update({
+                        'class': 'form-control',
+                        'type': 'date'
+                    })
+                elif field_name in ['graduation_year', 'year_graduated']:
+                    self.fields[field_name].widget.attrs.update({
+                        'class': 'form-control',
+                        'placeholder': 'Year graduated'
+                    })
+                elif field_name == 'university':
+                    # Populate university choices from database
+                    universities = University.objects.all().order_by('name')
+                    self.fields[field_name].widget.choices = [('', 'Select University')] + [
+                        (uni.id, uni.name) for uni in universities
+                    ]
+                    self.fields[field_name].widget.attrs.update({
+                        'class': 'form-control'
+                    })
+                elif field_name == 'highest_education_level':
+                    self.fields[field_name].widget.attrs.update({
+                        'class': 'form-control'
+                    })
+                else:
+                    self.fields[field_name].widget.attrs.update({
+                        'class': 'form-control'
+                    })
 
         # Add phone number validation
         if 'phone_number' in self.fields:
