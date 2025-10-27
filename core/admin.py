@@ -5,87 +5,63 @@ from django.shortcuts import redirect
 from django.core.management import call_command
 from django.utils import timezone
 from datetime import timedelta
+from unfold.admin import ModelAdmin
 from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog, UploadedFile
 
+admin.site.site_header = "AgroStudies Admin"
+admin.site.site_title = "AgroStudies Admin"
+admin.site.index_title = "AgroStudies Admin"
 
 @admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(ModelAdmin):
     list_display = ('user', 'location', 'date_joined')
-    search_fields = ('user__username', 'location')
+    search_fields = ('user__username', 'user__email', 'location')
     list_filter = ('date_joined',)
+    list_per_page = 25
 
 @admin.register(AgricultureProgram)
-class AgricultureProgramAdmin(admin.ModelAdmin):
+class AgricultureProgramAdmin(ModelAdmin):
     list_display = ('title', 'country', 'location', 'start_date', 'registration_deadline', 'capacity', 'is_featured', 'required_gender', 'requires_license', 'has_image')
     search_fields = ('title', 'description', 'country', 'location')
     list_filter = ('country', 'start_date', 'is_featured', 'required_gender', 'requires_license')
     date_hierarchy = 'start_date'
     list_editable = ('is_featured',)
-    fieldsets = (
-        (None, {
-            'fields': ('title', 'description', 'country', 'location', 'start_date', 'registration_deadline', 'capacity')
-        }),
-        ('Display Settings', {
-            'fields': ('image', 'is_featured'),
-            'description': '⚠️ ADMIN ONLY: Upload farm image and mark as featured to display on landing page. Only administrators can modify these settings.',
-            'classes': ('collapse',)  # Make it collapsible for security
-        }),
-        ('Requirements', {
-            'fields': ('required_gender', 'requires_license')
-        }),
-    )
-    
+    list_per_page = 25
+
     def has_image(self, obj):
         return bool(obj.image)
     has_image.boolean = True
     has_image.short_description = 'Has Image'
-    
-    def get_readonly_fields(self, request, obj=None):
-        """Make image and is_featured read-only for non-superusers"""
-        if not request.user.is_superuser:
-            # Only superusers can edit image and featured status
-            return self.readonly_fields + ('image', 'is_featured')
-        return self.readonly_fields
-    
-    def has_change_permission(self, request, obj=None):
-        """Only staff members can access the admin"""
-        return request.user.is_staff
-    
-    def has_add_permission(self, request):
-        """Only staff members can add programs"""
-        return request.user.is_staff
-    
-    def has_delete_permission(self, request, obj=None):
-        """Only superusers can delete programs"""
-        return request.user.is_superuser
 
 @admin.register(Registration)
-class RegistrationAdmin(admin.ModelAdmin):
+class RegistrationAdmin(ModelAdmin):
     list_display = ('user', 'program', 'registration_date', 'status')
     list_filter = ('status', 'registration_date')
-    search_fields = ('user__username', 'program__title', 'notes')
+    search_fields = ('user__username', 'user__email', 'program__title', 'notes')
     date_hierarchy = 'registration_date'
     actions = ['approve_registrations', 'reject_registrations']
-    
+    list_per_page = 25
+
     def approve_registrations(self, request, queryset):
         queryset.update(status=Registration.APPROVED)
     approve_registrations.short_description = "Approve selected registrations"
-    
+
     def reject_registrations(self, request, queryset):
         queryset.update(status=Registration.REJECTED)
     reject_registrations.short_description = "Reject selected registrations"
 
 @admin.register(University)
-class UniversityAdmin(admin.ModelAdmin):
+class UniversityAdmin(ModelAdmin):
     list_display = ('name', 'code', 'country')
     list_filter = ('country',)
     search_fields = ('name', 'code', 'country')
+    list_per_page = 25
 
 @admin.register(ActivityLog)
-class ActivityLogAdmin(admin.ModelAdmin):
+class ActivityLogAdmin(ModelAdmin):
     list_display = ('timestamp', 'user', 'action_type', 'model_name', 'object_id', 'ip_address')
     list_filter = ('action_type', 'model_name', 'timestamp', 'user')
-    search_fields = ('model_name', 'object_id', 'user__username', 'ip_address',)
+    search_fields = ('model_name', 'object_id', 'user__username', 'ip_address')
     readonly_fields = ('timestamp', 'before_data', 'after_data', 'user', 'action_type', 'model_name', 'object_id', 'ip_address', 'session_key')
     actions = ['rollback_selected']
 
@@ -139,94 +115,64 @@ class ActivityLogAdmin(admin.ModelAdmin):
         return super().changelist_view(request, extra_context=extra_context)
 
 @admin.register(Candidate)
-class CandidateAdmin(admin.ModelAdmin):
+class CandidateAdmin(ModelAdmin):
     list_display = ('first_name', 'last_name', 'passport_number', 'university', 'status')
     list_filter = ('status', 'university', 'nationality', 'gender')
     search_fields = ('first_name', 'last_name', 'passport_number', 'email')
     date_hierarchy = 'created_at'
-    fieldsets = (
-        ('Basic Information', {
-            'fields': ('passport_number', 'first_name', 'last_name', 'email')
-        }),
-        ('Personal Details', {
-            'fields': ('date_of_birth', 'country_of_birth', 'nationality', 'religion', 'gender')
-        }),
-        ('Family Information', {
-            'fields': ('father_name', 'mother_name')
-        }),
-        ('Passport Details', {
-            'fields': ('passport_issue_date', 'passport_expiry_date', 'passport_scan')
-        }),
-        ('Physical Details', {
-            'fields': ('shoes_size', 'shirt_size', 'smokes')
-        }),
-        ('Education', {
-            'fields': ('university', 'specialization', 'secondary_specialization')
-        }),
-        ('Documents', {
-            'fields': ('tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance')
-        }),
-        ('Status', {
-            'fields': ('status', 'created_by')
-        }),
-    )
+    list_per_page = 25
 
+@admin.register(Notification)
+class NotificationAdmin(ModelAdmin):
+    list_display = ('user', 'message', 'notification_type', 'read', 'created_at')
+    list_filter = ('read', 'notification_type', 'created_at', 'user')
+    search_fields = ('user__username', 'message')
+    readonly_fields = ('created_at',)
+    date_hierarchy = 'created_at'
+
+    actions = ['mark_as_read', 'mark_as_unread']
+
+    def mark_as_read(self, request, queryset):
+        updated = queryset.update(read=True)
+        self.message_user(request, f"{updated} notification(s) marked as read.", messages.SUCCESS)
+    mark_as_read.short_description = "Mark selected as read"
+
+    def mark_as_unread(self, request, queryset):
+        updated = queryset.update(read=False)
+        self.message_user(request, f"{updated} notification(s) marked as unread.", messages.SUCCESS)
+    mark_as_unread.short_description = "Mark selected as unread"
 
 @admin.register(UploadedFile)
-class UploadedFileAdmin(admin.ModelAdmin):
-    """Admin interface for tracking uploaded files and detecting duplicates."""
-    
+class UploadedFileAdmin(ModelAdmin):
     list_display = ('user', 'document_type', 'file_name', 'file_size_kb', 'uploaded_at', 'is_active', 'model_name', 'model_id')
     list_filter = ('document_type', 'model_name', 'is_active', 'uploaded_at', 'user')
     search_fields = ('user__username', 'file_name', 'file_hash', 'model_id')
     readonly_fields = ('file_hash', 'file_size', 'mime_type', 'uploaded_at', 'updated_at')
     date_hierarchy = 'uploaded_at'
-    
-    fieldsets = (
-        ('File Information', {
-            'fields': ('user', 'document_type', 'file_name', 'file_path', 'file_size', 'mime_type')
-        }),
-        ('File Integrity', {
-            'fields': ('file_hash', 'is_active')
-        }),
-        ('Model Reference', {
-            'fields': ('model_name', 'model_id')
-        }),
-        ('Timestamps', {
-            'fields': ('uploaded_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-    
+
     def file_size_kb(self, obj):
-        """Display file size in KB."""
         return f"{obj.file_size / 1024:.2f} KB"
     file_size_kb.short_description = 'File Size'
-    
+
     actions = ['mark_as_inactive', 'mark_as_active', 'cleanup_orphaned']
-    
+
     def mark_as_inactive(self, request, queryset):
-        """Mark selected files as inactive."""
         updated = queryset.update(is_active=False)
         self.message_user(request, f"{updated} file(s) marked as inactive.", messages.SUCCESS)
     mark_as_inactive.short_description = "Mark selected files as inactive"
-    
+
     def mark_as_active(self, request, queryset):
-        """Mark selected files as active."""
         updated = queryset.update(is_active=True)
         self.message_user(request, f"{updated} file(s) marked as active.", messages.SUCCESS)
     mark_as_active.short_description = "Mark selected files as active"
-    
+
     def cleanup_orphaned(self, request, queryset):
-        """Remove records for files that no longer exist in storage."""
         count = UploadedFile.cleanup_orphaned_records()
         self.message_user(request, f"{count} orphaned file record(s) cleaned up.", messages.SUCCESS)
     cleanup_orphaned.short_description = "Clean up orphaned file records"
-    
+
     def has_add_permission(self, request):
-        """Prevent manual creation - files are tracked automatically."""
         return False
-    
+
     def has_delete_permission(self, request, obj=None):
-        """Only superusers can delete file tracking records."""
         return request.user.is_superuser

@@ -83,21 +83,27 @@ function checkUsernameAvailability(username, feedbackElement) {
 
 /**
  * Setup AJAX form submissions for login and registration forms
+ * Note: Login and registration forms are handled by modal-login-register.js
+ * This function is kept for backward compatibility but forms are loaded dynamically
  */
 function setupAjaxFormSubmissions() {
-    // Login form
-    const loginForm = document.querySelector('form.login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+    // Login and registration forms are now handled by modal-login-register.js
+    // which loads the forms via AJAX and handles their submission
+    // This prevents conflicts and null reference errors
+
+    // Only set up forms that exist at page load (non-modal forms)
+    const staticLoginForm = document.querySelector('form.login-form:not([id*="Modal"])');
+    const staticRegisterForm = document.querySelector('form.register-form:not([id*="Modal"])');
+
+    if (staticLoginForm) {
+        staticLoginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             submitFormWithAjax(this, '/api/ajax-login/');
         });
     }
-    
-    // Registration form
-    const registerForm = document.querySelector('form.register-form');
-    if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
+
+    if (staticRegisterForm) {
+        staticRegisterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             submitFormWithAjax(this, '/api/ajax-register/');
         });
@@ -115,11 +121,22 @@ function submitFormWithAjax(form, url) {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     
     // Clear previous error messages
-    const errorContainer = document.getElementById('form-errors');
-    if (errorContainer) {
-        errorContainer.innerHTML = '';
-        errorContainer.style.display = 'none';
+    const modalErrorContainer = document.getElementById('loginModalErrors');
+    const formErrorContainer = document.getElementById('form-errors');
+    
+    if (modalErrorContainer) {
+        modalErrorContainer.innerHTML = '';
+        modalErrorContainer.style.display = 'none';
     }
+    if (formErrorContainer) {
+        formErrorContainer.innerHTML = '';
+        formErrorContainer.style.display = 'none';
+    }
+    
+    // Reset any previous error states
+    form.querySelectorAll('.is-invalid').forEach(field => {
+        field.classList.remove('is-invalid');
+    });
     
     // Get CSRF token
     const csrfToken = getCookie('csrftoken');
@@ -129,9 +146,12 @@ function submitFormWithAjax(form, url) {
         method: 'POST',
         body: new FormData(form),
         headers: {
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
         },
-        credentials: 'same-origin'
+        credentials: 'same-origin',
+        mode: 'same-origin'
     })
     .then(response => response.json())
     .then(data => {
@@ -168,11 +188,15 @@ function submitFormWithAjax(form, url) {
  * Display form errors returned from the server
  */
 function displayFormErrors(form, errors) {
-    // Create or get error container
-    let errorContainer = document.getElementById('form-errors');
+    // Get the appropriate error container based on form type
+    let errorContainer = form.id === 'loginModalForm' ? 
+        document.getElementById('loginModalErrors') : 
+        document.getElementById('form-errors');
+    
+    // Create error container if it doesn't exist
     if (!errorContainer) {
         errorContainer = document.createElement('div');
-        errorContainer.id = 'form-errors';
+        errorContainer.id = form.id === 'loginModalForm' ? 'loginModalErrors' : 'form-errors';
         errorContainer.className = 'alert alert-danger';
         form.prepend(errorContainer);
     }
@@ -323,6 +347,7 @@ function setupNotificationRefresh() {
 function refreshNotifications() {
     const notificationList = document.getElementById('notificationList');
     const notificationBadge = document.querySelector('#notificationDropdown .badge');
+    const dropdownEl = document.getElementById('notificationDropdown');
     
     if (notificationList) {
         fetch('/api/notifications/')
@@ -330,14 +355,16 @@ function refreshNotifications() {
             .then(data => {
                 // Update notification count badge
                 if (data.unread_count > 0) {
-                    notificationBadge.textContent = data.unread_count;
-                    notificationBadge.style.display = 'inline-block';
-                } else {
+                    if (notificationBadge) {
+                        notificationBadge.textContent = data.unread_count;
+                        notificationBadge.style.display = 'inline-block';
+                    }
+                } else if (notificationBadge) {
                     notificationBadge.style.display = 'none';
                 }
                 
                 // Only update the dropdown content if it's not currently open
-                if (!notificationDropdown.classList.contains('show')) {
+                if (!dropdownEl || !dropdownEl.classList.contains('show')) {
                     // We don't update the content here to avoid disrupting user interaction
                     // It will update when they click the dropdown
                 }

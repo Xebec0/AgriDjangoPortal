@@ -62,3 +62,6 @@ python-json-logger>=2.0.7  # For ELK stack compatibility
 redis>=5.0.1  # Redis client
 django-redis>=5.4.0  # Django Redis cache backend
 django-cachalot>=2.6.1  # Automatic ORM caching
+
+# Modern Admin Interface
+django-unfold>=0.38.0  # Modern admin interface with custom theming

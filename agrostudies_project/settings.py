@@ -40,6 +40,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Application definition
 INSTALLED_APPS = [
+    'unfold',  # Modern admin interface - must be before django.contrib.admin
+    'unfold.contrib.filters',  # Optional: advanced admin filters
+    'unfold.contrib.forms',  # Optional: enhanced form fields
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -322,6 +325,13 @@ CACHE_TTL = {
     'candidates': 300,   # 5 minutes
     'user_data': 900,    # 15 minutes
     'static_content': 3600,  # 1 hour
+}
+
+# Unfold Admin Theme Settings
+UNFOLD = {
+    "SITE_TITLE": "AgroStudies Admin",
+    "SITE_HEADER": "AgroStudies Admin",
+    "SITE_URL": "/admin"
 }
 
 # ----- Sentry Error Tracking -----
