@@ -74,11 +74,108 @@
             <h5 class="mb-0"><i class="fas fa-user-check me-2"></i>Review Your Information</h5>
         </div>
         <div class="card-body">
+            {% if missing_fields %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Missing Information:</strong> The following fields are not yet provided: <strong>{{ missing_fields|join:", " }}</strong>.
+                You can still submit your application, but please complete these fields as soon as possible.
+                Click the "Edit Information" button below to update your details.
+            </div>
+            {% endif %}
+            
             <div class="alert alert-info">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Please review your information below.</strong> This data was collected during your registration. 
-                If you need to update any information, please visit your 
-                <a href="{% url 'profile' %}" class="alert-link">profile page</a> first, then return to apply.
+                <strong>Please review your information below.</strong> This data was collected from your profile. 
+                You can edit your information directly on this page using the "Edit Information" button.
+            </div>
+            
+            <!-- Inline Profile Edit Form (Collapsible) -->
+            <div class="collapse mb-4" id="editProfileSection">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Your Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Update your information below. Changes will be saved to your profile.</p>
+                        
+                        <form method="POST" action="{% url 'profile' %}" id="quickEditForm" target="_self">
+                            {% csrf_token %}
+                            
+                            <!-- Personal Details -->
+                            <h6 class="text-primary mt-3 mb-3"><i class="fas fa-user me-2"></i>Personal Information</h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                    <input type="date" name="date_of_birth" class="form-control" value="{{ profile.date_of_birth|date:'Y-m-d' }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                    <select name="gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male" {% if profile.gender == 'Male' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if profile.gender == 'Female' %}selected{% endif %}>Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Country of Birth <span class="text-danger">*</span></label>
+                                    <input type="text" name="country_of_birth" class="form-control" value="{{ profile.country_of_birth }}" placeholder="e.g., Philippines">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nationality <span class="text-danger">*</span></label>
+                                    <input type="text" name="nationality" class="form-control" value="{{ profile.nationality }}" placeholder="e.g., Filipino">
+                                </div>
+                            </div>
+                            
+                            <!-- Passport Information -->
+                            <h6 class="text-primary mt-4 mb-3"><i class="fas fa-passport me-2"></i>Passport Information</h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Passport Number <span class="text-danger">*</span></label>
+                                    <input type="text" name="passport_number" class="form-control" value="{{ profile.passport_number }}" placeholder="Enter passport number">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Issue Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="passport_issue_date" class="form-control" value="{{ profile.passport_issue_date|date:'Y-m-d' }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Expiry Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="passport_expiry_date" class="form-control" value="{{ profile.passport_expiry_date|date:'Y-m-d' }}">
+                                </div>
+                            </div>
+                            
+                            <!-- Academic Information -->
+                            <h6 class="text-primary mt-4 mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Information</h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">University <span class="text-danger">*</span></label>
+                                    <select name="university" class="form-control">
+                                        <option value="">Select University</option>
+                                        {% for uni in universities %}
+                                        <option value="{{ uni.id }}" {% if profile.university.id == uni.id %}selected{% endif %}>{{ uni.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Specialization <span class="text-danger">*</span></label>
+                                    <input type="text" name="specialization" class="form-control" value="{{ profile.specialization }}" placeholder="e.g., Agriculture">
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#editProfileSection">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Save Changes & Return
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <form method="post">
@@ -351,34 +448,44 @@
                 </div>
                 
                 <!-- Additional Information Section -->
-                {% if profile.shirt_size or profile.shoes_size or profile.smokes %}
                 <div class="info-section">
                     <h4 class="info-section-title">
                         <i class="fas fa-info-circle me-2"></i> Additional Information
                     </h4>
                     
-                    {% if profile.shirt_size %}
-                    <div class="info-row">
-                        <div class="info-label">Shirt Size:</div>
-                        <div class="info-value">{{ profile.shirt_size }}</div>
-                    </div>
-                    {% endif %}
-                    
-                    {% if profile.shoes_size %}
-                    <div class="info-row">
-                        <div class="info-label">Shoes Size:</div>
-                        <div class="info-value">{{ profile.shoes_size }}</div>
-                    </div>
-                    {% endif %}
-                    
-                    {% if profile.smokes %}
                     <div class="info-row">
                         <div class="info-label">Smoking Habits:</div>
-                        <div class="info-value">{{ profile.smokes }}</div>
+                        <div class="info-value">
+                            {% if profile.smokes %}
+                                {{ profile.smokes }}
+                            {% else %}
+                                Never
+                            {% endif %}
+                        </div>
                     </div>
-                    {% endif %}
+                    
+                    <div class="info-row">
+                        <div class="info-label">Shirt Size:</div>
+                        <div class="info-value">
+                            {% if profile.shirt_size %}
+                                {{ profile.shirt_size }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Shoes Size:</div>
+                        <div class="info-value">
+                            {% if profile.shoes_size %}
+                                {{ profile.shoes_size }}
+                            {% else %}
+                                <span class="missing-info">Not provided</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-                {% endif %}
                 
                 <!-- License Information -->
                 {% if program.requires_license %}
@@ -413,9 +520,10 @@
                 <div class="alert alert-warning mt-4">
                     <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h5>
                     <ul class="mb-0">
-                        <li>By submitting this application, you confirm that all information provided is accurate and complete.</li>
+                        <li>By submitting this application, you confirm that the information provided is accurate to the best of your knowledge.</li>
                         <li>You can only apply to ONE program. Once submitted, you cannot apply to other programs.</li>
-                        <li>If you need to update any information, please go to your <a href="{% url 'profile' %}" class="alert-link">profile page</a> before submitting.</li>
+                        <li>You can complete or update missing information in your <a href="{% url 'profile' %}" class="alert-link" target="_blank">profile page</a> even after submitting your application.</li>
+                        <li>Please ensure all required documents and information are complete before the program start date.</li>
                     </ul>
                 </div>
                 
@@ -428,12 +536,18 @@
                 
                 <!-- Submit Button -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-lg">
-                        <i class="fas fa-edit me-2"></i> Update Profile First
-                    </a>
+                    <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="collapse" data-bs-target="#editProfileSection" id="editBtn">
+                        <i class="fas fa-edit me-2"></i> Edit Information
+                    </button>
                     <button type="submit" class="btn btn-success btn-lg px-5" id="submitBtn" disabled>
                         <i class="fas fa-check-circle me-2"></i> Confirm & Submit Application
                     </button>
+                </div>
+                <div class="text-center mt-3">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Tip: Click "Edit Information" to modify your details directly on this page.
+                    </small>
                 </div>
             </form>
         </div>
@@ -446,10 +560,54 @@
     document.addEventListener('DOMContentLoaded', function() {
         const checkbox = document.getElementById('confirmAccuracy');
         const submitBtn = document.getElementById('submitBtn');
+        const editBtn = document.getElementById('editBtn');
+        const editSection = document.getElementById('editProfileSection');
         
         checkbox.addEventListener('change', function() {
             submitBtn.disabled = !this.checked;
         });
+        
+        // Update button text when edit section is toggled
+        editBtn.addEventListener('click', function() {
+            setTimeout(() => {
+                if (editSection.classList.contains('show')) {
+                    editBtn.innerHTML = '<i class="fas fa-chevron-up me-2"></i> Hide Edit Form';
+                } else {
+                    editBtn.innerHTML = '<i class="fas fa-edit me-2"></i> Edit Information';
+                }
+            }, 100);
+        });
+        
+        // Handle quick edit form submission
+        const quickEditForm = document.getElementById('quickEditForm');
+        if (quickEditForm) {
+            quickEditForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                
+                fetch('{% url "profile" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message and reload page to reflect changes
+                        alert('✓ Profile updated successfully! Reloading to show updated information...');
+                        window.location.reload();
+                    } else {
+                        alert('⚠ Error updating profile. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('⚠ Error updating profile. Please try again.');
+                });
+            });
+        }
     });
 </script>
 {% endblock %}

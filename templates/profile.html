@@ -302,6 +302,18 @@
         <div class="edit-form-card">
             <h4 class="text-success mb-4"><i class="fas fa-user-edit me-2"></i>Edit Profile Information</h4>
             
+            <!-- Required Fields Notice -->
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Important:</strong> The following fields are recommended for program applications:
+                <ul class="mb-0 mt-2">
+                    <li>Date of Birth, Gender, Country of Birth, and Nationality</li>
+                    <li>Passport Number, Issue Date, and Expiry Date</li>
+                    <li>University and Primary Specialization</li>
+                </ul>
+                <small class="text-muted">Fields marked with <span class="text-danger">*</span> are important for program applications. You can submit your application and complete these later.</small>
+            </div>
+            
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 
@@ -372,11 +384,11 @@
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="{{ p_form.date_of_birth.id_for_label }}" class="form-label">Date of Birth</label>
+                        <label for="{{ p_form.date_of_birth.id_for_label }}" class="form-label">Date of Birth <span class="text-danger">*</span></label>
                         {{ p_form.date_of_birth }}
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="{{ p_form.gender.id_for_label }}" class="form-label">Gender</label>
+                        <label for="{{ p_form.gender.id_for_label }}" class="form-label">Gender <span class="text-danger">*</span></label>
                         {{ p_form.gender }}
                     </div>
                     <div class="col-md-4 mb-3">
@@ -387,11 +399,11 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.country_of_birth.id_for_label }}" class="form-label">Country of Birth</label>
+                        <label for="{{ p_form.country_of_birth.id_for_label }}" class="form-label">Country of Birth <span class="text-danger">*</span></label>
                         {{ p_form.country_of_birth }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.nationality.id_for_label }}" class="form-label">Nationality</label>
+                        <label for="{{ p_form.nationality.id_for_label }}" class="form-label">Nationality <span class="text-danger">*</span></label>
                         {{ p_form.nationality }}
                     </div>
                 </div>
@@ -420,7 +432,7 @@
                 <div class="form-section-title mt-4"><i class="fas fa-passport me-2"></i>Passport Information</div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.passport_number.id_for_label }}" class="form-label">Passport Number</label>
+                        <label for="{{ p_form.passport_number.id_for_label }}" class="form-label">Passport Number <span class="text-danger">*</span></label>
                         {{ p_form.passport_number }}
                         {% if p_form.passport_number.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.passport_number.errors }}</div>
@@ -437,14 +449,14 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.passport_issue_date.id_for_label }}" class="form-label">Passport Issue Date</label>
+                        <label for="{{ p_form.passport_issue_date.id_for_label }}" class="form-label">Passport Issue Date <span class="text-danger">*</span></label>
                         {{ p_form.passport_issue_date }}
                         {% if p_form.passport_issue_date.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.passport_issue_date.errors }}</div>
                         {% endif %}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.passport_expiry_date.id_for_label }}" class="form-label">Passport Expiry Date</label>
+                        <label for="{{ p_form.passport_expiry_date.id_for_label }}" class="form-label">Passport Expiry Date <span class="text-danger">*</span></label>
                         {{ p_form.passport_expiry_date }}
                         {% if p_form.passport_expiry_date.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.passport_expiry_date.errors }}</div>
@@ -490,7 +502,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.university.id_for_label }}" class="form-label">University</label>
+                        <label for="{{ p_form.university.id_for_label }}" class="form-label">University <span class="text-danger">*</span></label>
                         {{ p_form.university }}
                         {% if p_form.university.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.university.errors }}</div>
@@ -507,7 +519,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.specialization.id_for_label }}" class="form-label">Primary Specialization</label>
+                        <label for="{{ p_form.specialization.id_for_label }}" class="form-label">Primary Specialization <span class="text-danger">*</span></label>
                         {{ p_form.specialization }}
                         {% if p_form.specialization.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.specialization.errors }}</div>
@@ -518,6 +530,31 @@
                         {{ p_form.secondary_specialization }}
                         {% if p_form.secondary_specialization.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.secondary_specialization.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-section-title mt-4"><i class="fas fa-info-circle me-2"></i>Additional Information</div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ p_form.smokes.id_for_label }}" class="form-label">Smoking Habits</label>
+                        {{ p_form.smokes }}
+                        {% if p_form.smokes.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.smokes.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ p_form.shirt_size.id_for_label }}" class="form-label">Shirt Size</label>
+                        {{ p_form.shirt_size }}
+                        {% if p_form.shirt_size.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.shirt_size.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="{{ p_form.shoes_size.id_for_label }}" class="form-label">Shoes Size</label>
+                        {{ p_form.shoes_size }}
+                        {% if p_form.shoes_size.errors %}
+                            <div class="invalid-feedback d-block">{{ p_form.shoes_size.errors }}</div>
                         {% endif %}
                     </div>
                 </div>

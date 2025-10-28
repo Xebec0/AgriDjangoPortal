@@ -1,0 +1,60 @@
+<!-- 
+    EXAMPLE: How required fields now appear in the profile form
+    
+    This is a reference showing the structure of required fields.
+    The actual implementation is in templates/profile.html
+-->
+
+<!-- Information Banner (appears at top of form) -->
+<div class="alert alert-info mb-4">
+    <i class="fas fa-info-circle me-2"></i>
+    <strong>Important:</strong> To apply for programs, you must complete the following required fields:
+    <ul class="mb-0 mt-2">
+        <li>Date of Birth, Gender, Country of Birth, and Nationality</li>
+        <li>Passport Number, Issue Date, and Expiry Date</li>
+        <li>University and Primary Specialization</li>
+    </ul>
+    <small class="text-muted">Fields marked with <span class="text-danger">*</span> are required for program applications.</small>
+</div>
+
+<!-- Example: Required Field with Asterisk -->
+<div class="col-md-6 mb-3">
+    <label for="id_passport_number" class="form-label">
+        Passport Number <span class="text-danger">*</span>
+    </label>
+    <input type="text" 
+           name="passport_number" 
+           class="form-control" 
+           id="id_passport_number" 
+           placeholder="Enter passport number"
+           required>
+    <small class="form-text text-muted">Required for program applications</small>
+</div>
+
+<!-- Example: Optional Field without Asterisk -->
+<div class="col-md-6 mb-3">
+    <label for="id_religion" class="form-label">
+        Religion
+    </label>
+    <input type="text" 
+           name="religion" 
+           class="form-control" 
+           id="id_religion">
+</div>
+
+<!--
+    Visual Comparison:
+    
+    BEFORE:
+    ┌─────────────────────────────────┐
+    │ Passport Number                 │
+    │ [________________]              │
+    └─────────────────────────────────┘
+    
+    AFTER:
+    ┌─────────────────────────────────┐
+    │ Passport Number *               │  ← Red asterisk added
+    │ [________________]              │
+    │ Required for program applications│  ← Help text added
+    └─────────────────────────────────┘
+-->

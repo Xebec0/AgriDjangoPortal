@@ -95,6 +95,7 @@ class ProfileUpdateForm(forms.ModelForm):
                   'address', 'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
                   'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
                   'university', 'specialization', 'secondary_specialization', 'year_graduated',
+                  'smokes', 'shirt_size', 'shoes_size',
                   'passport_scan', 'academic_certificate', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
@@ -120,6 +121,9 @@ class ProfileUpdateForm(forms.ModelForm):
             'specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primary specialization'}),
             'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization'}),
             'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
+            'smokes': forms.Select(attrs={'class': 'form-control'}),
+            'shirt_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., S, M, L, XL, XXL'}),
+            'shoes_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 8, 9, 10, 42, 43'}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -190,6 +194,21 @@ class ProfileUpdateForm(forms.ModelForm):
                 'placeholder': 'e.g., +63 912 345 6789',
                 'title': 'Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots.'
             })
+        
+        # Mark important fields for program applications (frontend validation removed)
+        # These fields are recommended but not strictly required
+        # Users can apply and complete these fields later
+        important_for_application = [
+            'date_of_birth', 'gender', 'country_of_birth', 'nationality',
+            'passport_number', 'passport_issue_date', 'passport_expiry_date',
+            'university', 'specialization'
+        ]
+        
+        for field_name in important_for_application:
+            if field_name in self.fields:
+                # Update help text to indicate importance (but not strict requirement)
+                if not self.fields[field_name].help_text:
+                    self.fields[field_name].help_text = 'Recommended for program applications'
         
     def clean_profile_image(self):
         profile_image = self.cleaned_data.get('profile_image')
@@ -500,7 +519,8 @@ class CandidateForm(forms.ModelForm):
             # Program association
             'program',
             # Documents
-            'passport_scan', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance',
+            'profile_image', 'license_scan', 'passport_scan', 'academic_certificate',
+            'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance',
         ]
         widgets = {
             'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number', 'readonly': True}),
@@ -524,7 +544,10 @@ class CandidateForm(forms.ModelForm):
             'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization', 'readonly': True}),
             'smokes': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
             'program': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'profile_image': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*', 'disabled': True}),
+            'license_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png', 'disabled': True}),
             'passport_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png', 'disabled': True}),
+            'academic_certificate': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
             'tor': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
             'nc2_tesda': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
             'diploma': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),

@@ -272,6 +272,68 @@ def track_profile_files(sender, instance, created, **kwargs):
             logger.error(f"Error tracking Profile files for user {instance.user.username}: {str(e)}")
 
 
+@receiver(post_save, sender=Profile)
+def sync_profile_documents_to_candidates(sender, instance, created, **kwargs):
+    """
+    Automatically sync documents from Profile to all associated Candidate records.
+    When user updates their profile documents, all their candidate applications get updated.
+    """
+    if not instance.user or not instance.pk:
+        return
+    
+    try:
+        # Find all candidates created by this user
+        candidates = Candidate.objects.filter(created_by=instance.user)
+        
+        if not candidates.exists():
+            return
+        
+        # Document field mapping: Profile field -> Candidate field
+        document_mapping = {
+            'profile_image': 'profile_image',
+            'license_scan': 'license_scan',
+            'passport_scan': 'passport_scan',
+            'academic_certificate': 'academic_certificate',
+            'tor': 'tor',
+            'nc2_tesda': 'nc2_tesda',
+            'diploma': 'diploma',
+            'good_moral': 'good_moral',
+            'nbi_clearance': 'nbi_clearance',
+        }
+        
+        # Update each candidate
+        updated_count = 0
+        for candidate in candidates:
+            updated = False
+            
+            for profile_field, candidate_field in document_mapping.items():
+                profile_file = getattr(instance, profile_field, None)
+                current_candidate_file = getattr(candidate, candidate_field, None)
+                
+                # Sync the file (copy reference from profile to candidate)
+                if profile_file and hasattr(profile_file, 'name') and profile_file.name:
+                    # Profile has a file - copy it to candidate
+                    if not current_candidate_file or current_candidate_file.name != profile_file.name:
+                        setattr(candidate, candidate_field, profile_file)
+                        updated = True
+                        logger.info(f"Synced {profile_field} from profile to candidate {candidate.pk}")
+                elif not profile_file and current_candidate_file:
+                    # Profile file was removed - remove from candidate too
+                    setattr(candidate, candidate_field, None)
+                    updated = True
+                    logger.info(f"Removed {candidate_field} from candidate {candidate.pk} (removed from profile)")
+            
+            if updated:
+                candidate.save()
+                updated_count += 1
+        
+        if updated_count > 0:
+            logger.info(f"Synced documents from profile {instance.pk} to {updated_count} candidate(s)")
+    
+    except Exception as e:
+        logger.error(f"Error syncing Profile documents to Candidates for user {instance.user.username}: {str(e)}")
+
+
 @receiver(post_save, sender=Registration)
 def track_registration_files(sender, instance, created, **kwargs):
     """

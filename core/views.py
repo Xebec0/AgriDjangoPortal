@@ -644,8 +644,33 @@ def apply_candidate(request, program_id):
     if not program.is_registration_open():
         messages.error(request, 'Registration for this program has ended.')
         return redirect('program_detail', program_id=program_id)
-    program = get_object_or_404(AgricultureProgram, id=program_id)
+    
     profile = request.user.profile
+    
+    # Collect missing fields as warnings (but don't block application)
+    # Users can apply and complete their profile later
+    missing_fields = []
+    if not profile.passport_number:
+        missing_fields.append('Passport Number')
+    if not profile.date_of_birth:
+        missing_fields.append('Date of Birth')
+    if not profile.country_of_birth:
+        missing_fields.append('Country of Birth')
+    if not profile.nationality:
+        missing_fields.append('Nationality')
+    if not profile.gender:
+        missing_fields.append('Gender')
+    if not profile.university:
+        missing_fields.append('University')
+    if not profile.specialization:
+        missing_fields.append('Specialization')
+    if not profile.passport_issue_date:
+        missing_fields.append('Passport Issue Date')
+    if not profile.passport_expiry_date:
+        missing_fields.append('Passport Expiry Date')
+    
+    # Note: We no longer block the application for missing fields
+    # They will be shown as warnings in the confirmation page
 
     # New guard: Check program capacity
     if program.capacity <= 0:
@@ -705,29 +730,29 @@ def apply_candidate(request, program_id):
                 candidate.program = program
                 candidate.status = Candidate.APPROVED
                 
-                # Copy data from profile
-                candidate.first_name = request.user.first_name
-                candidate.last_name = request.user.last_name
-                candidate.email = request.user.email
+                # Copy data from profile (handle empty names gracefully)
+                candidate.first_name = request.user.first_name or ''
+                candidate.last_name = request.user.last_name or ''
+                candidate.email = request.user.email or ''
                 candidate.father_name = profile.father_name or ''
                 candidate.mother_name = profile.mother_name or ''
+                
+                # These fields are validated before this point, so they should exist
+                # But we handle None gracefully since model now allows blank/null
                 candidate.date_of_birth = profile.date_of_birth
-                candidate.gender = profile.gender
+                candidate.gender = profile.gender or ''
                 candidate.country_of_birth = profile.country_of_birth or ''
                 candidate.nationality = profile.nationality or ''
                 candidate.religion = profile.religion or ''
                 
-                # Passport details
+                # Passport details (validated fields)
                 candidate.passport_number = profile.passport_number or ''
-                candidate.passport_issue_date = profile.passport_issue_date or timezone.now().date()
-                candidate.passport_expiry_date = profile.passport_expiry_date or (timezone.now().date() + timezone.timedelta(days=3650))
+                candidate.passport_issue_date = profile.passport_issue_date
+                candidate.passport_expiry_date = profile.passport_expiry_date
                 
-                # Education
-                candidate.university = profile.university or University.objects.get_or_create(
-                    code='DEFAULT',
-                    defaults={'name': 'Not Specified', 'country': 'Not Specified'}
-                )[0]
-                candidate.specialization = profile.specialization or 'Not Specified'
+                # Education (validated fields)
+                candidate.university = profile.university
+                candidate.specialization = profile.specialization or ''
                 candidate.secondary_specialization = profile.secondary_specialization or ''
                 candidate.year_graduated = profile.graduation_year
                 
@@ -736,11 +761,25 @@ def apply_candidate(request, program_id):
                 candidate.shirt_size = profile.shirt_size or ''
                 candidate.smokes = profile.smokes or 'Never'
                 
-                # Documents
+                # Documents - Copy ALL documents from profile to candidate
+                if profile.profile_image:
+                    candidate.profile_image = profile.profile_image
+                if profile.license_scan:
+                    candidate.license_scan = profile.license_scan
                 if profile.passport_scan:
                     candidate.passport_scan = profile.passport_scan
                 if profile.academic_certificate:
-                    candidate.diploma = profile.academic_certificate
+                    candidate.academic_certificate = profile.academic_certificate
+                if profile.tor:
+                    candidate.tor = profile.tor
+                if profile.nc2_tesda:
+                    candidate.nc2_tesda = profile.nc2_tesda
+                if profile.diploma:
+                    candidate.diploma = profile.diploma
+                if profile.good_moral:
+                    candidate.good_moral = profile.good_moral
+                if profile.nbi_clearance:
+                    candidate.nbi_clearance = profile.nbi_clearance
                 
                 # Save candidate
                 candidate.save()
@@ -777,15 +816,37 @@ def apply_candidate(request, program_id):
                 return redirect('profile')
                 
         except Exception as e:
-            logger.error(f"Error creating application: {e}")
-            messages.error(request, 'An error occurred while processing your application. Please try again.')
+            # Enhanced error logging with full traceback and validation details
+            import traceback
+            error_details = traceback.format_exc()
+            logger.error(f"Error creating application for user {request.user.username} (ID: {request.user.id}), program {program_id}: {e}")
+            logger.error(f"Traceback: {error_details}")
+            
+            # Try to extract validation error details if available
+            if hasattr(e, 'message_dict'):
+                logger.error(f"Validation errors: {e.message_dict}")
+            
+            # Show detailed error in development
+            from django.conf import settings
+            if settings.DEBUG:
+                error_msg = f'Application Error: {str(e)}. Traceback: {error_details}'
+                messages.error(request, error_msg)
+            else:
+                messages.error(
+                    request, 
+                    'An error occurred while processing your application. Our team has been notified. '
+                    'Please ensure your profile information is complete and try again.'
+                )
             return redirect('program_detail', program_id=program.id)
     
     # GET request - show confirmation page with profile data
+    universities = University.objects.all().order_by('name')
     return render(request, 'program_apply_confirm.html', {
         'program': program,
         'profile': profile,
         'user': request.user,
+        'missing_fields': missing_fields,
+        'universities': universities,
     })
 
 
@@ -1256,7 +1317,8 @@ def edit_candidate(request, candidate_id):
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('index')
     
-    candidate = get_object_or_404(Candidate, id=candidate_id)
+    # Force refresh from database to get latest file data
+    candidate = get_object_or_404(Candidate.objects.select_related('created_by__profile'), id=candidate_id)
     
     if request.method == 'POST':
         form = CandidateForm(request.POST, request.FILES, instance=candidate)
@@ -1271,12 +1333,19 @@ def edit_candidate(request, candidate_id):
         # Set created_by on form for duplicate file validation
         form.created_by = candidate.created_by
     
-    return render(request, 'candidate_form.html', {
+    response = render(request, 'candidate_form.html', {
         'form': form,
         'candidate': candidate,
         'title': f'Edit Candidate: {candidate.first_name} {candidate.last_name}',
         'button_text': 'Update Candidate'
     })
+    
+    # Prevent browser caching to always show latest file data
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    
+    return response
 
 
 @login_required

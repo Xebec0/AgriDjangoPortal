@@ -226,15 +226,15 @@ class Candidate(models.Model):
     ]
     
     # Basic information
-    passport_number = models.CharField(max_length=20)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    passport_number = models.CharField(max_length=20, blank=True)  # Allow blank for incomplete profiles
+    first_name = models.CharField(max_length=100, blank=True, default='')  # Allow blank for incomplete profiles
+    last_name = models.CharField(max_length=100, blank=True, default='')  # Allow blank for incomplete profiles
     email = models.EmailField(blank=True, null=True)
     
     # Personal details
-    date_of_birth = models.DateField()
-    country_of_birth = models.CharField(max_length=100)
-    nationality = models.CharField(max_length=100)
+    date_of_birth = models.DateField(blank=True, null=True)  # Allow null for incomplete profiles
+    country_of_birth = models.CharField(max_length=100, blank=True)  # Allow blank for incomplete profiles
+    nationality = models.CharField(max_length=100, blank=True)  # Allow blank for incomplete profiles
     religion = models.CharField(max_length=100, blank=True, null=True)
     
     # Family information
@@ -242,8 +242,8 @@ class Candidate(models.Model):
     mother_name = models.CharField(max_length=100, blank=True, null=True)
     
     # Passport details
-    passport_issue_date = models.DateField()
-    passport_expiry_date = models.DateField()
+    passport_issue_date = models.DateField(blank=True, null=True)  # Allow null for incomplete profiles
+    passport_expiry_date = models.DateField(blank=True, null=True)  # Allow null for incomplete profiles
     
     # Physical details
     GENDER_CHOICES = [
@@ -251,14 +251,14 @@ class Candidate(models.Model):
         ('Female', 'Female'),
         ('Other', 'Other'),
     ]
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True)  # Allow blank for incomplete profiles
     shoes_size = models.CharField(max_length=10, blank=True, null=True)
     shirt_size = models.CharField(max_length=10, blank=True, null=True)
     
     # Education details
-    university = models.ForeignKey(University, on_delete=models.CASCADE)
+    university = models.ForeignKey(University, on_delete=models.CASCADE, blank=True, null=True)  # Allow null for incomplete profiles
     year_graduated = models.IntegerField(blank=True, null=True)
-    specialization = models.CharField(max_length=100)
+    specialization = models.CharField(max_length=100, blank=True)  # Allow blank for incomplete profiles
     secondary_specialization = models.CharField(max_length=100, blank=True, null=True)
     
     # Additional information
@@ -278,12 +278,15 @@ class Candidate(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     # Files
-    passport_scan = models.FileField(upload_to='passports/', blank=True, null=True)
-    tor = models.FileField(upload_to='documents/tor/', blank=True, null=True)
-    nc2_tesda = models.FileField(upload_to='documents/tesda/', blank=True, null=True)
-    diploma = models.FileField(upload_to='documents/diploma/', blank=True, null=True)
-    good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True)
-    nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True)
+    profile_image = models.ImageField(upload_to='candidate_images/', blank=True, null=True, verbose_name="Profile Image")
+    license_scan = models.FileField(upload_to='candidate_licenses/', blank=True, null=True, verbose_name="License Scan")
+    passport_scan = models.FileField(upload_to='passports/', blank=True, null=True, verbose_name="Passport Scan")
+    academic_certificate = models.FileField(upload_to='candidate_certificates/', blank=True, null=True, verbose_name="Academic Certificate")
+    tor = models.FileField(upload_to='documents/tor/', blank=True, null=True, verbose_name="Transcript of Records (TOR)")
+    nc2_tesda = models.FileField(upload_to='documents/tesda/', blank=True, null=True, verbose_name="NC2 from TESDA")
+    diploma = models.FileField(upload_to='documents/diploma/', blank=True, null=True, verbose_name="Diploma")
+    good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True, verbose_name="Good Moral Character")
+    nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True, verbose_name="NBI Clearance")
     
     # System fields
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_candidates')
@@ -292,7 +295,10 @@ class Candidate(models.Model):
         return f"{self.first_name} {self.last_name} ({self.passport_number})"
     
     class Meta:
-        unique_together = ('passport_number', 'university')
+        # Removed unique_together constraint to allow flexible applications with incomplete profiles
+        # Users can now apply and complete their information later
+        # unique_together = ('passport_number', 'university')
+        pass
 
 
 class Notification(models.Model):
@@ -528,7 +534,7 @@ class UploadedFile(models.Model):
     def register_upload(cls, user, document_type, file_obj, model_name, model_id):
         """
         Register a new file upload or update existing record.
-        Deactivates old file records for the same document type.
+        Uses get_or_create to avoid unique constraint violations.
         """
         file_hash = cls.calculate_file_hash(file_obj)
         file_name = getattr(file_obj, 'name', 'unknown')
@@ -538,26 +544,39 @@ class UploadedFile(models.Model):
         # Get MIME type if available
         mime_type = getattr(file_obj, 'content_type', None)
         
-        # Deactivate any existing uploads for this user and document type
+        # Deactivate any existing uploads for this user and document type with DIFFERENT hash
         cls.objects.filter(
             user=user,
             document_type=document_type,
             is_active=True
-        ).update(is_active=False)
+        ).exclude(file_hash=file_hash).update(is_active=False)
         
-        # Create new record
-        uploaded_file = cls.objects.create(
+        # Get or create the record (avoids duplicate hash error)
+        uploaded_file, created = cls.objects.get_or_create(
             user=user,
             document_type=document_type,
-            file_name=file_name,
-            file_path=file_path,
-            file_size=file_size,
             file_hash=file_hash,
-            mime_type=mime_type,
-            model_name=model_name,
-            model_id=model_id,
-            is_active=True
+            defaults={
+                'file_name': file_name,
+                'file_path': file_path,
+                'file_size': file_size,
+                'mime_type': mime_type,
+                'model_name': model_name,
+                'model_id': model_id,
+                'is_active': True
+            }
         )
+        
+        # If record already existed, update it
+        if not created:
+            uploaded_file.file_name = file_name
+            uploaded_file.file_path = file_path
+            uploaded_file.file_size = file_size
+            uploaded_file.mime_type = mime_type
+            uploaded_file.model_name = model_name
+            uploaded_file.model_id = model_id
+            uploaded_file.is_active = True
+            uploaded_file.save()
         
         return uploaded_file
     
