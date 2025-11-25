@@ -1,0 +1,68 @@
+{% extends "unfold/base.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>
+        // Remove target="_blank" from "View site" link to open in same tab
+        (function() {
+            const removeTargetBlank = function() {
+                // Find all links in the header/top navigation
+                const links = document.querySelectorAll('a[href="/"], header a, [role="banner"] a, .header__link');
+                links.forEach(link => {
+                    if (link.getAttribute('href') === '/') {
+                        link.removeAttribute('target');
+                        link.removeAttribute('rel');
+                        // Prevent any bubbling event that might add target back
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            window.location.href = '/';
+                        });
+                    }
+                });
+            };
+            
+            // Run immediately if DOM is ready
+            if (document.readyState !== 'loading') {
+                removeTargetBlank();
+            }
+            
+            // Run on DOM ready
+            document.addEventListener('DOMContentLoaded', removeTargetBlank);
+            
+            // Run after slight delays to catch any dynamically added elements
+            setTimeout(removeTargetBlank, 100);
+            setTimeout(removeTargetBlank, 500);
+            setTimeout(removeTargetBlank, 1500);
+            
+            // Also observe DOM mutations to handle dynamic changes
+            const observer = new MutationObserver(function() {
+                removeTargetBlank();
+            });
+            
+            // Start observing when ready
+            if (document.body) {
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['target', 'href']
+                });
+            } else {
+                document.addEventListener('DOMContentLoaded', function() {
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true,
+                        attributes: true,
+                        attributeFilter: ['target', 'href']
+                    });
+                });
+            }
+        })();
+    </script>
+{% endblock %}
+
+
+
+
+

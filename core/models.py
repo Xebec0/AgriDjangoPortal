@@ -83,6 +83,36 @@ class Profile(models.Model):
     good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True, verbose_name="Good Moral Character")
     nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True, verbose_name="NBI Clearance")
     
+    # OAuth 2.0 Social Authentication Fields
+    OAUTH_PROVIDER_CHOICES = [
+        ('google', 'Google'),
+        ('facebook', 'Facebook'),
+        ('microsoft', 'Microsoft'),
+        ('email', 'Email'),
+    ]
+    oauth_provider = models.CharField(
+        max_length=20,
+        choices=OAUTH_PROVIDER_CHOICES,
+        blank=True,
+        null=True,
+        verbose_name="OAuth Provider",
+        help_text="The social authentication provider used to create this account"
+    )
+    oauth_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        unique=True,
+        verbose_name="OAuth Provider ID",
+        help_text="The unique ID from the OAuth provider"
+    )
+    oauth_picture_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="OAuth Profile Picture URL",
+        help_text="Original profile picture URL from OAuth provider"
+    )
+    
     def __str__(self):
         return f"{self.user.username}'s profile"
 

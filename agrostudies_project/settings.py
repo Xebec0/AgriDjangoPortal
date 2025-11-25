@@ -49,9 +49,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  # Required for django-allauth
     'core.apps.CoreConfig',  # Our custom app
     'django_crontab',  # For scheduled tasks
+    'allauth',  # Django-allauth core
+    'allauth.account',  # Allauth account management
+    'allauth.socialaccount',  # Allauth social authentication
+    'allauth.socialaccount.providers.google',  # Google OAuth provider
+    'allauth.socialaccount.providers.facebook',  # Facebook OAuth provider
+    'allauth.socialaccount.providers.microsoft',  # Microsoft OAuth provider
 ]
+
+SITE_ID = 1  # Required for django-allauth
 
 # Add caching apps if available
 try:
@@ -77,6 +86,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Django-allauth middleware (required)
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.RequestContextMiddleware',
@@ -337,7 +347,7 @@ UNFOLD = {
     "SITE_HEADER": ADMIN_SITE_HEADER,
     "SITE_TITLE": ADMIN_SITE_TITLE,
     "SITE_INDEX_TITLE": ADMIN_SITE_INDEX_TITLE,
-    "SITE_URL": "/admin",
+    "SITE_URL": "/",
     "SITE_SYMBOL": "eco",  # Material icon name (changed to a leaf/eco icon)
     "ENVIRONMENT": "production",
     "DASHBOARD_CALLBACK": "core.utils.admin_dashboard",  # Optional: path to dashboard callback
@@ -372,3 +382,76 @@ if SENTRY_DSN and not DEBUG:
         send_default_pii=False,  # Don't send personally identifiable information
         environment='production' if not DEBUG else 'development',
     )
+
+# ----- Django-Allauth OAuth Configuration -----
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Allauth adapter settings
+SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
+SOCIALACCOUNT_AUTO_SIGNUP = False  # Require manual signup, we'll handle it custom
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}  # Use modern approach instead of ACCOUNT_AUTHENTICATION_METHOD
+
+# Social Account Providers Configuration
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': os.getenv('GOOGLE_OAUTH_CLIENT_ID', ''),
+            'secret': os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', ''),
+        },
+        'FIELDS': {
+            'email': 'email',
+            'name': 'name',
+            'picture': 'picture',
+        },
+    },
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': 'https://connect.facebook.net/en_US/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'email'
+        ],
+        'EXCHANGE_TOKEN': True,
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v15.0',
+        'APP': {
+            'client_id': os.getenv('FACEBOOK_OAUTH_CLIENT_ID', ''),
+            'secret': os.getenv('FACEBOOK_OAUTH_CLIENT_SECRET', ''),
+        }
+    },
+    'microsoft': {
+        'SCOPE': [
+            'User.Read',
+            'email'
+        ],
+        'AUTH_PARAMS': {},
+        'APP': {
+            'client_id': os.getenv('MICROSOFT_OAUTH_CLIENT_ID', ''),
+            'secret': os.getenv('MICROSOFT_OAUTH_CLIENT_SECRET', ''),
+        }
+    }
+}
+

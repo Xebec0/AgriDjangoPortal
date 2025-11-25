@@ -70,3 +70,7 @@ django-cachalot>=2.6.1  # Automatic ORM caching
 # Modern Admin Interface
 django-unfold>=0.38.0  # Modern admin interface with custom theming
 
+# OAuth 2.0 Social Authentication
+django-allauth>=0.52.0  # Comprehensive social authentication
+requests>=2.31.0  # For OAuth API requests
+PyJWT>=2.8.0  # For JWT token handling in OAuth

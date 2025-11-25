@@ -189,7 +189,16 @@ def index(request):
 
 @ratelimit(key='ip', rate='5/h', method='POST', block=True)
 def register(request):
-    """Comprehensive user registration view with extended profile fields"""
+    """Comprehensive user registration view with extended profile fields and OAuth support"""
+    from .oauth_utils import (
+        get_oauth_session_data, clear_oauth_session_data,
+        ProfilePictureDownloader
+    )
+    import secrets
+    
+    # Check for OAuth data in session
+    oauth_data = get_oauth_session_data(request)
+    
     if request.method == 'POST':
         form = ComprehensiveRegisterForm(request.POST, request.FILES)
         if form.is_valid():
@@ -199,19 +208,48 @@ def register(request):
             # Check if a user with this username or email already exists
             if User.objects.filter(username=username).exists():
                 messages.error(request, f'An account with username "{username}" already exists. Please choose a different username.')
-                return render(request, 'register.html', {'form': form})
+                return render(request, 'register.html', {'form': form, 'oauth_data': oauth_data})
 
             if User.objects.filter(email=email).exists():
                 messages.error(request, f'An account with email "{email}" already exists. Please use a different email or try to log in.')
-                return render(request, 'register.html', {'form': form})
+                return render(request, 'register.html', {'form': form, 'oauth_data': oauth_data})
 
             # Save user and profile
             user = form.save()
             profile = form.save_profile(user)
 
-            # Mark email as verified
-            profile.email_verified = True
-            profile.save()
+            # Handle OAuth-specific data
+            if oauth_data:
+                # Save OAuth provider information
+                profile.oauth_provider = oauth_data.get('provider')
+                profile.oauth_id = oauth_data.get('oauth_id')
+                
+                # Email is verified if it came from OAuth
+                profile.email_verified = oauth_data.get('email_verified', True)
+                
+                # Generate random password for OAuth users (they won't use it)
+                if oauth_data.get('provider') != 'email':
+                    random_password = secrets.token_urlsafe(32)
+                    user.set_password(random_password)
+                    user.save()
+                
+                profile.save()
+                
+                # Download and save profile picture if available
+                picture_url = oauth_data.get('picture')
+                if picture_url:
+                    ProfilePictureDownloader.download_and_save_picture(
+                        profile,
+                        picture_url,
+                        oauth_data.get('provider', 'oauth')
+                    )
+                
+                # Clear OAuth data from session
+                clear_oauth_session_data(request)
+            else:
+                # Mark email as verified for email signup too
+                profile.email_verified = True
+                profile.save()
 
             # Create welcome notification
             Notification.add_notification(
@@ -225,8 +263,23 @@ def register(request):
             # Redirect to index page with modal auto-open instead of login page
             return redirect('/?auto_open_modal=login')
     else:
+        # Pre-fill form with OAuth data if available
         form = ComprehensiveRegisterForm()
-    return render(request, 'register.html', {'form': form})
+        if oauth_data:
+            # Pre-populate form fields
+            initial_data = {
+                'email': oauth_data.get('email'),
+                'confirm_email': oauth_data.get('email'),
+                'first_name': oauth_data.get('first_name'),
+                'last_name': oauth_data.get('last_name'),
+            }
+            form = ComprehensiveRegisterForm(initial=initial_data)
+    
+    context = {
+        'form': form,
+        'oauth_data': oauth_data,
+    }
+    return render(request, 'register.html', context)
 
 
 @ratelimit(key='ip', rate='3/h', method='POST', block=True)
@@ -2191,3 +2244,118 @@ def custom_password_reset(request):
         form = CustomPasswordResetForm()
     
     return render(request, 'password_reset.html', {'form': form})
+
+
+# ============================================================================
+# OAuth 2.0 Social Authentication Views
+# ============================================================================
+
+def social_register(request):
+    """
+    Social authentication gateway page
+    Displays OAuth provider options and email signup option
+    """
+    from django.conf import settings
+    
+    context = {
+        'GOOGLE_OAUTH_CLIENT_ID': settings.SOCIALACCOUNT_PROVIDERS.get('google', {}).get('APP', {}).get('client_id', ''),
+        'FACEBOOK_OAUTH_CLIENT_ID': settings.SOCIALACCOUNT_PROVIDERS.get('facebook', {}).get('APP', {}).get('client_id', ''),
+        'MICROSOFT_OAUTH_CLIENT_ID': settings.SOCIALACCOUNT_PROVIDERS.get('microsoft', {}).get('APP', {}).get('client_id', ''),
+    }
+    return render(request, 'register-email.html', context)
+
+
+@require_POST
+def oauth_callback(request, provider):
+    """
+    Generic OAuth callback handler for all providers
+    Processes authorization code and redirects to registration form
+    """
+    from .oauth_utils import (
+        OAuthTokenExchanger, OAuthDataExtractor,
+        store_oauth_session_data, ProfilePictureDownloader
+    )
+    
+    # Get authorization code and state
+    code = request.GET.get('code')
+    state = request.GET.get('state')
+    error = request.GET.get('error')
+    error_description = request.GET.get('error_description')
+    
+    # Check for OAuth errors
+    if error:
+        logger.warning(f"OAuth error from {provider}: {error} - {error_description}")
+        messages.error(request, f"Authentication failed: {error_description or error}")
+        return redirect('social_register')
+    
+    # Validate state parameter
+    session_state = request.session.get(f'oauth_state_{provider}')
+    if not state or state != session_state:
+        logger.warning(f"State mismatch for {provider}")
+        messages.error(request, "Authentication state mismatch. Please try again.")
+        return redirect('social_register')
+    
+    if not code:
+        messages.error(request, "No authorization code received from provider.")
+        return redirect('social_register')
+    
+    try:
+        # Build redirect URI
+        redirect_uri = request.build_absolute_uri(f'/auth/{provider}/callback/')
+        
+        # Exchange code for access token
+        if provider == 'google':
+            access_token, id_token = OAuthTokenExchanger.exchange_google_code(code, redirect_uri)
+            user_data = OAuthDataExtractor.get_google_user_data(access_token) if access_token else None
+        elif provider == 'facebook':
+            access_token, _ = OAuthTokenExchanger.exchange_facebook_code(code, redirect_uri)
+            user_data = OAuthDataExtractor.get_facebook_user_data(access_token) if access_token else None
+        elif provider == 'microsoft':
+            access_token, _ = OAuthTokenExchanger.exchange_microsoft_code(code, redirect_uri)
+            user_data = OAuthDataExtractor.get_microsoft_user_data(access_token) if access_token else None
+        else:
+            messages.error(request, f"Unknown OAuth provider: {provider}")
+            return redirect('social_register')
+        
+        if not access_token or not user_data:
+            logger.error(f"Failed to retrieve OAuth data for {provider}")
+            messages.error(request, f"Failed to authenticate with {provider.title()}. Please try again.")
+            return redirect('social_register')
+        
+        # Store OAuth data in session
+        store_oauth_session_data(request, user_data)
+        
+        # Redirect to registration form with pre-filled data
+        return redirect('register')
+        
+    except Exception as e:
+        logger.error(f"OAuth callback error for {provider}: {str(e)}")
+        messages.error(request, f"An error occurred during authentication. Please try again.")
+        return redirect('social_register')
+
+
+def oauth_callback_get(request, provider):
+    """
+    GET handler for OAuth callback (redirects via POST)
+    OAuth providers typically redirect via GET
+    """
+    # Convert GET request to POST for processing
+    post_request = request.POST.copy()
+    post_request.update(request.GET)
+    
+    # Create a new request object with the combined data
+    class ModifiedRequest:
+        def __init__(self, original_request):
+            self.__dict__.update(original_request.__dict__)
+            self.POST = post_request
+            self.GET = original_request.GET
+        
+        def build_absolute_uri(self, location):
+            return self.META['wsgi.url_scheme'] + '://' + self.META['HTTP_HOST'] + location
+        
+        def __getattr__(self, name):
+            return getattr(self._request, name)
+    
+    modified_request = ModifiedRequest(request)
+    return oauth_callback(modified_request, provider)
+

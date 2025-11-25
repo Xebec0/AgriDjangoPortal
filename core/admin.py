@@ -4,10 +4,12 @@ from django.urls import path, reverse
 from django.shortcuts import redirect
 from django.core.management import call_command
 from django.utils import timezone
+from django.utils.html import format_html
 from datetime import timedelta
 from unfold.admin import ModelAdmin
 from .models import AgricultureProgram, Profile, Registration, University, Candidate, Notification, ActivityLog, UploadedFile
 
+# Configure the default admin site
 admin.site.site_header = "AgroStudies Admin"
 admin.site.site_title = "AgroStudies Admin"
 admin.site.index_title = "AgroStudies Admin"

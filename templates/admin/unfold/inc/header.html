@@ -1,0 +1,71 @@
+{% extends "unfold/base.html" %}
+{% load i18n unfold %}
+
+{% block header %}
+    <header class="header">
+        <div class="header__container">
+            <div class="header__logo">
+                {% if UNFOLD.SITE_SYMBOL %}
+                    <svg class="icon icon--header-symbol">
+                        <use xlink:href="#icon-{{ UNFOLD.SITE_SYMBOL }}"></use>
+                    </svg>
+                {% endif %}
+                <a href="{% url 'admin:index' %}" class="header__logo-link">{{ UNFOLD.SITE_HEADER }}</a>
+            </div>
+            <nav class="header__nav">
+                {% if UNFOLD.SITE_URL %}
+                    {# "View site" link - REMOVED target="_blank" to open in same tab #}
+                    <a href="{{ UNFOLD.SITE_URL }}" class="header__link" title="{% trans 'View site' %}">
+                        <svg class="icon">
+                            <use xlink:href="#icon-arrow-top-right"></use>
+                        </svg>
+                    </a>
+                {% endif %}
+                {% block userlinks %}
+                    <div class="header__user">
+                        {% if user.is_active and user.is_staff %}
+                            <button class="header__button" data-action="theme-toggle" title="{% trans 'Toggle dark mode' %}">
+                                <svg class="icon">
+                                    <use xlink:href="#icon-sun"></use>
+                                </svg>
+                            </button>
+                            <div class="header__divider"></div>
+                            <div class="header__user-info">
+                                <span class="header__user-name">
+                                    {{ user.get_short_name|default:user.get_username }}
+                                </span>
+                                <span class="header__user-email">{{ user.email }}</span>
+                            </div>
+                            <div class="dropdown">
+                                <button class="header__user-avatar dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {% if user.profile and user.profile.profile_image %}
+                                        <img src="{{ user.profile.profile_image.url }}" alt="{{ user.username }}" />
+                                    {% else %}
+                                        <svg class="icon">
+                                            <use xlink:href="#icon-user-circle"></use>
+                                        </svg>
+                                    {% endif %}
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="{% url 'admin:password_change' %}">
+                                        <svg class="icon dropdown-item__icon">
+                                            <use xlink:href="#icon-lock"></use>
+                                        </svg>
+                                        {% trans 'Change password' %}
+                                    </a>
+                                    <hr class="dropdown-divider" />
+                                    <a class="dropdown-item" href="{% url 'admin:logout' %}">
+                                        <svg class="icon dropdown-item__icon">
+                                            <use xlink:href="#icon-log-out"></use>
+                                        </svg>
+                                        {% trans 'Log out' %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            </nav>
+        </div>
+    </header>
+{% endblock %}

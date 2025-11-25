@@ -1,0 +1,461 @@
+{% extends 'base.html' %}
+
+{% block title %}Social Registration - Agrostudies Registration System{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --primary-color: #067d17;
+    --primary-dark: #057014;
+    --light-gray: #f8f9fa;
+    --border-color: #e9ecef;
+    --text-muted: #6c757d;
+}
+
+.social-register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+}
+
+.social-register-box {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+    padding: 40px 30px;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.register-header .logo-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.register-header h2 {
+    font-size: 1.75rem;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.register-header p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.oauth-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.oauth-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #333;
+    background: white;
+}
+
+.oauth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.oauth-button:active {
+    transform: translateY(0);
+}
+
+.oauth-button-icon {
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oauth-button.google {
+    border-color: #dadce0;
+}
+
+.oauth-button.google:hover {
+    background: #f8f9fa;
+    border-color: #ccc;
+}
+
+.oauth-button.facebook {
+    border-color: #e5e7eb;
+}
+
+.oauth-button.facebook:hover {
+    background: #f3f4f6;
+    border-color: #bbb;
+}
+
+.oauth-button.microsoft {
+    border-color: #d0d0d0;
+}
+
+.oauth-button.microsoft:hover {
+    background: #f2f2f2;
+    border-color: #aaa;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+    color: var(--text-muted);
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.divider-text {
+    padding: 0 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.email-signup-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.email-signup-button:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.95rem;
+}
+
+.auth-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.auth-links-divider {
+    color: var(--border-color);
+}
+
+.security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 12px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #057014;
+    text-align: center;
+}
+
+.security-badge i {
+    font-size: 1rem;
+}
+
+.error-message {
+    background: #fee;
+    border: 1px solid #fcc;
+    color: #c33;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .social-register-box {
+        padding: 30px 20px;
+    }
+
+    .register-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .auth-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .auth-links-divider {
+        display: none;
+    }
+}
+
+/* Loading state */
+.oauth-button.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.oauth-button.loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="social-register-container">
+    <div class="social-register-box">
+        <!-- Header -->
+        <div class="register-header">
+            <div class="logo-icon">
+                <i class="fas fa-seedling"></i>
+            </div>
+            <h2>Create Your Account</h2>
+            <p>Join AgroStudies and explore agricultural programs</p>
+        </div>
+
+        <!-- Error Message Display -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- OAuth Buttons -->
+        <div class="oauth-buttons-container">
+            <!-- Google -->
+            <button class="oauth-button google" data-provider="google" onclick="initiateOAuthFlow('google')">
+                <span class="oauth-button-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                </span>
+                Continue with Google
+            </button>
+
+            <!-- Facebook -->
+            <button class="oauth-button facebook" data-provider="facebook" onclick="initiateOAuthFlow('facebook')">
+                <span class="oauth-button-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
+                    </svg>
+                </span>
+                Continue with Facebook
+            </button>
+
+            <!-- Microsoft -->
+            <button class="oauth-button microsoft" data-provider="microsoft" onclick="initiateOAuthFlow('microsoft')">
+                <span class="oauth-button-icon">
+                    <svg width="20" height="20" viewBox="0 0 23 23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.4 0H0v11.4h11.4V0z" fill="#F25022"/>
+                        <path d="M23 0H11.6v11.4H23V0z" fill="#7FBA00"/>
+                        <path d="M11.4 11.6H0V23h11.4v-11.4z" fill="#00A4EF"/>
+                        <path d="M23 11.6H11.6V23H23v-11.4z" fill="#FFB900"/>
+                    </svg>
+                </span>
+                Continue with Microsoft
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+            <div class="divider-text">OR</div>
+        </div>
+
+        <!-- Email Signup -->
+        <div style="margin-bottom: 20px;">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="email-signup-button">
+                <i class="fas fa-envelope"></i>
+                Sign up with Email
+            </a>
+        </div>
+
+        <!-- Login Link -->
+        <div class="auth-links">
+            <span>Already have an account?</span>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign in</a>
+        </div>
+
+        <!-- Security Badge -->
+        <div class="security-badge">
+            <i class="fas fa-lock"></i>
+            <span>Your data is secure and never shared without permission</span>
+        </div>
+    </div>
+</div>
+
+<!-- OAuth Flow Handler Script -->
+<script>
+const OAUTH_CONFIG = {
+    'google': {
+        'client_id': '{{ GOOGLE_OAUTH_CLIENT_ID }}',
+        'auth_uri': 'https://accounts.google.com/o/oauth2/v2/auth',
+        'scope': 'openid email profile',
+    },
+    'facebook': {
+        'client_id': '{{ FACEBOOK_OAUTH_CLIENT_ID }}',
+        'auth_uri': 'https://www.facebook.com/v15.0/dialog/oauth',
+        'scope': 'email,public_profile',
+    },
+    'microsoft': {
+        'client_id': '{{ MICROSOFT_OAUTH_CLIENT_ID }}',
+        'auth_uri': 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+        'scope': 'openid profile email',
+    }
+};
+
+function initiateOAuthFlow(provider) {
+    const config = OAUTH_CONFIG[provider];
+    const button = event.target.closest('.oauth-button');
+    
+    // Validate client ID is configured
+    if (!config.client_id) {
+        showError(`OAuth ${provider} is not configured. Please contact support.`);
+        return;
+    }
+    
+    // Add loading state
+    button.classList.add('loading');
+    button.disabled = true;
+    
+    try {
+        // Build OAuth URL
+        const redirect_uri = `${window.location.origin}/auth/${provider}/callback/`;
+        const state = generateRandomState();
+        sessionStorage.setItem(`oauth_state_${provider}`, state);
+        
+        let oauth_url = `${config.auth_uri}?`;
+        
+        if (provider === 'google') {
+            oauth_url += new URLSearchParams({
+                'client_id': config.client_id,
+                'redirect_uri': redirect_uri,
+                'response_type': 'code',
+                'scope': config.scope,
+                'state': state,
+                'access_type': 'online',
+                'prompt': 'consent'
+            }).toString();
+        } else if (provider === 'facebook') {
+            oauth_url += new URLSearchParams({
+                'client_id': config.client_id,
+                'redirect_uri': redirect_uri,
+                'response_type': 'code',
+                'scope': config.scope,
+                'state': state,
+                'auth_type': 'rerequest'
+            }).toString();
+        } else if (provider === 'microsoft') {
+            oauth_url += new URLSearchParams({
+                'client_id': config.client_id,
+                'redirect_uri': redirect_uri,
+                'response_type': 'code',
+                'scope': config.scope,
+                'state': state,
+                'response_mode': 'query'
+            }).toString();
+        }
+        
+        // Redirect to OAuth provider
+        window.location.href = oauth_url;
+    } catch (error) {
+        console.error('OAuth Error:', error);
+        showError('An error occurred during OAuth initialization. Please try again.');
+        button.classList.remove('loading');
+        button.disabled = false;
+    }
+}
+
+function generateRandomState() {
+    return Math.random().toString(36).substring(2, 15) + 
+           Math.random().toString(36).substring(2, 15);
+}
+
+function showError(message) {
+    const errorEl = document.getElementById('errorMessage');
+    errorEl.textContent = message;
+    errorEl.classList.add('show');
+    setTimeout(() => {
+        errorEl.classList.remove('show');
+    }, 5000);
+}
+</script>
+{% endblock %}

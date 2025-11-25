@@ -11,11 +11,15 @@ urlpatterns = [
     path('auth-required/', views.auth_required, name='auth_required'),
     path('verify-email/<str:token>/', views.verify_email, name='verify_email'),
     path('register/', views.register, name='register'),
+    path('register/social/', views.social_register, name='social_register'),
     path('admin-register/', views.admin_register, name='admin_register'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
     path('profile/clear-documents/', views.clear_all_documents, name='clear_all_documents'),
+    
+    # OAuth callback URLs
+    path('auth/<str:provider>/callback/', views.oauth_callback_get, name='oauth_callback'),
     
     # Password Reset URLs
     path('password_reset/', views.custom_password_reset, name='password_reset'),
