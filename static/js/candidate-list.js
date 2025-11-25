@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit Sort By dropdown
+    const sortBySelect = document.getElementById('id_sort_by');
+    if (sortBySelect) {
+        sortBySelect.addEventListener('change', function() {
+            console.log('Sort by changed to:', this.value);
+            document.getElementById('candidateFilterForm').submit();
+        });
+    }
+
     // Select all checkbox functionality
     const selectAllCheckbox = document.getElementById('selectAll');
     const candidateCheckboxes = document.querySelectorAll('.candidate-select');

@@ -659,7 +659,7 @@ def apply_candidate(request, program_id):
     if not profile.nationality:
         missing_fields.append('Nationality')
     if not profile.gender:
-        missing_fields.append('Gender')
+        missing_fields.append('Sex')
     if not profile.university:
         missing_fields.append('University')
     if not profile.specialization:
@@ -868,20 +868,40 @@ def cancel_registration(request, registration_id):
 def candidate_list(request):
     """List candidates. Staff see all; applicants see only their own submission(s)."""
     if request.user.is_staff:
-        candidates = Candidate.objects.select_related('university', 'program', 'created_by').all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('university', 'program', 'created_by').all()
     else:
         # Show only the current user's candidate records
         candidates = Candidate.objects.select_related('university', 'program', 'created_by').filter(
             Q(created_by=request.user) | Q(email=request.user.email)
-        ).order_by('-created_at')
+        )
+    
     form = CandidateSearchForm(request.GET)
     
     # Apply filters (staff only)
     if form.is_valid() and request.user.is_staff:
+        # Text search - search by name or email
+        search = form.cleaned_data.get('search')
+        if search:
+            candidates = candidates.filter(
+                Q(first_name__icontains=search) | 
+                Q(last_name__icontains=search) | 
+                Q(email__icontains=search)
+            )
+
         # Filter by country (country of birth)
         country = form.cleaned_data.get('country')
         if country:
             candidates = candidates.filter(country_of_birth=country)
+
+        # Filter by nationality
+        nationality = form.cleaned_data.get('nationality')
+        if nationality:
+            candidates = candidates.filter(nationality=nationality)
+
+        # Filter by sex
+        gender = form.cleaned_data.get('gender')
+        if gender:
+            candidates = candidates.filter(gender=gender)
 
         # Filter by specialization
         specialization = form.cleaned_data.get('specialization')
@@ -938,6 +958,16 @@ def candidate_list(request):
             # Include the entire end date by adding one day and using less than
             end_date_next = end_date + timedelta(days=1)
             candidates = candidates.filter(created_at__date__lt=end_date_next)
+
+        # Apply sorting
+        sort_by = form.cleaned_data.get('sort_by')
+        if sort_by:
+            candidates = candidates.order_by(sort_by)
+        else:
+            candidates = candidates.order_by('-created_at')
+    else:
+        # Default sorting for non-staff users
+        candidates = candidates.order_by('-created_at')
     
     # Check if export is requested
     export_format = request.GET.get('export')

@@ -88,26 +88,59 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div class="card-body">
             <form method="get" class="mb-4" id="candidateFilterForm">
-                <div class="row">
-                    <div class="col-md-3">
+                <!-- Search Row -->
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form.search.label_tag }}
+                            {{ form.search }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters Row 1 -->
+                <div class="row mb-3">
+                    <div class="col-md-2">
                         <div class="form-group mb-2">
                             {{ form.country.label_tag }}
                             {{ form.country }}
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
+                        <div class="form-group mb-2">
+                            {{ form.nationality.label_tag }}
+                            {{ form.nationality }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mb-2">
+                            {{ form.gender.label_tag }}
+                            {{ form.gender }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <div class="form-group mb-2">
                             {{ form.specialization.label_tag }}
                             {{ form.specialization }}
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group mb-2">
                             {{ form.status.label_tag }}
                             {{ form.status }}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
+                        <div class="form-group mb-2">
+                            {{ form.sort_by.label_tag }}
+                            {{ form.sort_by }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Range Row -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
                         <div class="form-group mb-2">
                             <label for="date_range">Date Range</label>
                             <div class="input-group">
@@ -121,9 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <input type="hidden" name="end_date" id="end_date_hidden" value="{{ request.GET.end_date|default:'' }}">
                         </div>
                     </div>
-                    <div class="col-md-3 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary mb-2 me-2">
-                            <i class="fas fa-search"></i> Search
+                    <div class="col-md-4 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary mb-2 flex-grow-1">
+                            <i class="fas fa-search"></i> Search & Filter
                         </button>
                         <a href="{% url 'candidate_list' %}" class="btn btn-secondary mb-2">
                             <i class="fas fa-redo"></i> Reset
@@ -144,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Gender</th>
+                                <th>Sex</th>
                                 <th>Country</th>
                                 <th>Nationality</th>
                                 <th>Specialization</th>

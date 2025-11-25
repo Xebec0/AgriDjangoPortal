@@ -692,11 +692,44 @@ class CandidateSearchForm(forms.Form):
         ('Rejected', 'Rejected'),
     ]
 
-    country = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
-    # Removed university and passport fields
-    specialization = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}))
-    status = forms.CharField(required=False, widget=forms.Select(choices=STATUSES, attrs={'class': 'form-control'}))
-    date_range = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Select date range'}))
+    SEX_CHOICES = [
+        ('', 'All sexes'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
+    SORT_CHOICES = [
+        ('-created_at', 'Newest First'),
+        ('created_at', 'Oldest First'),
+        ('first_name', 'Name (A-Z)'),
+        ('-first_name', 'Name (Z-A)'),
+        ('email', 'Email (A-Z)'),
+        ('-email', 'Email (Z-A)'),
+        ('gender', 'Sex'),
+        ('country_of_birth', 'Country'),
+        ('nationality', 'Nationality'),
+        ('status', 'Status'),
+    ]
+
+    # Search field
+    search = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control', 
+        'placeholder': 'Search by name or email...'
+    }), label='Search')
+
+    # Filter fields
+    country = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}), label='Country')
+    nationality = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}), label='Nationality')
+    gender = forms.CharField(required=False, widget=forms.Select(choices=SEX_CHOICES, attrs={'class': 'form-control'}), label='Sex')
+    specialization = forms.CharField(required=False, widget=forms.Select(attrs={'class': 'form-control'}), label='Specialization')
+    status = forms.CharField(required=False, widget=forms.Select(choices=STATUSES, attrs={'class': 'form-control'}), label='Status')
+    
+    # Sorting field
+    sort_by = forms.CharField(required=False, widget=forms.Select(choices=SORT_CHOICES, attrs={'class': 'form-control'}), label='Sort By', initial='-created_at')
+
+    # Date range fields
+    date_range = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True, 'placeholder': 'Select date range'}), label='Date Range')
     start_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='From Date')
     end_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='To Date')
     
@@ -708,10 +741,20 @@ class CandidateSearchForm(forms.Form):
             ('Philippines', 'Philippines'),
             ('Thailand', 'Thailand'),
             ('Vietnam', 'Vietnam'),
+            ('Sweden', 'Sweden'),
+            ('Slovenia', 'Slovenia'),
             # Add more countries as needed
         ]
-        
-        # Removed university choices population
+
+        # Populate nationality choices
+        self.fields['nationality'].widget.choices = [('', 'All nationalities')] + [
+            ('Filipino', 'Filipino'),
+            ('Thai', 'Thai'),
+            ('Vietnamese', 'Vietnamese'),
+            ('Swedish', 'Swedish'),
+            ('Slovenian', 'Slovenian'),
+            # Add more nationalities as needed
+        ]
         
         # Populate specialization choices
         self.fields['specialization'].widget.choices = [('', 'All specializations')] + [
@@ -719,6 +762,8 @@ class CandidateSearchForm(forms.Form):
             ('Agronomy', 'Agronomy'),
             ('Horticulture', 'Horticulture'),
             ('Agricultural Engineering', 'Agricultural Engineering'),
+            ('Press sub', 'Press sub'),
+            ('Archaeologist', 'Archaeologist'),
             # Add more specializations as needed
         ]
 
