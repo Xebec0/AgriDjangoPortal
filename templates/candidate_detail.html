@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load file_filters %}
 
 {% block title %}{{ candidate.first_name }} {{ candidate.last_name }} - AgroStudies{% endblock %}
 
@@ -32,8 +33,45 @@
             </div>
         </div>
         
->>>>>>>
-        <!-- Application Progress Tracker -->
+        <!-- Status Change Section -->
+        {% if user.is_staff %}
+        <div class="info-card mb-4">
+            <div class="card-header">
+                <i class="fas fa-check-circle"></i>
+                <span>Application Status Management</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">Update the candidate's application status:</p>
+                <div class="d-flex gap-2">
+                    {% if candidate.status != 'Approved' %}
+                    <form method="post" action="{% url 'update_candidate_status' candidate.id 'approved' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check me-1"></i> Approve Application
+                        </button>
+                    </form>
+                    {% else %}
+                    <button type="button" class="btn btn-success" disabled>
+                        <i class="fas fa-check me-1"></i> Already Approved
+                    </button>
+                    {% endif %}
+                    
+                    {% if candidate.status != 'Rejected' %}
+                    <form method="post" action="{% url 'update_candidate_status' candidate.id 'rejected' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-times me-1"></i> Reject Application
+                        </button>
+                    </form>
+                    {% else %}
+                    <button type="button" class="btn btn-danger" disabled>
+                        <i class="fas fa-times me-1"></i> Already Rejected
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
         
 
     <!-- Quick Stats -->
@@ -219,6 +257,138 @@
                 </div>
             </div>
             
+            <!-- Documents Section -->
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fas fa-file-upload"></i>
+                    <span>Uploaded Documents</span>
+                </div>
+                <div class="card-body">
+                    {% if candidate.profile_image or candidate.passport_scan or candidate.academic_certificate or candidate.license_scan or candidate.tor or candidate.nc2_tesda or candidate.diploma or candidate.good_moral or candidate.nbi_clearance %}
+                        <div class="documents-compact-grid">
+                            <!-- Profile Image -->
+                            <div class="doc-card {% if not candidate.profile_image or not candidate.profile_image|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-image"></i></div>
+                                <div class="doc-name">Profile Image</div>
+                                {% if candidate.profile_image and candidate.profile_image|file_exists %}
+                                    <a href="{{ candidate.profile_image.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Passport Scan -->
+                            <div class="doc-card {% if not candidate.passport_scan or not candidate.passport_scan|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-passport"></i></div>
+                                <div class="doc-name">Passport Scan</div>
+                                {% if candidate.passport_scan and candidate.passport_scan|file_exists %}
+                                    <a href="{{ candidate.passport_scan.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Academic Certificate -->
+                            <div class="doc-card {% if not candidate.academic_certificate or not candidate.academic_certificate|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-certificate"></i></div>
+                                <div class="doc-name">Academic Certificate</div>
+                                {% if candidate.academic_certificate and candidate.academic_certificate|file_exists %}
+                                    <a href="{{ candidate.academic_certificate.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- License Scan -->
+                            <div class="doc-card {% if not candidate.license_scan or not candidate.license_scan|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-id-card"></i></div>
+                                <div class="doc-name">License Scan</div>
+                                {% if candidate.license_scan and candidate.license_scan|file_exists %}
+                                    <a href="{{ candidate.license_scan.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- TOR (Transcript of Records) -->
+                            <div class="doc-card {% if not candidate.tor or not candidate.tor|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-scroll"></i></div>
+                                <div class="doc-name">TOR</div>
+                                {% if candidate.tor and candidate.tor|file_exists %}
+                                    <a href="{{ candidate.tor.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- NC2 from TESDA -->
+                            <div class="doc-card {% if not candidate.nc2_tesda or not candidate.nc2_tesda|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-award"></i></div>
+                                <div class="doc-name">NC2 TESDA</div>
+                                {% if candidate.nc2_tesda and candidate.nc2_tesda|file_exists %}
+                                    <a href="{{ candidate.nc2_tesda.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Diploma -->
+                            <div class="doc-card {% if not candidate.diploma or not candidate.diploma|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-graduation-cap"></i></div>
+                                <div class="doc-name">Diploma</div>
+                                {% if candidate.diploma and candidate.diploma|file_exists %}
+                                    <a href="{{ candidate.diploma.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Good Moral Character -->
+                            <div class="doc-card {% if not candidate.good_moral or not candidate.good_moral|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-heart"></i></div>
+                                <div class="doc-name">Good Moral</div>
+                                {% if candidate.good_moral and candidate.good_moral|file_exists %}
+                                    <a href="{{ candidate.good_moral.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- NBI Clearance -->
+                            <div class="doc-card {% if not candidate.nbi_clearance or not candidate.nbi_clearance|file_exists %}doc-missing{% endif %}">
+                                <div class="doc-icon"><i class="fas fa-shield-alt"></i></div>
+                                <div class="doc-name">NBI Clearance</div>
+                                {% if candidate.nbi_clearance and candidate.nbi_clearance|file_exists %}
+                                    <a href="{{ candidate.nbi_clearance.url }}" target="_blank" class="doc-link" title="View/Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="doc-status">—</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted mb-0"><i class="fas fa-info-circle me-2"></i>No documents have been uploaded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
             <!-- Program Information -->
             {% if candidate.program %}
             <div class="info-card">
@@ -323,10 +493,6 @@
         </div>
     </div>
 
->>>>>>>
-    <!-- Status Change Section -->
-    
-    
     <!-- Created Info -->
     <div class="card mb-4 shadow">
         <div class="card-body">

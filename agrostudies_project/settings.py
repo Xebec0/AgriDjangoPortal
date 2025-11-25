@@ -337,9 +337,10 @@ UNFOLD = {
     "SITE_HEADER": ADMIN_SITE_HEADER,
     "SITE_TITLE": ADMIN_SITE_TITLE,
     "SITE_INDEX_TITLE": ADMIN_SITE_INDEX_TITLE,
-    "SITE_URL": "/",
+    "SITE_URL": "/admin",
     "SITE_SYMBOL": "eco",  # Material icon name (changed to a leaf/eco icon)
     "ENVIRONMENT": "production",
+    "DASHBOARD_CALLBACK": "core.utils.admin_dashboard",  # Optional: path to dashboard callback
     "STYLES": ["css/admin-theme.css"],  # Custom CSS for admin theme
     "SCRIPTS": [],  # Optional: custom JS files
     "COLORS": {

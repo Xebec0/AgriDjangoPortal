@@ -60,6 +60,7 @@ urlpatterns = [
     path('candidates/<int:candidate_id>/edit/', views.edit_candidate, name='edit_candidate'),
     path('candidates/<int:candidate_id>/delete/', views.delete_candidate, name='delete_candidate'),
     path('candidates/<int:candidate_id>/cancel/', views.cancel_application, name='cancel_application'),
+    path('candidates/<int:candidate_id>/status/<str:status>/', views.update_candidate_status, name='update_candidate_status'),
     
     # Export candidates
     path('candidates/export/csv/', views.export_candidates_csv, name='export_candidates_csv'),

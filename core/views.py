@@ -1858,6 +1858,63 @@ def update_registration_status(request, registration_id, status):
 
 
 @login_required
+def update_candidate_status(request, candidate_id, status):
+    """Update the status of a candidate (admin only)"""
+    # Check if user has staff privilege
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    # Normalize status (convert to proper case: 'approved' -> 'Approved', 'rejected' -> 'Rejected')
+    status_map = {
+        'approved': Candidate.APPROVED,
+        'rejected': Candidate.REJECTED,
+    }
+    
+    normalized_status = status_map.get(status.lower())
+    
+    if not normalized_status:
+        messages.error(request, 'Invalid status. Only Approved or Rejected statuses are allowed.')
+        return redirect('view_candidate', candidate_id=candidate_id)
+    
+    candidate.status = normalized_status
+    candidate.save()
+    
+    status_display = dict(Candidate.STATUS_CHOICES)[normalized_status]
+    messages.success(request, f'{candidate.first_name} {candidate.last_name}\'s status has been updated to {status_display}.')
+    
+    # Find the actual applicant to notify (not the admin who created the candidate record)
+    applicant_user = None
+    
+    # Try to find the user by email if candidate has an email
+    if candidate.email:
+        applicant_user = User.objects.filter(email=candidate.email).first()
+    
+    # If not found by email, try to find via Registration
+    if not applicant_user and candidate.program:
+        registration = Registration.objects.filter(
+            program=candidate.program,
+            processed=True
+        ).first()
+        if registration:
+            applicant_user = registration.user
+    
+    # Only notify if we found the actual applicant (not the admin)
+    if applicant_user and applicant_user != candidate.created_by:
+        notification_type = Notification.SUCCESS if normalized_status == Candidate.APPROVED else Notification.ERROR
+        Notification.add_notification(
+            user=applicant_user,
+            message=f"Your application has been {status_display.lower()}.",
+            notification_type=notification_type,
+            link=f"/candidates/{candidate.id}/"
+        )
+    
+    return redirect('view_candidate', candidate_id=candidate_id)
+
+
+@login_required
 def api_notifications(request):
     """API endpoint to get notifications for the current user"""
     notifications = Notification.objects.filter(user=request.user).order_by('-created_at')[:10]  # Get the 10 most recent

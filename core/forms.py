@@ -742,10 +742,10 @@ class ProgramSearchForm(forms.Form):
     gender = forms.ChoiceField(
         required=False,
         choices=[
-            ('', 'All Genders'),
+            ('', 'All Sex'),
             ('Male', 'Male Only'),
             ('Female', 'Female Only'),
-            ('Any', 'Any Gender')
+            ('Any', 'Any Sex')
         ],
         widget=forms.Select(attrs={'class': 'form-select'}),
         label=""

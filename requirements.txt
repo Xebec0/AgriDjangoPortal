@@ -19,6 +19,10 @@ psycopg2-binary>=2.9.6  # For PostgreSQL
 dj-database-url>=2.1.0  # For database URL configuration
 # mysqlclient>=2.1.1  # For MySQL
 
+# For file storage (AWS S3 support)
+boto3>=1.28.0  # AWS SDK for Python
+django-storages>=1.14.2  # Django integration with S3 and other cloud storage
+
 # For REST API (if needed in the future)
 # djangorestframework>=3.14.0
 
@@ -65,3 +69,4 @@ django-cachalot>=2.6.1  # Automatic ORM caching
 
 # Modern Admin Interface
 django-unfold>=0.38.0  # Modern admin interface with custom theming
+
