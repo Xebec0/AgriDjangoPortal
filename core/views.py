@@ -275,6 +275,11 @@ def register(request):
             }
             form = ComprehensiveRegisterForm(initial=initial_data)
     
+    # Clear the auto-open flag after we've retrieved the OAuth data
+    if 'auto_open_register_modal' in request.session:
+        del request.session['auto_open_register_modal']
+        request.session.modified = True
+    
     context = {
         'form': form,
         'oauth_data': oauth_data,
@@ -2178,9 +2183,34 @@ def modal_login(request):
 
 
 def modal_register(request):
-    """Return comprehensive registration form HTML for modal"""
-    form = ComprehensiveRegisterForm()
-    return render(request, 'modals/register_modal.html', {'form': form})
+    """Return comprehensive registration form HTML for modal with OAuth data if available"""
+    from .oauth_utils import get_oauth_session_data
+    
+    # Get OAuth data from session if available
+    oauth_data = get_oauth_session_data(request)
+    
+    # Pre-populate form with OAuth data if available
+    if oauth_data:
+        initial_data = {
+            'email': oauth_data.get('email'),
+            'confirm_email': oauth_data.get('email'),
+            'first_name': oauth_data.get('first_name'),
+            'last_name': oauth_data.get('last_name'),
+        }
+        form = ComprehensiveRegisterForm(initial=initial_data)
+        logger.info(f"Modal register form pre-filled with OAuth data for {oauth_data.get('email')}")
+    else:
+        form = ComprehensiveRegisterForm()
+    
+    # Clear the auto-open modal flag after loading the form
+    if 'auto_open_register_modal' in request.session:
+        del request.session['auto_open_register_modal']
+        request.session.modified = True
+    
+    return render(request, 'modals/register_modal.html', {
+        'form': form,
+        'oauth_data': oauth_data
+    })
 
 
 def modal_admin_register(request):
@@ -2255,21 +2285,124 @@ def social_register(request):
     Social authentication gateway page
     Displays OAuth provider options and email signup option
     """
+    import logging
     from django.conf import settings
+    from allauth.socialaccount.models import SocialApp
+    
+    logger = logging.getLogger(__name__)
+    
+    # Get OAuth credentials from database (django-allauth SocialApp)
+    try:
+        google_app = SocialApp.objects.get(provider='google')
+        google_client_id = google_app.client_id
+        logger.info(f"Google OAuth loaded: {google_client_id[:30]}...")
+    except SocialApp.DoesNotExist:
+        google_client_id = ''
+        logger.error("Google SocialApp not found in database")
+    
+    try:
+        facebook_app = SocialApp.objects.get(provider='facebook')
+        facebook_client_id = facebook_app.client_id
+        logger.info(f"Facebook OAuth loaded: {facebook_client_id[:30]}...")
+    except SocialApp.DoesNotExist:
+        facebook_client_id = ''
+        logger.warning("Facebook SocialApp not found in database")
+    
+    try:
+        microsoft_app = SocialApp.objects.get(provider='microsoft')
+        microsoft_client_id = microsoft_app.client_id
+        logger.info(f"Microsoft OAuth loaded: {microsoft_client_id[:30]}...")
+    except SocialApp.DoesNotExist:
+        microsoft_client_id = ''
+        logger.warning("Microsoft SocialApp not found in database")
     
     context = {
-        'GOOGLE_OAUTH_CLIENT_ID': settings.SOCIALACCOUNT_PROVIDERS.get('google', {}).get('APP', {}).get('client_id', ''),
-        'FACEBOOK_OAUTH_CLIENT_ID': settings.SOCIALACCOUNT_PROVIDERS.get('facebook', {}).get('APP', {}).get('client_id', ''),
-        'MICROSOFT_OAUTH_CLIENT_ID': settings.SOCIALACCOUNT_PROVIDERS.get('microsoft', {}).get('APP', {}).get('client_id', ''),
+        'GOOGLE_OAUTH_CLIENT_ID': google_client_id,
+        'FACEBOOK_OAUTH_CLIENT_ID': facebook_client_id,
+        'MICROSOFT_OAUTH_CLIENT_ID': microsoft_client_id,
     }
+    logger.info(f"Context keys: {list(context.keys())}")
+    
+    # Clear the auto-open flag after rendering (will be used by template)
+    if request.session.get('auto_open_register_modal'):
+        # Don't clear it yet - let the template use it first
+        # It will be cleared when the modal loads
+        pass
+    
     return render(request, 'register-email.html', context)
 
 
-@require_POST
+def oauth_initiate(request, provider):
+    """
+    Server-side OAuth initiation - generates state, stores in session, redirects to provider
+    """
+    import secrets
+    from allauth.socialaccount.models import SocialApp
+    from urllib.parse import urlencode
+    
+    # Generate and store state in Django session
+    state = secrets.token_urlsafe(32)
+    request.session[f'oauth_state_{provider}'] = state
+    request.session.modified = True
+    
+    # Build redirect URI
+    redirect_uri = request.build_absolute_uri(f'/auth/{provider}/callback/')
+    
+    # Get OAuth config based on provider
+    try:
+        if provider == 'google':
+            app = SocialApp.objects.get(provider='google')
+            auth_url = 'https://accounts.google.com/o/oauth2/v2/auth'
+            params = {
+                'client_id': app.client_id,
+                'redirect_uri': redirect_uri,
+                'response_type': 'code',
+                'scope': 'openid email profile',
+                'state': state,
+                'access_type': 'online',
+                'prompt': 'consent'
+            }
+        elif provider == 'facebook':
+            app = SocialApp.objects.get(provider='facebook')
+            auth_url = 'https://www.facebook.com/v15.0/dialog/oauth'
+            params = {
+                'client_id': app.client_id,
+                'redirect_uri': redirect_uri,
+                'response_type': 'code',
+                'scope': 'email,public_profile',
+                'state': state,
+            }
+        elif provider == 'microsoft':
+            app = SocialApp.objects.get(provider='microsoft')
+            auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
+            params = {
+                'client_id': app.client_id,
+                'redirect_uri': redirect_uri,
+                'response_type': 'code',
+                'scope': 'openid profile email',
+                'state': state,
+                'response_mode': 'query'
+            }
+        else:
+            messages.error(request, f"Unknown OAuth provider: {provider}")
+            return redirect('social_register')
+            
+    except SocialApp.DoesNotExist:
+        logger.error(f"SocialApp not found for provider: {provider}")
+        messages.error(request, f"{provider.title()} sign-in is not configured. Please use email registration.")
+        return redirect('social_register')
+    
+    # Redirect to OAuth provider
+    oauth_url = f"{auth_url}?{urlencode(params)}"
+    logger.info(f"Redirecting to {provider} OAuth: {oauth_url[:100]}...")
+    return redirect(oauth_url)
+
+
 def oauth_callback(request, provider):
     """
     Generic OAuth callback handler for all providers
     Processes authorization code and redirects to registration form
+    Called after user authorizes with OAuth provider
     """
     from .oauth_utils import (
         OAuthTokenExchanger, OAuthDataExtractor,
@@ -2325,8 +2458,12 @@ def oauth_callback(request, provider):
         # Store OAuth data in session
         store_oauth_session_data(request, user_data)
         
-        # Redirect to registration form with pre-filled data
-        return redirect('register')
+        # Set flag to auto-open modal
+        request.session['auto_open_register_modal'] = True
+        request.session.modified = True
+        
+        # Redirect back to social register page which will auto-open the modal
+        return redirect('social_register')
         
     except Exception as e:
         logger.error(f"OAuth callback error for {provider}: {str(e)}")

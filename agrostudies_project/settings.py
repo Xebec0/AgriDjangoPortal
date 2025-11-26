@@ -7,6 +7,10 @@ import logging
 from logging.handlers import RotatingFileHandler
 import dj_database_url
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -409,10 +413,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'APP': {
-            'client_id': os.getenv('GOOGLE_OAUTH_CLIENT_ID', ''),
-            'secret': os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', ''),
-        },
         'FIELDS': {
             'email': 'email',
             'name': 'name',
@@ -437,10 +437,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'EXCHANGE_TOKEN': True,
         'VERIFIED_EMAIL': False,
         'VERSION': 'v15.0',
-        'APP': {
-            'client_id': os.getenv('FACEBOOK_OAUTH_CLIENT_ID', ''),
-            'secret': os.getenv('FACEBOOK_OAUTH_CLIENT_SECRET', ''),
-        }
     },
     'microsoft': {
         'SCOPE': [
@@ -448,10 +444,6 @@ SOCIALACCOUNT_PROVIDERS = {
             'email'
         ],
         'AUTH_PARAMS': {},
-        'APP': {
-            'client_id': os.getenv('MICROSOFT_OAUTH_CLIENT_ID', ''),
-            'secret': os.getenv('MICROSOFT_OAUTH_CLIENT_SECRET', ''),
-        }
     }
 }
 

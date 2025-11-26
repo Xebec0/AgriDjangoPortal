@@ -296,10 +296,10 @@
         <!-- Error Message Display -->
         <div class="error-message" id="errorMessage"></div>
 
-        <!-- OAuth Buttons -->
+        <!-- OAuth Buttons - Using server-side initiation for proper state management -->
         <div class="oauth-buttons-container">
             <!-- Google -->
-            <button class="oauth-button google" data-provider="google" onclick="initiateOAuthFlow('google')">
+            <a href="{% url 'oauth_initiate' provider='google' %}" class="oauth-button google">
                 <span class="oauth-button-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -309,20 +309,20 @@
                     </svg>
                 </span>
                 Continue with Google
-            </button>
+            </a>
 
             <!-- Facebook -->
-            <button class="oauth-button facebook" data-provider="facebook" onclick="initiateOAuthFlow('facebook')">
+            <a href="{% url 'oauth_initiate' provider='facebook' %}" class="oauth-button facebook">
                 <span class="oauth-button-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
                     </svg>
                 </span>
                 Continue with Facebook
-            </button>
+            </a>
 
             <!-- Microsoft -->
-            <button class="oauth-button microsoft" data-provider="microsoft" onclick="initiateOAuthFlow('microsoft')">
+            <a href="{% url 'oauth_initiate' provider='microsoft' %}" class="oauth-button microsoft">
                 <span class="oauth-button-icon">
                     <svg width="20" height="20" viewBox="0 0 23 23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11.4 0H0v11.4h11.4V0z" fill="#F25022"/>
@@ -332,7 +332,7 @@
                     </svg>
                 </span>
                 Continue with Microsoft
-            </button>
+            </a>
         </div>
 
         <!-- Divider -->
@@ -362,100 +362,43 @@
     </div>
 </div>
 
-<!-- OAuth Flow Handler Script -->
+<!-- Auto-open modal script and error display -->
 <script>
-const OAUTH_CONFIG = {
-    'google': {
-        'client_id': '{{ GOOGLE_OAUTH_CLIENT_ID }}',
-        'auth_uri': 'https://accounts.google.com/o/oauth2/v2/auth',
-        'scope': 'openid email profile',
-    },
-    'facebook': {
-        'client_id': '{{ FACEBOOK_OAUTH_CLIENT_ID }}',
-        'auth_uri': 'https://www.facebook.com/v15.0/dialog/oauth',
-        'scope': 'email,public_profile',
-    },
-    'microsoft': {
-        'client_id': '{{ MICROSOFT_OAUTH_CLIENT_ID }}',
-        'auth_uri': 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-        'scope': 'openid profile email',
-    }
-};
-
-function initiateOAuthFlow(provider) {
-    const config = OAUTH_CONFIG[provider];
-    const button = event.target.closest('.oauth-button');
-    
-    // Validate client ID is configured
-    if (!config.client_id) {
-        showError(`OAuth ${provider} is not configured. Please contact support.`);
-        return;
-    }
-    
-    // Add loading state
-    button.classList.add('loading');
-    button.disabled = true;
-    
-    try {
-        // Build OAuth URL
-        const redirect_uri = `${window.location.origin}/auth/${provider}/callback/`;
-        const state = generateRandomState();
-        sessionStorage.setItem(`oauth_state_${provider}`, state);
-        
-        let oauth_url = `${config.auth_uri}?`;
-        
-        if (provider === 'google') {
-            oauth_url += new URLSearchParams({
-                'client_id': config.client_id,
-                'redirect_uri': redirect_uri,
-                'response_type': 'code',
-                'scope': config.scope,
-                'state': state,
-                'access_type': 'online',
-                'prompt': 'consent'
-            }).toString();
-        } else if (provider === 'facebook') {
-            oauth_url += new URLSearchParams({
-                'client_id': config.client_id,
-                'redirect_uri': redirect_uri,
-                'response_type': 'code',
-                'scope': config.scope,
-                'state': state,
-                'auth_type': 'rerequest'
-            }).toString();
-        } else if (provider === 'microsoft') {
-            oauth_url += new URLSearchParams({
-                'client_id': config.client_id,
-                'redirect_uri': redirect_uri,
-                'response_type': 'code',
-                'scope': config.scope,
-                'state': state,
-                'response_mode': 'query'
-            }).toString();
+// Check if we should auto-open the register modal (after OAuth callback)
+document.addEventListener('DOMContentLoaded', function() {
+    {% if request.session.auto_open_register_modal %}
+    // Wait for Bootstrap to be loaded
+    setTimeout(function() {
+        const modalElement = document.getElementById('registerModal');
+        if (modalElement && typeof bootstrap !== 'undefined') {
+            console.log('Auto-opening register modal with OAuth data...');
+            const registerModal = new bootstrap.Modal(modalElement);
+            registerModal.show();
+            
+            // Clear the session flag by loading the register page content into the modal
+            // This will fetch the pre-filled form
+            setTimeout(function() {
+                // The modal content should already be loaded by the modal system
+                console.log('Register modal opened successfully');
+            }, 500);
+        } else {
+            console.error('Register modal not found or Bootstrap not loaded');
+            // Fallback: redirect to register page
+            window.location.href = '/register/';
         }
-        
-        // Redirect to OAuth provider
-        window.location.href = oauth_url;
-    } catch (error) {
-        console.error('OAuth Error:', error);
-        showError('An error occurred during OAuth initialization. Please try again.');
-        button.classList.remove('loading');
-        button.disabled = false;
-    }
-}
-
-function generateRandomState() {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
-}
+    }, 300);
+    {% endif %}
+});
 
 function showError(message) {
     const errorEl = document.getElementById('errorMessage');
-    errorEl.textContent = message;
-    errorEl.classList.add('show');
-    setTimeout(() => {
-        errorEl.classList.remove('show');
-    }, 5000);
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.add('show');
+        setTimeout(() => {
+            errorEl.classList.remove('show');
+        }, 5000);
+    }
 }
 </script>
 {% endblock %}

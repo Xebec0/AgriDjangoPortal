@@ -122,14 +122,22 @@ class OAuthTokenExchanger:
     """Exchanges authorization codes for access tokens"""
     
     @staticmethod
+    @staticmethod
     def exchange_google_code(code, redirect_uri):
         """Exchange Google authorization code for access token"""
         try:
+            from allauth.socialaccount.models import SocialApp
+            
+            # Get credentials from database instead of settings
+            google_app = SocialApp.objects.get(provider='google')
+            client_id = google_app.client_id
+            client_secret = google_app.secret
+            
             url = "https://oauth2.googleapis.com/token"
             data = {
                 'code': code,
-                'client_id': settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id'],
-                'client_secret': settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['secret'],
+                'client_id': client_id,
+                'client_secret': client_secret,
                 'redirect_uri': redirect_uri,
                 'grant_type': 'authorization_code',
             }
@@ -147,14 +155,19 @@ class OAuthTokenExchanger:
     def exchange_facebook_code(code, redirect_uri):
         """Exchange Facebook authorization code for access token"""
         try:
-            url = "https://graph.instagram.com/v15.0/oauth/access_token"
-            # Use Facebook endpoint instead
+            from allauth.socialaccount.models import SocialApp
+            
+            # Get credentials from database instead of settings
+            facebook_app = SocialApp.objects.get(provider='facebook')
+            client_id = facebook_app.client_id
+            client_secret = facebook_app.secret
+            
             url = "https://graph.facebook.com/v15.0/oauth/access_token"
             
             params = {
                 'code': code,
-                'client_id': settings.SOCIALACCOUNT_PROVIDERS['facebook']['APP']['client_id'],
-                'client_secret': settings.SOCIALACCOUNT_PROVIDERS['facebook']['APP']['secret'],
+                'client_id': client_id,
+                'client_secret': client_secret,
                 'redirect_uri': redirect_uri,
             }
             
@@ -168,14 +181,22 @@ class OAuthTokenExchanger:
             return None, None
     
     @staticmethod
+    @staticmethod
     def exchange_microsoft_code(code, redirect_uri):
         """Exchange Microsoft authorization code for access token"""
         try:
+            from allauth.socialaccount.models import SocialApp
+            
+            # Get credentials from database instead of settings
+            microsoft_app = SocialApp.objects.get(provider='microsoft')
+            client_id = microsoft_app.client_id
+            client_secret = microsoft_app.secret
+            
             url = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
             data = {
                 'code': code,
-                'client_id': settings.SOCIALACCOUNT_PROVIDERS['microsoft']['APP']['client_id'],
-                'client_secret': settings.SOCIALACCOUNT_PROVIDERS['microsoft']['APP']['secret'],
+                'client_id': client_id,
+                'client_secret': client_secret,
                 'redirect_uri': redirect_uri,
                 'grant_type': 'authorization_code',
                 'scope': 'https://graph.microsoft.com/.default',

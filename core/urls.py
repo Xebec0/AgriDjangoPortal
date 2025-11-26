@@ -18,8 +18,9 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/clear-documents/', views.clear_all_documents, name='clear_all_documents'),
     
-    # OAuth callback URLs
-    path('auth/<str:provider>/callback/', views.oauth_callback_get, name='oauth_callback'),
+    # OAuth URLs
+    path('auth/<str:provider>/initiate/', views.oauth_initiate, name='oauth_initiate'),
+    path('auth/<str:provider>/callback/', views.oauth_callback, name='oauth_callback'),
     
     # Password Reset URLs
     path('password_reset/', views.custom_password_reset, name='password_reset'),
