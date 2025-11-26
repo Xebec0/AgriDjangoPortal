@@ -282,6 +282,18 @@ function setupRegisterModal() {
         
         // Clean up after animation completes
         registerModal.addEventListener('hidden.bs.modal', function() {
+            // Clear OAuth session data when modal is closed
+            fetch('/api/clear-oauth-session/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            }).catch(error => {
+                console.log('Failed to clear OAuth session:', error);
+            });
+            
             // We don't clear the content to avoid flickering on reopening
             // Just clear any error messages
             const errorElement = registerModalContent.querySelector('.alert-danger');

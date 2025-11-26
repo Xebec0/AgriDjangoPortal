@@ -193,19 +193,25 @@ LOGOUT_REDIRECT_URL = '/'
 ADMIN_REGISTRATION_CODE = 'ADMIN123'
 
 # ----- Email Configuration -----
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'merlielatosa@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'anrrwukmaiygowbb')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Agrostudies <noreply@agrostudies.com>')
-EMAIL_TIMEOUT = 10  # Timeout in seconds
+# SMTP Email settings - using Gmail with App Password
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'merlielatosa@gmail.com'
+EMAIL_HOST_PASSWORD = 'qfiuwjpfqiangjvs'  # Gmail App Password (no spaces)
+EMAIL_TIMEOUT = 10
+DEFAULT_FROM_EMAIL = 'Agrostudies <merlielatosa@gmail.com>'
 
-# For development/testing without email credentials, use console backend
-if DEBUG and not EMAIL_HOST_USER:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Log email config (hide password)
+print(f"[EMAIL CONFIG] SMTP: {EMAIL_HOST}:{EMAIL_PORT} User: {EMAIL_HOST_USER}")
+
+# TO ENABLE REAL EMAIL SENDING:
+# 1. Go to Google Account → Security → 2-Step Verification → App passwords
+# 2. Generate new app password
+# 3. Set EMAIL_HOST_USER='your-email@gmail.com'
+# 4. Set EMAIL_HOST_PASSWORD='your-16-char-app-password'
 
 # ----- Logging Configuration -----
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')

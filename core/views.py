@@ -855,6 +855,41 @@ def apply_candidate(request, program_id):
                     link=f"/candidates/{candidate.id}/"
                 )
                 
+                # Send approval email notification
+                try:
+                    subject = f"✅ Application Approved - {program.title}"
+                    message = f"""Dear {request.user.first_name or request.user.username},
+
+Congratulations! Your application for {program.title} has been APPROVED!
+
+Application Details:
+- Program: {program.title}
+- Location: {program.country}, {program.location}
+- Start Date: {program.start_date.strftime('%B %d, %Y')}
+- Status: Approved
+
+Next Steps:
+Your application has been automatically approved. You can now view your application details and prepare for the program.
+
+View your application: {request.build_absolute_uri(f'/candidates/{candidate.id}/')}
+
+We're excited to have you join this program!
+
+Best regards,
+AgroStudies Team
+"""
+                    
+                    send_mail(
+                        subject,
+                        message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [request.user.email],
+                        fail_silently=True,
+                    )
+                    logger.info(f"Application approval email sent to {request.user.email} for program {program_id}")
+                except Exception as e:
+                    logger.error(f"Failed to send application approval email to {request.user.email}: {e}")
+                
                 # Clear related cache entries
                 try:
                     cache_keys = [
@@ -1932,15 +1967,92 @@ def update_registration_status(request, registration_id, status):
     status_display = dict(Registration.STATUS_CHOICES)[status]
     messages.success(request, f'Registration status updated to {status_display}.')
     
-    # Notify the user about the status change
+    # Determine notification type
+    if status == Registration.PENDING:
+        notification_type = Notification.INFO
+    elif status == Registration.APPROVED:
+        notification_type = Notification.SUCCESS
+    else:
+        notification_type = Notification.ERROR
+    
+    # Send in-app notification
     Notification.add_notification(
         user=registration.user,
         message=f"Your registration for {registration.program.title} has been {status_display.lower()}.",
-        notification_type=Notification.INFO if status == Registration.PENDING else (
-            Notification.SUCCESS if status == Registration.APPROVED else Notification.ERROR
-        ),
+        notification_type=notification_type,
         link=f"/registrations/{registration.id}/"
     )
+    
+    # Send email notification
+    try:
+        program_name = registration.program.title
+        
+        if status == Registration.APPROVED:
+            subject = f"✅ Registration Approved - {program_name}"
+            message = f"""Dear {registration.user.first_name or registration.user.username},
+
+Great news! Your registration for {program_name} has been APPROVED.
+
+Registration Details:
+- Program: {program_name}
+- Status: Approved
+- Registration Date: {registration.registration_date.strftime('%B %d, %Y')}
+
+Next Steps:
+Your registration has been approved. Please log in to your account to view more details and complete your application if you haven't already.
+
+View your registration: {request.build_absolute_uri(f'/registrations/{registration.id}/')}
+
+Best regards,
+AgroStudies Team
+"""
+        elif status == Registration.REJECTED:
+            subject = f"❌ Registration Status Update - {program_name}"
+            message = f"""Dear {registration.user.first_name or registration.user.username},
+
+We regret to inform you that your registration for {program_name} has been REJECTED.
+
+Registration Details:
+- Program: {program_name}
+- Status: Rejected
+- Registration Date: {registration.registration_date.strftime('%B %d, %Y')}
+
+If you have any questions, please contact us for more information.
+
+View your registration: {request.build_absolute_uri(f'/registrations/{registration.id}/')}
+
+Best regards,
+AgroStudies Team
+"""
+        else:  # Pending
+            subject = f"⏳ Registration Status Update - {program_name}"
+            message = f"""Dear {registration.user.first_name or registration.user.username},
+
+Your registration for {program_name} status has been updated to PENDING.
+
+Registration Details:
+- Program: {program_name}
+- Status: Pending Review
+- Registration Date: {registration.registration_date.strftime('%B %d, %Y')}
+
+Your registration is currently under review. We'll notify you once a decision has been made.
+
+View your registration: {request.build_absolute_uri(f'/registrations/{registration.id}/')}
+
+Best regards,
+AgroStudies Team
+"""
+        
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [registration.user.email],
+            fail_silently=True,
+        )
+        logger.info(f"Registration status email sent to {registration.user.email} for registration {registration_id}")
+    except Exception as e:
+        logger.error(f"Failed to send registration status email to {registration.user.email}: {e}")
     
     return redirect('registration_detail', registration_id=registration_id)
 
@@ -1992,12 +2104,67 @@ def update_candidate_status(request, candidate_id, status):
     # Only notify if we found the actual applicant (not the admin)
     if applicant_user and applicant_user != candidate.created_by:
         notification_type = Notification.SUCCESS if normalized_status == Candidate.APPROVED else Notification.ERROR
+        
+        # Send in-app notification
         Notification.add_notification(
             user=applicant_user,
             message=f"Your application has been {status_display.lower()}.",
             notification_type=notification_type,
             link=f"/candidates/{candidate.id}/"
         )
+        
+        # Send email notification
+        try:
+            program_name = candidate.program.title if candidate.program else "the program"
+            
+            if normalized_status == Candidate.APPROVED:
+                subject = f"✅ Application Approved - {program_name}"
+                message = f"""Dear {applicant_user.first_name or applicant_user.username},
+
+Congratulations! Your application for {program_name} has been APPROVED.
+
+Application Details:
+- Program: {program_name}
+- Status: Approved
+- Name: {candidate.first_name} {candidate.last_name}
+
+Next Steps:
+Please log in to your account to view more details and proceed with the next steps.
+
+View your application: {request.build_absolute_uri(f'/candidates/{candidate.id}/')}
+
+Best regards,
+AgroStudies Team
+"""
+            else:  # Rejected
+                subject = f"❌ Application Status Update - {program_name}"
+                message = f"""Dear {applicant_user.first_name or applicant_user.username},
+
+We regret to inform you that your application for {program_name} has been REJECTED.
+
+Application Details:
+- Program: {program_name}
+- Status: Rejected
+- Name: {candidate.first_name} {candidate.last_name}
+
+If you have any questions or would like feedback, please contact us.
+
+View your application: {request.build_absolute_uri(f'/candidates/{candidate.id}/')}
+
+Best regards,
+AgroStudies Team
+"""
+            
+            result = send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [applicant_user.email],
+                fail_silently=False,
+            )
+            logger.info(f"Email DELIVERED to {applicant_user.email} for candidate {candidate_id} (result={result})")
+        except Exception as e:
+            logger.error(f"Failed to send status update email to {applicant_user.email}: {e}")
     
     return redirect('view_candidate', candidate_id=candidate_id)
 
@@ -2238,6 +2405,19 @@ def ajax_admin_register(request):
             'success': False,
             'errors': {k: [str(e) for e in v] for k, v in form.errors.items()}
         })
+
+
+@require_POST
+def clear_oauth_session(request):
+    """API endpoint to clear OAuth session data when modal is closed"""
+    from .oauth_utils import clear_oauth_session_data
+    
+    try:
+        clear_oauth_session_data(request)
+        return JsonResponse({'success': True})
+    except Exception as e:
+        logger.error(f"Error clearing OAuth session: {e}")
+        return JsonResponse({'success': False, 'error': str(e)})
 
 
 def custom_password_reset(request):

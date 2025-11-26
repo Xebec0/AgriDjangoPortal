@@ -81,6 +81,7 @@ urlpatterns = [
     path('api/ajax-login/', views.ajax_login, name='ajax_login'),
     path('api/ajax-register/', views.ajax_register, name='ajax_register'),
     path('api/user-applications/', views.get_user_applications, name='get_user_applications'),
+    path('api/clear-oauth-session/', views.clear_oauth_session, name='clear_oauth_session'),
     
     # Modal views
     path('modal/login/', views.modal_login, name='modal_login'),
