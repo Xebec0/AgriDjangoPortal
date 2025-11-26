@@ -857,7 +857,7 @@ def apply_candidate(request, program_id):
                 
                 # Send approval email notification
                 try:
-                    subject = f"✅ Application Approved - {program.title}"
+                    subject = f"Application Approved - {program.title}"
                     message = f"""Dear {request.user.first_name or request.user.username},
 
 Congratulations! Your application for {program.title} has been APPROVED!
@@ -879,14 +879,14 @@ Best regards,
 AgroStudies Team
 """
                     
-                    send_mail(
+                    result = send_mail(
                         subject,
                         message,
                         settings.DEFAULT_FROM_EMAIL,
                         [request.user.email],
-                        fail_silently=True,
+                        fail_silently=False,
                     )
-                    logger.info(f"Application approval email sent to {request.user.email} for program {program_id}")
+                    logger.info(f"Application approval email sent to {request.user.email} for program {program_id} (result={result})")
                 except Exception as e:
                     logger.error(f"Failed to send application approval email to {request.user.email}: {e}")
                 
@@ -1988,7 +1988,7 @@ def update_registration_status(request, registration_id, status):
         program_name = registration.program.title
         
         if status == Registration.APPROVED:
-            subject = f"✅ Registration Approved - {program_name}"
+            subject = f"Registration Approved - {program_name}"
             message = f"""Dear {registration.user.first_name or registration.user.username},
 
 Great news! Your registration for {program_name} has been APPROVED.
@@ -2007,7 +2007,7 @@ Best regards,
 AgroStudies Team
 """
         elif status == Registration.REJECTED:
-            subject = f"❌ Registration Status Update - {program_name}"
+            subject = f"Registration Status Update - {program_name}"
             message = f"""Dear {registration.user.first_name or registration.user.username},
 
 We regret to inform you that your registration for {program_name} has been REJECTED.
@@ -2025,7 +2025,7 @@ Best regards,
 AgroStudies Team
 """
         else:  # Pending
-            subject = f"⏳ Registration Status Update - {program_name}"
+            subject = f"Registration Status Update - {program_name}"
             message = f"""Dear {registration.user.first_name or registration.user.username},
 
 Your registration for {program_name} status has been updated to PENDING.
@@ -2043,14 +2043,14 @@ Best regards,
 AgroStudies Team
 """
         
-        send_mail(
+        result = send_mail(
             subject,
             message,
             settings.DEFAULT_FROM_EMAIL,
             [registration.user.email],
-            fail_silently=True,
+            fail_silently=False,
         )
-        logger.info(f"Registration status email sent to {registration.user.email} for registration {registration_id}")
+        logger.info(f"Registration status email sent to {registration.user.email} for registration {registration_id} (result={result})")
     except Exception as e:
         logger.error(f"Failed to send registration status email to {registration.user.email}: {e}")
     
@@ -2088,38 +2088,68 @@ def update_candidate_status(request, candidate_id, status):
     # Find the actual applicant to notify (not the admin who created the candidate record)
     applicant_user = None
     
-    # Try to find the user by email if candidate has an email
+    # Try to find the user by email if candidate has an email (case-insensitive)
     if candidate.email:
-        applicant_user = User.objects.filter(email=candidate.email).first()
+        applicant_user = User.objects.filter(email__iexact=candidate.email.strip()).first()
+        logger.info(f"Looking up user by email '{candidate.email}': found={applicant_user is not None}, user={applicant_user.username if applicant_user else 'None'}")
     
-    # If not found by email, try to find via Registration
+    # If not found by email, try to find via Registration (check both processed and unprocessed)
     if not applicant_user and candidate.program:
         registration = Registration.objects.filter(
-            program=candidate.program,
-            processed=True
-        ).first()
+            program=candidate.program
+        ).order_by('-created_at').first()  # Get most recent registration
         if registration:
             applicant_user = registration.user
+            logger.info(f"Found user via Registration: {applicant_user.username} (email: {applicant_user.email})")
     
-    # Only notify if we found the actual applicant (not the admin)
-    if applicant_user and applicant_user != candidate.created_by:
+    # Also try to find by candidate's created_by if it's not an admin
+    if not applicant_user and candidate.created_by and not candidate.created_by.is_staff:
+        applicant_user = candidate.created_by
+        logger.info(f"Using candidate.created_by as applicant: {applicant_user.username} (email: {applicant_user.email})")
+    
+    # Log the decision
+    if applicant_user:
+        logger.info(f"Applicant user found: {applicant_user.username} (email: {applicant_user.email}), created_by: {candidate.created_by.username if candidate.created_by else 'None'}")
+        if applicant_user == candidate.created_by:
+            logger.warning(f"Applicant user is same as created_by - will still send email")
+    else:
+        logger.warning(f"No applicant user found for candidate {candidate_id} (email: {candidate.email}, program: {candidate.program})")
+    
+    # Determine the recipient email - ALWAYS prefer candidate.email since that's the specific email for this candidate
+    # The applicant_user lookup is only used for in-app notifications, not for email recipient
+    recipient_email = None
+    recipient_name = candidate.first_name or "Applicant"
+    
+    if candidate.email:
+        # Always use candidate's email - this is the email specifically entered for this candidate
+        recipient_email = candidate.email.strip()
+        recipient_name = candidate.first_name or "Applicant"
+        logger.info(f"Using candidate email: {recipient_email}")
+    elif applicant_user and applicant_user.email:
+        # Fallback to applicant_user email only if candidate has no email
+        recipient_email = applicant_user.email
+        recipient_name = applicant_user.first_name or applicant_user.username
+        logger.info(f"Candidate has no email, using applicant_user email: {recipient_email}")
+    
+    # Send in-app notification if we found an applicant user
+    if applicant_user:
         notification_type = Notification.SUCCESS if normalized_status == Candidate.APPROVED else Notification.ERROR
         
-        # Send in-app notification
         Notification.add_notification(
             user=applicant_user,
             message=f"Your application has been {status_display.lower()}.",
             notification_type=notification_type,
             link=f"/candidates/{candidate.id}/"
         )
-        
-        # Send email notification
+    
+    # Send email notification if we have a recipient email
+    if recipient_email:
         try:
             program_name = candidate.program.title if candidate.program else "the program"
             
             if normalized_status == Candidate.APPROVED:
-                subject = f"✅ Application Approved - {program_name}"
-                message = f"""Dear {applicant_user.first_name or applicant_user.username},
+                subject = f"Application Approved - {program_name}"
+                message = f"""Dear {recipient_name},
 
 Congratulations! Your application for {program_name} has been APPROVED.
 
@@ -2137,8 +2167,8 @@ Best regards,
 AgroStudies Team
 """
             else:  # Rejected
-                subject = f"❌ Application Status Update - {program_name}"
-                message = f"""Dear {applicant_user.first_name or applicant_user.username},
+                subject = f"Application Status Update - {program_name}"
+                message = f"""Dear {recipient_name},
 
 We regret to inform you that your application for {program_name} has been REJECTED.
 
@@ -2159,12 +2189,14 @@ AgroStudies Team
                 subject,
                 message,
                 settings.DEFAULT_FROM_EMAIL,
-                [applicant_user.email],
+                [recipient_email],
                 fail_silently=False,
             )
-            logger.info(f"Email DELIVERED to {applicant_user.email} for candidate {candidate_id} (result={result})")
+            logger.info(f"Email DELIVERED to {recipient_email} for candidate {candidate_id} (result={result})")
         except Exception as e:
-            logger.error(f"Failed to send status update email to {applicant_user.email}: {e}")
+            logger.error(f"Failed to send status update email to {recipient_email}: {e}")
+    else:
+        logger.warning(f"No email address available for candidate {candidate_id} - no email sent")
     
     return redirect('view_candidate', candidate_id=candidate_id)
 

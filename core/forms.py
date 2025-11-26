@@ -380,7 +380,24 @@ class ProfileUpdateForm(forms.ModelForm):
 
 def validate_file_size(value):
     """Validate file size (max 5MB)"""
-    filesize = value.size
+    from django.db.models.fields.files import FieldFile
+    
+    # Skip validation for existing FieldFile objects where the file might be missing
+    if isinstance(value, FieldFile):
+        try:
+            if not value.storage.exists(value.name):
+                # File reference exists in DB but file is missing - skip validation
+                return value
+        except Exception:
+            # If we can't check existence, skip validation to avoid crashes
+            return value
+    
+    try:
+        filesize = value.size
+    except (FileNotFoundError, OSError):
+        # File doesn't exist on disk - skip size validation
+        return value
+        
     if filesize > 5 * 1024 * 1024:  # 5MB
         raise ValidationError("The maximum file size that can be uploaded is 5MB")
     return value
@@ -395,6 +412,17 @@ def validate_file_extension(value, valid_extensions):
 def validate_pdf(value):
     """Validate that file is a PDF"""
     return validate_file_extension(value, ['.pdf'])
+
+
+def is_missing_file(value):
+    """Check if value is an existing FieldFile with missing physical file."""
+    from django.db.models.fields.files import FieldFile
+    if isinstance(value, FieldFile):
+        try:
+            return not value.storage.exists(value.name)
+        except Exception:
+            return True  # Assume missing if we can't check
+    return False
 
 
 def validate_no_duplicate(user, document_type, file_obj):
@@ -623,7 +651,7 @@ class CandidateForm(forms.ModelForm):
     # Add custom clean methods for file fields
     def clean_passport_scan(self):
         passport_scan = self.cleaned_data.get('passport_scan')
-        if passport_scan:
+        if passport_scan and not is_missing_file(passport_scan):
             validate_file_size(passport_scan)
             validate_pdf(passport_scan)
             # For candidates created by staff, check against staff member's uploads
@@ -633,7 +661,7 @@ class CandidateForm(forms.ModelForm):
         
     def clean_tor(self):
         tor = self.cleaned_data.get('tor')
-        if tor:
+        if tor and not is_missing_file(tor):
             validate_file_size(tor)
             validate_pdf(tor)
             # Check for duplicates
@@ -643,7 +671,7 @@ class CandidateForm(forms.ModelForm):
         
     def clean_nc2_tesda(self):
         nc2_tesda = self.cleaned_data.get('nc2_tesda')
-        if nc2_tesda:
+        if nc2_tesda and not is_missing_file(nc2_tesda):
             validate_file_size(nc2_tesda)
             validate_pdf(nc2_tesda)
             # Check for duplicates
@@ -653,7 +681,7 @@ class CandidateForm(forms.ModelForm):
         
     def clean_diploma(self):
         diploma = self.cleaned_data.get('diploma')
-        if diploma:
+        if diploma and not is_missing_file(diploma):
             validate_file_size(diploma)
             validate_pdf(diploma)
             # Check for duplicates
@@ -663,7 +691,7 @@ class CandidateForm(forms.ModelForm):
         
     def clean_good_moral(self):
         good_moral = self.cleaned_data.get('good_moral')
-        if good_moral:
+        if good_moral and not is_missing_file(good_moral):
             validate_file_size(good_moral)
             validate_pdf(good_moral)
             # Check for duplicates
@@ -673,7 +701,7 @@ class CandidateForm(forms.ModelForm):
         
     def clean_nbi_clearance(self):
         nbi_clearance = self.cleaned_data.get('nbi_clearance')
-        if nbi_clearance:
+        if nbi_clearance and not is_missing_file(nbi_clearance):
             validate_file_size(nbi_clearance)
             validate_pdf(nbi_clearance)
             # Check for duplicates
