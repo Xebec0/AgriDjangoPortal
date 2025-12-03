@@ -1,0 +1,794 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}Backup Manager | {{ site_title }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:core_activitylog_changelist' %}">Activity Logs</a>
+    &rsaquo; Backup Manager
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .backup-manager {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .backup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .backup-header h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
+    }
+    .backup-actions {
+        display: flex;
+        gap: 12px;
+    }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+    }
+    .btn-primary {
+        background: #067d17;
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background: #056014;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    .btn-secondary {
+        background: #417690;
+        color: #fff;
+    }
+    .btn-secondary:hover {
+        background: #325a6d;
+    }
+    .btn-danger {
+        background: #ba2121;
+        color: #fff;
+    }
+    .btn-danger:hover {
+        background: #8c1a1a;
+    }
+    .btn-outline {
+        background: transparent;
+        border: 2px solid #417690;
+        color: #417690;
+    }
+    .btn-outline:hover {
+        background: #417690;
+        color: #fff;
+    }
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .backup-info {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+        border-left: 4px solid #417690;
+    }
+    .backup-info p {
+        margin: 4px 0;
+        color: #666;
+    }
+    .backup-list {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .backup-item {
+        border-bottom: 1px solid #eee;
+        padding: 20px;
+        transition: background 0.2s ease;
+    }
+    .backup-item:last-child {
+        border-bottom: none;
+    }
+    .backup-item:hover {
+        background: #f8f9fa;
+    }
+    .backup-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .backup-timestamp {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        font-family: monospace;
+    }
+    .backup-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .badge-success {
+        background: #d4edda;
+        color: #155724;
+    }
+    .badge-warning {
+        background: #fff3cd;
+        color: #856404;
+    }
+    .badge-error {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    .backup-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    .backup-detail {
+        display: flex;
+        flex-direction: column;
+    }
+    .backup-detail-label {
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .backup-detail-value {
+        font-size: 14px;
+        color: #333;
+    }
+    .backup-files {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+    .backup-file {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: #e9ecef;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #495057;
+    }
+    .backup-file svg {
+        width: 16px;
+        height: 16px;
+    }
+    .backup-item-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .no-backups {
+        text-align: center;
+        padding: 60px 20px;
+        color: #888;
+    }
+    .no-backups svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+    }
+    /* Modal styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-overlay.active {
+        display: flex;
+    }
+    .modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    .modal h3 {
+        margin: 0 0 16px 0;
+        color: #333;
+    }
+    .modal p {
+        color: #666;
+        margin-bottom: 16px;
+    }
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 24px;
+    }
+    .checkbox-group {
+        margin: 16px 0;
+    }
+    .checkbox-group label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 8px;
+        transition: background 0.2s ease;
+    }
+    .checkbox-group label:hover {
+        background: #e9ecef;
+    }
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+    .warning-text {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 8px;
+        padding: 12px;
+        color: #856404;
+        font-size: 13px;
+    }
+    /* Schedule section styles */
+    .schedule-section {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+    .schedule-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .schedule-header h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .schedule-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .status-indicator.active {
+        background: #28a745;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+    }
+    .status-indicator.inactive {
+        background: #dc3545;
+    }
+    .schedule-form {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .time-input-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .time-input-group label {
+        font-weight: 500;
+        color: #555;
+    }
+    .time-input-group input[type="time"],
+    .time-input-group input[type="number"],
+    .time-input-group select {
+        padding: 8px 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
+    }
+    .time-input-group input[type="time"]:focus,
+    .time-input-group input[type="number"]:focus,
+    .time-input-group select:focus {
+        border-color: #417690;
+        outline: none;
+    }
+    .time-input-group input[type="number"] {
+        width: 80px;
+    }
+    .frequency-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .frequency-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .frequency-type-selector {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .frequency-type-btn {
+        padding: 8px 16px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .frequency-type-btn:hover {
+        border-color: #417690;
+    }
+    .frequency-type-btn.active {
+        background: #417690;
+        color: #fff;
+        border-color: #417690;
+    }
+    .frequency-config {
+        display: none;
+        align-items: center;
+        gap: 8px;
+    }
+    .frequency-config.active {
+        display: flex;
+    }
+    .schedule-info {
+        margin-top: 12px;
+        padding: 12px;
+        background: #e8f4fd;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #0c5460;
+    }
+    .schedule-info.warning {
+        background: #fff3cd;
+        color: #856404;
+    }
+    .schedule-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+    }
+    .schedule-detail-item {
+        display: flex;
+        flex-direction: column;
+    }
+    .schedule-detail-label {
+        font-size: 11px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .schedule-detail-value {
+        font-size: 14px;
+        color: #333;
+    }
+</style>
+
+<div class="backup-manager">
+    <div class="backup-header">
+        <h1>Backup Manager</h1>
+        <div class="backup-actions">
+            <a href="{% url 'admin:core_activitylog_changelist' %}" class="btn btn-outline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Logs
+            </a>
+            <form action="{{ run_backup_url }}" method="post" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Create New Backup
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="backup-info">
+        <p><strong>Backup Location:</strong> {{ backup_dir }}</p>
+        <p><strong>Total Backups:</strong> {{ backups|length }}</p>
+        <p>Backups include both your database and uploaded media files. You can restore to any previous point.</p>
+    </div>
+
+    <!-- Automatic Backup Schedule Section -->
+    <div class="schedule-section">
+        <div class="schedule-header">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Automatic Backup Schedule
+            </h2>
+            <div class="schedule-status">
+                {% if schedule_status.installed %}
+                    <span class="status-indicator active"></span>
+                    <span style="color: #28a745; font-weight: 600;">Active</span>
+                    {% if schedule_status.schedule_description %}
+                        <span style="color: #666; margin-left: 8px;">({{ schedule_status.schedule_description }})</span>
+                    {% endif %}
+                {% else %}
+                    <span class="status-indicator inactive"></span>
+                    <span style="color: #dc3545; font-weight: 600;">Not Scheduled</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <form action="{{ schedule_url }}" method="post" id="scheduleForm">
+            {% csrf_token %}
+            <div class="frequency-options">
+                <div class="frequency-row">
+                    <label style="font-weight: 500; color: #555;">Backup every:</label>
+                    <div class="frequency-type-selector">
+                        <button type="button" class="frequency-type-btn" data-type="minutes" onclick="selectFrequency('minutes')">Minutes</button>
+                        <button type="button" class="frequency-type-btn" data-type="hourly" onclick="selectFrequency('hourly')">Hours</button>
+                        <button type="button" class="frequency-type-btn active" data-type="daily" onclick="selectFrequency('daily')">Daily</button>
+                    </div>
+                </div>
+                
+                <input type="hidden" name="frequency_type" id="frequency_type" value="daily">
+                
+                <div class="frequency-row">
+                    <!-- Minutes config -->
+                    <div class="frequency-config" id="config-minutes">
+                        <div class="time-input-group">
+                            <label>Every</label>
+                            <input type="number" name="minute_interval" id="minute_interval" value="5" min="1" max="59" style="width: 70px;">
+                            <span>minute(s)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Hourly config -->
+                    <div class="frequency-config" id="config-hourly">
+                        <div class="time-input-group">
+                            <label>Every</label>
+                            <input type="number" name="hour_interval" id="hour_interval" value="4" min="1" max="23" style="width: 70px;">
+                            <span>hour(s)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Daily config -->
+                    <div class="frequency-config active" id="config-daily">
+                        <div class="time-input-group">
+                            <label>At</label>
+                            <input type="time" id="backup_time" name="backup_time" value="{% if schedule_status.schedule_time %}{{ schedule_status.schedule_time }}{% else %}17:00{% endif %}">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        {% if schedule_status.installed %}Update Schedule{% else %}Enable Auto-Backup{% endif %}
+                    </button>
+                    
+                    {% if schedule_status.installed %}
+                    <button type="button" class="btn btn-danger btn-sm" onclick="disableSchedule()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
+                        Disable
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+        
+        {% if schedule_status.installed %}
+        <form action="{{ unschedule_url }}" method="post" id="unscheduleForm" style="display: none;">
+            {% csrf_token %}
+        </form>
+        {% endif %}
+        
+        <script>
+        function selectFrequency(type) {
+            document.querySelectorAll('.frequency-type-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) btn.classList.add('active');
+            });
+            document.getElementById('frequency_type').value = type;
+            document.querySelectorAll('.frequency-config').forEach(function(cfg) {
+                cfg.classList.remove('active');
+            });
+            document.getElementById('config-' + type).classList.add('active');
+        }
+        function disableSchedule() {
+            if (confirm('Are you sure you want to disable automatic backups?')) {
+                document.getElementById('unscheduleForm').submit();
+            }
+        }
+        </script>
+
+        {% if schedule_status.installed %}
+        <div class="schedule-details">
+            {% if schedule_status.next_run %}
+            <div class="schedule-detail-item">
+                <span class="schedule-detail-label">Next Backup</span>
+                <span class="schedule-detail-value">{{ schedule_status.next_run }}</span>
+            </div>
+            {% endif %}
+            {% if schedule_status.last_run %}
+            <div class="schedule-detail-item">
+                <span class="schedule-detail-label">Last Run</span>
+                <span class="schedule-detail-value">{{ schedule_status.last_run }}</span>
+            </div>
+            {% endif %}
+            {% if schedule_status.last_result %}
+            <div class="schedule-detail-item">
+                <span class="schedule-detail-label">Last Result</span>
+                <span class="schedule-detail-value">{{ schedule_status.last_result }}</span>
+            </div>
+            {% endif %}
+            {% if schedule_status.status %}
+            <div class="schedule-detail-item">
+                <span class="schedule-detail-label">Status</span>
+                <span class="schedule-detail-value">{{ schedule_status.status }}</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="schedule-info">
+            <strong>Note:</strong> The system will automatically backup your database and media files daily at the scheduled time.
+        </div>
+        {% else %}
+        <div class="schedule-info warning">
+            <strong>Tip:</strong> Enable automatic backups to ensure your data is protected. If scheduling fails, you may need to run your terminal/IDE as Administrator.
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="backup-list">
+        {% if backups %}
+            {% for backup in backups %}
+            <div class="backup-item">
+                <div class="backup-item-header">
+                    <div>
+                        <span class="backup-timestamp">{{ backup.timestamp }}</span>
+                        {% if backup.description %}
+                            <span style="color: #888; font-size: 14px; margin-left: 12px;">{{ backup.description }}</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if backup.errors %}
+                            <span class="backup-badge badge-warning">Partial</span>
+                        {% elif backup.database.status == 'success' or backup.media.status == 'success' %}
+                            <span class="backup-badge badge-success">Success</span>
+                        {% else %}
+                            <span class="backup-badge badge-error">Error</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="backup-details">
+                    <div class="backup-detail">
+                        <span class="backup-detail-label">Created</span>
+                        <span class="backup-detail-value">{{ backup.created }}</span>
+                    </div>
+                    <div class="backup-detail">
+                        <span class="backup-detail-label">Duration</span>
+                        <span class="backup-detail-value">{{ backup.duration|floatformat:2 }}s</span>
+                    </div>
+                    <div class="backup-detail">
+                        <span class="backup-detail-label">Database</span>
+                        <span class="backup-detail-value">
+                            {% if backup.database.status == 'success' %}
+                                {{ backup.database.file }}
+                            {% elif backup.database.status == 'skipped' %}
+                                Skipped
+                            {% else %}
+                                Not available
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="backup-detail">
+                        <span class="backup-detail-label">Media Files</span>
+                        <span class="backup-detail-value">
+                            {% if backup.media.status == 'success' %}
+                                {{ backup.media.file_count }} files
+                            {% elif backup.media.status == 'skipped' %}
+                                Skipped (no files)
+                            {% else %}
+                                Not available
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                {% if backup.files %}
+                <div class="backup-files">
+                    {% for file in backup.files %}
+                    <span class="backup-file">
+                        {% if file.type == 'database' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                        </svg>
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/>
+                            <polyline points="13 2 13 9 20 9"/>
+                        </svg>
+                        {% endif %}
+                        {{ file.name }} ({{ file.size|filesizeformat }})
+                    </span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="backup-item-actions">
+                    {% for file in backup.files %}
+                    <a href="{% url 'admin:core_activitylog_download_backup' file.name %}" class="btn btn-secondary btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download {{ file.type|title }}
+                    </a>
+                    {% endfor %}
+                    
+                    <button type="button" class="btn btn-primary btn-sm" onclick="openRestoreModal('{{ backup.timestamp }}', {{ backup.database.status|yesno:'true,false' }}, {{ backup.media.status|yesno:'true,false' }})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/>
+                            <path d="M21 3v5h-5"/>
+                            <path d="M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16"/>
+                            <path d="M8 16H3v5"/>
+                        </svg>
+                        Restore
+                    </button>
+                    
+                    <form action="{% url 'admin:core_activitylog_delete_backup' backup.timestamp %}" method="post" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete this backup? This cannot be undone.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                <line x1="10" y1="11" x2="10" y2="17"/>
+                                <line x1="14" y1="11" x2="14" y2="17"/>
+                            </svg>
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-backups">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <h3>No Backups Found</h3>
+                <p>Create your first backup to protect your data.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Restore Modal -->
+<div id="restoreModal" class="modal-overlay">
+    <div class="modal">
+        <h3>Restore Backup</h3>
+        <p>You are about to restore your system to a previous state. This will <strong>overwrite</strong> your current data.</p>
+        
+        <form id="restoreForm" action="{% url 'admin:core_activitylog_restore_backup' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="timestamp" id="restoreTimestamp">
+            
+            <div class="checkbox-group">
+                <label id="restoreDbLabel">
+                    <input type="checkbox" name="restore_db" id="restoreDb" checked>
+                    <span>Restore Database</span>
+                </label>
+                <label id="restoreMediaLabel">
+                    <input type="checkbox" name="restore_media" id="restoreMedia" checked>
+                    <span>Restore Media Files</span>
+                </label>
+            </div>
+            
+            <div class="warning-text">
+                <strong>Warning:</strong> A backup of your current data will be created before restoration, but this action may still cause data loss. Make sure you understand what you're doing.
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeRestoreModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm Restore</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openRestoreModal(timestamp, hasDb, hasMedia) {
+    document.getElementById('restoreTimestamp').value = timestamp;
+    document.getElementById('restoreDb').checked = hasDb;
+    document.getElementById('restoreMedia').checked = hasMedia;
+    document.getElementById('restoreDbLabel').style.display = hasDb ? 'flex' : 'none';
+    document.getElementById('restoreMediaLabel').style.display = hasMedia ? 'flex' : 'none';
+    document.getElementById('restoreModal').classList.add('active');
+}
+
+function closeRestoreModal() {
+    document.getElementById('restoreModal').classList.remove('active');
+}
+
+// Close modal on outside click
+document.getElementById('restoreModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeRestoreModal();
+    }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeRestoreModal();
+    }
+});
+</script>
+{% endblock %}
