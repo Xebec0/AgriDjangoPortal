@@ -37,6 +37,13 @@ class Command(BaseCommand):
             default='',
             help='Optional description for this backup'
         )
+        parser.add_argument(
+            '--trigger',
+            type=str,
+            default='manual',
+            choices=['manual', 'scheduled', 'admin'],
+            help='How this backup was triggered (manual, scheduled, admin)'
+        )
 
     def handle(self, *args, **options):
         start_time = datetime.now()
@@ -47,10 +54,12 @@ class Command(BaseCommand):
         db_only = options.get('db_only', False)
         media_only = options.get('media_only', False)
         description = options.get('description', '')
+        trigger = options.get('trigger', 'manual')
         
         results = {
             'timestamp': timestamp,
             'description': description,
+            'trigger': trigger,  # manual, scheduled, or admin
             'database': None,
             'media': None,
             'errors': []

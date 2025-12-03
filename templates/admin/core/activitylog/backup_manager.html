@@ -632,6 +632,18 @@
                         <span class="backup-detail-value">{{ backup.duration|floatformat:2 }}s</span>
                     </div>
                     <div class="backup-detail">
+                        <span class="backup-detail-label">Method</span>
+                        <span class="backup-detail-value">
+                            {% if backup.trigger == 'admin' %}
+                                <span style="color: #417690;">Admin Panel</span>
+                            {% elif backup.trigger == 'scheduled' %}
+                                <span style="color: #28a745;">Scheduled (Auto)</span>
+                            {% else %}
+                                <span style="color: #6c757d;">Manual</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="backup-detail">
                         <span class="backup-detail-label">Database</span>
                         <span class="backup-detail-value">
                             {% if backup.database.status == 'success' %}

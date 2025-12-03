@@ -105,7 +105,7 @@ class ActivityLogAdmin(ModelAdmin):
             return redirect(reverse('admin:core_activitylog_changelist'))
         try:
             # Use scheduled_backup which now includes both DB and media
-            call_command('scheduled_backup')
+            call_command('scheduled_backup', trigger='admin')
             messages.success(request, 'Backup started. Check the latest backup panel for results.')
         except Exception as e:
             messages.error(request, f'Backup failed to start: {e}')
@@ -132,6 +132,7 @@ class ActivityLogAdmin(ModelAdmin):
                         'description': manifest.get('description', ''),
                         'created': manifest.get('end_time', 'Unknown'),
                         'duration': manifest.get('duration_seconds', 0),
+                        'trigger': manifest.get('trigger', 'manual'),
                         'database': manifest.get('database'),
                         'media': manifest.get('media'),
                         'errors': manifest.get('errors', []),
@@ -418,11 +419,14 @@ class ActivityLogAdmin(ModelAdmin):
         
         # Build the schedule command based on frequency type
         if sys.platform == 'win32':
-            # Windows Task Scheduler
+            # Windows Task Scheduler - use PowerShell for better path handling
+            # PowerShell command to change directory and run backup
+            ps_command = f"Set-Location '{project_path}'; & '{python_path}' manage.py scheduled_backup --trigger scheduled"
+            task_command = f'powershell.exe -ExecutionPolicy Bypass -NoProfile -Command "{ps_command}"'
             cmd = [
                 'schtasks', '/Create',
                 '/TN', task_name,
-                '/TR', f'"{python_path}" manage.py scheduled_backup',
+                '/TR', task_command,
                 '/F',  # Force overwrite if exists
             ]
             
