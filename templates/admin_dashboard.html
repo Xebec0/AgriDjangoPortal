@@ -470,6 +470,236 @@ body {
 .footer-stat .change.up { background: #d1fae5; color: #10b981; }
 .footer-stat .change.down { background: #fee2e2; color: #ef4444; }
 
+/* Application Status Analytics */
+.status-analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.status-donut-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.status-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.legend-color.missing-docs { background: #f59e0b; }
+.legend-color.validated { background: #3b82f6; }
+.legend-color.approved { background: #10b981; }
+.legend-color.rejected { background: #ef4444; }
+
+.legend-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.legend-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Status Timeline */
+.status-timeline {
+    padding: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+}
+
+.timeline-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.timeline-icon.missing-docs { background: #fef3c7; color: #f59e0b; }
+.timeline-icon.validated { background: #dbeafe; color: #3b82f6; }
+.timeline-icon.approved { background: #d1fae5; color: #10b981; }
+.timeline-icon.rejected { background: #fee2e2; color: #ef4444; }
+
+.timeline-content {
+    flex: 1;
+}
+
+.timeline-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.timeline-time {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .status-analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Reports Section */
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.report-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.report-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.report-card-header i {
+    color: var(--primary-blue);
+}
+
+.report-card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.report-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.report-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.report-list-item:last-child {
+    border-bottom: none;
+}
+
+.report-item-label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 0.5rem;
+}
+
+.report-item-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: #f1f5f9;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.report-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.report-total-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.report-total-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.report-empty {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+}
+
+@media (max-width: 992px) {
+    .reports-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .reports-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Progress Ring */
 .progress-ring-container {
     position: relative;
@@ -703,6 +933,214 @@ body {
         </div>
     </div>
 
+    <!-- Application Status Analytics -->
+    <div class="status-analytics-grid">
+        <!-- Status Distribution Chart -->
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">
+                    <i class="fas fa-chart-pie"></i> Application Status Distribution
+                </span>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <div class="status-donut-container">
+                    <canvas id="statusDonutChart" width="180" height="180"></canvas>
+                </div>
+                <div class="status-legend">
+                    <div class="legend-item">
+                        <div class="legend-color missing-docs"></div>
+                        <span class="legend-label">Missing Documents</span>
+                        <span class="legend-value">{{ missing_docs_count }}</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color validated"></div>
+                        <span class="legend-label">Validated</span>
+                        <span class="legend-value">{{ validated_count }}</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color approved"></div>
+                        <span class="legend-label">Approved</span>
+                        <span class="legend-value">{{ approved_candidates }}</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color rejected"></div>
+                        <span class="legend-label">Rejected</span>
+                        <span class="legend-value">{{ rejected_candidates }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Timeline -->
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">
+                    <i class="fas fa-history"></i> Application Status Timeline
+                </span>
+            </div>
+            <div class="status-timeline">
+                {% for candidate in recent_status_changes %}
+                <div class="timeline-item">
+                    <div class="timeline-icon {% if candidate.status == 'Missing_Docs' %}missing-docs{% elif candidate.status == 'Validated' %}validated{% elif candidate.status == 'Approved' %}approved{% else %}rejected{% endif %}">
+                        {% if candidate.status == 'Missing_Docs' %}
+                            <i class="fas fa-file-alt"></i>
+                        {% elif candidate.status == 'Validated' %}
+                            <i class="fas fa-clipboard-check"></i>
+                        {% elif candidate.status == 'Approved' %}
+                            <i class="fas fa-check"></i>
+                        {% else %}
+                            <i class="fas fa-times"></i>
+                        {% endif %}
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">{{ candidate.first_name }} {{ candidate.last_name }}</div>
+                        <p class="timeline-desc">
+                            Status: <strong>{{ candidate.get_status_display }}</strong>
+                            {% if candidate.program %} • {{ candidate.program.title }}{% endif %}
+                        </p>
+                    </div>
+                    <div class="timeline-time">{{ candidate.updated_at|timesince }} ago</div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-inbox" style="font-size: 2rem;"></i>
+                    <p class="mt-2 mb-0">No status changes yet</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Generation Section -->
+    <div class="dash-card" style="margin-bottom: 1.5rem;">
+        <div class="dash-card-header">
+            <span class="dash-card-title">
+                <i class="fas fa-chart-bar"></i> Reports Generation
+            </span>
+        </div>
+        <div class="reports-grid">
+            <!-- Applicants Per Year -->
+            <div class="report-card">
+                <div class="report-card-header">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="report-card-title">Applicants Per Year</span>
+                </div>
+                <ul class="report-list">
+                    {% for item in applicants_per_year %}
+                    <li class="report-list-item">
+                        <span class="report-item-label">{{ item.year }}</span>
+                        <span class="report-item-value">{{ item.count }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="report-empty">No data available</li>
+                    {% endfor %}
+                </ul>
+                <div class="report-total">
+                    <span class="report-total-label">Total Applicants</span>
+                    <span class="report-total-value">{{ total_candidates }}</span>
+                </div>
+            </div>
+
+            <!-- Deployed Per Year -->
+            <div class="report-card">
+                <div class="report-card-header">
+                    <i class="fas fa-user-check"></i>
+                    <span class="report-card-title">Deployed Per Year</span>
+                </div>
+                <ul class="report-list">
+                    {% for item in deployed_per_year %}
+                    <li class="report-list-item">
+                        <span class="report-item-label">{{ item.year }}</span>
+                        <span class="report-item-value">{{ item.count }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="report-empty">No data available</li>
+                    {% endfor %}
+                </ul>
+                <div class="report-total">
+                    <span class="report-total-label">Total Deployed</span>
+                    <span class="report-total-value">{{ total_deployed }}</span>
+                </div>
+            </div>
+
+            <!-- Deployed Per Program -->
+            <div class="report-card">
+                <div class="report-card-header">
+                    <i class="fas fa-leaf"></i>
+                    <span class="report-card-title">Deployed Per Program</span>
+                </div>
+                <ul class="report-list">
+                    {% for item in deployed_per_program %}
+                    <li class="report-list-item">
+                        <span class="report-item-label" title="{{ item.program__title }}">{{ item.program__title|truncatechars:25 }}</span>
+                        <span class="report-item-value">{{ item.count }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="report-empty">No data available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Deployed Per Farm -->
+            <div class="report-card">
+                <div class="report-card-header">
+                    <i class="fas fa-tractor"></i>
+                    <span class="report-card-title">Deployed Per Farm</span>
+                </div>
+                <ul class="report-list">
+                    {% for item in deployed_per_farm %}
+                    <li class="report-list-item">
+                        <span class="report-item-label" title="{{ item.program__location }}, {{ item.program__country }}">{{ item.program__location|truncatechars:20 }}</span>
+                        <span class="report-item-value">{{ item.count }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="report-empty">No data available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Deployed Per SUC (University) -->
+            <div class="report-card">
+                <div class="report-card-header">
+                    <i class="fas fa-university"></i>
+                    <span class="report-card-title">Deployed Per SUC</span>
+                </div>
+                <ul class="report-list">
+                    {% for item in deployed_per_suc %}
+                    <li class="report-list-item">
+                        <span class="report-item-label" title="{{ item.university__name }}">{{ item.university__name|truncatechars:25 }}</span>
+                        <span class="report-item-value">{{ item.count }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="report-empty">No data available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Deployed Per Sex -->
+            <div class="report-card">
+                <div class="report-card-header">
+                    <i class="fas fa-venus-mars"></i>
+                    <span class="report-card-title">Deployed Per Sex</span>
+                </div>
+                <ul class="report-list">
+                    {% for item in deployed_per_sex %}
+                    <li class="report-list-item">
+                        <span class="report-item-label">{{ item.gender|default:"Not Specified" }}</span>
+                        <span class="report-item-value">{{ item.count }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="report-empty">No data available</li>
+                    {% endfor %}
+                </ul>
+                <div class="report-total">
+                    <span class="report-total-label">Total</span>
+                    <span class="report-total-value">{{ total_deployed }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Data Table Card -->
     <div class="dash-card data-table-card">
         <div class="dash-card-header">
@@ -926,6 +1364,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const mini4 = document.getElementById('miniChart4');
     if (mini4) new Chart(mini4, miniChartConfig('#4361ee', [0, 0, 0, 0, 0, 0, {{ active_programs }}]));
+
+    // Status Distribution Donut Chart
+    const donutCtx = document.getElementById('statusDonutChart');
+    if (donutCtx) {
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Missing Documents', 'Validated', 'Approved', 'Rejected'],
+                datasets: [{
+                    data: [{{ missing_docs_count }}, {{ validated_count }}, {{ approved_candidates }}, {{ rejected_candidates }}],
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ef4444'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '65%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const value = context.raw;
+                                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                return context.label + ': ' + value + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 });
 </script>
 {% endblock %}

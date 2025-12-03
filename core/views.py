@@ -545,10 +545,12 @@ def admin_dashboard(request):
     total_candidates = Candidate.objects.count()
     total_programs = AgricultureProgram.objects.count()
     
-    # Application statuses
-    pending_applications = Candidate.objects.filter(status__in=['New', 'Draft']).count()
+    # Application statuses - all status counts for analytics
+    missing_docs_count = Candidate.objects.filter(status='Missing_Docs').count()
+    validated_count = Candidate.objects.filter(status='Validated').count()
     approved_candidates = Candidate.objects.filter(status='Approved').count()
     rejected_candidates = Candidate.objects.filter(status='Rejected').count()
+    pending_applications = missing_docs_count + validated_count  # Combined pending
     
     # Staff count
     staff_count = User.objects.filter(is_staff=True).count()
@@ -601,6 +603,60 @@ def admin_dashboard(request):
     # SVG circle circumference is 201, calculate stroke-dashoffset for progress ring
     approval_ring_offset = round(201 - (201 * approval_rate / 100))
     
+    # Recent status changes for timeline (last 10 status updates)
+    recent_status_changes = Candidate.objects.filter(
+        status__in=['Missing_Docs', 'Validated', 'Approved', 'Rejected']
+    ).select_related('program').order_by('-updated_at')[:10]
+    
+    # ===== REPORTS DATA =====
+    # Applicants per year (last 5 years)
+    from django.db.models import Count
+    from django.db.models.functions import ExtractYear
+    
+    applicants_per_year = Candidate.objects.annotate(
+        year=ExtractYear('created_at')
+    ).values('year').annotate(
+        count=Count('id')
+    ).order_by('-year')[:5]
+    
+    # Deployed (Approved) per year
+    deployed_per_year = Candidate.objects.filter(status='Approved').annotate(
+        year=ExtractYear('updated_at')
+    ).values('year').annotate(
+        count=Count('id')
+    ).order_by('-year')[:5]
+    
+    # Deployed per program
+    deployed_per_program = Candidate.objects.filter(
+        status='Approved', program__isnull=False
+    ).values('program__title').annotate(
+        count=Count('id')
+    ).order_by('-count')[:10]
+    
+    # Deployed per farm (program location)
+    deployed_per_farm = Candidate.objects.filter(
+        status='Approved', program__isnull=False
+    ).values('program__location', 'program__country').annotate(
+        count=Count('id')
+    ).order_by('-count')[:10]
+    
+    # Deployed per SUC (University)
+    deployed_per_suc = Candidate.objects.filter(
+        status='Approved', university__isnull=False
+    ).values('university__name').annotate(
+        count=Count('id')
+    ).order_by('-count')[:10]
+    
+    # Deployed per sex
+    deployed_per_sex = Candidate.objects.filter(
+        status='Approved'
+    ).values('gender').annotate(
+        count=Count('id')
+    ).order_by('-count')
+    
+    # Total deployed
+    total_deployed = Candidate.objects.filter(status='Approved').count()
+    
     context = {
         'total_users': total_users,
         'total_candidates': total_candidates,
@@ -608,10 +664,13 @@ def admin_dashboard(request):
         'pending_applications': pending_applications,
         'approved_candidates': approved_candidates,
         'rejected_candidates': rejected_candidates,
+        'missing_docs_count': missing_docs_count,
+        'validated_count': validated_count,
         'staff_count': staff_count,
         'active_programs': active_programs,
         'recent_activities': recent_activities,
         'recent_candidates': recent_candidates,
+        'recent_status_changes': recent_status_changes,
         'monthly_applications': monthly_applications,
         'monthly_approved': monthly_approved,
         'current_day_of_week': current_day_of_week,
@@ -619,6 +678,14 @@ def admin_dashboard(request):
         'total_approved_decisions': total_approved_decisions,
         'approval_rate': approval_rate,
         'approval_ring_offset': approval_ring_offset,
+        # Reports data
+        'applicants_per_year': applicants_per_year,
+        'deployed_per_year': deployed_per_year,
+        'deployed_per_program': deployed_per_program,
+        'deployed_per_farm': deployed_per_farm,
+        'deployed_per_suc': deployed_per_suc,
+        'deployed_per_sex': deployed_per_sex,
+        'total_deployed': total_deployed,
     }
     
     return render(request, 'admin_dashboard.html', context)
