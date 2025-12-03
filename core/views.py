@@ -692,6 +692,243 @@ def admin_dashboard(request):
 
 
 @login_required
+def export_dashboard_report(request):
+    """Export dashboard analytics report in CSV, Excel, or PDF format"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    from django.db.models import Count
+    from django.db.models.functions import ExtractYear
+    from io import BytesIO
+    from datetime import datetime
+    
+    export_format = request.GET.get('format', 'csv')
+    
+    # Gather report data
+    applicants_per_year = list(Candidate.objects.annotate(
+        year=ExtractYear('created_at')
+    ).values('year').annotate(count=Count('id')).order_by('-year')[:10])
+    
+    deployed_per_year = list(Candidate.objects.filter(status='Approved').annotate(
+        year=ExtractYear('updated_at')
+    ).values('year').annotate(count=Count('id')).order_by('-year')[:10])
+    
+    deployed_per_program = list(Candidate.objects.filter(
+        status='Approved', program__isnull=False
+    ).values('program__title').annotate(count=Count('id')).order_by('-count')[:10])
+    
+    deployed_per_farm = list(Candidate.objects.filter(
+        status='Approved', program__isnull=False
+    ).values('program__location', 'program__country').annotate(count=Count('id')).order_by('-count')[:10])
+    
+    deployed_per_suc = list(Candidate.objects.filter(
+        status='Approved', university__isnull=False
+    ).values('university__name').annotate(count=Count('id')).order_by('-count')[:10])
+    
+    deployed_per_sex = list(Candidate.objects.filter(
+        status='Approved'
+    ).values('gender').annotate(count=Count('id')).order_by('-count'))
+    
+    total_candidates = Candidate.objects.count()
+    total_deployed = Candidate.objects.filter(status='Approved').count()
+    
+    if export_format == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="agrostudies_report_{datetime.now().strftime("%Y%m%d")}.csv"'
+        
+        writer = csv.writer(response)
+        
+        # Header
+        writer.writerow(['Agrostudies Analytics Report'])
+        writer.writerow([f'Generated on: {datetime.now().strftime("%B %d, %Y at %I:%M %p")}'])
+        writer.writerow([])
+        
+        # Applicants Per Year
+        writer.writerow(['=== APPLICANTS PER YEAR ==='])
+        writer.writerow(['Year', 'Count'])
+        for item in applicants_per_year:
+            writer.writerow([item['year'], item['count']])
+        writer.writerow(['Total', total_candidates])
+        writer.writerow([])
+        
+        # Deployed Per Year
+        writer.writerow(['=== DEPLOYED PER YEAR ==='])
+        writer.writerow(['Year', 'Count'])
+        for item in deployed_per_year:
+            writer.writerow([item['year'], item['count']])
+        writer.writerow(['Total', total_deployed])
+        writer.writerow([])
+        
+        # Deployed Per Program
+        writer.writerow(['=== DEPLOYED PER PROGRAM ==='])
+        writer.writerow(['Program', 'Count'])
+        for item in deployed_per_program:
+            writer.writerow([item['program__title'], item['count']])
+        writer.writerow([])
+        
+        # Deployed Per Farm
+        writer.writerow(['=== DEPLOYED PER FARM ==='])
+        writer.writerow(['Location', 'Country', 'Count'])
+        for item in deployed_per_farm:
+            writer.writerow([item['program__location'], item['program__country'], item['count']])
+        writer.writerow([])
+        
+        # Deployed Per SUC
+        writer.writerow(['=== DEPLOYED PER SUC (UNIVERSITY) ==='])
+        writer.writerow(['University', 'Count'])
+        for item in deployed_per_suc:
+            writer.writerow([item['university__name'], item['count']])
+        writer.writerow([])
+        
+        # Deployed Per Sex
+        writer.writerow(['=== DEPLOYED PER SEX ==='])
+        writer.writerow(['Sex', 'Count'])
+        for item in deployed_per_sex:
+            writer.writerow([item['gender'] or 'Not Specified', item['count']])
+        writer.writerow(['Total', total_deployed])
+        
+        return response
+    
+    elif export_format == 'excel':
+        output = BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'remove_timezone': True})
+        
+        # Formats
+        title_format = workbook.add_format({'bold': True, 'font_size': 14})
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#4361ee', 'font_color': 'white'})
+        section_format = workbook.add_format({'bold': True, 'bg_color': '#f1f5f9', 'font_size': 12})
+        total_format = workbook.add_format({'bold': True, 'bg_color': '#d1fae5'})
+        
+        worksheet = workbook.add_worksheet('Analytics Report')
+        worksheet.set_column('A:A', 30)
+        worksheet.set_column('B:B', 15)
+        worksheet.set_column('C:C', 15)
+        
+        row = 0
+        worksheet.write(row, 0, 'Agrostudies Analytics Report', title_format)
+        row += 1
+        worksheet.write(row, 0, f'Generated on: {datetime.now().strftime("%B %d, %Y at %I:%M %p")}')
+        row += 2
+        
+        # Applicants Per Year
+        worksheet.write(row, 0, 'APPLICANTS PER YEAR', section_format)
+        row += 1
+        worksheet.write(row, 0, 'Year', header_format)
+        worksheet.write(row, 1, 'Count', header_format)
+        row += 1
+        for item in applicants_per_year:
+            worksheet.write(row, 0, item['year'])
+            worksheet.write(row, 1, item['count'])
+            row += 1
+        worksheet.write(row, 0, 'Total', total_format)
+        worksheet.write(row, 1, total_candidates, total_format)
+        row += 2
+        
+        # Deployed Per Year
+        worksheet.write(row, 0, 'DEPLOYED PER YEAR', section_format)
+        row += 1
+        worksheet.write(row, 0, 'Year', header_format)
+        worksheet.write(row, 1, 'Count', header_format)
+        row += 1
+        for item in deployed_per_year:
+            worksheet.write(row, 0, item['year'])
+            worksheet.write(row, 1, item['count'])
+            row += 1
+        worksheet.write(row, 0, 'Total', total_format)
+        worksheet.write(row, 1, total_deployed, total_format)
+        row += 2
+        
+        # Deployed Per Program
+        worksheet.write(row, 0, 'DEPLOYED PER PROGRAM', section_format)
+        row += 1
+        worksheet.write(row, 0, 'Program', header_format)
+        worksheet.write(row, 1, 'Count', header_format)
+        row += 1
+        for item in deployed_per_program:
+            worksheet.write(row, 0, item['program__title'])
+            worksheet.write(row, 1, item['count'])
+            row += 1
+        row += 1
+        
+        # Deployed Per Farm
+        worksheet.write(row, 0, 'DEPLOYED PER FARM', section_format)
+        row += 1
+        worksheet.write(row, 0, 'Location', header_format)
+        worksheet.write(row, 1, 'Country', header_format)
+        worksheet.write(row, 2, 'Count', header_format)
+        row += 1
+        for item in deployed_per_farm:
+            worksheet.write(row, 0, item['program__location'])
+            worksheet.write(row, 1, item['program__country'])
+            worksheet.write(row, 2, item['count'])
+            row += 1
+        row += 1
+        
+        # Deployed Per SUC
+        worksheet.write(row, 0, 'DEPLOYED PER SUC (UNIVERSITY)', section_format)
+        row += 1
+        worksheet.write(row, 0, 'University', header_format)
+        worksheet.write(row, 1, 'Count', header_format)
+        row += 1
+        for item in deployed_per_suc:
+            worksheet.write(row, 0, item['university__name'])
+            worksheet.write(row, 1, item['count'])
+            row += 1
+        row += 1
+        
+        # Deployed Per Sex
+        worksheet.write(row, 0, 'DEPLOYED PER SEX', section_format)
+        row += 1
+        worksheet.write(row, 0, 'Sex', header_format)
+        worksheet.write(row, 1, 'Count', header_format)
+        row += 1
+        for item in deployed_per_sex:
+            worksheet.write(row, 0, item['gender'] or 'Not Specified')
+            worksheet.write(row, 1, item['count'])
+            row += 1
+        worksheet.write(row, 0, 'Total', total_format)
+        worksheet.write(row, 1, total_deployed, total_format)
+        
+        workbook.close()
+        output.seek(0)
+        
+        response = HttpResponse(
+            output.read(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = f'attachment; filename="agrostudies_report_{datetime.now().strftime("%Y%m%d")}.xlsx"'
+        return response
+    
+    elif export_format == 'pdf':
+        from django.template.loader import render_to_string
+        from weasyprint import HTML
+        
+        html_string = render_to_string('reports/dashboard_report_pdf.html', {
+            'applicants_per_year': applicants_per_year,
+            'deployed_per_year': deployed_per_year,
+            'deployed_per_program': deployed_per_program,
+            'deployed_per_farm': deployed_per_farm,
+            'deployed_per_suc': deployed_per_suc,
+            'deployed_per_sex': deployed_per_sex,
+            'total_candidates': total_candidates,
+            'total_deployed': total_deployed,
+            'generated_date': datetime.now(),
+        })
+        
+        pdf_file = BytesIO()
+        HTML(string=html_string).write_pdf(pdf_file)
+        pdf_file.seek(0)
+        
+        response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="agrostudies_report_{datetime.now().strftime("%Y%m%d")}.pdf"'
+        return response
+    
+    # Default fallback to CSV
+    return redirect('admin_dashboard')
+
+
+@login_required
 @require_POST
 def clear_all_documents(request):
     """Clear all required documents from user's profile"""

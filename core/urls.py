@@ -73,6 +73,9 @@ urlpatterns = [
     path('candidates/export/excel/', views.export_candidates_excel, name='export_candidates_excel'),
     path('candidates/export/pdf/', views.export_candidates_pdf, name='export_candidates_pdf'),
     
+    # Export dashboard reports
+    path('reports/export/', views.export_dashboard_report, name='export_dashboard_report'),
+    
     # Static pages
     path('help/', views.help_page, name='help'),
     path('contact/', views.contact_page, name='contact'),

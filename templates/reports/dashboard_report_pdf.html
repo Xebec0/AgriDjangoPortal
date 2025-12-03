@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agrostudies Analytics Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 11pt;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #4361ee;
+        }
+        
+        .header h1 {
+            color: #4361ee;
+            font-size: 24pt;
+            margin: 0 0 10px 0;
+        }
+        
+        .header .subtitle {
+            color: #64748b;
+            font-size: 12pt;
+        }
+        
+        .report-section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            background: #4361ee;
+            color: white;
+            padding: 10px 15px;
+            font-size: 12pt;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #475569;
+        }
+        
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        .total-row {
+            background: #d1fae5 !important;
+            font-weight: bold;
+        }
+        
+        .total-row td {
+            border-top: 2px solid #10b981;
+        }
+        
+        .count-cell {
+            text-align: right;
+            font-weight: 600;
+            color: #4361ee;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 9pt;
+            color: #94a3b8;
+            padding: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .two-column > div {
+            flex: 1;
+        }
+        
+        .empty-message {
+            color: #94a3b8;
+            font-style: italic;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Agrostudies Analytics Report</h1>
+        <p class="subtitle">Generated on {{ generated_date|date:"F d, Y" }} at {{ generated_date|time:"h:i A" }}</p>
+    </div>
+
+    <div class="report-section">
+        <h2 class="section-title">Applicants Per Year</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th style="text-align: right;">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in applicants_per_year %}
+                <tr>
+                    <td>{{ item.year }}</td>
+                    <td class="count-cell">{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="empty-message">No data available</td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td class="count-cell">{{ total_candidates }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h2 class="section-title">Deployed Per Year</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th style="text-align: right;">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in deployed_per_year %}
+                <tr>
+                    <td>{{ item.year }}</td>
+                    <td class="count-cell">{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="empty-message">No data available</td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td class="count-cell">{{ total_deployed }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h2 class="section-title">Deployed Per Program</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Program</th>
+                    <th style="text-align: right;">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in deployed_per_program %}
+                <tr>
+                    <td>{{ item.program__title }}</td>
+                    <td class="count-cell">{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="empty-message">No data available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h2 class="section-title">Deployed Per Farm</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Country</th>
+                    <th style="text-align: right;">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in deployed_per_farm %}
+                <tr>
+                    <td>{{ item.program__location }}</td>
+                    <td>{{ item.program__country }}</td>
+                    <td class="count-cell">{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="empty-message">No data available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h2 class="section-title">Deployed Per SUC (University)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>University</th>
+                    <th style="text-align: right;">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in deployed_per_suc %}
+                <tr>
+                    <td>{{ item.university__name }}</td>
+                    <td class="count-cell">{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="empty-message">No data available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h2 class="section-title">Deployed Per Sex</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sex</th>
+                    <th style="text-align: right;">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in deployed_per_sex %}
+                <tr>
+                    <td>{{ item.gender|default:"Not Specified" }}</td>
+                    <td class="count-cell">{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="empty-message">No data available</td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td class="count-cell">{{ total_deployed }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Agrostudies Program Management System - Confidential Report
+    </div>
+</body>
+</html>
