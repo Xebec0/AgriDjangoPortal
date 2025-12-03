@@ -1043,13 +1043,20 @@ body {
     </div>
 
     <!-- Application Status Analytics -->
-    <div class="status-analytics-grid">
+    <div class="status-analytics-grid print-section" id="analytics-section">
+        <div class="print-header">
+            <h1>Application Status Analytics</h1>
+            <p>Generated on {% now "F d, Y \a\t h:i A" %}</p>
+        </div>
         <!-- Status Distribution Chart -->
         <div class="dash-card">
             <div class="dash-card-header">
                 <span class="dash-card-title">
                     <i class="fas fa-chart-pie"></i> Application Status Distribution
                 </span>
+                <button onclick="printAnalytics()" class="report-btn" style="margin-left: auto;">
+                    <i class="fas fa-print"></i> Print
+                </button>
             </div>
             <div style="display: flex; align-items: center;">
                 <div class="status-donut-container">
@@ -1530,16 +1537,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Print Reports Function
 function printReports() {
-    // Add print class to body for styling
-    document.body.classList.add('printing-reports');
-    
-    // Trigger print dialog
     window.print();
-    
-    // Remove print class after printing
-    setTimeout(() => {
-        document.body.classList.remove('printing-reports');
-    }, 100);
+}
+
+// Print Analytics Function
+function printAnalytics() {
+    window.print();
 }
 </script>
 {% endblock %}

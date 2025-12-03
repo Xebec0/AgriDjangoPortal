@@ -25,6 +25,71 @@
     border-color: #86b7fe;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .print-section, .print-section * {
+        visibility: visible;
+    }
+    
+    .print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    
+    .no-print, .navbar, .sidebar, .card-header, .btn, .dropdown, 
+    .pagination, form, .modal, footer, #dateRangeModal {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #333;
+    }
+    
+    .print-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .print-header p {
+        font-size: 0.875rem;
+        color: #666;
+    }
+    
+    table {
+        width: 100% !important;
+        font-size: 10pt !important;
+    }
+    
+    th, td {
+        padding: 6px !important;
+    }
+    
+    .badge {
+        border: 1px solid #333 !important;
+        color: #333 !important;
+        background: none !important;
+    }
+}
+
+.print-header {
+    display: none;
+}
 </style>
 
 <script>
@@ -76,6 +141,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             <li>
                                 <a class="dropdown-item" href="?export=pdf{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
                                     <i class="fas fa-file-pdf me-1"></i> Export All as PDF
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="printCandidates(); return false;">
+                                    <i class="fas fa-print me-1"></i> Print
                                 </a>
                             </li>
                         </ul>
@@ -166,6 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </form>
             
             {% if page_obj %}
+                <!-- Print Section -->
+                <div class="print-section" id="candidatePrintSection">
+                    <div class="print-header">
+                        <h1>Candidate Management Report</h1>
+                        <p>Generated on {% now "F d, Y \a\t h:i A" %} | Total: {{ page_obj.paginator.count }} candidates</p>
+                    </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead class="table-light">
@@ -234,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </tbody>
                     </table>
                 </div>
+                </div><!-- End Print Section -->
                 
                 <!-- Pagination -->
                 {% if page_obj.has_other_pages %}
@@ -367,4 +445,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% block extra_js %}
 <script src="{% static 'js/candidate-list.js' %}"></script>
+<script>
+// Print Candidates Function
+function printCandidates() {
+    window.print();
+}
+</script>
 {% endblock %}

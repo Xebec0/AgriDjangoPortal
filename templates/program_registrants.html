@@ -213,6 +213,63 @@
         width: 100%;
     }
 }
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .print-section, .print-section * {
+        visibility: visible;
+    }
+    
+    .print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    
+    .no-print, .navbar, .sidebar, .registrants-header, .dropdown, 
+    .action-btn, .pagination, footer, .bg-white.rounded-3 {
+        display: none !important;
+    }
+    
+    .candidate-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        page-break-inside: avoid;
+    }
+    
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #333;
+    }
+    
+    .print-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .print-header p {
+        font-size: 0.875rem;
+        color: #666;
+    }
+    
+    .status-badge {
+        border: 1px solid #333 !important;
+        color: #333 !important;
+        background: none !important;
+    }
+}
+
+.print-header {
+    display: none;
+}
 </style>
 {% endblock %}
 
@@ -288,6 +345,12 @@
                             <i class="fas fa-file-pdf me-2 text-danger"></i>PDF Format
                         </a>
                     </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="printRegistrants(); return false;">
+                            <i class="fas fa-print me-2 text-secondary"></i>Print
+                        </a>
+                    </li>
                 </ul>
             </div>
             <a href="{% url 'program_detail' program.id %}" class="action-btn action-btn-primary">
@@ -298,6 +361,12 @@
     
     <!-- Candidates List -->
     {% if page_obj %}
+        <!-- Print Section -->
+        <div class="print-section" id="registrantsPrintSection">
+            <div class="print-header">
+                <h1>Program Applicants - {{ program.title }}</h1>
+                <p>Generated on {% now "F d, Y \a\t h:i A" %} | Total: {{ page_obj.paginator.count }} applicants</p>
+            </div>
         {% for candidate in page_obj %}
         <div class="candidate-card">
             <div class="d-flex align-items-center">
@@ -326,6 +395,7 @@
             </div>
         </div>
         {% endfor %}
+        </div><!-- End Print Section -->
         
         <!-- Pagination -->
         {% if page_obj.has_other_pages %}
@@ -378,4 +448,13 @@
         </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Print Registrants Function
+function printRegistrants() {
+    window.print();
+}
+</script>
 {% endblock %}
