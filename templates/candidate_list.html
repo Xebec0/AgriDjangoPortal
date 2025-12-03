@@ -26,65 +26,9 @@
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Print Styles */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    
-    .print-section, .print-section * {
-        visibility: visible;
-    }
-    
-    .print-section {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-    
-    .no-print, .navbar, .sidebar, .card-header, .btn, .dropdown, 
-    .pagination, form, .modal, footer, #dateRangeModal {
-        display: none !important;
-    }
-    
-    .card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-    }
-    
-    .print-header {
-        display: block !important;
-        text-align: center;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #333;
-    }
-    
-    .print-header h1 {
-        font-size: 1.5rem;
-        margin-bottom: 5px;
-    }
-    
-    .print-header p {
-        font-size: 0.875rem;
-        color: #666;
-    }
-    
-    table {
-        width: 100% !important;
-        font-size: 10pt !important;
-    }
-    
-    th, td {
-        padding: 6px !important;
-    }
-    
-    .badge {
-        border: 1px solid #333 !important;
-        color: #333 !important;
-        background: none !important;
-    }
+/* Printable Area - hidden on screen, used for print content */
+#printableArea {
+    display: none;
 }
 
 .print-header {
@@ -145,8 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" href="#" onclick="printCandidates(); return false;">
-                                    <i class="fas fa-print me-1"></i> Print
+                                <a class="dropdown-item" href="#" onclick="printAllCandidates(); return false;">
+                                    <i class="fas fa-print me-1"></i> Print All
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="printSelectedCandidates(); return false;" id="printSelectedLink">
+                                    <i class="fas fa-print me-1"></i> Print Selected (<span id="printSelectedCount">0</span>)
                                 </a>
                             </li>
                         </ul>
@@ -237,17 +186,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </form>
             
             {% if page_obj %}
-                <!-- Print Section -->
-                <div class="print-section" id="candidatePrintSection">
-                    <div class="print-header">
-                        <h1>Candidate Management Report</h1>
-                        <p>Generated on {% now "F d, Y \a\t h:i A" %} | Total: {{ page_obj.paginator.count }} candidates</p>
-                    </div>
+                <!-- Main Table (Screen Display) -->
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead class="table-light">
                             <tr>
-                                <th>
+                                <th class="print-checkbox-col">
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="selectAll">
                                     </div>
@@ -262,13 +206,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <th>Farm Location</th>
                                 <th>Status</th>
                                 <th>Date Added</th>
-                                <th>Actions</th>
+                                <th class="print-actions-col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for candidate in page_obj %}
-                                <tr>
-                                    <td>
+                                <tr data-candidate-id="{{ candidate.id }}">
+                                    <td class="print-checkbox-col">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input candidate-select" name="selected_candidates" value="{{ candidate.id }}">
                                         </div>
@@ -282,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <td>{{ candidate.gender|default:"--" }}</td>
                                     <td>{{ candidate.country_of_birth|default:"--" }}</td>
                                     <td>{{ candidate.nationality|default:"--" }}</td>
-                                    <td>{{ candidate.specialization }}</td>
+                                    <td>{{ candidate.specialization|default:"--" }}</td>
                                     <td>{{ candidate.program.title|default:"--" }}</td>
                                     <td>{{ candidate.program.location|default:"--" }}</td>
                                     <td>
@@ -291,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         </span>
                                     </td>
                                     <td>{{ candidate.created_at|date:"M d, Y" }}</td>
-                                    <td>
+                                    <td class="print-actions-col">
                                         <div class="btn-group" role="group">
                                             <a href="{% url 'view_candidate' candidate.id %}" class="btn btn-info btn-sm" title="View">
                                                 <i class="fas fa-eye"></i>
@@ -311,7 +255,46 @@ document.addEventListener('DOMContentLoaded', function() {
                         </tbody>
                     </table>
                 </div>
-                </div><!-- End Print Section -->
+                
+                <!-- Hidden Printable Area (shown only during print) -->
+                <div id="printableArea">
+                    <div class="print-header">
+                        <h1>Candidate Management Report</h1>
+                        <p id="printReportInfo">Generated on {% now "F d, Y \a\t h:i A" %} | Total: {{ page_obj.paginator.count }} candidates</p>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Sex</th>
+                                <th>Country</th>
+                                <th>Nationality</th>
+                                <th>Specialization</th>
+                                <th>Program</th>
+                                <th>Farm Location</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                            </tr>
+                        </thead>
+                        <tbody id="printTableBody">
+                            {% for candidate in page_obj %}
+                                <tr data-candidate-id="{{ candidate.id }}">
+                                    <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                                    <td>{{ candidate.email|default:"--" }}</td>
+                                    <td>{{ candidate.gender|default:"--" }}</td>
+                                    <td>{{ candidate.country_of_birth|default:"--" }}</td>
+                                    <td>{{ candidate.nationality|default:"--" }}</td>
+                                    <td>{{ candidate.specialization|default:"--" }}</td>
+                                    <td>{{ candidate.program.title|default:"--" }}</td>
+                                    <td>{{ candidate.program.location|default:"--" }}</td>
+                                    <td>{{ candidate.get_status_display }}</td>
+                                    <td>{{ candidate.created_at|date:"M d, Y" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 
                 <!-- Pagination -->
                 {% if page_obj.has_other_pages %}
@@ -446,9 +429,204 @@ document.addEventListener('DOMContentLoaded', function() {
 {% block extra_js %}
 <script src="{% static 'js/candidate-list.js' %}"></script>
 <script>
-// Print Candidates Function
-function printCandidates() {
-    window.print();
+// Update print selected count when checkboxes change
+document.addEventListener('DOMContentLoaded', function() {
+    updatePrintSelectedCount();
+    
+    // Listen for checkbox changes
+    document.querySelectorAll('.candidate-select').forEach(function(checkbox) {
+        checkbox.addEventListener('change', updatePrintSelectedCount);
+    });
+    
+    document.getElementById('selectAll').addEventListener('change', updatePrintSelectedCount);
+});
+
+function updatePrintSelectedCount() {
+    const selectedCount = document.querySelectorAll('.candidate-select:checked').length;
+    const countSpan = document.getElementById('printSelectedCount');
+    if (countSpan) {
+        countSpan.textContent = selectedCount;
+    }
+}
+
+// Print All Candidates Function
+function printAllCandidates() {
+    try {
+        const printTableBody = document.getElementById('printTableBody');
+        const printReportInfo = document.getElementById('printReportInfo');
+        
+        if (!printTableBody || !printReportInfo) {
+            console.error('Print elements not found');
+            alert('Error: Print elements not found. Please refresh the page.');
+            return;
+        }
+        
+        // Show all rows in print table (remove print-hide class)
+        printTableBody.querySelectorAll('tr').forEach(function(row) {
+            row.classList.remove('print-hide');
+        });
+        
+        // Update report info
+        const totalCount = printTableBody.querySelectorAll('tr:not(.print-hide)').length;
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        printReportInfo.innerHTML = 'Generated on ' + dateStr + ' at ' + timeStr + ' | Total: ' + totalCount + ' candidates (All)';
+        
+        // Trigger print using the print helper
+        triggerPrint();
+    } catch (error) {
+        console.error('Print error:', error);
+        alert('An error occurred while printing. Please try again.');
+    }
+}
+
+// Print Selected Candidates Function
+function printSelectedCandidates() {
+    try {
+        const selectedCheckboxes = document.querySelectorAll('.candidate-select:checked');
+        
+        if (selectedCheckboxes.length === 0) {
+            alert('Please select at least one candidate to print.');
+            return;
+        }
+        
+        const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+        const printTableBody = document.getElementById('printTableBody');
+        const printReportInfo = document.getElementById('printReportInfo');
+        
+        if (!printTableBody || !printReportInfo) {
+            console.error('Print elements not found');
+            alert('Error: Print elements not found. Please refresh the page.');
+            return;
+        }
+        
+        // Show only selected rows in print table
+        printTableBody.querySelectorAll('tr').forEach(function(row) {
+            const candidateId = row.getAttribute('data-candidate-id');
+            if (selectedIds.includes(candidateId)) {
+                row.classList.remove('print-hide');
+            } else {
+                row.classList.add('print-hide');
+            }
+        });
+        
+        // Update report info
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        printReportInfo.innerHTML = 'Generated on ' + dateStr + ' at ' + timeStr + ' | Selected: ' + selectedIds.length + ' candidates';
+        
+        // Trigger print using the print helper
+        triggerPrint();
+    } catch (error) {
+        console.error('Print error:', error);
+        alert('An error occurred while printing. Please try again.');
+    }
+}
+
+// Helper function to handle the actual print using iframe
+function triggerPrint() {
+    const printableArea = document.getElementById('printableArea');
+    
+    // Remove existing print iframe if any
+    const existingFrame = document.getElementById('printFrame');
+    if (existingFrame) {
+        existingFrame.remove();
+    }
+    
+    // Create hidden iframe
+    const iframe = document.createElement('iframe');
+    iframe.id = 'printFrame';
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+    
+    // Build the print content
+    const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Candidate Management Report</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    margin: 0;
+                    background: white;
+                }
+                .print-header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    padding-bottom: 15px;
+                    border-bottom: 2px solid #333;
+                }
+                .print-header h1 {
+                    font-size: 1.5rem;
+                    margin-bottom: 5px;
+                    color: #1a5f2a;
+                }
+                .print-header p {
+                    font-size: 0.875rem;
+                    color: #666;
+                    margin: 0;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 10pt;
+                    margin-top: 10px;
+                }
+                th, td {
+                    border: 1px solid #333;
+                    padding: 6px 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #e8e8e8;
+                    font-weight: bold;
+                }
+                tbody tr:nth-child(even) {
+                    background-color: #f5f5f5;
+                }
+                .print-hide {
+                    display: none !important;
+                }
+            </style>
+        </head>
+        <body>
+            ${printableArea.innerHTML}
+        </body>
+        </html>
+    `;
+    
+    // Write content to iframe
+    const doc = iframe.contentWindow || iframe.contentDocument;
+    const iframeDoc = doc.document || doc;
+    iframeDoc.open();
+    iframeDoc.write(printContent);
+    iframeDoc.close();
+    
+    // Wait for content to load then print
+    iframe.onload = function() {
+        setTimeout(function() {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            // Clean up after printing
+            setTimeout(function() {
+                iframe.remove();
+            }, 1000);
+        }, 250);
+    };
 }
 </script>
 {% endblock %}
