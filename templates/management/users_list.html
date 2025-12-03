@@ -1,0 +1,204 @@
+{% extends 'management/base_management.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<a href="{% url 'profile' %}">Dashboard</a>
+<span>/</span>
+<span class="current">Users</span>
+{% endblock %}
+
+{% block management_content %}
+<div class="management-header">
+    <h1><i class="fas fa-users"></i> User Management</h1>
+    <div class="header-actions">
+        <a href="{% url 'manage_user_add' %}" class="btn-primary-custom">
+            <i class="fas fa-plus"></i> Add User
+        </a>
+        <a href="{% url 'profile' %}" class="btn-outline-custom">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-icon blue">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-value">{{ total_users }}</div>
+        <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green">
+            <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-value">{{ active_users }}</div>
+        <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon yellow">
+            <i class="fas fa-user-shield"></i>
+        </div>
+        <div class="stat-value">{{ staff_users }}</div>
+        <div class="stat-label">Staff Members</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red">
+            <i class="fas fa-user-times"></i>
+        </div>
+        <div class="stat-value">{{ inactive_users }}</div>
+        <div class="stat-label">Inactive Users</div>
+    </div>
+</div>
+
+<!-- Users Table -->
+<div class="management-card">
+    <div class="card-header-custom">
+        <h3 class="card-title">All Users</h3>
+        <div class="search-box">
+            <form method="get" class="d-flex gap-2">
+                <input type="text" name="q" class="search-input" placeholder="Search users..." value="{{ request.GET.q }}">
+                <select name="status" class="filter-select" onchange="this.form.submit()">
+                    <option value="">All Status</option>
+                    <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                    <option value="staff" {% if request.GET.status == 'staff' %}selected{% endif %}>Staff Only</option>
+                </select>
+                <button type="submit" class="btn-primary-custom">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    {% if users %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Date Joined</th>
+                <th>Last Login</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center gap-2">
+                        <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                            {{ user.username|first|upper }}
+                        </div>
+                        <div>
+                            <div style="font-weight: 600;">{{ user.get_full_name|default:user.username }}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">@{{ user.username }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ user.email|default:"-" }}</td>
+                <td>
+                    {% if user.is_superuser %}
+                        <span class="status-badge" style="background: #f3e8ff; color: #9333ea;">Superuser</span>
+                    {% elif user.is_staff %}
+                        <span class="status-badge" style="background: var(--info-light); color: var(--info);">Staff</span>
+                    {% else %}
+                        <span class="status-badge" style="background: var(--bg-main); color: var(--text-secondary);">User</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_active %}
+                        <span class="status-badge active">Active</span>
+                    {% else %}
+                        <span class="status-badge inactive">Inactive</span>
+                    {% endif %}
+                </td>
+                <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                <td>{{ user.last_login|date:"M d, Y H:i"|default:"Never" }}</td>
+                <td>
+                    <div class="action-btns">
+                        <a href="{% url 'manage_user_edit' user.id %}" class="action-btn edit" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        {% if not user.is_superuser and user != request.user %}
+                        <button type="button" class="action-btn delete" title="Delete" onclick="confirmDelete({{ user.id }}, '{{ user.username }}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="pagination-wrapper">
+        <div class="pagination-info">
+            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} users
+        </div>
+        <div class="pagination-nav">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">&laquo;</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+            <span class="active">{{ page_obj.number }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_obj.next_page_number }}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">&raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-users"></i>
+        <h3>No users found</h3>
+        <p>{% if request.GET.q or request.GET.status %}Try adjusting your search or filters{% else %}Get started by adding your first user{% endif %}</p>
+        <a href="{% url 'manage_user_add' %}" class="btn-primary-custom">
+            <i class="fas fa-plus"></i> Add User
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade modal-custom" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-danger"></i> Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete user <strong id="deleteUserName"></strong>?</p>
+                <p class="text-danger mb-0"><small>This action cannot be undone.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-outline-custom" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-primary-custom" style="background: var(--danger);">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block management_js %}
+<script>
+function confirmDelete(userId, username) {
+    document.getElementById('deleteUserName').textContent = username;
+    document.getElementById('deleteForm').action = "{% url 'manage_user_delete' 0 %}".replace('0', userId);
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>
+{% endblock %}

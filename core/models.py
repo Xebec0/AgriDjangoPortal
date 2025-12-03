@@ -245,12 +245,16 @@ class Candidate(models.Model):
     # Status choices
     DRAFT = 'Draft'
     NEW = 'New'
+    MISSING_DOCS = 'Missing_Docs'
+    VALIDATED = 'Validated'
     APPROVED = 'Approved'
     REJECTED = 'Rejected'
     
     STATUS_CHOICES = [
         (DRAFT, 'Draft'),
         (NEW, 'New'),
+        (MISSING_DOCS, 'Missing Documents'),
+        (VALIDATED, 'Validated - Ready for Farm Assignment'),
         (APPROVED, 'Approved'),
         (REJECTED, 'Rejected'),
     ]
@@ -318,6 +322,16 @@ class Candidate(models.Model):
     good_moral = models.FileField(upload_to='documents/moral/', blank=True, null=True, verbose_name="Good Moral Character")
     nbi_clearance = models.FileField(upload_to='documents/nbi/', blank=True, null=True, verbose_name="NBI Clearance")
     
+    # Document deadline for missing documents
+    document_deadline = models.DateTimeField(blank=True, null=True, verbose_name="Document Upload Deadline",
+        help_text="Deadline for applicant to upload missing documents")
+    missing_documents_note = models.TextField(blank=True, verbose_name="Missing Documents/Fields",
+        help_text="List of missing documents or required fields")
+    
+    # Farm assignment (only after validation)
+    assigned_farm = models.CharField(max_length=200, blank=True, verbose_name="Assigned Farm Location")
+    farm_assignment_date = models.DateField(blank=True, null=True, verbose_name="Farm Assignment Date")
+    
     # System fields
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_candidates')
     
@@ -329,6 +343,73 @@ class Candidate(models.Model):
         # Users can now apply and complete their information later
         # unique_together = ('passport_number', 'university')
         pass
+    
+    def validate_application(self, deadline_days=7):
+        """
+        Validate the application for document completeness before farm assignment.
+        Returns tuple: (is_valid, missing_items_list)
+        If not valid, sets status to MISSING_DOCS and document_deadline.
+        If valid, sets status to VALIDATED.
+        Does NOT auto-approve - admin must still review and approve.
+        
+        NOTE: Only checks for required DOCUMENTS, not personal details.
+        """
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        missing_items = []
+        
+        # Required documents only
+        if not self.passport_scan:
+            missing_items.append("Passport Scan")
+        if not self.tor:
+            missing_items.append("Transcript of Records (TOR)")
+        if not self.diploma:
+            missing_items.append("Diploma")
+        if not self.good_moral:
+            missing_items.append("Good Moral Character Certificate")
+        if not self.nbi_clearance:
+            missing_items.append("NBI Clearance")
+        
+        # Check if program requires license
+        if self.program and self.program.requires_license and not self.license_scan:
+            missing_items.append("Driver's License (Required for this program)")
+        
+        is_valid = len(missing_items) == 0
+        
+        if is_valid:
+            # Application is complete - mark as VALIDATED (ready for farm assignment)
+            self.status = self.VALIDATED
+            self.missing_documents_note = ""
+            self.document_deadline = None
+        else:
+            # Application has missing items - set deadline
+            self.status = self.MISSING_DOCS
+            self.missing_documents_note = ", ".join(missing_items)
+            if not self.document_deadline:  # Only set deadline if not already set
+                self.document_deadline = timezone.now() + timedelta(days=deadline_days)
+        
+        self.save()
+        return is_valid, missing_items
+    
+    def is_deadline_passed(self):
+        """Check if document deadline has passed"""
+        from django.utils import timezone
+        if self.document_deadline:
+            return timezone.now() > self.document_deadline
+        return False
+    
+    def days_until_deadline(self):
+        """Get days remaining until deadline"""
+        from django.utils import timezone
+        if self.document_deadline:
+            delta = self.document_deadline - timezone.now()
+            return max(0, delta.days)
+        return None
+    
+    def can_assign_farm(self):
+        """Check if candidate is validated and ready for farm assignment"""
+        return self.status == self.VALIDATED
 
 
 class Notification(models.Model):

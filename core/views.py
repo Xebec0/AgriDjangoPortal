@@ -457,7 +457,13 @@ def auth_required(request):
 
 @login_required
 def profile(request):
-    """User profile view"""
+    """User profile view - Shows admin dashboard for staff, regular profile for applicants"""
+    
+    # If user is staff (admin), show the admin dashboard
+    if request.user.is_staff:
+        return admin_dashboard(request)
+    
+    # Regular user profile view
     form_with_errors = False
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -525,6 +531,97 @@ def profile(request):
         'form_with_errors': form_with_errors
     }
     return render(request, 'profile.html', context)
+
+
+@login_required
+def admin_dashboard(request):
+    """Admin dashboard view with statistics and quick actions"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access the admin dashboard.")
+        return redirect('home')
+    
+    # Get statistics
+    total_users = User.objects.count()
+    total_candidates = Candidate.objects.count()
+    total_programs = AgricultureProgram.objects.count()
+    
+    # Application statuses
+    pending_applications = Candidate.objects.filter(status__in=['New', 'Draft']).count()
+    approved_candidates = Candidate.objects.filter(status='Approved').count()
+    rejected_candidates = Candidate.objects.filter(status='Rejected').count()
+    
+    # Staff count
+    staff_count = User.objects.filter(is_staff=True).count()
+    
+    # Active programs (programs that are still open for registration)
+    active_programs = AgricultureProgram.objects.filter(
+        Q(registration_deadline__gte=timezone.now()) | 
+        Q(registration_deadline__isnull=True, start_date__gte=timezone.now().date())
+    ).count()
+    
+    # Recent activity logs
+    recent_activities = ActivityLog.objects.select_related('user').order_by('-timestamp')[:10]
+    
+    # Recent candidates for the data table
+    recent_candidates = Candidate.objects.select_related('university', 'program').order_by('-created_at')[:10]
+    
+    # Monthly application data for the current year (for chart)
+    current_year = timezone.now().year
+    monthly_applications = []
+    for month in range(1, 13):
+        count = Candidate.objects.filter(
+            created_at__year=current_year,
+            created_at__month=month
+        ).count()
+        monthly_applications.append(count)
+    
+    # Monthly approved data for mini chart
+    monthly_approved = []
+    for month in range(1, 13):
+        count = Candidate.objects.filter(
+            status='Approved',
+            updated_at__year=current_year,
+            updated_at__month=month
+        ).count()
+        monthly_approved.append(count)
+    
+    # Get last 7 data points for mini charts (last 7 months or available data)
+    current_month = timezone.now().month
+    mini_chart_approved = monthly_approved[max(0, current_month-7):current_month] if current_month >= 7 else monthly_approved[:current_month]
+    mini_chart_pending = monthly_applications[max(0, current_month-7):current_month] if current_month >= 7 else monthly_applications[:current_month]
+    
+    # Current day of week (0=Monday, 6=Sunday)
+    current_day_of_week = timezone.now().weekday()
+    
+    # Overall approval rate - based on all candidates with a decision (approved/rejected)
+    total_processed = Candidate.objects.filter(status__in=['Approved', 'Rejected']).count()
+    total_approved_decisions = Candidate.objects.filter(status='Approved').count()
+    # Calculate overall approval rate
+    approval_rate = round((total_approved_decisions / total_processed * 100) if total_processed > 0 else 0)
+    # SVG circle circumference is 201, calculate stroke-dashoffset for progress ring
+    approval_ring_offset = round(201 - (201 * approval_rate / 100))
+    
+    context = {
+        'total_users': total_users,
+        'total_candidates': total_candidates,
+        'total_programs': total_programs,
+        'pending_applications': pending_applications,
+        'approved_candidates': approved_candidates,
+        'rejected_candidates': rejected_candidates,
+        'staff_count': staff_count,
+        'active_programs': active_programs,
+        'recent_activities': recent_activities,
+        'recent_candidates': recent_candidates,
+        'monthly_applications': monthly_applications,
+        'monthly_approved': monthly_approved,
+        'current_day_of_week': current_day_of_week,
+        'total_processed': total_processed,
+        'total_approved_decisions': total_approved_decisions,
+        'approval_rate': approval_rate,
+        'approval_ring_offset': approval_ring_offset,
+    }
+    
+    return render(request, 'admin_dashboard.html', context)
 
 
 @login_required
@@ -786,7 +883,7 @@ def apply_candidate(request, program_id):
                 candidate = Candidate()
                 candidate.created_by = request.user
                 candidate.program = program
-                candidate.status = Candidate.APPROVED
+                candidate.status = Candidate.NEW  # Start as New, validation will set proper status
                 
                 # Copy data from profile (handle empty names gracefully)
                 candidate.first_name = request.user.first_name or ''
@@ -842,53 +939,94 @@ def apply_candidate(request, program_id):
                 # Save candidate
                 candidate.save()
                 
+                # Run automatic validation (does NOT auto-approve)
+                is_valid, missing_items = candidate.validate_application(deadline_days=7)
+                
                 # Atomically decrease program capacity
                 AgricultureProgram.objects.filter(id=program.id).update(capacity=F('capacity') - 1)
 
-                messages.success(request, f'Congratulations! Your application for {program.title} has been approved.')
-                
-                # Create a notification for the user
-                Notification.add_notification(
-                    user=request.user,
-                    message=f"Congratulations! Your application for {program.title} has been approved. You're now ready to proceed with the next steps.",
-                    notification_type=Notification.SUCCESS,
-                    link=f"/candidates/{candidate.id}/"
-                )
-                
-                # Send approval email notification
-                try:
-                    subject = f"Application Approved - {program.title}"
-                    message = f"""Dear {request.user.first_name or request.user.username},
+                if is_valid:
+                    # Application is complete - ready for admin review and farm assignment
+                    messages.success(request, f'Your application for {program.title} has been submitted and validated! An admin will review and assign you to a farm shortly.')
+                    
+                    Notification.add_notification(
+                        user=request.user,
+                        message=f"Your application for {program.title} is complete and validated. Awaiting admin review for farm assignment.",
+                        notification_type=Notification.SUCCESS,
+                        link=f"/candidates/{candidate.id}/"
+                    )
+                    
+                    # Send validation complete email
+                    try:
+                        subject = f"Application Validated - {program.title}"
+                        message = f"""Dear {request.user.first_name or request.user.username},
 
-Congratulations! Your application for {program.title} has been APPROVED!
+Your application for {program.title} has been submitted and VALIDATED!
 
 Application Details:
 - Program: {program.title}
 - Location: {program.country}, {program.location}
 - Start Date: {program.start_date.strftime('%B %d, %Y')}
-- Status: Approved
+- Status: Validated - Ready for Farm Assignment
 
-Next Steps:
-Your application has been automatically approved. You can now view your application details and prepare for the program.
+What happens next:
+An administrator will review your application and assign you to a farm location. You will receive a notification once this is complete.
 
 View your application: {request.build_absolute_uri(f'/candidates/{candidate.id}/')}
 
-We're excited to have you join this program!
+Thank you for your application!
 
 Best regards,
 AgroStudies Team
 """
+                        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [request.user.email], fail_silently=True)
+                        logger.info(f"Application validated email sent to {request.user.email} for program {program_id}")
+                    except Exception as e:
+                        logger.error(f"Failed to send validation email: {e}")
+                else:
+                    # Application has missing documents/fields
+                    deadline_str = candidate.document_deadline.strftime('%B %d, %Y at %I:%M %p') if candidate.document_deadline else 'N/A'
+                    missing_str = ', '.join(missing_items[:5])  # Show first 5 items
+                    if len(missing_items) > 5:
+                        missing_str += f' and {len(missing_items) - 5} more...'
                     
-                    result = send_mail(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [request.user.email],
-                        fail_silently=False,
+                    messages.warning(request, f'Your application for {program.title} has been submitted but has missing documents. Please upload the required documents by {deadline_str}.')
+                    
+                    Notification.add_notification(
+                        user=request.user,
+                        message=f"Action Required: Your application for {program.title} is missing required documents. Deadline: {deadline_str}. Missing: {missing_str}",
+                        notification_type=Notification.WARNING,
+                        link=f"/candidates/{candidate.id}/"
                     )
-                    logger.info(f"Application approval email sent to {request.user.email} for program {program_id} (result={result})")
-                except Exception as e:
-                    logger.error(f"Failed to send application approval email to {request.user.email}: {e}")
+                    
+                    # Send missing documents email
+                    try:
+                        subject = f"Action Required: Missing Documents - {program.title}"
+                        message = f"""Dear {request.user.first_name or request.user.username},
+
+Your application for {program.title} has been submitted, but it is INCOMPLETE.
+
+Application Status: Missing Documents
+
+Missing Items:
+{chr(10).join(f'- {item}' for item in missing_items)}
+
+DEADLINE TO UPLOAD: {deadline_str}
+
+IMPORTANT: Your application cannot proceed until all required documents and information are provided. Please log in and complete your application as soon as possible.
+
+Complete your application: {request.build_absolute_uri(f'/profile/')}
+View your application status: {request.build_absolute_uri(f'/candidates/{candidate.id}/')}
+
+If you do not upload the required documents by the deadline, your application may be rejected.
+
+Best regards,
+AgroStudies Team
+"""
+                        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [request.user.email], fail_silently=True)
+                        logger.info(f"Missing documents email sent to {request.user.email} for program {program_id}")
+                    except Exception as e:
+                        logger.error(f"Failed to send missing documents email: {e}")
                 
                 # Clear related cache entries
                 try:
@@ -2202,6 +2340,62 @@ AgroStudies Team
 
 
 @login_required
+@require_POST
+def validate_candidate(request, candidate_id):
+    """Re-validate a candidate's application (admin only)"""
+    if not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('index')
+    
+    candidate = get_object_or_404(Candidate, id=candidate_id)
+    
+    # Run validation
+    is_valid, missing_items = candidate.validate_application(deadline_days=7)
+    
+    if is_valid:
+        messages.success(request, f'{candidate.first_name} {candidate.last_name}\'s application has been validated! Ready for farm assignment.')
+        
+        # Notify the applicant
+        applicant_user = None
+        if candidate.email:
+            applicant_user = User.objects.filter(email__iexact=candidate.email.strip()).first()
+        if not applicant_user and candidate.created_by and not candidate.created_by.is_staff:
+            applicant_user = candidate.created_by
+        
+        if applicant_user:
+            Notification.add_notification(
+                user=applicant_user,
+                message=f"Your application for {candidate.program.title if candidate.program else 'the program'} has been validated and is ready for farm assignment!",
+                notification_type=Notification.SUCCESS,
+                link=f"/candidates/{candidate.id}/"
+            )
+    else:
+        deadline_str = candidate.document_deadline.strftime('%B %d, %Y at %I:%M %p') if candidate.document_deadline else 'N/A'
+        missing_str = ', '.join(missing_items[:5])
+        if len(missing_items) > 5:
+            missing_str += f' and {len(missing_items) - 5} more...'
+        
+        messages.warning(request, f'{candidate.first_name} {candidate.last_name}\'s application has missing documents: {missing_str}. Deadline set to {deadline_str}.')
+        
+        # Notify the applicant
+        applicant_user = None
+        if candidate.email:
+            applicant_user = User.objects.filter(email__iexact=candidate.email.strip()).first()
+        if not applicant_user and candidate.created_by and not candidate.created_by.is_staff:
+            applicant_user = candidate.created_by
+        
+        if applicant_user:
+            Notification.add_notification(
+                user=applicant_user,
+                message=f"Action Required: Your application is missing documents. Deadline: {deadline_str}. Missing: {missing_str}",
+                notification_type=Notification.WARNING,
+                link=f"/candidates/{candidate.id}/"
+            )
+    
+    return redirect('view_candidate', candidate_id=candidate_id)
+
+
+@login_required
 def api_notifications(request):
     """API endpoint to get notifications for the current user"""
     notifications = Notification.objects.filter(user=request.user).order_by('-created_at')[:10]  # Get the 10 most recent
@@ -2708,3 +2902,582 @@ def oauth_callback_get(request, provider):
     modified_request = ModifiedRequest(request)
     return oauth_callback(modified_request, provider)
 
+
+# =====================================================
+# ADMIN MANAGEMENT VIEWS (Custom Interface for Staff)
+# =====================================================
+
+@login_required
+def manage_users(request):
+    """User management list view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    # Get filter parameters
+    search_query = request.GET.get('q', '')
+    status_filter = request.GET.get('status', '')
+    
+    # Base queryset
+    users = User.objects.all().order_by('-date_joined')
+    
+    # Apply filters
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query)
+        )
+    
+    if status_filter == 'active':
+        users = users.filter(is_active=True)
+    elif status_filter == 'inactive':
+        users = users.filter(is_active=False)
+    elif status_filter == 'staff':
+        users = users.filter(is_staff=True)
+    
+    # Pagination
+    paginator = Paginator(users, 20)
+    page = request.GET.get('page', 1)
+    users_page = paginator.get_page(page)
+    
+    context = {
+        'users': users_page,
+        'total_users': User.objects.count(),
+        'active_users': User.objects.filter(is_active=True).count(),
+        'staff_users': User.objects.filter(is_staff=True).count(),
+        'inactive_users': User.objects.filter(is_active=False).count(),
+        'is_paginated': paginator.num_pages > 1,
+        'page_obj': users_page,
+    }
+    return render(request, 'management/users_list.html', context)
+
+
+@login_required
+def manage_user_add(request):
+    """Add new user view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        password1 = request.POST.get('password1', '')
+        password2 = request.POST.get('password2', '')
+        is_active = request.POST.get('is_active') == 'on'
+        is_staff = request.POST.get('is_staff') == 'on'
+        
+        errors = {}
+        
+        # Validate
+        if not username:
+            errors['username'] = 'Username is required'
+        elif User.objects.filter(username=username).exists():
+            errors['username'] = 'Username already exists'
+        
+        if not email:
+            errors['email'] = 'Email is required'
+        elif User.objects.filter(email=email).exists():
+            errors['email'] = 'Email already exists'
+        
+        if not password1:
+            errors['password1'] = 'Password is required'
+        elif len(password1) < 8:
+            errors['password1'] = 'Password must be at least 8 characters'
+        elif password1 != password2:
+            errors['password2'] = 'Passwords do not match'
+        
+        if not errors:
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password1,
+                first_name=first_name,
+                last_name=last_name
+            )
+            user.is_active = is_active
+            user.is_staff = is_staff
+            user.save()
+            
+            # Log activity
+            ActivityLog.objects.create(
+                user=request.user,
+                action_type='CREATE',
+                model_name='User',
+                object_id=str(user.id),
+                after_data={'username': username, 'email': email}
+            )
+            
+            messages.success(request, f'User "{username}" created successfully.')
+            return redirect('manage_users')
+        
+        # Return with errors
+        context = {
+            'form': type('Form', (), {
+                'username': type('Field', (), {'value': username, 'errors': [errors.get('username')] if errors.get('username') else []})(),
+                'email': type('Field', (), {'value': email, 'errors': [errors.get('email')] if errors.get('email') else []})(),
+                'first_name': type('Field', (), {'value': first_name, 'errors': []})(),
+                'last_name': type('Field', (), {'value': last_name, 'errors': []})(),
+                'password1': type('Field', (), {'errors': [errors.get('password1')] if errors.get('password1') else []})(),
+                'password2': type('Field', (), {'errors': [errors.get('password2')] if errors.get('password2') else []})(),
+                'is_active': type('Field', (), {'value': is_active})(),
+                'is_staff': type('Field', (), {'value': is_staff})(),
+            })()
+        }
+        return render(request, 'management/user_form.html', context)
+    
+    # Empty form
+    context = {
+        'form': type('Form', (), {
+            'username': type('Field', (), {'value': '', 'errors': []})(),
+            'email': type('Field', (), {'value': '', 'errors': []})(),
+            'first_name': type('Field', (), {'value': '', 'errors': []})(),
+            'last_name': type('Field', (), {'value': '', 'errors': []})(),
+            'is_active': type('Field', (), {'value': True})(),
+            'is_staff': type('Field', (), {'value': False})(),
+        })()
+    }
+    return render(request, 'management/user_form.html', context)
+
+
+@login_required
+def manage_user_edit(request, user_id):
+    """Edit user view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    user_obj = get_object_or_404(User, id=user_id)
+    
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        is_active = request.POST.get('is_active') == 'on'
+        is_staff = request.POST.get('is_staff') == 'on'
+        new_password1 = request.POST.get('new_password1', '')
+        new_password2 = request.POST.get('new_password2', '')
+        
+        errors = {}
+        
+        # Validate email
+        if email and email != user_obj.email:
+            if User.objects.filter(email=email).exclude(id=user_id).exists():
+                errors['email'] = 'Email already exists'
+        
+        # Validate password if provided
+        if new_password1:
+            if len(new_password1) < 8:
+                errors['password1'] = 'Password must be at least 8 characters'
+            elif new_password1 != new_password2:
+                errors['password2'] = 'Passwords do not match'
+        
+        if errors:
+            # Show errors to user
+            for field, error in errors.items():
+                messages.error(request, error)
+            
+            # Return form with current values and errors
+            context = {
+                'user_obj': user_obj,
+                'form': type('Form', (), {
+                    'username': type('Field', (), {'value': user_obj.username, 'errors': []})(),
+                    'email': type('Field', (), {'value': email, 'errors': [errors.get('email')] if errors.get('email') else []})(),
+                    'first_name': type('Field', (), {'value': first_name, 'errors': []})(),
+                    'last_name': type('Field', (), {'value': last_name, 'errors': []})(),
+                    'is_active': type('Field', (), {'value': is_active})(),
+                    'is_staff': type('Field', (), {'value': is_staff})(),
+                })()
+            }
+            return render(request, 'management/user_form.html', context)
+        
+        # No errors - proceed with update
+        user_obj.email = email
+        user_obj.first_name = first_name
+        user_obj.last_name = last_name
+        user_obj.is_active = is_active
+        
+        # Only allow staff status change if not modifying own account
+        if user_obj != request.user:
+            user_obj.is_staff = is_staff
+        
+        password_changed = False
+        if new_password1:
+            user_obj.set_password(new_password1)
+            password_changed = True
+        
+        user_obj.save()
+        
+        # Log activity
+        ActivityLog.objects.create(
+            user=request.user,
+            action_type='UPDATE',
+            model_name='User',
+            object_id=str(user_obj.id),
+            after_data={'email': email, 'is_active': is_active, 'is_staff': is_staff, 'password_changed': password_changed}
+        )
+        
+        if password_changed:
+            messages.success(request, f'User "{user_obj.username}" updated successfully. Password has been changed.')
+        else:
+            messages.success(request, f'User "{user_obj.username}" updated successfully.')
+        return redirect('manage_users')
+    
+    # Build form object for template
+    context = {
+        'user_obj': user_obj,
+        'form': type('Form', (), {
+            'username': type('Field', (), {'value': user_obj.username, 'errors': []})(),
+            'email': type('Field', (), {'value': user_obj.email, 'errors': []})(),
+            'first_name': type('Field', (), {'value': user_obj.first_name, 'errors': []})(),
+            'last_name': type('Field', (), {'value': user_obj.last_name, 'errors': []})(),
+            'is_active': type('Field', (), {'value': user_obj.is_active})(),
+            'is_staff': type('Field', (), {'value': user_obj.is_staff})(),
+        })()
+    }
+    return render(request, 'management/user_form.html', context)
+
+
+@login_required
+@require_POST
+def manage_user_delete(request, user_id):
+    """Delete user view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    user_obj = get_object_or_404(User, id=user_id)
+    
+    # Prevent deleting own account or superusers
+    if user_obj == request.user:
+        messages.error(request, "You cannot delete your own account.")
+        return redirect('manage_users')
+    
+    if user_obj.is_superuser:
+        messages.error(request, "Cannot delete superuser accounts.")
+        return redirect('manage_users')
+    
+    username = user_obj.username
+    
+    # Log before deletion
+    ActivityLog.objects.create(
+        user=request.user,
+        action_type='DELETE',
+        model_name='User',
+        object_id=str(user_obj.id),
+        before_data={'username': username}
+    )
+    
+    user_obj.delete()
+    messages.success(request, f'User "{username}" deleted successfully.')
+    return redirect('manage_users')
+
+
+@login_required
+def manage_programs(request):
+    """Program management list view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    # Get filter parameters
+    search_query = request.GET.get('q', '')
+    location_filter = request.GET.get('location', '')
+    
+    # Base queryset
+    programs = AgricultureProgram.objects.all().order_by('-created_at')
+    
+    # Apply filters
+    if search_query:
+        programs = programs.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(location__icontains=search_query)
+        )
+    
+    if location_filter:
+        programs = programs.filter(location=location_filter)
+    
+    # Get distinct locations for filter
+    locations = AgricultureProgram.objects.values_list('location', flat=True).distinct()
+    
+    # Count stats
+    now = timezone.now()
+    total = AgricultureProgram.objects.count()
+    active = AgricultureProgram.objects.filter(
+        Q(registration_deadline__gte=now) | 
+        Q(registration_deadline__isnull=True, start_date__gte=now.date())
+    ).count()
+    featured = AgricultureProgram.objects.filter(is_featured=True).count()
+    
+    # Pagination
+    paginator = Paginator(programs, 20)
+    page = request.GET.get('page', 1)
+    programs_page = paginator.get_page(page)
+    
+    context = {
+        'programs': programs_page,
+        'locations': locations,
+        'total_programs': total,
+        'active_programs': active,
+        'featured_programs': featured,
+        'closed_programs': total - active,
+        'is_paginated': paginator.num_pages > 1,
+        'page_obj': programs_page,
+    }
+    return render(request, 'management/programs_list.html', context)
+
+
+@login_required
+def manage_program_add(request):
+    """Add new program view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        description = request.POST.get('description', '').strip()
+        country = request.POST.get('country', '').strip()
+        location = request.POST.get('location', '').strip()
+        capacity = request.POST.get('capacity', '50')
+        start_date = request.POST.get('start_date', '')
+        registration_deadline = request.POST.get('registration_deadline', '')
+        required_gender = request.POST.get('required_gender', 'Any')
+        requires_license = request.POST.get('requires_license') == 'on'
+        is_featured = request.POST.get('is_featured') == 'on'
+        image = request.FILES.get('image')
+        
+        errors = {}
+        
+        if not title:
+            errors['title'] = 'Title is required'
+        if not description:
+            errors['description'] = 'Description is required'
+        if not country:
+            errors['country'] = 'Country is required'
+        if not location:
+            errors['location'] = 'Location is required'
+        if not start_date:
+            errors['start_date'] = 'Start date is required'
+        
+        if not errors:
+            program = AgricultureProgram.objects.create(
+                title=title,
+                description=description,
+                country=country,
+                location=location,
+                capacity=int(capacity),
+                start_date=start_date,
+                registration_deadline=registration_deadline if registration_deadline else None,
+                required_gender=required_gender,
+                requires_license=requires_license,
+                is_featured=is_featured,
+                image=image
+            )
+            
+            ActivityLog.objects.create(
+                user=request.user,
+                action_type='CREATE',
+                model_name='AgricultureProgram',
+                object_id=str(program.id),
+                after_data={'title': title, 'country': country, 'location': location}
+            )
+            
+            messages.success(request, f'Program "{title}" created successfully.')
+            return redirect('manage_programs')
+        
+        # Return with errors
+        context = {'form': type('Form', (), {k: type('Field', (), {'value': v, 'errors': [errors.get(k)] if errors.get(k) else []})() for k, v in request.POST.items()})()}
+        return render(request, 'management/program_form.html', context)
+    
+    # Empty form
+    context = {'form': type('Form', (), {
+        'title': type('Field', (), {'value': '', 'errors': []})(),
+        'description': type('Field', (), {'value': '', 'errors': []})(),
+        'country': type('Field', (), {'value': '', 'errors': []})(),
+        'location': type('Field', (), {'value': '', 'errors': []})(),
+        'capacity': type('Field', (), {'value': '50', 'errors': []})(),
+        'start_date': type('Field', (), {'value': '', 'errors': []})(),
+        'registration_deadline': type('Field', (), {'value': None, 'errors': []})(),
+        'required_gender': type('Field', (), {'value': 'Any', 'errors': []})(),
+        'requires_license': type('Field', (), {'value': False})(),
+        'is_featured': type('Field', (), {'value': False})(),
+    })()}
+    return render(request, 'management/program_form.html', context)
+
+
+@login_required
+def manage_program_edit(request, program_id):
+    """Edit program view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    program = get_object_or_404(AgricultureProgram, id=program_id)
+    
+    if request.method == 'POST':
+        program.title = request.POST.get('title', '').strip()
+        program.description = request.POST.get('description', '').strip()
+        program.country = request.POST.get('country', '').strip()
+        program.location = request.POST.get('location', '').strip()
+        program.capacity = int(request.POST.get('capacity', '50'))
+        program.start_date = request.POST.get('start_date', '')
+        registration_deadline = request.POST.get('registration_deadline', '')
+        program.registration_deadline = registration_deadline if registration_deadline else None
+        program.required_gender = request.POST.get('required_gender', 'Any')
+        program.requires_license = request.POST.get('requires_license') == 'on'
+        program.is_featured = request.POST.get('is_featured') == 'on'
+        
+        if request.FILES.get('image'):
+            program.image = request.FILES.get('image')
+        
+        program.save()
+        
+        ActivityLog.objects.create(
+            user=request.user,
+            action_type='UPDATE',
+            model_name='AgricultureProgram',
+            object_id=str(program.id),
+            after_data={'title': program.title}
+        )
+        
+        messages.success(request, f'Program "{program.title}" updated successfully.')
+        return redirect('manage_programs')
+    
+    context = {
+        'program': program,
+        'form': type('Form', (), {
+            'title': type('Field', (), {'value': program.title, 'errors': []})(),
+            'description': type('Field', (), {'value': program.description, 'errors': []})(),
+            'country': type('Field', (), {'value': program.country, 'errors': []})(),
+            'location': type('Field', (), {'value': program.location, 'errors': []})(),
+            'capacity': type('Field', (), {'value': program.capacity, 'errors': []})(),
+            'start_date': type('Field', (), {'value': program.start_date, 'errors': []})(),
+            'registration_deadline': type('Field', (), {'value': program.registration_deadline, 'errors': []})(),
+            'required_gender': type('Field', (), {'value': program.required_gender, 'errors': []})(),
+            'requires_license': type('Field', (), {'value': program.requires_license})(),
+            'is_featured': type('Field', (), {'value': program.is_featured})(),
+        })()
+    }
+    return render(request, 'management/program_form.html', context)
+
+
+@login_required
+@require_POST
+def manage_program_delete(request, program_id):
+    """Delete program view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    program = get_object_or_404(AgricultureProgram, id=program_id)
+    title = program.title
+    
+    ActivityLog.objects.create(
+        user=request.user,
+        action_type='DELETE',
+        model_name='AgricultureProgram',
+        object_id=str(program.id),
+        before_data={'title': title}
+    )
+    
+    program.delete()
+    messages.success(request, f'Program "{title}" deleted successfully.')
+    return redirect('manage_programs')
+
+
+@login_required
+def manage_registrations(request):
+    """Registration management list view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    # Get filter parameters
+    search_query = request.GET.get('q', '')
+    status_filter = request.GET.get('status', '')
+    
+    # Base queryset
+    registrations = Registration.objects.select_related('user', 'program').order_by('-registration_date')
+    
+    # Apply filters
+    if search_query:
+        registrations = registrations.filter(
+            Q(user__username__icontains=search_query) |
+            Q(user__email__icontains=search_query) |
+            Q(program__title__icontains=search_query)
+        )
+    
+    if status_filter:
+        registrations = registrations.filter(status=status_filter)
+    
+    # Pagination
+    paginator = Paginator(registrations, 20)
+    page = request.GET.get('page', 1)
+    registrations_page = paginator.get_page(page)
+    
+    context = {
+        'registrations': registrations_page,
+        'total_registrations': Registration.objects.count(),
+        'pending_registrations': Registration.objects.filter(status='pending').count(),
+        'approved_registrations': Registration.objects.filter(status='approved').count(),
+        'rejected_registrations': Registration.objects.filter(status='rejected').count(),
+        'is_paginated': paginator.num_pages > 1,
+        'page_obj': registrations_page,
+    }
+    return render(request, 'management/registrations_list.html', context)
+
+
+@login_required
+def manage_activity_logs(request):
+    """Activity logs view for staff"""
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('home')
+    
+    # Get filter parameters
+    search_query = request.GET.get('q', '')
+    action_filter = request.GET.get('action', '')
+    model_filter = request.GET.get('model', '')
+    
+    # Base queryset
+    logs = ActivityLog.objects.select_related('user').order_by('-timestamp')
+    
+    # Apply filters
+    if search_query:
+        logs = logs.filter(
+            Q(user__username__icontains=search_query) |
+            Q(model_name__icontains=search_query) |
+            Q(object_id__icontains=search_query)
+        )
+    
+    if action_filter:
+        logs = logs.filter(action_type=action_filter)
+    
+    if model_filter:
+        logs = logs.filter(model_name=model_filter)
+    
+    # Get distinct model names for filter
+    model_names = ActivityLog.objects.values_list('model_name', flat=True).distinct()
+    
+    # Pagination
+    paginator = Paginator(logs, 50)
+    page = request.GET.get('page', 1)
+    logs_page = paginator.get_page(page)
+    
+    context = {
+        'logs': logs_page,
+        'model_names': model_names,
+        'total_logs': ActivityLog.objects.count(),
+        'create_count': ActivityLog.objects.filter(action_type='CREATE').count(),
+        'update_count': ActivityLog.objects.filter(action_type='UPDATE').count(),
+        'delete_count': ActivityLog.objects.filter(action_type='DELETE').count(),
+        'is_paginated': paginator.num_pages > 1,
+        'page_obj': logs_page,
+    }
+    return render(request, 'management/activity_logs.html', context)

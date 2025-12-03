@@ -209,8 +209,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <td>{{ candidate.program.title|default:"--" }}</td>
                                     <td>{{ candidate.program.location|default:"--" }}</td>
                                     <td>
-                                        <span class="badge bg-{{ status_colors|get_item:candidate.status }}">
-                                            {{ candidate.status }}
+                                        <span class="badge {% if candidate.status == 'Approved' %}bg-success{% elif candidate.status == 'Rejected' %}bg-danger{% elif candidate.status == 'Validated' %}bg-info{% elif candidate.status == 'Missing_Docs' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                                            {{ candidate.get_status_display }}
                                         </span>
                                     </td>
                                     <td>{{ candidate.created_at|date:"M d, Y" }}</td>

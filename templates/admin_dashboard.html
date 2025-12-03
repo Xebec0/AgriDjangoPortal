@@ -1,0 +1,931 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Agrostudies{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.min.css">
+<style>
+:root {
+    --primary-blue: #4361ee;
+    --success-green: #10b981;
+    --warning-yellow: #f59e0b;
+    --danger-red: #ef4444;
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+}
+
+body {
+    background-color: var(--bg-light);
+}
+
+.dashboard-container {
+    padding: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Top Navigation Tabs */
+.nav-tabs-custom {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border: none;
+}
+
+.nav-tabs-custom .nav-tab {
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-tabs-custom .nav-tab.active {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.nav-tabs-custom .nav-tab:hover:not(.active) {
+    background: #e2e8f0;
+}
+
+/* Top Stats Cards */
+.top-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.stat-icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.stat-icon-circle.yellow { background: #fef3c7; color: #f59e0b; }
+.stat-icon-circle.red { background: #fee2e2; color: #ef4444; }
+.stat-icon-circle.green { background: #d1fae5; color: #10b981; }
+
+.stat-item .stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.stat-item .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* Main Content Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 1.5rem;
+}
+
+/* Card Base Style */
+.dash-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+}
+
+.dash-card-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dash-card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Main Chart Card */
+.main-chart-card {
+    grid-column: 1;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.chart-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.chart-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.chart-change.positive { background: #d1fae5; color: #10b981; }
+.chart-change.negative { background: #fee2e2; color: #ef4444; }
+
+.chart-container {
+    height: 200px;
+    position: relative;
+}
+
+/* Mini Charts Row */
+.mini-charts-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.mini-chart-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+}
+
+.mini-chart-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.mini-chart-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.mini-chart-container {
+    height: 60px;
+}
+
+/* Engagement Card (Right Sidebar) */
+.engagement-card {
+    grid-column: 2;
+    grid-row: 1 / 3;
+}
+
+.engagement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.week-indicator {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.day-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: var(--text-secondary);
+}
+
+.day-circle.active {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.day-circle.completed {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.task-list {
+    margin-bottom: 1.5rem;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.task-checkbox.checked {
+    background: var(--success-green);
+    border-color: var(--success-green);
+    color: white;
+}
+
+.task-text {
+    flex: 1;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+/* Data Table */
+.data-table-card {
+    margin-top: 1.5rem;
+}
+
+.data-table {
+    width: 100%;
+    font-size: 0.875rem;
+}
+
+.data-table th {
+    text-align: left;
+    padding: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.data-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.data-table tr:hover {
+    background: #f8fafc;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-badge.approved { background: #d1fae5; color: #10b981; }
+.status-badge.pending { background: #fef3c7; color: #f59e0b; }
+.status-badge.rejected { background: #fee2e2; color: #ef4444; }
+.status-badge.new { background: #dbeafe; color: #3b82f6; }
+
+/* Bottom Grid */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Quick Actions */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background: #e2e8f0;
+    text-decoration: none;
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.action-btn .action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: white;
+}
+
+.action-btn .action-icon.blue { background: var(--primary-blue); }
+.action-btn .action-icon.green { background: var(--success-green); }
+.action-btn .action-icon.orange { background: #f97316; }
+.action-btn .action-icon.purple { background: #8b5cf6; }
+.action-btn .action-icon.red { background: var(--danger-red); }
+.action-btn .action-icon.teal { background: #14b8a6; }
+
+.action-btn .action-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Activity Feed */
+.activity-feed {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.feed-item {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.feed-item:last-child {
+    border-bottom: none;
+}
+
+.feed-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), #818cf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.feed-content {
+    flex: 1;
+}
+
+.feed-content .feed-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.feed-content .feed-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.feed-time {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+/* Footer Stats */
+.footer-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-stat {
+    text-align: center;
+}
+
+.footer-stat .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.footer-stat .label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.footer-stat .change {
+    font-size: 0.7rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+}
+
+.footer-stat .change.up { background: #d1fae5; color: #10b981; }
+.footer-stat .change.down { background: #fee2e2; color: #ef4444; }
+
+/* Progress Ring */
+.progress-ring-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: #e2e8f0;
+    stroke-width: 8;
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: var(--success-green);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .engagement-card {
+        grid-column: 1;
+        grid-row: auto;
+    }
+    
+    .mini-charts-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1rem;
+    }
+    
+    .top-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .mini-charts-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs-custom">
+        <button class="nav-tab active">Dashboard</button>
+        <button class="nav-tab" onclick="window.location.href='{% url 'admin:index' %}'">Admin Panel</button>
+    </div>
+
+    <!-- Top Stats Row -->
+    <div class="top-stats">
+        <div class="stat-item">
+            <div class="stat-icon-circle yellow">
+                <i class="fas fa-users"></i>
+            </div>
+            <div>
+                <div class="stat-value">{{ total_users }}</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon-circle red">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div>
+                <div class="stat-value">{{ total_candidates }}</div>
+                <div class="stat-label">Applications</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon-circle green">
+                <i class="fas fa-seedling"></i>
+            </div>
+            <div>
+                <div class="stat-value">{{ total_programs }}</div>
+                <div class="stat-label">Programs</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+        <!-- Main Chart Card -->
+        <div class="dash-card main-chart-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">
+                    <i class="fas fa-chart-area"></i> Application Overview
+                </span>
+            </div>
+            <div class="chart-header">
+                <div>
+                    <div class="chart-value">{{ total_candidates }}</div>
+                    <span class="text-muted" style="font-size: 0.875rem;">Total Applications</span>
+                </div>
+                <div class="chart-change {% if approved_candidates > rejected_candidates %}positive{% else %}negative{% endif %}">
+                    <i class="fas fa-arrow-{% if approved_candidates > rejected_candidates %}up{% else %}down{% endif %}"></i>
+                    {% widthratio approved_candidates total_candidates 100 %}% Approved
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Engagement Card (Right Sidebar) -->
+        <div class="dash-card engagement-card">
+            <div class="engagement-header">
+                <span class="dash-card-title">
+                    <i class="fas fa-tasks"></i> Quick Actions
+                </span>
+            </div>
+            
+            <!-- Week Activity Indicator (0=Monday, 6=Sunday) -->
+            <div class="week-indicator">
+                <div class="day-circle {% if current_day_of_week == 0 %}active{% elif current_day_of_week > 0 %}completed{% endif %}">M</div>
+                <div class="day-circle {% if current_day_of_week == 1 %}active{% elif current_day_of_week > 1 %}completed{% endif %}">T</div>
+                <div class="day-circle {% if current_day_of_week == 2 %}active{% elif current_day_of_week > 2 %}completed{% endif %}">W</div>
+                <div class="day-circle {% if current_day_of_week == 3 %}active{% elif current_day_of_week > 3 %}completed{% endif %}">T</div>
+                <div class="day-circle {% if current_day_of_week == 4 %}active{% elif current_day_of_week > 4 %}completed{% endif %}">F</div>
+                <div class="day-circle {% if current_day_of_week == 5 %}active{% elif current_day_of_week > 5 %}completed{% endif %}">S</div>
+                <div class="day-circle {% if current_day_of_week == 6 %}active{% endif %}">S</div>
+            </div>
+
+            <!-- Task List / Quick Links -->
+            <div class="task-list">
+                <a href="{% url 'candidate_list' %}?status=New" class="task-item" style="text-decoration: none;">
+                    <div class="task-checkbox {% if pending_applications == 0 %}checked{% endif %}">
+                        {% if pending_applications == 0 %}<i class="fas fa-check" style="font-size: 0.7rem;"></i>{% endif %}
+                    </div>
+                    <span class="task-text">Review pending applications ({{ pending_applications }})</span>
+                </a>
+                <a href="{% url 'manage_programs' %}" class="task-item" style="text-decoration: none;">
+                    <div class="task-checkbox">
+                    </div>
+                    <span class="task-text">Manage programs ({{ total_programs }})</span>
+                </a>
+                <a href="{% url 'manage_users' %}" class="task-item" style="text-decoration: none;">
+                    <div class="task-checkbox">
+                    </div>
+                    <span class="task-text">User management ({{ total_users }})</span>
+                </a>
+                <a href="{% url 'admin:core_activitylog_backup_manager' %}" class="task-item" style="text-decoration: none;">
+                    <div class="task-checkbox">
+                    </div>
+                    <span class="task-text">Database backup</span>
+                </a>
+            </div>
+
+            <!-- Progress Ring - Overall Approval Rate -->
+            <div class="d-flex align-items-center justify-content-between mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+                <div>
+                    <div style="font-weight: 600; color: var(--text-primary);">Approval Rate</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ total_approved_decisions }}/{{ total_processed }} processed</div>
+                </div>
+                <div class="progress-ring-container">
+                    <svg class="progress-ring" width="80" height="80">
+                        <circle class="progress-ring-bg" cx="40" cy="40" r="32"></circle>
+                        <circle class="progress-ring-fill" cx="40" cy="40" r="32" 
+                                stroke-dasharray="201" 
+                                stroke-dashoffset="{{ approval_ring_offset }}"></circle>
+                    </svg>
+                    <div class="progress-ring-text">{{ approval_rate }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini Charts Row -->
+    <div class="mini-charts-row">
+        <div class="mini-chart-card">
+            <div class="mini-chart-value">{{ approved_candidates }}</div>
+            <div class="mini-chart-label">Approved</div>
+            <div class="mini-chart-container">
+                <canvas id="miniChart1"></canvas>
+            </div>
+        </div>
+        <div class="mini-chart-card">
+            <div class="mini-chart-value">{{ pending_applications }}</div>
+            <div class="mini-chart-label">Pending</div>
+            <div class="mini-chart-container">
+                <canvas id="miniChart2"></canvas>
+            </div>
+        </div>
+        <div class="mini-chart-card">
+            <div class="mini-chart-value">{{ rejected_candidates }}</div>
+            <div class="mini-chart-label">Rejected</div>
+            <div class="mini-chart-container">
+                <canvas id="miniChart3"></canvas>
+            </div>
+        </div>
+        <div class="mini-chart-card">
+            <div class="mini-chart-value">{{ active_programs }}</div>
+            <div class="mini-chart-label">Active Programs</div>
+            <div class="mini-chart-container">
+                <canvas id="miniChart4"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="dash-card data-table-card">
+        <div class="dash-card-header">
+            <span class="dash-card-title">
+                <i class="fas fa-table"></i> Recent Candidates
+            </span>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>University</th>
+                    <th>Program</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in recent_candidates %}
+                <tr onclick="window.location.href='{% url 'view_candidate' candidate.id %}'" style="cursor: pointer;">
+                    <td><strong>{{ candidate.first_name }} {{ candidate.last_name }}</strong></td>
+                    <td>{{ candidate.university.name|default:"-" }}</td>
+                    <td>{{ candidate.program.title|default:"-" }}</td>
+                    <td>
+                        <span class="status-badge {% if candidate.status == 'Approved' %}approved{% elif candidate.status == 'Rejected' %}rejected{% elif candidate.status == 'New' %}new{% else %}pending{% endif %}">
+                            {{ candidate.status }}
+                        </span>
+                    </td>
+                    <td>{{ candidate.created_at|date:"M d, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No candidates yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bottom Grid -->
+    <div class="bottom-grid">
+        <!-- Quick Actions Panel -->
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">
+                    <i class="fas fa-bolt"></i> Administration
+                </span>
+            </div>
+            <div class="quick-actions-grid">
+                <a href="{% url 'manage_users' %}" class="action-btn">
+                    <div class="action-icon blue"><i class="fas fa-users"></i></div>
+                    <span class="action-text">Manage Users</span>
+                </a>
+                <a href="{% url 'candidate_list' %}" class="action-btn">
+                    <div class="action-icon green"><i class="fas fa-user-check"></i></div>
+                    <span class="action-text">Candidates</span>
+                </a>
+                <a href="{% url 'manage_programs' %}" class="action-btn">
+                    <div class="action-icon orange"><i class="fas fa-leaf"></i></div>
+                    <span class="action-text">Programs</span>
+                </a>
+                <a href="{% url 'manage_registrations' %}" class="action-btn">
+                    <div class="action-icon purple"><i class="fas fa-clipboard-list"></i></div>
+                    <span class="action-text">Registrations</span>
+                </a>
+                <a href="{% url 'manage_activity_logs' %}" class="action-btn">
+                    <div class="action-icon teal"><i class="fas fa-history"></i></div>
+                    <span class="action-text">Activity Logs</span>
+                </a>
+                <a href="{% url 'admin:core_activitylog_backup_manager' %}" class="action-btn">
+                    <div class="action-icon red"><i class="fas fa-database"></i></div>
+                    <span class="action-text">Backup Manager</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-card-title">
+                    <i class="fas fa-stream"></i> Recent Activity
+                </span>
+            </div>
+            <div class="activity-feed">
+                {% for activity in recent_activities %}
+                <div class="feed-item">
+                    <div class="feed-avatar">
+                        {% if activity.user %}{{ activity.user.username|first|upper }}{% else %}S{% endif %}
+                    </div>
+                    <div class="feed-content">
+                        <div class="feed-title">{{ activity.action_type }} - {{ activity.model_name }}</div>
+                        <p class="feed-desc">{% if activity.user %}{{ activity.user.username }}{% else %}System{% endif %} • ID: {{ activity.object_id|default:"-" }}</p>
+                    </div>
+                    <div class="feed-time">{{ activity.timestamp|timesince }} ago</div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-inbox" style="font-size: 2rem;"></i>
+                    <p class="mt-2 mb-0">No recent activity</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Stats -->
+    <div class="footer-stats">
+        <div class="footer-stat">
+            <div class="value">{{ approved_candidates }}</div>
+            <div class="label">Approved</div>
+            <span class="change up"><i class="fas fa-arrow-up"></i> Active</span>
+        </div>
+        <div class="footer-stat">
+            <div class="value">{{ pending_applications }}</div>
+            <div class="label">Pending</div>
+            <span class="change">Awaiting</span>
+        </div>
+        <div class="footer-stat">
+            <div class="value">{{ staff_count }}</div>
+            <div class="label">Staff</div>
+            <span class="change up"><i class="fas fa-check"></i> Online</span>
+        </div>
+        <div class="footer-stat">
+            <div class="value">{{ active_programs }}</div>
+            <div class="label">Active Programs</div>
+            <span class="change up"><i class="fas fa-arrow-up"></i> Open</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Main Chart - Real monthly application data
+    const mainCtx = document.getElementById('mainChart');
+    if (mainCtx) {
+        // Monthly applications data from database
+        const monthlyData = [{% for count in monthly_applications %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+        
+        new Chart(mainCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Applications',
+                    data: monthlyData,
+                    borderColor: '#4361ee',
+                    backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: '#4361ee',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#64748b', font: { size: 11 } }
+                    },
+                    y: {
+                        grid: { color: '#e2e8f0' },
+                        ticks: { 
+                            color: '#64748b', 
+                            font: { size: 11 },
+                            stepSize: 1,
+                            beginAtZero: true
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Mini Charts
+    const miniChartConfig = (color, data) => ({
+        type: 'line',
+        data: {
+            labels: ['', '', '', '', '', '', ''],
+            datasets: [{
+                data: data,
+                borderColor: color,
+                backgroundColor: 'transparent',
+                tension: 0.4,
+                pointRadius: 0,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { display: false },
+                y: { display: false }
+            }
+        }
+    });
+
+    // Mini charts with real monthly data (last 6 months + current value)
+    const approvedData = [{% for count in monthly_approved %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}].slice(-7);
+    const applicationsData = [{% for count in monthly_applications %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}].slice(-7);
+    
+    const mini1 = document.getElementById('miniChart1');
+    if (mini1) new Chart(mini1, miniChartConfig('#10b981', approvedData.length ? approvedData : [0, 0, 0, 0, 0, 0, {{ approved_candidates }}]));
+
+    const mini2 = document.getElementById('miniChart2');
+    if (mini2) new Chart(mini2, miniChartConfig('#f59e0b', applicationsData.length ? applicationsData : [0, 0, 0, 0, 0, 0, {{ pending_applications }}]));
+
+    const mini3 = document.getElementById('miniChart3');
+    if (mini3) new Chart(mini3, miniChartConfig('#ef4444', applicationsData.length ? applicationsData : [0, 0, 0, 0, 0, 0, {{ rejected_candidates }}]));
+
+    const mini4 = document.getElementById('miniChart4');
+    if (mini4) new Chart(mini4, miniChartConfig('#4361ee', [0, 0, 0, 0, 0, 0, {{ active_programs }}]));
+});
+</script>
+{% endblock %}

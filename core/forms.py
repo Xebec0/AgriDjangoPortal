@@ -714,6 +714,10 @@ class CandidateSearchForm(forms.Form):
     """Form for searching candidates."""
     STATUSES = [
         ('', 'All statuses'),
+        ('Draft', 'Draft'),
+        ('New', 'New'),
+        ('Missing_Docs', 'Missing Documents'),
+        ('Validated', 'Validated'),
         ('Approved', 'Approved'),
         ('Rejected', 'Rejected'),
     ]

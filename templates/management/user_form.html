@@ -1,0 +1,145 @@
+{% extends 'management/base_management.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<a href="{% url 'profile' %}">Dashboard</a>
+<span>/</span>
+<a href="{% url 'manage_users' %}">Users</a>
+<span>/</span>
+<span class="current">{% if user_obj %}Edit User{% else %}Add User{% endif %}</span>
+{% endblock %}
+
+{% block management_content %}
+<div class="management-header">
+    <h1><i class="fas fa-{% if user_obj %}user-edit{% else %}user-plus{% endif %}"></i> {% if user_obj %}Edit User{% else %}Add New User{% endif %}</h1>
+    <div class="header-actions">
+        <a href="{% url 'manage_users' %}" class="btn-outline-custom">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        <div class="form-grid">
+            <!-- Username -->
+            <div class="form-group">
+                <label class="form-label">Username <span class="required">*</span></label>
+                <input type="text" name="username" class="form-control-custom {% if form.username.errors %}is-invalid{% endif %}" 
+                       value="{{ form.username.value|default:'' }}" required {% if user_obj %}readonly{% endif %}>
+                {% if form.username.errors %}
+                    <div class="form-error">{{ form.username.errors.0 }}</div>
+                {% endif %}
+                <div class="form-help">Required. 150 characters or fewer.</div>
+            </div>
+            
+            <!-- Email -->
+            <div class="form-group">
+                <label class="form-label">Email <span class="required">*</span></label>
+                <input type="email" name="email" class="form-control-custom {% if form.email.errors %}is-invalid{% endif %}" 
+                       value="{{ form.email.value|default:'' }}" required>
+                {% if form.email.errors %}
+                    <div class="form-error">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- First Name -->
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" name="first_name" class="form-control-custom" 
+                       value="{{ form.first_name.value|default:'' }}">
+            </div>
+            
+            <!-- Last Name -->
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="last_name" class="form-control-custom" 
+                       value="{{ form.last_name.value|default:'' }}">
+            </div>
+            
+            {% if not user_obj %}
+            <!-- Password (only for new users) -->
+            <div class="form-group">
+                <label class="form-label">Password <span class="required">*</span></label>
+                <input type="password" name="password1" class="form-control-custom {% if form.password1.errors %}is-invalid{% endif %}" required>
+                {% if form.password1.errors %}
+                    <div class="form-error">{{ form.password1.errors.0 }}</div>
+                {% endif %}
+                <div class="form-help">At least 8 characters.</div>
+            </div>
+            
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label class="form-label">Confirm Password <span class="required">*</span></label>
+                <input type="password" name="password2" class="form-control-custom {% if form.password2.errors %}is-invalid{% endif %}" required>
+                {% if form.password2.errors %}
+                    <div class="form-error">{{ form.password2.errors.0 }}</div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Permissions Section -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">
+                <i class="fas fa-shield-alt"></i> Permissions
+            </h4>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="d-flex align-items-center gap-2" style="cursor: pointer;">
+                        <input type="checkbox" name="is_active" {% if form.is_active.value or not user_obj %}checked{% endif %} 
+                               style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <span class="form-label mb-0">Active</span>
+                    </label>
+                    <div class="form-help">Designates whether this user can log in.</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="d-flex align-items-center gap-2" style="cursor: pointer;">
+                        <input type="checkbox" name="is_staff" {% if form.is_staff.value %}checked{% endif %}
+                               style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <span class="form-label mb-0">Staff Status</span>
+                    </label>
+                    <div class="form-help">Designates whether the user can access the admin dashboard.</div>
+                </div>
+            </div>
+        </div>
+        
+        {% if user_obj %}
+        <!-- Change Password Section -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">
+                <i class="fas fa-key"></i> Change Password
+            </h4>
+            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                Leave blank to keep current password.
+            </p>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input type="password" name="new_password1" class="form-control-custom">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" name="new_password2" class="form-control-custom">
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary-custom">
+                <i class="fas fa-save"></i> {% if user_obj %}Update User{% else %}Create User{% endif %}
+            </button>
+            <a href="{% url 'manage_users' %}" class="btn-outline-custom">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

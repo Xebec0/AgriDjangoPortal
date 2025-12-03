@@ -66,6 +66,7 @@ urlpatterns = [
     path('candidates/<int:candidate_id>/delete/', views.delete_candidate, name='delete_candidate'),
     path('candidates/<int:candidate_id>/cancel/', views.cancel_application, name='cancel_application'),
     path('candidates/<int:candidate_id>/status/<str:status>/', views.update_candidate_status, name='update_candidate_status'),
+    path('candidates/<int:candidate_id>/validate/', views.validate_candidate, name='validate_candidate'),
     
     # Export candidates
     path('candidates/export/csv/', views.export_candidates_csv, name='export_candidates_csv'),
@@ -88,4 +89,18 @@ urlpatterns = [
     path('modal/register/', views.modal_register, name='modal_register'),
     path('modal/admin-register/', views.modal_admin_register, name='modal_admin_register'),
     path('api/ajax-admin-register/', views.ajax_admin_register, name='ajax_admin_register'),
+    
+    # Admin Management (Custom Interface - not Django Admin)
+    path('manage/users/', views.manage_users, name='manage_users'),
+    path('manage/users/add/', views.manage_user_add, name='manage_user_add'),
+    path('manage/users/<int:user_id>/edit/', views.manage_user_edit, name='manage_user_edit'),
+    path('manage/users/<int:user_id>/delete/', views.manage_user_delete, name='manage_user_delete'),
+    
+    path('manage/programs/', views.manage_programs, name='manage_programs'),
+    path('manage/programs/add/', views.manage_program_add, name='manage_program_add'),
+    path('manage/programs/<int:program_id>/edit/', views.manage_program_edit, name='manage_program_edit'),
+    path('manage/programs/<int:program_id>/delete/', views.manage_program_delete, name='manage_program_delete'),
+    
+    path('manage/registrations/', views.manage_registrations, name='manage_registrations'),
+    path('manage/activity-logs/', views.manage_activity_logs, name='manage_activity_logs'),
 ]

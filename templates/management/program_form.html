@@ -1,0 +1,190 @@
+{% extends 'management/base_management.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<a href="{% url 'profile' %}">Dashboard</a>
+<span>/</span>
+<a href="{% url 'manage_programs' %}">Programs</a>
+<span>/</span>
+<span class="current">{% if program %}Edit Program{% else %}Add Program{% endif %}</span>
+{% endblock %}
+
+{% block management_content %}
+<div class="management-header">
+    <h1><i class="fas fa-{% if program %}edit{% else %}plus{% endif %}"></i> {% if program %}Edit Program{% else %}Add New Program{% endif %}</h1>
+    <div class="header-actions">
+        <a href="{% url 'manage_programs' %}" class="btn-outline-custom">
+            <i class="fas fa-arrow-left"></i> Back to Programs
+        </a>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        
+        <!-- Basic Information -->
+        <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem;">
+            <i class="fas fa-info-circle"></i> Basic Information
+        </h4>
+        
+        <div class="form-grid">
+            <!-- Title -->
+            <div class="form-group full-width">
+                <label class="form-label">Program Title <span class="required">*</span></label>
+                <input type="text" name="title" class="form-control-custom {% if form.title.errors %}is-invalid{% endif %}" 
+                       value="{{ form.title.value|default:'' }}" required>
+                {% if form.title.errors %}
+                    <div class="form-error">{{ form.title.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Description -->
+            <div class="form-group full-width">
+                <label class="form-label">Description <span class="required">*</span></label>
+                <textarea name="description" rows="4" class="form-control-custom {% if form.description.errors %}is-invalid{% endif %}" required>{{ form.description.value|default:'' }}</textarea>
+                {% if form.description.errors %}
+                    <div class="form-error">{{ form.description.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Country -->
+            <div class="form-group">
+                <label class="form-label">Country <span class="required">*</span></label>
+                <select name="country" class="form-control-custom {% if form.country.errors %}is-invalid{% endif %}" required>
+                    <option value="">Select a country</option>
+                    <option value="Israel" {% if form.country.value == 'Israel' %}selected{% endif %}>Israel</option>
+                    <option value="Japan" {% if form.country.value == 'Japan' %}selected{% endif %}>Japan</option>
+                    <option value="Australia" {% if form.country.value == 'Australia' %}selected{% endif %}>Australia</option>
+                    <option value="New Zealand" {% if form.country.value == 'New Zealand' %}selected{% endif %}>New Zealand</option>
+                    <option value="South Korea" {% if form.country.value == 'South Korea' %}selected{% endif %}>South Korea</option>
+                    <option value="Taiwan" {% if form.country.value == 'Taiwan' %}selected{% endif %}>Taiwan</option>
+                    <option value="Canada" {% if form.country.value == 'Canada' %}selected{% endif %}>Canada</option>
+                    <option value="Germany" {% if form.country.value == 'Germany' %}selected{% endif %}>Germany</option>
+                    <option value="Netherlands" {% if form.country.value == 'Netherlands' %}selected{% endif %}>Netherlands</option>
+                    <option value="Denmark" {% if form.country.value == 'Denmark' %}selected{% endif %}>Denmark</option>
+                </select>
+                {% if form.country.errors %}
+                    <div class="form-error">{{ form.country.errors.0 }}</div>
+                {% endif %}
+                <div class="form-help">Country where the program is located</div>
+            </div>
+            
+            <!-- Location -->
+            <div class="form-group">
+                <label class="form-label">Location <span class="required">*</span></label>
+                <input type="text" name="location" class="form-control-custom {% if form.location.errors %}is-invalid{% endif %}" 
+                       value="{{ form.location.value|default:'' }}" placeholder="e.g., Tel Aviv, Tokyo, Sydney" required>
+                {% if form.location.errors %}
+                    <div class="form-error">{{ form.location.errors.0 }}</div>
+                {% endif %}
+                <div class="form-help">Specific location within the country</div>
+            </div>
+            
+            <!-- Capacity -->
+            <div class="form-group">
+                <label class="form-label">Capacity <span class="required">*</span></label>
+                <input type="number" name="capacity" class="form-control-custom {% if form.capacity.errors %}is-invalid{% endif %}" 
+                       value="{{ form.capacity.value|default:'50' }}" min="1" required>
+                {% if form.capacity.errors %}
+                    <div class="form-error">{{ form.capacity.errors.0 }}</div>
+                {% endif %}
+                <div class="form-help">Maximum number of participants</div>
+            </div>
+            
+            <!-- Image -->
+            <div class="form-group">
+                <label class="form-label">Program Image</label>
+                {% if program and program.image %}
+                <div style="margin-bottom: 0.5rem;">
+                    <img src="{{ program.image.url }}" style="max-width: 200px; border-radius: 0.5rem;" alt="Current image">
+                </div>
+                {% endif %}
+                <input type="file" name="image" class="form-control-custom" accept="image/*">
+                <div class="form-help">Recommended size: 800x400px</div>
+            </div>
+        </div>
+        
+        <!-- Dates Section -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem;">
+                <i class="fas fa-calendar-alt"></i> Schedule
+            </h4>
+            
+            <div class="form-grid">
+                <!-- Start Date -->
+                <div class="form-group">
+                    <label class="form-label">Start Date <span class="required">*</span></label>
+                    <input type="date" name="start_date" class="form-control-custom {% if form.start_date.errors %}is-invalid{% endif %}" 
+                           value="{{ form.start_date.value|date:'Y-m-d'|default:'' }}" required>
+                    {% if form.start_date.errors %}
+                        <div class="form-error">{{ form.start_date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Registration Deadline -->
+                <div class="form-group">
+                    <label class="form-label">Registration Deadline</label>
+                    <input type="datetime-local" name="registration_deadline" class="form-control-custom" 
+                           value="{% if form.registration_deadline.value %}{{ form.registration_deadline.value|date:'Y-m-d' }}T{{ form.registration_deadline.value|time:'H:i' }}{% endif %}">
+                    <div class="form-help">Leave blank to use start date as deadline</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Requirements Section -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem;">
+                <i class="fas fa-clipboard-check"></i> Requirements
+            </h4>
+            
+            <div class="form-grid">
+                <!-- Required Gender -->
+                <div class="form-group">
+                    <label class="form-label">Gender Requirement</label>
+                    <select name="required_gender" class="form-control-custom">
+                        <option value="Any" {% if form.required_gender.value == 'Any' %}selected{% endif %}>Any</option>
+                        <option value="Male" {% if form.required_gender.value == 'Male' %}selected{% endif %}>Male Only</option>
+                        <option value="Female" {% if form.required_gender.value == 'Female' %}selected{% endif %}>Female Only</option>
+                    </select>
+                </div>
+                
+                <!-- Requires License -->
+                <div class="form-group">
+                    <label class="form-label">License Requirement</label>
+                    <label class="d-flex align-items-center gap-2" style="cursor: pointer; margin-top: 0.5rem;">
+                        <input type="checkbox" name="requires_license" {% if form.requires_license.value %}checked{% endif %}
+                               style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <span style="font-weight: normal;">Requires International Driver's License</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Options Section -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem;">
+                <i class="fas fa-cog"></i> Options
+            </h4>
+            
+            <div class="form-group">
+                <label class="d-flex align-items-center gap-2" style="cursor: pointer;">
+                    <input type="checkbox" name="is_featured" {% if form.is_featured.value %}checked{% endif %}
+                           style="width: 18px; height: 18px; accent-color: var(--warning);">
+                    <span class="form-label mb-0"><i class="fas fa-star" style="color: var(--warning);"></i> Featured Program</span>
+                </label>
+                <div class="form-help">Featured programs are displayed prominently on the landing page</div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary-custom">
+                <i class="fas fa-save"></i> {% if program %}Update Program{% else %}Create Program{% endif %}
+            </button>
+            <a href="{% url 'manage_programs' %}" class="btn-outline-custom">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

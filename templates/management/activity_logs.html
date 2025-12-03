@@ -1,0 +1,231 @@
+{% extends 'management/base_management.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<a href="{% url 'profile' %}">Dashboard</a>
+<span>/</span>
+<span class="current">Activity Logs</span>
+{% endblock %}
+
+{% block management_content %}
+<div class="management-header">
+    <h1><i class="fas fa-history"></i> Activity Logs</h1>
+    <div class="header-actions">
+        <a href="{% url 'profile' %}" class="btn-outline-custom">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-icon blue">
+            <i class="fas fa-list"></i>
+        </div>
+        <div class="stat-value">{{ total_logs }}</div>
+        <div class="stat-label">Total Logs</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green">
+            <i class="fas fa-plus-circle"></i>
+        </div>
+        <div class="stat-value">{{ create_count }}</div>
+        <div class="stat-label">Created</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon yellow">
+            <i class="fas fa-edit"></i>
+        </div>
+        <div class="stat-value">{{ update_count }}</div>
+        <div class="stat-label">Updated</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red">
+            <i class="fas fa-trash"></i>
+        </div>
+        <div class="stat-value">{{ delete_count }}</div>
+        <div class="stat-label">Deleted</div>
+    </div>
+</div>
+
+<!-- Activity Logs Table -->
+<div class="management-card">
+    <div class="card-header-custom">
+        <h3 class="card-title">All Activity</h3>
+        <div class="search-box">
+            <form method="get" class="d-flex gap-2">
+                <input type="text" name="q" class="search-input" placeholder="Search logs..." value="{{ request.GET.q }}">
+                <select name="action" class="filter-select" onchange="this.form.submit()">
+                    <option value="">All Actions</option>
+                    <option value="CREATE" {% if request.GET.action == 'CREATE' %}selected{% endif %}>Create</option>
+                    <option value="UPDATE" {% if request.GET.action == 'UPDATE' %}selected{% endif %}>Update</option>
+                    <option value="DELETE" {% if request.GET.action == 'DELETE' %}selected{% endif %}>Delete</option>
+                    <option value="LOGIN" {% if request.GET.action == 'LOGIN' %}selected{% endif %}>Login</option>
+                    <option value="LOGOUT" {% if request.GET.action == 'LOGOUT' %}selected{% endif %}>Logout</option>
+                </select>
+                <select name="model" class="filter-select" onchange="this.form.submit()">
+                    <option value="">All Models</option>
+                    {% for model in model_names %}
+                    <option value="{{ model }}" {% if request.GET.model == model %}selected{% endif %}>{{ model }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-primary-custom">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    {% if logs %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Model</th>
+                <th>Object ID</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>
+                    <div style="font-size: 0.875rem;">{{ log.timestamp|date:"M d, Y" }}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ log.timestamp|time:"H:i:s" }}</div>
+                </td>
+                <td>
+                    {% if log.user %}
+                    <div class="d-flex align-items-center gap-2">
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem;">
+                            {{ log.user.username|first|upper }}
+                        </div>
+                        <span style="font-weight: 500;">{{ log.user.username }}</span>
+                    </div>
+                    {% else %}
+                    <span style="color: var(--text-secondary);">System</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if log.action_type == 'CREATE' %}
+                        <span class="status-badge" style="background: var(--success-light); color: var(--success);">
+                            <i class="fas fa-plus"></i> Create
+                        </span>
+                    {% elif log.action_type == 'UPDATE' %}
+                        <span class="status-badge" style="background: var(--warning-light); color: var(--warning);">
+                            <i class="fas fa-edit"></i> Update
+                        </span>
+                    {% elif log.action_type == 'DELETE' %}
+                        <span class="status-badge" style="background: var(--danger-light); color: var(--danger);">
+                            <i class="fas fa-trash"></i> Delete
+                        </span>
+                    {% elif log.action_type == 'LOGIN' %}
+                        <span class="status-badge" style="background: var(--info-light); color: var(--info);">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </span>
+                    {% elif log.action_type == 'LOGOUT' %}
+                        <span class="status-badge" style="background: var(--bg-main); color: var(--text-secondary);">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </span>
+                    {% else %}
+                        <span class="status-badge" style="background: var(--bg-main); color: var(--text-secondary);">
+                            {{ log.action_type }}
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span style="font-weight: 500;">{{ log.model_name|default:"-" }}</span>
+                </td>
+                <td>
+                    <code style="background: var(--bg-main); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">
+                        {{ log.object_id|default:"-" }}
+                    </code>
+                </td>
+                <td>
+                    {% if log.after_data or log.before_data %}
+                        <button type="button" class="btn-outline-custom" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
+                                onclick="showDetails('{{ log.id }}')">
+                            <i class="fas fa-info-circle"></i> View
+                        </button>
+                    {% else %}
+                        <span style="color: var(--text-secondary);">-</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="pagination-wrapper">
+        <div class="pagination-info">
+            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} logs
+        </div>
+        <div class="pagination-nav">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.action %}&action={{ request.GET.action }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}">&laquo;</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.action %}&action={{ request.GET.action }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+            <span class="active">{{ page_obj.number }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.action %}&action={{ request.GET.action }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}">{{ page_obj.next_page_number }}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.action %}&action={{ request.GET.action }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}">&raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-history"></i>
+        <h3>No activity logs found</h3>
+        <p>{% if request.GET.q or request.GET.action or request.GET.model %}Try adjusting your search or filters{% else %}No activity recorded yet{% endif %}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade modal-custom" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-info-circle"></i> Activity Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="detailsContent" style="background: var(--bg-main); padding: 1rem; border-radius: 0.5rem; max-height: 400px; overflow-y: auto;"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-outline-custom" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block management_js %}
+<script>
+// Store log details for modal display
+const logDetails = {
+    {% for log in logs %}
+    {% if log.after_data or log.before_data %}
+    '{{ log.id }}': {
+        {% if log.before_data %}"before": {{ log.before_data|safe }},{% endif %}
+        {% if log.after_data %}"after": {{ log.after_data|safe }}{% endif %}
+    },
+    {% endif %}
+    {% endfor %}
+};
+
+function showDetails(logId) {
+    const details = logDetails[logId];
+    if (details) {
+        document.getElementById('detailsContent').textContent = JSON.stringify(details, null, 2);
+        new bootstrap.Modal(document.getElementById('detailsModal')).show();
+    }
+}
+</script>
+{% endblock %}
