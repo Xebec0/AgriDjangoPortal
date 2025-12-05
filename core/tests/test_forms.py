@@ -126,10 +126,11 @@ class ProfileUpdateFormTests(TestCase):
             'location': 'Test Location',
             'phone_number': '1234567890',
             'gender': 'Male',
-            'has_international_license': False
+            'has_international_license': False,
+            'smokes': 'Never',
         }
         form = ProfileUpdateForm(data=form_data, instance=self.profile)
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(), f"Form errors: {form.errors}")
         
     def test_license_required_when_checked(self):
         """Test that license scan is required when has_license is True"""
@@ -137,6 +138,7 @@ class ProfileUpdateFormTests(TestCase):
             'bio': 'Test bio',
             'location': 'Test Location',
             'has_international_license': True,
+            'smokes': 'Never',
             # Missing license_scan
         }
         form = ProfileUpdateForm(data=form_data, instance=self.profile)
@@ -151,51 +153,42 @@ class CandidateFormTests(TestCase):
         """Test form with valid candidate data"""
         form_data = {
             'first_name': 'Test',
-            'confirm_first_name': 'Test',
             'last_name': 'User',
-            'confirm_surname': 'User',
             'email': 'test@example.com',
             'date_of_birth': '1995-01-01',
             'country_of_birth': 'Philippines',
             'nationality': 'Filipino',
             'gender': 'Male',
-            'specialization': 'Agronomy'
+            'specialization': 'Agronomy',
+            'smokes': 'Never',
         }
         form = CandidateForm(data=form_data)
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(), f"Form errors: {form.errors}")
         
-    def test_name_mismatch_validation(self):
-        """Test that mismatched names are caught"""
+    def test_required_fields_validation(self):
+        """Test that required fields are enforced"""
         form_data = {
-            'first_name': 'Test',
-            'confirm_first_name': 'Different',  # Mismatch
-            'last_name': 'User',
-            'confirm_surname': 'User',
+            # Missing required fields like first_name, last_name, etc.
             'email': 'test@example.com',
-            'date_of_birth': '1995-01-01',
-            'country_of_birth': 'Philippines',
-            'nationality': 'Filipino',
-            'gender': 'Male',
-            'specialization': 'Agronomy'
         }
         form = CandidateForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn('confirm_first_name', form.errors)
         
-    def test_surname_mismatch_validation(self):
-        """Test that mismatched surnames are caught"""
+    def test_optional_fields(self):
+        """Test that optional fields can be left blank"""
         form_data = {
             'first_name': 'Test',
-            'confirm_first_name': 'Test',
             'last_name': 'User',
-            'confirm_surname': 'Different',  # Mismatch
-            'email': 'test@example.com',
             'date_of_birth': '1995-01-01',
             'country_of_birth': 'Philippines',
             'nationality': 'Filipino',
             'gender': 'Male',
-            'specialization': 'Agronomy'
+            'specialization': 'Agronomy',
+            'smokes': 'Never',
+            # Optional fields left blank
+            'job_experience': '',
+            'religion': '',
+            'secondary_specialization': '',
         }
         form = CandidateForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('confirm_surname', form.errors)
+        self.assertTrue(form.is_valid(), f"Form errors: {form.errors}")

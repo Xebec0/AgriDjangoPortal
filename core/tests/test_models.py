@@ -176,7 +176,7 @@ class ActivityLogModelTests(TestCase):
             action_type=ActivityLog.ACTION_CREATE,
             model_name='core.Candidate',
             object_id='123',
-            after_data={'status': 'New'}
+            after_data={'status': 'Draft'}
         )
         
         self.assertEqual(log.user, self.user)

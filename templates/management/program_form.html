@@ -158,6 +158,14 @@
                         <span style="font-weight: normal;">Requires International Driver's License</span>
                     </label>
                 </div>
+                
+                <!-- Required Experience Years -->
+                <div class="form-group">
+                    <label class="form-label">Job Experience Requirement</label>
+                    <input type="number" name="required_experience_years" class="form-control-custom" 
+                           value="{{ form.required_experience_years.value|default:'0' }}" min="0" max="20">
+                    <div class="form-help">Minimum years of relevant job experience required. Set to 0 if no experience needed.</div>
+                </div>
             </div>
         </div>
         

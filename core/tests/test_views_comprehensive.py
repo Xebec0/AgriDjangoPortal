@@ -199,7 +199,7 @@ class CandidateStatusUpdateTests(TestCase):
             passport_expiry_date=date.today() + timedelta(days=3650),
             university=university,
             specialization='Agronomy',
-            status=Candidate.NEW,
+            status=Candidate.DRAFT,
             created_by=self.staff_user
         )
         

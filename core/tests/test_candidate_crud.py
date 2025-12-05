@@ -174,7 +174,7 @@ class CandidateCRUDTests(TestCase):
             passport_expiry_date=date.today() + timedelta(days=3650),
             university=self.university,
             specialization='Horticulture',
-            status=Candidate.NEW,
+            status=Candidate.DRAFT,
             created_by=self.staff_user
         )
         
@@ -189,6 +189,6 @@ class CandidateCRUDTests(TestCase):
         self.assertContains(response, 'Horticulture')
         
         # Search by status
-        response = self.client.get(reverse('candidate_list'), {'status': 'New'})
+        response = self.client.get(reverse('candidate_list'), {'status': 'Draft'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Filipino')

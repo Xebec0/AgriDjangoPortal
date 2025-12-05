@@ -591,7 +591,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.license_scan.id_for_label }}" class="form-label">Upload License Scan</label>
+                        <label for="{{ p_form.license_scan.id_for_label }}" class="form-label">Upload License Scan <span class="badge bg-secondary">If Program Requires</span></label>
                         {{ p_form.license_scan }}
                         {% if p_form.license_scan.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.license_scan.errors }}</div>
@@ -609,7 +609,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.tor.id_for_label }}" class="form-label">Transcript of Records (TOR)</label>
+                        <label for="{{ p_form.tor.id_for_label }}" class="form-label">Transcript of Records (TOR) <span class="badge bg-warning text-dark">Required</span></label>
                         {{ p_form.tor }}
                         {% if p_form.tor.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.tor.errors }}</div>
@@ -644,7 +644,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.diploma.id_for_label }}" class="form-label">Diploma</label>
+                        <label for="{{ p_form.diploma.id_for_label }}" class="form-label">Diploma <span class="badge bg-warning text-dark">Required</span></label>
                         {{ p_form.diploma }}
                         {% if p_form.diploma.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.diploma.errors }}</div>
@@ -660,7 +660,7 @@
                         {% endif %}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.good_moral.id_for_label }}" class="form-label">Good Moral Character</label>
+                        <label for="{{ p_form.good_moral.id_for_label }}" class="form-label">Good Moral Certificate <span class="badge bg-warning text-dark">Required</span></label>
                         {{ p_form.good_moral }}
                         {% if p_form.good_moral.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.good_moral.errors }}</div>
@@ -679,7 +679,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.nbi_clearance.id_for_label }}" class="form-label">NBI Clearance</label>
+                        <label for="{{ p_form.nbi_clearance.id_for_label }}" class="form-label">NBI Clearance <span class="badge bg-warning text-dark">Required</span></label>
                         {{ p_form.nbi_clearance }}
                         {% if p_form.nbi_clearance.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.nbi_clearance.errors }}</div>
@@ -695,7 +695,7 @@
                         {% endif %}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="{{ p_form.passport_scan.id_for_label }}" class="form-label">Passport Scan</label>
+                        <label for="{{ p_form.passport_scan.id_for_label }}" class="form-label">Passport Scan <span class="badge bg-warning text-dark">Required</span></label>
                         {{ p_form.passport_scan }}
                         {% if p_form.passport_scan.errors %}
                             <div class="invalid-feedback d-block">{{ p_form.passport_scan.errors }}</div>

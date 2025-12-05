@@ -71,7 +71,7 @@ class SignalTests(TestCase):
             passport_expiry_date=date.today() + timedelta(days=3650),
             university=university,
             specialization='Agronomy',
-            status=Candidate.NEW,
+            status=Candidate.DRAFT,
             program=program,
             created_by=user
         )

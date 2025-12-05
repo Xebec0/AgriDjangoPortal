@@ -31,7 +31,8 @@ def admin_dashboard(request, context):
     
     # Get candidate status breakdown
     draft_candidates = Candidate.objects.filter(status='Draft').count()
-    new_candidates = Candidate.objects.filter(status='New').count()
+    missing_docs_candidates = Candidate.objects.filter(status='Missing_Docs').count()
+    validated_candidates = Candidate.objects.filter(status='Validated').count()
     approved_candidates = Candidate.objects.filter(status='Approved').count()
     rejected_candidates = Candidate.objects.filter(status='Rejected').count()
     
@@ -45,7 +46,8 @@ def admin_dashboard(request, context):
         'approved_registrations': approved_registrations,
         'rejected_registrations': rejected_registrations,
         'draft_candidates': draft_candidates,
-        'new_candidates': new_candidates,
+        'missing_docs_candidates': missing_docs_candidates,
+        'validated_candidates': validated_candidates,
         'approved_candidates': approved_candidates,
         'rejected_candidates': rejected_candidates,
     })

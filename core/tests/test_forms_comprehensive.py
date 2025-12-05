@@ -140,15 +140,14 @@ class CandidateFormAdvancedTests(TestCase):
         form_data = {
             'passport_number': 'TEST123',
             'first_name': 'Test',
-            'confirm_first_name': 'Test',
             'last_name': 'User',
-            'confirm_surname': 'User',
             'email': 'invalid-email',  # Invalid format
             'date_of_birth': '1995-01-01',
             'country_of_birth': 'Philippines',
             'nationality': 'Filipino',
             'gender': 'Male',
-            'specialization': 'Agronomy'
+            'specialization': 'Agronomy',
+            'smokes': 'Never'
         }
         form = CandidateForm(data=form_data)
         self.assertFalse(form.is_valid())
@@ -158,15 +157,14 @@ class CandidateFormAdvancedTests(TestCase):
         form_data = {
             'passport_number': 'TEST123',
             'first_name': 'Test',
-            'confirm_first_name': 'Test',
             'last_name': 'User',
-            'confirm_surname': 'User',
             'email': 'test@example.com',
             'date_of_birth': '2020-01-01',  # Too young
             'country_of_birth': 'Philippines',
             'nationality': 'Filipino',
             'gender': 'Male',
-            'specialization': 'Agronomy'
+            'specialization': 'Agronomy',
+            'smokes': 'Never'
         }
         form = CandidateForm(data=form_data)
         # Form may or may not validate depending on age requirements
@@ -241,14 +239,15 @@ class ProfileUpdateFormAdvancedTests(TestCase):
             'bio': 'Test bio',
             'location': 'Test Location',
             'gender': 'Male',
-            'has_international_license': True
+            'has_international_license': True,
+            'smokes': 'Never'
         }
         form = ProfileUpdateForm(
             data=form_data,
             files={'license_scan': pdf_file},
             instance=self.profile
         )
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(), f"Form errors: {form.errors}")
 
 
 class FileValidatorTests(TestCase):

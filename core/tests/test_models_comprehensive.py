@@ -98,7 +98,7 @@ class CandidateModelComprehensiveTests(TestCase):
             defaults={'name': 'Test University', 'country': 'Test Country'}
         )[0]
         
-        for status in [Candidate.NEW, Candidate.APPROVED, Candidate.REJECTED, Candidate.QUIT]:
+        for status in [Candidate.DRAFT, Candidate.APPROVED, Candidate.REJECTED, Candidate.VALIDATED]:
             candidate = Candidate.objects.create(
                 passport_number=f'TEST{status}',
                 first_name='Test',

@@ -296,6 +296,21 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="field-group">
+                        <div class="field-item" style="flex: 1;">
+                            <div class="field-label">
+                                <i class="fas fa-briefcase"></i> Job Experience
+                            </div>
+                            <div class="field-value">
+                                {% if candidate.job_experience %}
+                                    <div style="white-space: pre-wrap;">{{ candidate.job_experience }}</div>
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             

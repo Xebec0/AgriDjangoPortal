@@ -544,6 +544,7 @@ class CandidateForm(forms.ModelForm):
             'university', 'year_graduated', 'specialization', 'secondary_specialization',
             # Additional information
             'smokes',
+            'job_experience',
             # Program association
             'program',
             # Documents
@@ -571,6 +572,7 @@ class CandidateForm(forms.ModelForm):
             'specialization': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
             'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization', 'readonly': True}),
             'smokes': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
+            'job_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe your relevant work/job experience...', 'readonly': True}),
             'program': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
             'profile_image': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*', 'disabled': True}),
             'license_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png', 'disabled': True}),
@@ -635,6 +637,7 @@ class CandidateForm(forms.ModelForm):
         self.fields['shirt_size'].required = False
         self.fields['year_graduated'].required = False
         self.fields['secondary_specialization'].required = False
+        self.fields['job_experience'].required = False
         
         # Make all document fields optional
         self.fields['passport_scan'].required = False
@@ -715,7 +718,6 @@ class CandidateSearchForm(forms.Form):
     STATUSES = [
         ('', 'All statuses'),
         ('Draft', 'Draft'),
-        ('New', 'New'),
         ('Missing_Docs', 'Missing Documents'),
         ('Validated', 'Validated'),
         ('Approved', 'Approved'),
@@ -1070,7 +1072,13 @@ class ComprehensiveRegisterForm(UserCreationForm):
     # Documents
     profile_image = forms.ImageField(required=False, help_text="Upload your profile photo (optional)")
     passport_scan = forms.FileField(required=False, help_text="Upload passport scan (PDF/JPG/PNG, max 5MB)")
-    academic_certificate = forms.FileField(required=False, help_text="Upload academic certificate (PDF/JPG/PNG, max 5MB)")
+    tor = forms.FileField(required=False, help_text="Upload Transcript of Records (PDF/JPG/PNG, max 5MB)")
+    diploma = forms.FileField(required=False, help_text="Upload Diploma (PDF/JPG/PNG, max 5MB)")
+    good_moral = forms.FileField(required=False, help_text="Upload Good Moral Character Certificate (PDF/JPG/PNG, max 5MB)")
+    nbi_clearance = forms.FileField(required=False, help_text="Upload NBI Clearance (PDF/JPG/PNG, max 5MB)")
+    license_scan = forms.FileField(required=False, help_text="Upload Driver's License (PDF/JPG/PNG, max 5MB)")
+    nc2_tesda = forms.FileField(required=False, help_text="Upload NC2 TESDA Certificate (PDF/JPG/PNG, max 5MB)")
+    academic_certificate = forms.FileField(required=False, help_text="Upload other academic certificates (PDF/JPG/PNG, max 5MB)")
     
     class Meta:
         model = User
@@ -1186,11 +1194,13 @@ class ComprehensiveRegisterForm(UserCreationForm):
                 raise ValidationError("Graduation year must be between 1900 and current year.")
         
         # File validations
-        for field_name in ['profile_image', 'passport_scan', 'academic_certificate']:
+        document_fields = ['profile_image', 'passport_scan', 'tor', 'diploma', 'good_moral', 
+                          'nbi_clearance', 'license_scan', 'nc2_tesda', 'academic_certificate']
+        for field_name in document_fields:
             file_field = cleaned_data.get(field_name)
             if file_field:
                 validate_file_size(file_field)
-                valid_exts = ['.pdf', '.jpg', '.jpeg', '.png'] if field_name != 'profile_image' else ['.jpg', '.jpeg', '.png', '.gif']
+                valid_exts = ['.jpg', '.jpeg', '.png', '.gif'] if field_name == 'profile_image' else ['.pdf', '.jpg', '.jpeg', '.png']
                 validate_file_extension(file_field, valid_exts)
         
         return cleaned_data
@@ -1209,7 +1219,8 @@ class ComprehensiveRegisterForm(UserCreationForm):
             'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
             'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
             'preferred_country', 'willing_to_relocate', 'special_requirements',
-            'profile_image', 'passport_scan', 'academic_certificate'
+            'profile_image', 'passport_scan', 'tor', 'diploma', 'good_moral',
+            'nbi_clearance', 'license_scan', 'nc2_tesda', 'academic_certificate'
         ]
         for field in profile_fields:
             if field in self.cleaned_data:

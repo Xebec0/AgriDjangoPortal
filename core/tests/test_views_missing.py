@@ -236,7 +236,7 @@ class CandidateListMissingTests(TestCase):
         )[0]
         
         # Create candidates with different statuses
-        for status in [Candidate.NEW, Candidate.APPROVED, Candidate.REJECTED]:
+        for status in [Candidate.DRAFT, Candidate.APPROVED, Candidate.REJECTED]:
             Candidate.objects.create(
                 passport_number=f'TEST{status}',
                 first_name=f'First{status}',
@@ -518,7 +518,7 @@ class CandidateViewMissingTests(TestCase):
             passport_expiry_date=date.today() + timedelta(days=3650),
             university=university,
             specialization='Agronomy',
-            status=Candidate.NEW,
+            status=Candidate.DRAFT,
             program=program,
             created_by=self.staff_user
         )

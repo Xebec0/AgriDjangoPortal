@@ -138,6 +138,11 @@ class AgricultureProgram(models.Model):
     ]
     required_gender = models.CharField(max_length=10, choices=GENDER_REQUIREMENT_CHOICES, default='Any')
     requires_license = models.BooleanField(default=False, verbose_name="Requires International Driver's License")
+    required_experience_years = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Required Job Experience (Years)",
+        help_text="Minimum years of relevant job experience required. Set to 0 if no experience required."
+    )
     
     def __str__(self):
         return self.title
@@ -244,15 +249,13 @@ class University(models.Model):
 class Candidate(models.Model):
     # Status choices
     DRAFT = 'Draft'
-    NEW = 'New'
     MISSING_DOCS = 'Missing_Docs'
     VALIDATED = 'Validated'
     APPROVED = 'Approved'
     REJECTED = 'Rejected'
     
     STATUS_CHOICES = [
-        (DRAFT, 'Draft'),
-        (NEW, 'New'),
+        (DRAFT, 'Draft (Saved)'),
         (MISSING_DOCS, 'Missing Documents'),
         (VALIDATED, 'Validated - Ready for Farm Assignment'),
         (APPROVED, 'Approved'),
@@ -302,6 +305,14 @@ class Candidate(models.Model):
         ('Often', 'Often'),
     ]
     smokes = models.CharField(max_length=10, choices=SMOKING_CHOICES, default='Never')
+    
+    # Job experience
+    job_experience = models.TextField(
+        blank=True, 
+        null=True, 
+        verbose_name="Job Experience",
+        help_text="Describe your relevant work/job experience"
+    )
     
     # Program association
     program = models.ForeignKey(AgricultureProgram, on_delete=models.SET_NULL, null=True, blank=True, related_name='candidates')

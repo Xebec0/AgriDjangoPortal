@@ -322,9 +322,10 @@ body {
 }
 
 .status-badge.approved { background: #d1fae5; color: #10b981; }
-.status-badge.pending { background: #fef3c7; color: #f59e0b; }
+.status-badge.pending, .status-badge.missing-docs { background: #fef3c7; color: #f59e0b; }
 .status-badge.rejected { background: #fee2e2; color: #ef4444; }
-.status-badge.new { background: #dbeafe; color: #3b82f6; }
+.status-badge.validated { background: #dbeafe; color: #3b82f6; }
+.status-badge.draft { background: #f1f5f9; color: #64748b; }
 
 /* Bottom Grid */
 .bottom-grid {
@@ -586,6 +587,76 @@ body {
 }
 
 /* Reports Section */
+.reports-charts-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.report-chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.report-chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.report-chart-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.report-chart-title i {
+    color: var(--primary-blue);
+}
+
+.report-chart-container {
+    height: 220px;
+    position: relative;
+}
+
+.report-chart-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.report-stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.report-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.report-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 992px) {
+    .reports-charts-row {
+        grid-template-columns: 1fr;
+    }
+}
+
 .reports-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -968,7 +1039,7 @@ body {
 
             <!-- Task List / Quick Links -->
             <div class="task-list">
-                <a href="{% url 'candidate_list' %}?status=New" class="task-item" style="text-decoration: none;">
+                <a href="{% url 'candidate_list' %}?status=Draft" class="task-item" style="text-decoration: none;">
                     <div class="task-checkbox {% if pending_applications == 0 %}checked{% endif %}">
                         {% if pending_applications == 0 %}<i class="fas fa-check" style="font-size: 0.7rem;"></i>{% endif %}
                     </div>
@@ -1152,6 +1223,84 @@ body {
                 </button>
             </div>
         </div>
+        
+        <!-- Visual Charts Row -->
+        <div class="reports-charts-row">
+            <!-- Applicants vs Deployed Bar Chart -->
+            <div class="report-chart-card">
+                <div class="report-chart-header">
+                    <div class="report-chart-title">
+                        <i class="fas fa-chart-bar"></i> Applicants vs Deployed by Year
+                    </div>
+                </div>
+                <div class="report-chart-container">
+                    <canvas id="yearlyComparisonChart"></canvas>
+                </div>
+                <div class="report-chart-stats">
+                    <div class="report-stat-item">
+                        <div class="report-stat-value">{{ total_candidates }}</div>
+                        <div class="report-stat-label">Total Applicants</div>
+                    </div>
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" style="color: #10b981;">{{ total_deployed }}</div>
+                        <div class="report-stat-label">Total Deployed</div>
+                    </div>
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" style="color: #f59e0b;">{% widthratio total_deployed total_candidates 100 %}%</div>
+                        <div class="report-stat-label">Deployment Rate</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gender Distribution Pie Chart -->
+            <div class="report-chart-card">
+                <div class="report-chart-header">
+                    <div class="report-chart-title">
+                        <i class="fas fa-venus-mars"></i> Deployed by Gender
+                    </div>
+                </div>
+                <div class="report-chart-container">
+                    <canvas id="genderPieChart"></canvas>
+                </div>
+                <div class="report-chart-stats">
+                    {% for item in deployed_per_sex %}
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" style="color: {% if item.gender == 'Male' %}#3b82f6{% elif item.gender == 'Female' %}#ec4899{% else %}#6b7280{% endif %};">{{ item.count }}</div>
+                        <div class="report-stat-label">{{ item.gender|default:"Not Specified" }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Charts Row -->
+        <div class="reports-charts-row">
+            <!-- Programs Horizontal Bar Chart -->
+            <div class="report-chart-card">
+                <div class="report-chart-header">
+                    <div class="report-chart-title">
+                        <i class="fas fa-seedling"></i> Deployed by Program
+                    </div>
+                </div>
+                <div class="report-chart-container">
+                    <canvas id="programBarChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- University/SUC Horizontal Bar Chart -->
+            <div class="report-chart-card">
+                <div class="report-chart-header">
+                    <div class="report-chart-title">
+                        <i class="fas fa-university"></i> Deployed by University
+                    </div>
+                </div>
+                <div class="report-chart-container">
+                    <canvas id="universityBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Data Cards -->
         <div class="reports-grid">
             <!-- Applicants Per Year -->
             <div class="report-card">
@@ -1299,7 +1448,7 @@ body {
                     <td>{{ candidate.university.name|default:"-" }}</td>
                     <td>{{ candidate.program.title|default:"-" }}</td>
                     <td>
-                        <span class="status-badge {% if candidate.status == 'Approved' %}approved{% elif candidate.status == 'Rejected' %}rejected{% elif candidate.status == 'New' %}new{% else %}pending{% endif %}">
+                        <span class="status-badge {% if candidate.status == 'Approved' %}approved{% elif candidate.status == 'Rejected' %}rejected{% elif candidate.status == 'Validated' %}validated{% elif candidate.status == 'Missing_Docs' %}missing-docs{% else %}draft{% endif %}">
                             {{ candidate.status }}
                         </span>
                     </td>
@@ -1543,6 +1692,229 @@ function printReports() {
 // Print Analytics Function
 function printAnalytics() {
     window.print();
+}
+
+// Reports Section Charts
+// Yearly Comparison Bar Chart (Applicants vs Deployed)
+const yearlyComparisonCtx = document.getElementById('yearlyComparisonChart');
+if (yearlyComparisonCtx) {
+    const applicantsYears = [{% for item in applicants_per_year %}'{{ item.year }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const applicantsCounts = [{% for item in applicants_per_year %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const deployedCounts = [{% for item in deployed_per_year %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    
+    new Chart(yearlyComparisonCtx, {
+        type: 'bar',
+        data: {
+            labels: applicantsYears.length ? applicantsYears : ['No Data'],
+            datasets: [
+                {
+                    label: 'Applicants',
+                    data: applicantsCounts.length ? applicantsCounts : [0],
+                    backgroundColor: 'rgba(67, 97, 238, 0.8)',
+                    borderColor: '#4361ee',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    barPercentage: 0.6,
+                },
+                {
+                    label: 'Deployed',
+                    data: deployedCounts.length ? deployedCounts : [0],
+                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                    borderColor: '#10b981',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    barPercentage: 0.6,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: { 
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { size: 12 }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#64748b', font: { size: 11 } }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#e2e8f0' },
+                    ticks: { 
+                        color: '#64748b', 
+                        font: { size: 11 },
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Gender Pie Chart
+const genderPieCtx = document.getElementById('genderPieChart');
+if (genderPieCtx) {
+    const genderLabels = [{% for item in deployed_per_sex %}'{{ item.gender|default:"Not Specified" }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const genderData = [{% for item in deployed_per_sex %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const genderColors = genderLabels.map(label => {
+        if (label === 'Male') return '#3b82f6';
+        if (label === 'Female') return '#ec4899';
+        return '#6b7280';
+    });
+    
+    new Chart(genderPieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: genderLabels.length ? genderLabels : ['No Data'],
+            datasets: [{
+                data: genderData.length ? genderData : [1],
+                backgroundColor: genderColors.length ? genderColors : ['#e2e8f0'],
+                borderWidth: 0,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: { 
+                        usePointStyle: true,
+                        padding: 15,
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const value = context.raw;
+                            const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                            return context.label + ': ' + value + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Program Horizontal Bar Chart
+const programBarCtx = document.getElementById('programBarChart');
+if (programBarCtx) {
+    const programLabels = [{% for item in deployed_per_program %}'{{ item.program__title|truncatechars:20 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const programData = [{% for item in deployed_per_program %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    
+    new Chart(programBarCtx, {
+        type: 'bar',
+        data: {
+            labels: programLabels.length ? programLabels : ['No Programs'],
+            datasets: [{
+                label: 'Deployed',
+                data: programData.length ? programData : [0],
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(59, 130, 246, 0.8)',
+                    'rgba(245, 158, 11, 0.8)',
+                    'rgba(139, 92, 246, 0.8)',
+                    'rgba(236, 72, 153, 0.8)',
+                    'rgba(20, 184, 166, 0.8)'
+                ],
+                borderWidth: 0,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: '#e2e8f0' },
+                    ticks: { 
+                        color: '#64748b',
+                        stepSize: 1
+                    }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { 
+                        color: '#64748b',
+                        font: { size: 11 }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// University Horizontal Bar Chart
+const universityBarCtx = document.getElementById('universityBarChart');
+if (universityBarCtx) {
+    const uniLabels = [{% for item in deployed_per_suc %}'{{ item.university__name|truncatechars:20 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const uniData = [{% for item in deployed_per_suc %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+    
+    new Chart(universityBarCtx, {
+        type: 'bar',
+        data: {
+            labels: uniLabels.length ? uniLabels : ['No Universities'],
+            datasets: [{
+                label: 'Deployed',
+                data: uniData.length ? uniData : [0],
+                backgroundColor: [
+                    'rgba(67, 97, 238, 0.8)',
+                    'rgba(139, 92, 246, 0.8)',
+                    'rgba(20, 184, 166, 0.8)',
+                    'rgba(245, 158, 11, 0.8)',
+                    'rgba(239, 68, 68, 0.8)',
+                    'rgba(16, 185, 129, 0.8)'
+                ],
+                borderWidth: 0,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: '#e2e8f0' },
+                    ticks: { 
+                        color: '#64748b',
+                        stepSize: 1
+                    }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { 
+                        color: '#64748b',
+                        font: { size: 11 }
+                    }
+                }
+            }
+        }
+    });
 }
 </script>
 {% endblock %}

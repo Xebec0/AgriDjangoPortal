@@ -1187,7 +1187,7 @@ def apply_candidate(request, program_id):
                 candidate = Candidate()
                 candidate.created_by = request.user
                 candidate.program = program
-                candidate.status = Candidate.NEW  # Start as New, validation will set proper status
+                candidate.status = Candidate.DRAFT  # Start as Draft, validation will set proper status
                 
                 # Copy data from profile (handle empty names gracefully)
                 candidate.first_name = request.user.first_name or ''
@@ -1534,7 +1534,8 @@ def candidate_list(request):
         'form': form,
         'status_colors': {
             'Draft': 'secondary',
-            'New': 'info',
+            'Missing_Docs': 'warning',
+            'Validated': 'info',
             'Approved': 'success',
             'Rejected': 'danger'
         }
@@ -1610,7 +1611,7 @@ def export_candidates_excel(request, candidates=None):
         'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
         'Gender', 'Nationality', 'Country of Birth', 'Religion', 'Father Name', 
         'Mother Name', 'University', 'Specialization', 'Secondary Specialization',
-        'Smokes', 'Status', 'Program', 'Program Location', 'Date Added'
+        'Smokes', 'Job Experience', 'Status', 'Program', 'Program Location', 'Date Added'
     ]
     
     for col_num, header in enumerate(headers):
@@ -1637,6 +1638,7 @@ def export_candidates_excel(request, candidates=None):
         worksheet.write(row, col, candidate.specialization); col += 1
         worksheet.write(row, col, candidate.secondary_specialization or ''); col += 1
         worksheet.write(row, col, candidate.smokes); col += 1
+        worksheet.write(row, col, candidate.job_experience or ''); col += 1
         worksheet.write(row, col, candidate.status); col += 1
         # Program (farm) details
         worksheet.write(row, col, (candidate.program.title if candidate.program else '')); col += 1
@@ -1926,7 +1928,8 @@ def view_candidate(request, candidate_id):
     # Status colors for the badge
     status_colors = {
         'Draft': 'secondary',
-        'New': 'info',
+        'Missing_Docs': 'warning',
+        'Validated': 'info',
         'Approved': 'success',
         'Rejected': 'danger'
     }
@@ -2023,7 +2026,8 @@ def program_registrants(request, program_id):
         'page_obj': page_obj,
         'status_colors': {
             'Draft': 'secondary',
-            'New': 'info',
+            'Missing_Docs': 'warning',
+            'Validated': 'info',
             'Approved': 'success',
             'Rejected': 'danger'
         }

@@ -330,6 +330,16 @@
                         <span>{% if program.requires_license %}Required{% else %}Not Required{% endif %}</span>
                     </div>
                 </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="info-content">
+                        <strong>Job Experience</strong>
+                        <span>{% if program.required_experience_years > 0 %}{{ program.required_experience_years }} year{{ program.required_experience_years|pluralize }} required{% else %}No experience required{% endif %}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
