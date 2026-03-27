@@ -1,12 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-submit Sort By dropdown
-    const sortBySelect = document.getElementById('id_sort_by');
-    if (sortBySelect) {
-        sortBySelect.addEventListener('change', function() {
-            console.log('Sort by changed to:', this.value);
-            document.getElementById('candidateFilterForm').submit();
-        });
-    }
+function initCandidateList() {
+    console.log('Initializing Candidate List handlers...');
+    
+    // Auto-submit Sort By dropdown - Now handled by real_time_search.js via 'change' event
+    // We just need to make sure the event bubbles or is caught.
+    // real_time_search.js already listens for 'change' on SELECT elements.
 
     // Select all checkbox functionality
     const selectAllCheckbox = document.getElementById('selectAll');
@@ -307,34 +304,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Force close any open Bootstrap dropdowns after a short delay
     setTimeout(() => {
         const openDropdowns = document.querySelectorAll('.dropdown-menu.show');
-        console.log('Open dropdowns found:', openDropdowns.length);
         if (openDropdowns.length > 0) {
-            // Close dropdowns that might interfere
             const dropdownButton = document.getElementById('exportDropdown');
             if (dropdownButton) {
-                dropdownButton.click(); // This will toggle the dropdown
+                dropdownButton.click();
             }
         }
     }, 1000);
+}
 
-    // Manual test functions for debugging
-    window.testDateRangeModal = function() {
-        console.log('Manual test date range modal');
-        showDateRangeModal();
-    };
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initCandidateList);
 
-    window.testExportSelected = function(format) {
-        console.log('Manual test export called with format:', format);
-        handleExport(format, true);
-    };
-
-    window.testExportAll = function(format) {
-        console.log('Manual test export all called with format:', format);
-        handleExport(format, false);
-    };
-
-    console.log('Test functions available:');
-    console.log('- testDateRangeModal()');
-    console.log('- testExportSelected(format)');
-    console.log('- testExportAll(format)');
+// Re-initialize when content is updated via AJAX
+document.addEventListener('contentUpdated', function(e) {
+    console.log('Content updated via AJAX, re-initializing handlers...');
+    initCandidateList();
 });

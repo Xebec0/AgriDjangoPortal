@@ -87,37 +87,44 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    university = forms.ModelChoiceField(
+        queryset=University.objects.all(),
+        to_field_name="name",
+        empty_label="Select University",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     class Meta:
         model = Profile
-        fields = ['bio', 'location', 'phone_number', 'profile_image',
-                  'father_name', 'mother_name', 'date_of_birth', 'gender',
+        fields = ['phone_number', 'profile_image',
+                  'father_name', 'mother_name', 'middle_initial', 'date_of_birth', 'gender',
                   'country_of_birth', 'nationality', 'religion', 'has_international_license', 'license_scan',
+                  'health_condition', 'health_remarks',
                   'address', 'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
-                  'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
+                  'highest_education_level', 'graduation_year', 'field_of_study',
                   'university', 'specialization', 'secondary_specialization', 'year_graduated',
                   'smokes', 'shirt_size', 'shoes_size',
                   'passport_scan', 'academic_certificate', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
         widgets = {
-            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number'}),
             'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of father'}),
             'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of mother'}),
+            'middle_initial': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'M.I.'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
             'country_of_birth': forms.TextInput(attrs={'class': 'form-control'}),
             'nationality': forms.TextInput(attrs={'class': 'form-control'}),
             'religion': forms.TextInput(attrs={'class': 'form-control'}),
+            'health_condition': forms.Select(attrs={'class': 'form-control'}),
+            'health_remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Any remarks...'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter passport number'}),
             'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'place_of_issue': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Place of issue'}),
             'highest_education_level': forms.Select(attrs={'class': 'form-control'}),
-            'institution_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Institution name'}),
-            'graduation_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
-            'field_of_study': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Field of study'}),
-            'university': forms.Select(attrs={'class': 'form-control'}),
+            'graduation_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Graduation year'}),
+            'field_of_study': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Course'}),
             'specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primary specialization'}),
             'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization'}),
             'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
@@ -150,7 +157,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
         # Set styling for new fields
         new_fields = ['address', 'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
-                      'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
+                      'highest_education_level', 'graduation_year', 'field_of_study',
                       'university', 'specialization', 'secondary_specialization', 'year_graduated']
         for field_name in new_fields:
             if field_name in self.fields:
@@ -159,19 +166,15 @@ class ProfileUpdateForm(forms.ModelForm):
                         'class': 'form-control',
                         'type': 'date'
                     })
-                elif field_name in ['graduation_year', 'year_graduated']:
+                elif field_name == 'graduation_year':
+                    self.fields[field_name].widget.attrs.update({
+                        'class': 'form-control',
+                        'placeholder': 'Graduation year'
+                    })
+                elif field_name == 'year_graduated':
                     self.fields[field_name].widget.attrs.update({
                         'class': 'form-control',
                         'placeholder': 'Year graduated'
-                    })
-                elif field_name == 'university':
-                    # Populate university choices from database
-                    universities = University.objects.all().order_by('name')
-                    self.fields[field_name].widget.choices = [('', 'Select University')] + [
-                        (uni.id, uni.name) for uni in universities
-                    ]
-                    self.fields[field_name].widget.attrs.update({
-                        'class': 'form-control'
                     })
                 elif field_name == 'highest_education_level':
                     self.fields[field_name].widget.attrs.update({
@@ -355,7 +358,11 @@ class ProfileUpdateForm(forms.ModelForm):
             # FieldFile = existing file, anything else with chunks() = new upload
             if file_obj and hasattr(file_obj, 'chunks') and not isinstance(file_obj, FieldFile):
                 # Calculate hash for this file
+                if hasattr(file_obj, 'seek'):
+                    file_obj.seek(0)
                 file_hash = UploadedFile.calculate_file_hash(file_obj)
+                if hasattr(file_obj, 'seek'):
+                    file_obj.seek(0)
                 
                 # Check if this hash already appeared in another field
                 for existing_field, existing_hash in file_hashes.items():
@@ -447,29 +454,29 @@ class ProgramRegistrationForm(forms.ModelForm):
     # Add file fields with validators
     tor = forms.FileField(
         validators=[validate_file_size],
-        widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your Transcript of Records (PDF format, max 5MB)",
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+        help_text="Upload your Transcript of Records (PDF/JPG/PNG, max 5MB)",
         required=False
     )
     
     nc2_tesda = forms.FileField(
         validators=[validate_file_size],
-        widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your NC2 from TESDA certificate (PDF format, max 5MB)",
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+        help_text="Upload your NC2 from TESDA certificate (PDF/JPG/PNG, max 5MB)",
         required=False
     )
     
     good_moral = forms.FileField(
         validators=[validate_file_size],
-        widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your Good Moral Character certificate (PDF format, max 5MB)",
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+        help_text="Upload your Good Moral Character certificate (PDF/JPG/PNG, max 5MB)",
         required=False
     )
     
     nbi_clearance = forms.FileField(
         validators=[validate_file_size],
-        widget=forms.FileInput(attrs={'class': 'form-control'}),
-        help_text="Upload your NBI Clearance (PDF format, max 5MB)",
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+        help_text="Upload your NBI Clearance (PDF/JPG/PNG, max 5MB)",
         required=False
     )
     
@@ -487,7 +494,7 @@ class ProgramRegistrationForm(forms.ModelForm):
     def clean_tor(self):
         file = self.cleaned_data.get('tor')
         if file:
-            validate_file_extension(file, ['.pdf'])
+            validate_file_extension(file, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates across user's documents
             if self.user:
                 validate_no_duplicate(self.user, 'tor', file)
@@ -496,7 +503,7 @@ class ProgramRegistrationForm(forms.ModelForm):
     def clean_nc2_tesda(self):
         file = self.cleaned_data.get('nc2_tesda')
         if file:
-            validate_file_extension(file, ['.pdf'])
+            validate_file_extension(file, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates across user's documents
             if self.user:
                 validate_no_duplicate(self.user, 'nc2_tesda', file)
@@ -505,7 +512,7 @@ class ProgramRegistrationForm(forms.ModelForm):
     def clean_good_moral(self):
         file = self.cleaned_data.get('good_moral')
         if file:
-            validate_file_extension(file, ['.pdf'])
+            validate_file_extension(file, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates across user's documents
             if self.user:
                 validate_no_duplicate(self.user, 'good_moral', file)
@@ -514,7 +521,7 @@ class ProgramRegistrationForm(forms.ModelForm):
     def clean_nbi_clearance(self):
         file = self.cleaned_data.get('nbi_clearance')
         if file:
-            validate_file_extension(file, ['.pdf'])
+            validate_file_extension(file, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates across user's documents
             if self.user:
                 validate_no_duplicate(self.user, 'nbi_clearance', file)
@@ -523,6 +530,13 @@ class ProgramRegistrationForm(forms.ModelForm):
 
 class CandidateForm(forms.ModelForm):
     """Form for adding/editing candidate information."""
+    university = forms.ModelChoiceField(
+        queryset=University.objects.all(),
+        to_field_name="name",
+        empty_label="Select University",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     
     class Meta:
         model = Candidate
@@ -530,19 +544,24 @@ class CandidateForm(forms.ModelForm):
             # Basic information
             'passport_number',
             'first_name',
+            'middle_initial',
             'last_name',
             'email',
+            'phone_number',
+            'address',
             'date_of_birth', 'country_of_birth', 'nationality', 'religion',
             'gender',
             # Family information
             'father_name', 'mother_name',
             # Passport details
-            'passport_issue_date', 'passport_expiry_date',
+            'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
             # Physical details
             'shoes_size', 'shirt_size',
             # Education details
-            'university', 'year_graduated', 'specialization', 'secondary_specialization',
+            'university', 'highest_education_level', 'field_of_study', 'graduation_year', 'year_graduated',
+            'specialization', 'secondary_specialization',
             # Additional information
+            'health_condition', 'health_remarks',
             'smokes',
             'job_experience',
             # Program association
@@ -552,37 +571,45 @@ class CandidateForm(forms.ModelForm):
             'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance',
         ]
         widgets = {
-            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number', 'readonly': True}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'readonly': True}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname', 'readonly': True}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address', 'readonly': True}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
-            'country_of_birth': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'nationality': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'religion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Religion', 'readonly': True}),
-            'gender': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Father's name", 'readonly': True}),
-            'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Mother's name", 'readonly': True}),
-            'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
-            'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
-            'shoes_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shoes size', 'readonly': True}),
-            'shirt_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shirt size', 'readonly': True}),
-            'university': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated', 'readonly': True}),
-            'specialization': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization', 'readonly': True}),
-            'smokes': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'job_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe your relevant work/job experience...', 'readonly': True}),
-            'program': forms.Select(attrs={'class': 'form-control', 'disabled': True}),
-            'profile_image': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*', 'disabled': True}),
-            'license_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png', 'disabled': True}),
-            'passport_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png', 'disabled': True}),
-            'academic_certificate': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
-            'tor': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
-            'nc2_tesda': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
-            'diploma': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
-            'good_moral': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
-            'nbi_clearance': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf', 'disabled': True}),
+            'passport_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Passport number'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}),
+            'middle_initial': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'M.I.'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surname'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email address'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone number'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Home address'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'country_of_birth': forms.Select(attrs={'class': 'form-control'}),
+            'nationality': forms.Select(attrs={'class': 'form-control'}),
+            'religion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Religion'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'health_condition': forms.Select(attrs={'class': 'form-control'}),
+            'health_remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'father_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Father's name"}),
+            'mother_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Mother's name"}),
+            'passport_issue_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'passport_expiry_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'place_of_issue': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Place of issue'}),
+            'shoes_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shoes size'}),
+            'shirt_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shirt size'}),
+            'highest_education_level': forms.Select(attrs={'class': 'form-control'}),
+            'field_of_study': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Course'}),
+            'graduation_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Graduation year'}),
+            'year_graduated': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Year graduated'}),
+            'specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primary specialization'}),
+            'secondary_specialization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Secondary specialization'}),
+            'smokes': forms.Select(attrs={'class': 'form-control'}),
+            'job_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe your relevant work/job experience...'}),
+            'program': forms.Select(attrs={'class': 'form-control'}),
+            'profile_image': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
+            'license_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'passport_scan': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'academic_certificate': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'tor': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'nc2_tesda': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'diploma': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'good_moral': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
+            'nbi_clearance': forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.jpg,.jpeg,.png'}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -605,23 +632,8 @@ class CandidateForm(forms.ModelForm):
             # Add more nationalities as needed
         ]
         
-        # Add specialization choices
-        self.fields['specialization'].widget.choices = [('', 'Choose from list')] + [
-            ('Animal science', 'Animal science'),
-            ('Agronomy', 'Agronomy'),
-            ('Horticulture', 'Horticulture'),
-            ('Agricultural Engineering', 'Agricultural Engineering'),
-            # Add more specializations as needed
-        ]
-        
-        # Populate university choices from database
-        from core.models import University, AgricultureProgram
-        universities = University.objects.all().order_by('name')
-        self.fields['university'].widget.choices = [('', 'Select University')] + [
-            (uni.id, uni.name) for uni in universities
-        ]
-        
         # Populate program choices from database
+        from core.models import University, AgricultureProgram
         programs = AgricultureProgram.objects.all().order_by('title')
         self.fields['program'].widget.choices = [('', 'Select Program (Optional)')] + [
             (prog.id, f"{prog.title} - {prog.location}") for prog in programs
@@ -656,7 +668,7 @@ class CandidateForm(forms.ModelForm):
         passport_scan = self.cleaned_data.get('passport_scan')
         if passport_scan and not is_missing_file(passport_scan):
             validate_file_size(passport_scan)
-            validate_pdf(passport_scan)
+            validate_file_extension(passport_scan, ['.pdf', '.jpg', '.jpeg', '.png'])
             # For candidates created by staff, check against staff member's uploads
             if hasattr(self, 'created_by') and self.created_by:
                 validate_no_duplicate(self.created_by, 'passport_scan', passport_scan)
@@ -666,7 +678,7 @@ class CandidateForm(forms.ModelForm):
         tor = self.cleaned_data.get('tor')
         if tor and not is_missing_file(tor):
             validate_file_size(tor)
-            validate_pdf(tor)
+            validate_file_extension(tor, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates
             if hasattr(self, 'created_by') and self.created_by:
                 validate_no_duplicate(self.created_by, 'tor', tor)
@@ -676,7 +688,7 @@ class CandidateForm(forms.ModelForm):
         nc2_tesda = self.cleaned_data.get('nc2_tesda')
         if nc2_tesda and not is_missing_file(nc2_tesda):
             validate_file_size(nc2_tesda)
-            validate_pdf(nc2_tesda)
+            validate_file_extension(nc2_tesda, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates
             if hasattr(self, 'created_by') and self.created_by:
                 validate_no_duplicate(self.created_by, 'nc2_tesda', nc2_tesda)
@@ -686,7 +698,7 @@ class CandidateForm(forms.ModelForm):
         diploma = self.cleaned_data.get('diploma')
         if diploma and not is_missing_file(diploma):
             validate_file_size(diploma)
-            validate_pdf(diploma)
+            validate_file_extension(diploma, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates
             if hasattr(self, 'created_by') and self.created_by:
                 validate_no_duplicate(self.created_by, 'diploma', diploma)
@@ -696,7 +708,7 @@ class CandidateForm(forms.ModelForm):
         good_moral = self.cleaned_data.get('good_moral')
         if good_moral and not is_missing_file(good_moral):
             validate_file_size(good_moral)
-            validate_pdf(good_moral)
+            validate_file_extension(good_moral, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates
             if hasattr(self, 'created_by') and self.created_by:
                 validate_no_duplicate(self.created_by, 'good_moral', good_moral)
@@ -706,7 +718,7 @@ class CandidateForm(forms.ModelForm):
         nbi_clearance = self.cleaned_data.get('nbi_clearance')
         if nbi_clearance and not is_missing_file(nbi_clearance):
             validate_file_size(nbi_clearance)
-            validate_pdf(nbi_clearance)
+            validate_file_extension(nbi_clearance, ['.pdf', '.jpg', '.jpeg', '.png'])
             # Check for duplicates
             if hasattr(self, 'created_by') and self.created_by:
                 validate_no_duplicate(self.created_by, 'nbi_clearance', nbi_clearance)
@@ -835,6 +847,26 @@ class ComprehensiveRegisterForm(UserCreationForm):
     confirm_email = forms.EmailField(required=True, label='Confirm Email')
     
     # Profile fields (existing + new)
+    middle_initial = forms.CharField(max_length=10, required=False, help_text="Middle Initial")
+    religion = forms.CharField(max_length=100, required=False, help_text="Religion")
+    age = forms.IntegerField(required=False, help_text="Age")
+    country_of_birth = forms.CharField(max_length=100, required=False, help_text="Country of Birth")
+    
+    SMOKING_CHOICES = [('Yes', 'Yes'), ('No', 'No')]
+    smoking_habits = forms.ChoiceField(choices=SMOKING_CHOICES, required=False, widget=forms.RadioSelect)
+    
+    shirt_size = forms.CharField(max_length=10, required=False, help_text="Shirt Size")
+    shoe_size = forms.CharField(max_length=10, required=False, help_text="Shoe Size")
+    
+    university = forms.ModelChoiceField(
+        queryset=University.objects.all(),
+        to_field_name="name",
+        empty_label="Select University",
+        required=False,
+        help_text="University"
+    )
+    primary_specialization = forms.CharField(max_length=100, required=False, help_text="Primary Specialization")
+    secondary_specialization = forms.CharField(max_length=100, required=False, help_text="Secondary Specialization")
     phone_number = forms.CharField(
         max_length=20,
         required=False,
@@ -1060,8 +1092,8 @@ class ComprehensiveRegisterForm(UserCreationForm):
     
     # Academic fields
     highest_education_level = forms.ChoiceField(choices=Profile.EDUCATION_LEVEL_CHOICES, required=True)
-    institution_name = forms.CharField(max_length=200, required=True, help_text="Name of institution")
     graduation_year = forms.IntegerField(required=True, min_value=1900, max_value=timezone.now().year, help_text="Year of graduation")
+    year_graduated = forms.IntegerField(required=False, min_value=1900, max_value=timezone.now().year, help_text="Year graduated")
     field_of_study = forms.CharField(max_length=100, required=True, help_text="Field of study")
     
     # Additional fields
@@ -1111,10 +1143,7 @@ class ComprehensiveRegisterForm(UserCreationForm):
         # Add required attribute for HTML5 validation
         required_fields = [
             'username', 'first_name', 'last_name', 'email', 'confirm_email',
-            'password1', 'password2', 'date_of_birth', 'gender', 'nationality',
-            'passport_number', 'confirm_passport_number', 'passport_issue_date',
-            'passport_expiry_date', 'highest_education_level', 'institution_name',
-            'graduation_year', 'field_of_study'
+            'password1', 'password2'
         ]
 
         for field_name in required_fields:
@@ -1214,10 +1243,14 @@ class ComprehensiveRegisterForm(UserCreationForm):
     
     def save_profile(self, user, commit=True):
         profile, created = Profile.objects.get_or_create(user=user)
+        
+        # Direct field mappings (form_field_name == model_field_name)
         profile_fields = [
+            'middle_initial', 'country_of_birth', 'religion',
             'phone_number', 'date_of_birth', 'gender', 'nationality', 'address',
             'passport_number', 'passport_issue_date', 'passport_expiry_date', 'place_of_issue',
-            'highest_education_level', 'institution_name', 'graduation_year', 'field_of_study',
+            'highest_education_level', 'graduation_year', 'year_graduated', 'field_of_study',
+            'secondary_specialization',
             'preferred_country', 'willing_to_relocate', 'special_requirements',
             'profile_image', 'passport_scan', 'tor', 'diploma', 'good_moral',
             'nbi_clearance', 'license_scan', 'nc2_tesda', 'academic_certificate'
@@ -1225,6 +1258,17 @@ class ComprehensiveRegisterForm(UserCreationForm):
         for field in profile_fields:
             if field in self.cleaned_data:
                 setattr(profile, field, self.cleaned_data[field])
+        
+        # Form field 'primary_specialization' maps to model field 'specialization'
+        primary_spec = self.cleaned_data.get('primary_specialization')
+        if primary_spec:
+            profile.specialization = primary_spec
+        
+        university = self.cleaned_data.get('university')
+        if university:
+            profile.university = university.name if hasattr(university, 'name') else str(university)
+        
         if commit:
             profile.save()
         return profile
+

@@ -18,8 +18,24 @@ admin.site.site_header = "AgroStudies Admin"
 admin.site.site_title = "AgroStudies Admin"
 admin.site.index_title = "AgroStudies Admin"
 
+from django import forms
+from .models import Profile, University
+
+class ProfileAdminForm(forms.ModelForm):
+    university = forms.ModelChoiceField(
+        queryset=University.objects.all(),
+        to_field_name="name",
+        empty_label="Select University",
+        required=False,
+    )
+
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
 @admin.register(Profile)
 class ProfileAdmin(ModelAdmin):
+    form = ProfileAdminForm
     list_display = ('user', 'location', 'date_joined')
     search_fields = ('user__username', 'user__email', 'location')
     list_filter = ('date_joined',)
@@ -312,6 +328,7 @@ class ActivityLogAdmin(ModelAdmin):
         """Get the current status of the scheduled backup task"""
         import subprocess
         import sys
+        import re
         
         status = {
             'installed': False,
@@ -325,6 +342,16 @@ class ActivityLogAdmin(ModelAdmin):
             'schedule_description': None,
             'status': None,
         }
+        
+        def force_24h(text):
+            if not text: return text
+            def replacer(m):
+                h, min, s, p = m.groups()
+                h = int(h)
+                if p.upper() == 'PM' and h < 12: h += 12
+                if p.upper() == 'AM' and h == 12: h = 0
+                return f"{h:02d}:{min}{':' + s if s else ''}"
+            return re.sub(r'(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([AaPp][Mm])', replacer, text)
         
         if sys.platform == 'win32':
             try:
@@ -341,15 +368,21 @@ class ActivityLogAdmin(ModelAdmin):
                     for line in lines:
                         line_lower = line.lower()
                         if 'next run time:' in line_lower:
-                            status['next_run'] = line.split(':', 1)[1].strip() if ':' in line else None
+                            val = line.split(':', 1)[1].strip() if ':' in line else None
+                            status['next_run'] = force_24h(val)
                         elif 'last run time:' in line_lower:
-                            status['last_run'] = line.split(':', 1)[1].strip() if ':' in line else None
+                            val = line.split(':', 1)[1].strip() if ':' in line else None
+                            status['last_run'] = force_24h(val)
                         elif 'last result:' in line_lower:
                             status['last_result'] = line.split(':', 1)[1].strip() if ':' in line else None
                         elif line_lower.strip().startswith('status:'):
                             status['status'] = line.split(':', 1)[1].strip() if ':' in line else None
                         elif 'start time:' in line_lower:
-                            status['schedule_time'] = line.split(':', 1)[1].strip() if ':' in line else None
+                            val = line.split(':', 1)[1].strip() if ':' in line else None
+                            if val:
+                                t24 = force_24h(val)
+                                match = re.search(r'(\d{2}:\d{2})', t24)
+                                status['schedule_time'] = match.group(1) if match else t24
                         elif 'schedule type:' in line_lower:
                             sched_type = line.split(':', 1)[1].strip().upper() if ':' in line else None
                             status['schedule_type'] = sched_type
@@ -565,8 +598,23 @@ class ActivityLogAdmin(ModelAdmin):
         extra_context['backup_manager_url'] = reverse('admin:core_activitylog_backup_manager')
         return super().changelist_view(request, extra_context=extra_context)
 
+from core.models import Candidate
+
+class CandidateAdminForm(forms.ModelForm):
+    university = forms.ModelChoiceField(
+        queryset=University.objects.all(),
+        to_field_name="name",
+        empty_label="Select University",
+        required=False,
+    )
+
+    class Meta:
+        model = Candidate
+        fields = '__all__'
+
 @admin.register(Candidate)
 class CandidateAdmin(ModelAdmin):
+    form = CandidateAdminForm
     list_display = ('first_name', 'last_name', 'passport_number', 'university', 'status')
     list_filter = ('status', 'university', 'nationality', 'gender')
     search_fields = ('first_name', 'last_name', 'passport_number', 'email')

@@ -1,0 +1,200 @@
+{% if page_obj %}
+<!-- Main Table (Screen Display) -->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th class="print-checkbox-col">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="selectAll">
+                    </div>
+                </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Sex</th>
+
+                <th>SUC</th>
+                <th>Specialization</th>
+                <th>Program</th>
+                <th>Farm Location</th>
+                <th>Status</th>
+                <th>Date Added</th>
+                <th class="print-actions-col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for candidate in page_obj %}
+            <tr data-candidate-id="{{ candidate.id }}">
+                <td class="print-checkbox-col">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input candidate-select"
+                            name="selected_candidates" value="{{ candidate.id }}">
+                    </div>
+                </td>
+                <td>
+                    <a href="{% url 'view_candidate' candidate.id %}">
+                        {{ candidate.first_name }} {{ candidate.last_name }}
+                    </a>
+                </td>
+                <td>{{ candidate.email|default:"--" }}</td>
+                <td>{{ candidate.gender|default:"--" }}</td>
+
+                <td>{{ candidate.university|default:"--" }}</td>
+                <td>{{ candidate.specialization|default:"--" }}</td>
+                <td>{{ candidate.program.title|default:"--" }}</td>
+                <td>{{ candidate.program.location|default:"--" }}</td>
+                <td>
+                    <span
+                        class="badge {% if candidate.status == 'Approved' %}bg-success{% elif candidate.status == 'Rejected' %}bg-danger{% elif candidate.status == 'Validated' %}bg-info{% elif candidate.status == 'Missing_Docs' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                        {{ candidate.get_status_display }}
+                    </span>
+                </td>
+                <td>{{ candidate.created_at|date:"M d, Y" }}</td>
+                <td class="print-actions-col">
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'view_candidate' candidate.id %}" class="btn btn-info btn-sm"
+                            title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        {% if user.is_staff %}
+                        <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-primary btn-sm"
+                            title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-danger btn-sm"
+                            title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Hidden Printable Area (shown only during print) -->
+<div id="printableArea">
+    <div class="print-header">
+        <h1>Candidate Management Report</h1>
+        <p id="printReportInfo">Generated on {% now "F d, Y \a\t h:i A" %} | Total: {{ page_obj.paginator.count }} candidates</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Sex</th>
+
+                <th>SUC</th>
+                <th>Specialization</th>
+                <th>Program</th>
+                <th>Farm Location</th>
+                <th>Status</th>
+                <th>Date Added</th>
+            </tr>
+        </thead>
+        <tbody id="printTableBody">
+            {% for candidate in page_obj %}
+            <tr data-candidate-id="{{ candidate.id }}">
+                <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+                <td>{{ candidate.email|default:"--" }}</td>
+                <td>{{ candidate.gender|default:"--" }}</td>
+
+                <td>{{ candidate.university|default:"--" }}</td>
+                <td>{{ candidate.specialization|default:"--" }}</td>
+                <td>{{ candidate.program.title|default:"--" }}</td>
+                <td>{{ candidate.program.location|default:"--" }}</td>
+                <td>{{ candidate.get_status_display }}</td>
+                <td>{{ candidate.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if page_obj.has_other_pages %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-4">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link"
+                href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link"
+                href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+        <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+        {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %} <li class="page-item">
+            <a class="page-link"
+                href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                    href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                    aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+<div class="mt-3 text-center">
+    <p class="text-muted">
+        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+        candidates
+    </p>
+</div>
+{% else %}
+<div class="alert alert-info text-center">
+    <i class="fas fa-info-circle me-2"></i> No candidates found matching your criteria.
+</div>
+{% endif %}

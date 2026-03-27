@@ -291,3 +291,33 @@ footer a:hover {
         margin-top: 2rem !important;
     }
 }
+
+/* Document Input Styling - Hide Django default labels */
+.document-input-wrapper {
+    font-size: 0; /* Hides text nodes like "Currently:" and "Change:" */
+    margin-top: 5px;
+}
+
+.document-input-wrapper > * {
+    font-size: 0.875rem; /* Restores font size for child elements */
+}
+
+/* Hide the filename link and the clear checkbox provided by Django widget */
+.document-input-wrapper a, 
+.document-input-wrapper input[type="checkbox"], 
+.document-input-wrapper label[for*="-clear_id"],
+.document-input-wrapper br {
+    display: none !important;
+}
+
+.document-input-wrapper input[type="file"] {
+    display: block !important;
+}
+
+/* Extra small button for inline view */
+.btn-xs {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}

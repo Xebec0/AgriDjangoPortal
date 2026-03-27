@@ -211,20 +211,62 @@
                     <div class="field-group">
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-signature"></i> First Name
-                            </div>
-                            <div class="field-value highlight">{{ candidate.first_name }}</div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
                                 <i class="fas fa-signature"></i> Last Name
                             </div>
                             <div class="field-value highlight">{{ candidate.last_name }}</div>
                         </div>
+                        
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-signature"></i> First Name
+                            </div>
+                            <div class="field-value highlight">{{ candidate.first_name }}</div>
+                        </div>
+
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-signature"></i> Middle Initial
+                            </div>
+                            <div class="field-value">{{ candidate.middle_initial|default:"—" }}</div>
+                        </div>
                     </div>
                     
-                    <div class="field-group">
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-envelope"></i> Email
+                            </div>
+                            <div class="field-value">
+                                {% if candidate.email %}
+                                    <a href="mailto:{{ candidate.email }}">{{ candidate.email }}</a>
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-phone"></i> Mobile number
+                            </div>
+                            <div class="field-value">
+                                {{ candidate.phone_number|default:"Not provided" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-group mt-3">
+                        <div class="field-item" style="flex: 1;">
+                            <div class="field-label">
+                                <i class="fas fa-home"></i> Home Address
+                            </div>
+                            <div class="field-value">
+                                {{ candidate.address|default:"Not provided" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-group mt-3">
                         <div class="field-item">
                             <div class="field-label">
                                 <i class="fas fa-male"></i> Father's Name
@@ -240,17 +282,50 @@
                         </div>
                     </div>
                     
-                    <div class="field-group">
+                    <div class="field-group mt-3">
                         <div class="field-item">
                             <div class="field-label">
                                 <i class="fas fa-birthday-cake"></i> Date of Birth
                             </div>
                             <div class="field-value">
                                 {{ candidate.date_of_birth|date:"F d, Y" }}
-                                <span class="status-badge approved ms-2">Age: <span id="candidate-age"></span></span>
                             </div>
                         </div>
                         
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-venus-mars"></i> Sex
+                            </div>
+                            <div class="field-value">{{ candidate.gender }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-pray"></i> Religion
+                            </div>
+                            <div class="field-value">{{ candidate.religion|default:"Not provided" }}</div>
+                        </div>
+
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-clock"></i> Age
+                            </div>
+                            <div class="field-value">
+                                <span class="status-badge approved">Age: <span id="candidate-age"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-flag"></i> Nationality
+                            </div>
+                            <div class="field-value">{{ candidate.nationality }}</div>
+                        </div>
+
                         <div class="field-item">
                             <div class="field-label">
                                 <i class="fas fa-globe"></i> Country of Birth
@@ -259,45 +334,7 @@
                         </div>
                     </div>
                     
-                    <div class="field-group">
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-flag"></i> Nationality
-                            </div>
-                            <div class="field-value">{{ candidate.nationality }}</div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-pray"></i> Religion
-                            </div>
-                            <div class="field-value">{{ candidate.religion|default:"Not provided" }}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="field-group">
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-venus-mars"></i> Sex
-                            </div>
-                            <div class="field-value">{{ candidate.gender }}</div>
-                        </div>
-                        
-                        <div class="field-item">
-                            <div class="field-label">
-                                <i class="fas fa-envelope"></i> Email
-                            </div>
-                            <div class="field-value">
-                                {% if candidate.email %}
-                                    <a href="mailto:{{ candidate.email }}">{{ candidate.email }}</a>
-                                {% else %}
-                                    Not provided
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="field-group">
+                    <div class="field-group mt-3">
                         <div class="field-item" style="flex: 1;">
                             <div class="field-label">
                                 <i class="fas fa-briefcase"></i> Job Experience
@@ -311,48 +348,132 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-notes-medical"></i> Health Condition
+                            </div>
+                            <div class="field-value">{{ candidate.health_condition|default:"None reported" }}</div>
+                        </div>
+                        
+                        {% if candidate.health_remarks %}
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-comment-medical"></i> Health Remarks
+                            </div>
+                            <div class="field-value" style="white-space: pre-wrap;">{{ candidate.health_remarks }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             
         </div>
         
-        <!-- Contact Information -->
+        <!-- Passport & Academic Information -->
         <div class="col-md-6">
             <div class="info-card">
                 <div class="card-header">
-                    <i class="fas fa-address-book"></i>
-                    <span>Contact Information</span>
+                    <i class="fas fa-passport"></i>
+                    <span>Passport Information</span>
                 </div>
                 <div class="card-body">
                     <div class="field-group">
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-envelope"></i> Email Address
+                                <i class="fas fa-id-card"></i> Passport Number
                             </div>
-                            <div class="field-value highlight">
-                                {% if candidate.email %}
-                                    <a href="mailto:{{ candidate.email }}">{{ candidate.email }}</a>
-                                {% else %}
-                                    <span class="text-muted">Not provided</span>
-                                {% endif %}
-                            </div>
+                            <div class="field-value highlight">{{ candidate.passport_number|default:"Not provided" }}</div>
                         </div>
-                        
                         <div class="field-item">
                             <div class="field-label">
-                                <i class="fas fa-phone"></i> Phone Number
+                                <i class="fas fa-map-marker-alt"></i> Place of Issue
                             </div>
-                            <div class="field-value">
-                                {% if candidate.phone_number %}
-                                    {{ candidate.phone_number }}
-                                {% else %}
-                                    <span class="text-muted">Not provided</span>
-                                {% endif %}
+                            <div class="field-value">{{ candidate.place_of_issue|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-calendar-alt"></i> Issue Date
                             </div>
+                            <div class="field-value">{{ candidate.passport_issue_date|date:"F d, Y"|default:"Not provided" }}</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-calendar-times"></i> Expiry Date
+                            </div>
+                            <div class="field-value">{{ candidate.passport_expiry_date|date:"F d, Y"|default:"Not provided" }}</div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Academic Information</span>
+                </div>
+                <div class="card-body">
+                    <div class="field-group">
+                        <div class="field-item" style="flex: 1;">
+                            <div class="field-label">
+                                <i class="fas fa-level-up-alt"></i> Highest Educational Level
+                            </div>
+                            <div class="field-value">{{ candidate.get_highest_education_level_display|default:candidate.highest_education_level|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                    <div class="field-group mt-3">
+                        <div class="field-item" style="flex: 1;">
+                            <div class="field-label">
+                                <i class="fas fa-book"></i> Course
+                            </div>
+                            <div class="field-value">{{ candidate.field_of_study|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                    <div class="field-group mt-3">
+                        <div class="field-item" style="flex: 1;">
+                            <div class="field-label">
+                                <i class="fas fa-university"></i> University
+                            </div>
+                            <div class="field-value highlight">{{ candidate.university|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-calendar-check"></i> Graduation Year
+                            </div>
+                            <div class="field-value">{{ candidate.graduation_year|default:"Not provided" }}</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-calendar-alt"></i> Year Graduated
+                            </div>
+                            <div class="field-value">{{ candidate.year_graduated|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                    <div class="field-group mt-3">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-star"></i> Primary Specialization
+                            </div>
+                            <div class="field-value">{{ candidate.specialization|default:"Not provided" }}</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-star-half-alt"></i> Secondary Specialization
+                            </div>
+                            <div class="field-value">{{ candidate.secondary_specialization|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
             
             <!-- Documents Section -->
             <div class="info-card">
@@ -368,113 +489,122 @@
                                 <div class="doc-icon"><i class="fas fa-image"></i></div>
                                 <div class="doc-name">Profile Image</div>
                                 {% if candidate.profile_image and candidate.profile_image|file_exists %}
-                                    <a href="{{ candidate.profile_image.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.profile_image.url }}', 'Profile Image')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.profile_image.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
+
                             <!-- Passport Scan -->
                             <div class="doc-card {% if not candidate.passport_scan or not candidate.passport_scan|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-passport"></i></div>
                                 <div class="doc-name">Passport Scan</div>
                                 {% if candidate.passport_scan and candidate.passport_scan|file_exists %}
-                                    <a href="{{ candidate.passport_scan.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.passport_scan.url }}', 'Passport Scan')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.passport_scan.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
+
                             <!-- Academic Certificate -->
                             <div class="doc-card {% if not candidate.academic_certificate or not candidate.academic_certificate|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-certificate"></i></div>
                                 <div class="doc-name">Academic Certificate</div>
                                 {% if candidate.academic_certificate and candidate.academic_certificate|file_exists %}
-                                    <a href="{{ candidate.academic_certificate.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.academic_certificate.url }}', 'Academic Certificate')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.academic_certificate.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
-                            <!-- License Scan -->
+
+                                <!-- License Scan -->
                             <div class="doc-card {% if not candidate.license_scan or not candidate.license_scan|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-id-card"></i></div>
                                 <div class="doc-name">License Scan</div>
                                 {% if candidate.license_scan and candidate.license_scan|file_exists %}
-                                    <a href="{{ candidate.license_scan.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.license_scan.url }}', 'License Scan')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.license_scan.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
-                            <!-- TOR (Transcript of Records) -->
+
+                            <!-- TOR -->
                             <div class="doc-card {% if not candidate.tor or not candidate.tor|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-scroll"></i></div>
                                 <div class="doc-name">TOR</div>
                                 {% if candidate.tor and candidate.tor|file_exists %}
-                                    <a href="{{ candidate.tor.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.tor.url }}', 'TOR')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.tor.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
-                            <!-- NC2 from TESDA -->
+
+                            <!-- NC2 TESDA -->
                             <div class="doc-card {% if not candidate.nc2_tesda or not candidate.nc2_tesda|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-award"></i></div>
                                 <div class="doc-name">NC2 TESDA</div>
                                 {% if candidate.nc2_tesda and candidate.nc2_tesda|file_exists %}
-                                    <a href="{{ candidate.nc2_tesda.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.nc2_tesda.url }}', 'NC2 TESDA')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.nc2_tesda.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
+
                             <!-- Diploma -->
                             <div class="doc-card {% if not candidate.diploma or not candidate.diploma|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-graduation-cap"></i></div>
                                 <div class="doc-name">Diploma</div>
                                 {% if candidate.diploma and candidate.diploma|file_exists %}
-                                    <a href="{{ candidate.diploma.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.diploma.url }}', 'Diploma')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.diploma.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
-                            <!-- Good Moral Character -->
+
+                            <!-- Good Moral -->
                             <div class="doc-card {% if not candidate.good_moral or not candidate.good_moral|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-heart"></i></div>
                                 <div class="doc-name">Good Moral</div>
                                 {% if candidate.good_moral and candidate.good_moral|file_exists %}
-                                    <a href="{{ candidate.good_moral.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.good_moral.url }}', 'Good Moral')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.good_moral.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
                             </div>
-                            
+
                             <!-- NBI Clearance -->
                             <div class="doc-card {% if not candidate.nbi_clearance or not candidate.nbi_clearance|file_exists %}doc-missing{% endif %}">
                                 <div class="doc-icon"><i class="fas fa-shield-alt"></i></div>
                                 <div class="doc-name">NBI Clearance</div>
                                 {% if candidate.nbi_clearance and candidate.nbi_clearance|file_exists %}
-                                    <a href="{{ candidate.nbi_clearance.url }}" target="_blank" class="doc-link" title="View/Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    <div class="doc-actions-row">
+                                        <button class="doc-view-btn" onclick="previewDocument('{{ candidate.nbi_clearance.url }}', 'NBI Clearance')" title="View"><i class="fas fa-eye"></i></button>
+                                        <a href="{{ candidate.nbi_clearance.url }}" download class="doc-link" title="Download"><i class="fas fa-download"></i></a>
+                                    </div>
                                 {% else %}
                                     <span class="doc-status">—</span>
                                 {% endif %}
@@ -528,6 +658,38 @@
                 </div>
             </div>
             {% endif %}
+        </div>
+
+        <!-- Physical & Health Details -->
+        <div class="col-md-12">
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Physical Details</span>
+                </div>
+                <div class="card-body">
+                    <div class="field-group">
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-smoking"></i> Smoking Habits
+                            </div>
+                            <div class="field-value">{{ candidate.smokes|default:"Not provided" }}</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-tshirt"></i> Shirt Size
+                            </div>
+                            <div class="field-value">{{ candidate.shirt_size|default:"Not provided" }}</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">
+                                <i class="fas fa-shoe-prints"></i> Shoes Size
+                            </div>
+                            <div class="field-value">{{ candidate.shoes_size|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -601,6 +763,25 @@
         </div>
     </div>
 </div>
+
+<!-- Document Preview Modal -->
+<div id="docPreviewModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.75); align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:12px; width:90%; max-width:860px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+        <!-- Modal Header -->
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; background:linear-gradient(90deg,#28a745,#20c997); color:#fff;">
+            <h5 id="docPreviewTitle" style="margin:0; font-size:1rem; display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-file-alt"></i> <span></span></h5>
+            <div style="display:flex; gap:0.5rem;">
+                <a id="docPreviewOpen" href="#" target="_blank" style="background:rgba(255,255,255,0.2); border:none; color:#fff; padding:0.4rem 0.9rem; border-radius:6px; font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt"></i> Open tab</a>
+                <button onclick="closeDocPreview()" style="background:rgba(255,255,255,0.2); border:none; color:#fff; padding:0.4rem 0.9rem; border-radius:6px; font-size:0.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.4rem;"><i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+        <!-- Modal Body -->
+        <div id="docPreviewBody" style="flex:1; overflow:auto; padding:0; min-height:60vh; background:#f8f9fa; display:flex; align-items:center; justify-content:center;">
+            <!-- content injected by JS -->
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -634,6 +815,57 @@
                 ageStatElement.textContent = age;
             }
         }
+    });
+
+    // ---- Document Preview Modal ----
+    const IMAGE_EXTS = ['jpg','jpeg','png','gif','bmp','webp','svg'];
+    const PDF_EXTS   = ['pdf'];
+
+    window.previewDocument = function(url, title) {
+        const ext = url.split('?')[0].split('.').pop().toLowerCase();
+        const modal    = document.getElementById('docPreviewModal');
+        const body     = document.getElementById('docPreviewBody');
+        const titleEl  = document.querySelector('#docPreviewTitle span');
+        const openLink = document.getElementById('docPreviewOpen');
+
+        titleEl.textContent = title;
+        openLink.href = url;
+        body.innerHTML = '';
+
+        if (IMAGE_EXTS.includes(ext)) {
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = title;
+            img.style.cssText = 'max-width:100%; max-height:80vh; object-fit:contain; display:block; margin:auto; padding:1rem;';
+            body.appendChild(img);
+        } else if (PDF_EXTS.includes(ext)) {
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.style.cssText = 'width:100%; height:75vh; border:none; display:block;';
+            body.appendChild(iframe);
+        } else {
+            body.innerHTML = '<div style="padding:2rem; text-align:center; color:#6c757d;"><i class="fas fa-file fa-3x mb-3"></i><br>Preview not available for this file type.<br><a href="'+url+'" target="_blank" class="btn btn-success mt-3"><i class="fas fa-external-link-alt me-1"></i>Open in new tab</a></div>';
+        }
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeDocPreview = function() {
+        const modal = document.getElementById('docPreviewModal');
+        modal.style.display = 'none';
+        document.getElementById('docPreviewBody').innerHTML = '';
+        document.body.style.overflow = '';
+    };
+
+    // Close on backdrop click
+    document.getElementById('docPreviewModal').addEventListener('click', function(e) {
+        if (e.target === this) closeDocPreview();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDocPreview();
     });
 </script>
 {% endblock %}

@@ -228,17 +228,28 @@ def track_profile_files(sender, instance, created, **kwargs):
                 # Only process if there's a file
                 if current_file and hasattr(current_file, 'name') and current_file.name:
                     try:
+                        # Calculate hash of current file
+                        # Use its current open state if possible, otherwise open carefully
+                        is_opened = hasattr(current_file, 'file') and current_file.file is not None
+                        
+                        try:
+                            if not is_opened:
+                                current_file.open('rb')
+                            else:
+                                current_file.seek(0)
+                                
+                            current_hash = UploadedFile.calculate_file_hash(current_file)
+                            current_file.seek(0) # Always reset pointer after reading
+                        finally:
+                            if not is_opened:
+                                current_file.close()
+
                         # Get existing record for this field
                         existing_record = UploadedFile.objects.filter(
                             user=instance.user,
                             document_type=field_name,
                             is_active=True
                         ).first()
-                        
-                        # Calculate hash of current file
-                        current_file.open('rb')
-                        current_hash = UploadedFile.calculate_file_hash(current_file)
-                        current_file.close()
                         
                         # Check if this file is different from what we have recorded
                         should_register = False
@@ -255,18 +266,28 @@ def track_profile_files(sender, instance, created, **kwargs):
                         # else: Same file, same field - don't re-register
                         
                         if should_register:
-                            current_file.open('rb')
-                            UploadedFile.register_upload(
-                                user=instance.user,
-                                document_type=field_name,
-                                file_obj=current_file,
-                                model_name='Profile',
-                                model_id=instance.pk
-                            )
-                            current_file.close()
+                            # Register with UploadedFile
+                            is_opened = hasattr(current_file, 'file') and current_file.file is not None
+                            try:
+                                if not is_opened:
+                                    current_file.open('rb')
+                                else:
+                                    current_file.seek(0)
+                                    
+                                UploadedFile.register_upload(
+                                    user=instance.user,
+                                    document_type=field_name,
+                                    file_obj=current_file,
+                                    model_name='Profile',
+                                    model_id=instance.pk
+                                )
+                                current_file.seek(0) # Reset after registration
+                            finally:
+                                if not is_opened:
+                                    current_file.close()
                             
                     except Exception as file_error:
-                        logger.warning(f"Error processing file {field_name}: {str(file_error)}")
+                        logger.warning(f"Error processing file {field_name} for profile {instance.pk}: {str(file_error)}")
                         
         except Exception as e:
             logger.error(f"Error tracking Profile files for user {instance.user.username}: {str(e)}")

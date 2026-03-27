@@ -6,108 +6,116 @@
 
 {% block content %}
 <style>
-/* Override Bootstrap disabled styles for export buttons */
-.export-selected.disabled {
-    pointer-events: auto !important;
-    cursor: pointer !important;
-}
+    /* Override Bootstrap disabled styles for export buttons */
+    .export-selected.disabled {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
 
-.export-selected.disabled:hover {
-    opacity: 0.8 !important;
-}
+    .export-selected.disabled:hover {
+        opacity: 0.8 !important;
+    }
 
-/* Date range picker styles */
-.date-range-input {
-    cursor: pointer;
-}
+    /* Date range picker styles */
+    .date-range-input {
+        cursor: pointer;
+    }
 
-.date-range-input:focus {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
+    .date-range-input:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
 
-/* Printable Area - hidden on screen, used for print content */
-#printableArea {
-    display: none;
-}
+    /* Printable Area - hidden on screen, used for print content */
+    #printableArea {
+        display: none;
+    }
 
-.print-header {
-    display: none;
-}
+    .print-header {
+        display: none;
+    }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== Date Range Modal Debug ===');
-    console.log('- dateRangeModal:', document.getElementById('dateRangeModal'));
-    console.log('- dateRangeToggle:', document.getElementById('dateRangeToggle'));
-    console.log('- startDatePicker:', document.getElementById('startDatePicker'));
-    console.log('- endDatePicker:', document.getElementById('endDatePicker'));
-    console.log('- applyDateRange button:', document.getElementById('applyDateRange'));
-    console.log('- closeDateRangeBtn:', document.getElementById('closeDateRangeBtn'));
-    
-    // Test if global functions are available
-    console.log('- showDateRangeModal function:', typeof window.showDateRangeModal);
-    console.log('- closeDateRangeModal function:', typeof window.closeDateRangeModal);
-    console.log('- applyDateRange function:', typeof window.applyDateRange);
-    console.log('==============================');
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('=== Date Range Modal Debug ===');
+        console.log('- dateRangeModal:', document.getElementById('dateRangeModal'));
+        console.log('- dateRangeToggle:', document.getElementById('dateRangeToggle'));
+        console.log('- startDatePicker:', document.getElementById('startDatePicker'));
+        console.log('- endDatePicker:', document.getElementById('endDatePicker'));
+        console.log('- applyDateRange button:', document.getElementById('applyDateRange'));
+        console.log('- closeDateRangeBtn:', document.getElementById('closeDateRangeBtn'));
+
+        // Test if global functions are available
+        console.log('- showDateRangeModal function:', typeof window.showDateRangeModal);
+        console.log('- closeDateRangeModal function:', typeof window.closeDateRangeModal);
+        console.log('- applyDateRange function:', typeof window.applyDateRange);
+        console.log('==============================');
+    });
 </script>
 <div class="container-fluid">
     <h1 class="h3 mb-4">Candidate Management</h1>
-    
+
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Search Candidates</h6>
             <div>
                 {% if user.is_staff %}
-                    <!-- Export Selected Button (separate from dropdown) -->
-                    <button type="button" class="btn btn-success btn-sm me-2" id="exportSelectedBtn" style="display: none;">
-                        <i class="fas fa-download me-1"></i> Export Selected (<span id="selectedCount">0</span>)
-                    </button>
+                <!-- Export Selected Button (separate from dropdown) -->
+                <button type="button" class="btn btn-success btn-sm me-2" id="exportSelectedBtn" style="display: none;">
+                    <i class="fas fa-download me-1"></i> Export Selected (<span id="selectedCount">0</span>)
+                </button>
 
-                    <!-- Export All Dropdown -->
-                    <div class="dropdown d-inline-block me-2">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportAllDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-download"></i> Export All
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="exportAllDropdown">
-                            <li>
-                                <a class="dropdown-item" href="?export=csv{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
-                                    <i class="fas fa-file-csv me-1"></i> Export All as CSV
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="?export=excel{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
-                                    <i class="fas fa-file-excel me-1"></i> Export All as Excel
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="?export=pdf{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
-                                    <i class="fas fa-file-pdf me-1"></i> Export All as PDF
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="printAllCandidates(); return false;">
-                                    <i class="fas fa-print me-1"></i> Print All
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="printSelectedCandidates(); return false;" id="printSelectedLink">
-                                    <i class="fas fa-print me-1"></i> Print Selected (<span id="printSelectedCount">0</span>)
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-user-plus"></i> Add New Candidate
-                    </a>
+                <!-- Export All Dropdown -->
+                <div class="dropdown d-inline-block me-2">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="exportAllDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-download"></i> Export All
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="exportAllDropdown">
+                        <li>
+                            <a class="dropdown-item"
+                                href="?export=csv{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                <i class="fas fa-file-csv me-1"></i> Export All as CSV
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="?export=excel{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                <i class="fas fa-file-excel me-1"></i> Export All as Excel
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="?export=pdf{% for key, value in request.GET.items %}{% if key != 'export' and key != 'page' and key != 'selected' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                <i class="fas fa-file-pdf me-1"></i> Export All as PDF
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="printAllCandidates(); return false;">
+                                <i class="fas fa-print me-1"></i> Print All
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="printSelectedCandidates(); return false;"
+                                id="printSelectedLink">
+                                <i class="fas fa-print me-1"></i> Print Selected (<span
+                                    id="printSelectedCount">0</span>)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-user-plus"></i> Add New Candidate
+                </a>
                 {% endif %}
             </div>
         </div>
         <div class="card-body">
-            <form method="get" class="mb-4" id="candidateFilterForm">
+        <form method="get" class="mb-4" id="candidateFilterForm" data-real-time-search>
                 <!-- Search Row -->
                 <div class="row mb-3">
                     <div class="col-md-12">
@@ -120,18 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 <!-- Filters Row 1 -->
                 <div class="row mb-3">
-                    <div class="col-md-2">
-                        <div class="form-group mb-2">
-                            {{ form.country.label_tag }}
-                            {{ form.country }}
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group mb-2">
-                            {{ form.nationality.label_tag }}
-                            {{ form.nationality }}
-                        </div>
-                    </div>
+
                     <div class="col-md-2">
                         <div class="form-group mb-2">
                             {{ form.gender.label_tag }}
@@ -164,14 +161,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="form-group mb-2">
                             <label for="date_range">Date Range</label>
                             <div class="input-group">
-                                <input type="text" name="date_range" id="date_range" class="form-control" value="{{ request.GET.date_range|default:'' }}" placeholder="Select date range" readonly>
+                                <input type="text" name="date_range" id="date_range" class="form-control"
+                                    value="{{ request.GET.date_range|default:'' }}" placeholder="Select date range"
+                                    readonly>
                                 <button class="btn btn-outline-secondary" type="button" id="dateRangeToggle">
                                     <i class="fas fa-calendar-alt"></i>
                                 </button>
                             </div>
                             <!-- Hidden inputs for actual date values -->
-                            <input type="hidden" name="start_date" id="start_date_hidden" value="{{ request.GET.start_date|default:'' }}">
-                            <input type="hidden" name="end_date" id="end_date_hidden" value="{{ request.GET.end_date|default:'' }}">
+                            <input type="hidden" name="start_date" id="start_date_hidden"
+                                value="{{ request.GET.start_date|default:'' }}">
+                            <input type="hidden" name="end_date" id="end_date_hidden"
+                                value="{{ request.GET.end_date|default:'' }}">
                         </div>
                     </div>
                     <div class="col-md-4 d-flex align-items-end gap-2">
@@ -184,223 +185,55 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </form>
-            
-            {% if page_obj %}
-                <!-- Main Table (Screen Display) -->
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="print-checkbox-col">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="selectAll">
-                                    </div>
-                                </th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Sex</th>
-                                <th>Country</th>
-                                <th>Nationality</th>
-                                <th>Specialization</th>
-                                <th>Program</th>
-                                <th>Farm Location</th>
-                                <th>Status</th>
-                                <th>Date Added</th>
-                                <th class="print-actions-col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for candidate in page_obj %}
-                                <tr data-candidate-id="{{ candidate.id }}">
-                                    <td class="print-checkbox-col">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input candidate-select" name="selected_candidates" value="{{ candidate.id }}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="{% url 'view_candidate' candidate.id %}">
-                                            {{ candidate.first_name }} {{ candidate.last_name }}
-                                        </a>
-                                    </td>
-                                    <td>{{ candidate.email|default:"--" }}</td>
-                                    <td>{{ candidate.gender|default:"--" }}</td>
-                                    <td>{{ candidate.country_of_birth|default:"--" }}</td>
-                                    <td>{{ candidate.nationality|default:"--" }}</td>
-                                    <td>{{ candidate.specialization|default:"--" }}</td>
-                                    <td>{{ candidate.program.title|default:"--" }}</td>
-                                    <td>{{ candidate.program.location|default:"--" }}</td>
-                                    <td>
-                                        <span class="badge {% if candidate.status == 'Approved' %}bg-success{% elif candidate.status == 'Rejected' %}bg-danger{% elif candidate.status == 'Validated' %}bg-info{% elif candidate.status == 'Missing_Docs' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
-                                            {{ candidate.get_status_display }}
-                                        </span>
-                                    </td>
-                                    <td>{{ candidate.created_at|date:"M d, Y" }}</td>
-                                    <td class="print-actions-col">
-                                        <div class="btn-group" role="group">
-                                            <a href="{% url 'view_candidate' candidate.id %}" class="btn btn-info btn-sm" title="View">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            {% if user.is_staff %}
-                                            <a href="{% url 'edit_candidate' candidate.id %}" class="btn btn-primary btn-sm" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="{% url 'delete_candidate' candidate.id %}" class="btn btn-danger btn-sm" title="Delete">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Hidden Printable Area (shown only during print) -->
-                <div id="printableArea">
-                    <div class="print-header">
-                        <h1>Candidate Management Report</h1>
-                        <p id="printReportInfo">Generated on {% now "F d, Y \a\t h:i A" %} | Total: {{ page_obj.paginator.count }} candidates</p>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Sex</th>
-                                <th>Country</th>
-                                <th>Nationality</th>
-                                <th>Specialization</th>
-                                <th>Program</th>
-                                <th>Farm Location</th>
-                                <th>Status</th>
-                                <th>Date Added</th>
-                            </tr>
-                        </thead>
-                        <tbody id="printTableBody">
-                            {% for candidate in page_obj %}
-                                <tr data-candidate-id="{{ candidate.id }}">
-                                    <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
-                                    <td>{{ candidate.email|default:"--" }}</td>
-                                    <td>{{ candidate.gender|default:"--" }}</td>
-                                    <td>{{ candidate.country_of_birth|default:"--" }}</td>
-                                    <td>{{ candidate.nationality|default:"--" }}</td>
-                                    <td>{{ candidate.specialization|default:"--" }}</td>
-                                    <td>{{ candidate.program.title|default:"--" }}</td>
-                                    <td>{{ candidate.program.location|default:"--" }}</td>
-                                    <td>{{ candidate.get_status_display }}</td>
-                                    <td>{{ candidate.created_at|date:"M d, Y" }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Pagination -->
-                {% if page_obj.has_other_pages %}
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mt-4">
-                            {% if page_obj.has_previous %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="First">
-                                        <span aria-hidden="true">&laquo;&laquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" aria-label="First">
-                                        <span aria-hidden="true">&laquo;&laquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                            
-                            {% for i in page_obj.paginator.page_range %}
-                                {% if page_obj.number == i %}
-                                    <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
-                                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                            
-                            {% if page_obj.has_next %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="Last">
-                                        <span aria-hidden="true">&raquo;&raquo;</span>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" aria-label="Last">
-                                        <span aria-hidden="true">&raquo;&raquo;</span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                {% endif %}
-                
-                <div class="mt-3 text-center">
-                    <p class="text-muted">
-                        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} candidates
-                    </p>
-                </div>
-            {% else %}
-                <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i> No candidates found matching your criteria.
-                </div>
-            {% endif %}
+
+            <!-- Candidate Results Container -->
+            <div id="candidate-results" data-real-time-results>
+                {% include 'partials/_candidate_list_partial.html' %}
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Date Range Picker Modal (Custom Implementation) -->
-<div id="dateRangeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; cursor: pointer;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; min-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); cursor: default;" onclick="event.stopPropagation();">
+<div id="dateRangeModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; cursor: pointer;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; min-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); cursor: default;"
+        onclick="event.stopPropagation();">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h5 style="margin: 0; color: #333;">Select Date Range</h5>
-            <button type="button" id="closeDateRangeBtn" onclick="closeDateRangeModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666; line-height: 1;">&times;</button>
+            <button type="button" id="closeDateRangeBtn" onclick="closeDateRangeModal()"
+                style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666; line-height: 1;">&times;</button>
         </div>
         <div style="display: flex; gap: 15px; margin-bottom: 20px;">
             <div style="flex: 1;">
-                <label for="startDatePicker" style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">Start Date</label>
-                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="startDatePicker" name="startDatePicker">
+                <label for="startDatePicker"
+                    style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">Start Date</label>
+                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
+                    id="startDatePicker" name="startDatePicker">
             </div>
             <div style="flex: 1;">
-                <label for="endDatePicker" style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">End Date</label>
-                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" id="endDatePicker" name="endDatePicker">
+                <label for="endDatePicker"
+                    style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">End Date</label>
+                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
+                    id="endDatePicker" name="endDatePicker">
             </div>
         </div>
         <div style="display: flex; justify-content: flex-end; gap: 10px;">
-            <button type="button" onclick="closeDateRangeModal()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">Cancel</button>
-            <button type="button" id="applyDateRange" onclick="applyDateRange()" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#0056b3'" onmouseout="this.style.background='#007bff'">Apply</button>
+            <button type="button" onclick="closeDateRangeModal()"
+                style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;"
+                onmouseover="this.style.background='#5a6268'"
+                onmouseout="this.style.background='#6c757d'">Cancel</button>
+            <button type="button" id="applyDateRange" onclick="applyDateRange()"
+                style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;"
+                onmouseover="this.style.background='#0056b3'"
+                onmouseout="this.style.background='#007bff'">Apply</button>
         </div>
     </div>
 </div>
 
 <!-- Export Selected Modal -->
-<div class="modal fade" id="exportSelectedModal" tabindex="-1" aria-labelledby="exportSelectedModalLabel" aria-hidden="true">
+<div class="modal fade" id="exportSelectedModal" tabindex="-1" aria-labelledby="exportSelectedModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -427,127 +260,128 @@ document.addEventListener('DOMContentLoaded', function() {
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'js/real_time_search.js' %}"></script>
 <script src="{% static 'js/candidate-list.js' %}"></script>
 <script>
-// Update print selected count when checkboxes change
-document.addEventListener('DOMContentLoaded', function() {
-    updatePrintSelectedCount();
-    
-    // Listen for checkbox changes
-    document.querySelectorAll('.candidate-select').forEach(function(checkbox) {
-        checkbox.addEventListener('change', updatePrintSelectedCount);
+    // Update print selected count when checkboxes change
+    document.addEventListener('DOMContentLoaded', function () {
+        updatePrintSelectedCount();
+
+        // Listen for checkbox changes
+        document.querySelectorAll('.candidate-select').forEach(function (checkbox) {
+            checkbox.addEventListener('change', updatePrintSelectedCount);
+        });
+
+        document.getElementById('selectAll').addEventListener('change', updatePrintSelectedCount);
     });
-    
-    document.getElementById('selectAll').addEventListener('change', updatePrintSelectedCount);
-});
 
-function updatePrintSelectedCount() {
-    const selectedCount = document.querySelectorAll('.candidate-select:checked').length;
-    const countSpan = document.getElementById('printSelectedCount');
-    if (countSpan) {
-        countSpan.textContent = selectedCount;
+    function updatePrintSelectedCount() {
+        const selectedCount = document.querySelectorAll('.candidate-select:checked').length;
+        const countSpan = document.getElementById('printSelectedCount');
+        if (countSpan) {
+            countSpan.textContent = selectedCount;
+        }
     }
-}
 
-// Print All Candidates Function
-function printAllCandidates() {
-    try {
-        const printTableBody = document.getElementById('printTableBody');
-        const printReportInfo = document.getElementById('printReportInfo');
-        
-        if (!printTableBody || !printReportInfo) {
-            console.error('Print elements not found');
-            alert('Error: Print elements not found. Please refresh the page.');
-            return;
-        }
-        
-        // Show all rows in print table (remove print-hide class)
-        printTableBody.querySelectorAll('tr').forEach(function(row) {
-            row.classList.remove('print-hide');
-        });
-        
-        // Update report info
-        const totalCount = printTableBody.querySelectorAll('tr:not(.print-hide)').length;
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
-        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        printReportInfo.innerHTML = 'Generated on ' + dateStr + ' at ' + timeStr + ' | Total: ' + totalCount + ' candidates (All)';
-        
-        // Trigger print using the print helper
-        triggerPrint();
-    } catch (error) {
-        console.error('Print error:', error);
-        alert('An error occurred while printing. Please try again.');
-    }
-}
+    // Print All Candidates Function
+    function printAllCandidates() {
+        try {
+            const printTableBody = document.getElementById('printTableBody');
+            const printReportInfo = document.getElementById('printReportInfo');
 
-// Print Selected Candidates Function
-function printSelectedCandidates() {
-    try {
-        const selectedCheckboxes = document.querySelectorAll('.candidate-select:checked');
-        
-        if (selectedCheckboxes.length === 0) {
-            alert('Please select at least one candidate to print.');
-            return;
-        }
-        
-        const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
-        const printTableBody = document.getElementById('printTableBody');
-        const printReportInfo = document.getElementById('printReportInfo');
-        
-        if (!printTableBody || !printReportInfo) {
-            console.error('Print elements not found');
-            alert('Error: Print elements not found. Please refresh the page.');
-            return;
-        }
-        
-        // Show only selected rows in print table
-        printTableBody.querySelectorAll('tr').forEach(function(row) {
-            const candidateId = row.getAttribute('data-candidate-id');
-            if (selectedIds.includes(candidateId)) {
-                row.classList.remove('print-hide');
-            } else {
-                row.classList.add('print-hide');
+            if (!printTableBody || !printReportInfo) {
+                console.error('Print elements not found');
+                alert('Error: Print elements not found. Please refresh the page.');
+                return;
             }
-        });
-        
-        // Update report info
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
-        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        printReportInfo.innerHTML = 'Generated on ' + dateStr + ' at ' + timeStr + ' | Selected: ' + selectedIds.length + ' candidates';
-        
-        // Trigger print using the print helper
-        triggerPrint();
-    } catch (error) {
-        console.error('Print error:', error);
-        alert('An error occurred while printing. Please try again.');
-    }
-}
 
-// Helper function to handle the actual print using iframe
-function triggerPrint() {
-    const printableArea = document.getElementById('printableArea');
-    
-    // Remove existing print iframe if any
-    const existingFrame = document.getElementById('printFrame');
-    if (existingFrame) {
-        existingFrame.remove();
+            // Show all rows in print table (remove print-hide class)
+            printTableBody.querySelectorAll('tr').forEach(function (row) {
+                row.classList.remove('print-hide');
+            });
+
+            // Update report info
+            const totalCount = printTableBody.querySelectorAll('tr:not(.print-hide)').length;
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            printReportInfo.innerHTML = 'Generated on ' + dateStr + ' at ' + timeStr + ' | Total: ' + totalCount + ' candidates (All)';
+
+            // Trigger print using the print helper
+            triggerPrint();
+        } catch (error) {
+            console.error('Print error:', error);
+            alert('An error occurred while printing. Please try again.');
+        }
     }
-    
-    // Create hidden iframe
-    const iframe = document.createElement('iframe');
-    iframe.id = 'printFrame';
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.bottom = '0';
-    iframe.style.width = '0';
-    iframe.style.height = '0';
-    iframe.style.border = 'none';
-    document.body.appendChild(iframe);
-    
-    // Build the print content
-    const printContent = `
+
+    // Print Selected Candidates Function
+    function printSelectedCandidates() {
+        try {
+            const selectedCheckboxes = document.querySelectorAll('.candidate-select:checked');
+
+            if (selectedCheckboxes.length === 0) {
+                alert('Please select at least one candidate to print.');
+                return;
+            }
+
+            const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+            const printTableBody = document.getElementById('printTableBody');
+            const printReportInfo = document.getElementById('printReportInfo');
+
+            if (!printTableBody || !printReportInfo) {
+                console.error('Print elements not found');
+                alert('Error: Print elements not found. Please refresh the page.');
+                return;
+            }
+
+            // Show only selected rows in print table
+            printTableBody.querySelectorAll('tr').forEach(function (row) {
+                const candidateId = row.getAttribute('data-candidate-id');
+                if (selectedIds.includes(candidateId)) {
+                    row.classList.remove('print-hide');
+                } else {
+                    row.classList.add('print-hide');
+                }
+            });
+
+            // Update report info
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            printReportInfo.innerHTML = 'Generated on ' + dateStr + ' at ' + timeStr + ' | Selected: ' + selectedIds.length + ' candidates';
+
+            // Trigger print using the print helper
+            triggerPrint();
+        } catch (error) {
+            console.error('Print error:', error);
+            alert('An error occurred while printing. Please try again.');
+        }
+    }
+
+    // Helper function to handle the actual print using iframe
+    function triggerPrint() {
+        const printableArea = document.getElementById('printableArea');
+
+        // Remove existing print iframe if any
+        const existingFrame = document.getElementById('printFrame');
+        if (existingFrame) {
+            existingFrame.remove();
+        }
+
+        // Create hidden iframe
+        const iframe = document.createElement('iframe');
+        iframe.id = 'printFrame';
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
+
+        // Build the print content
+        const printContent = `
         <!DOCTYPE html>
         <html>
         <head>
@@ -608,25 +442,25 @@ function triggerPrint() {
         </body>
         </html>
     `;
-    
-    // Write content to iframe
-    const doc = iframe.contentWindow || iframe.contentDocument;
-    const iframeDoc = doc.document || doc;
-    iframeDoc.open();
-    iframeDoc.write(printContent);
-    iframeDoc.close();
-    
-    // Wait for content to load then print
-    iframe.onload = function() {
-        setTimeout(function() {
-            iframe.contentWindow.focus();
-            iframe.contentWindow.print();
-            // Clean up after printing
-            setTimeout(function() {
-                iframe.remove();
-            }, 1000);
-        }, 250);
-    };
-}
+
+        // Write content to iframe
+        const doc = iframe.contentWindow || iframe.contentDocument;
+        const iframeDoc = doc.document || doc;
+        iframeDoc.open();
+        iframeDoc.write(printContent);
+        iframeDoc.close();
+
+        // Wait for content to load then print
+        iframe.onload = function () {
+            setTimeout(function () {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                // Clean up after printing
+                setTimeout(function () {
+                    iframe.remove();
+                }, 1000);
+            }, 250);
+        };
+    }
 </script>
 {% endblock %}

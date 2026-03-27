@@ -244,7 +244,7 @@ function setupRegisterModal() {
     
     if (registerModal) {
         let currentStep = 1;
-        const totalSteps = 4;
+        const totalSteps = 5;
         let nextBtn, prevBtn, stepIndicator, form, errorElement;
         
         // Load the registration form when the modal is shown
@@ -420,7 +420,7 @@ function setupRegisterModal() {
                     }
                     break;
                 case 2:
-                    // Only validate Step 2 fields (Personal Information)
+                    // Only validate Step 2 fields (Basic Information)
                     if (!form.querySelector('#id_first_name').value.trim()) {
                         errors.push('First name is required.');
                         isValid = false;
@@ -429,6 +429,9 @@ function setupRegisterModal() {
                         errors.push('Last name is required.');
                         isValid = false;
                     }
+                    break;
+                case 3:
+                    // Only validate Step 3 fields (Personal Details)
                     if (!form.querySelector('#id_date_of_birth').value) {
                         errors.push('Date of birth is required.');
                         isValid = false;
@@ -442,8 +445,8 @@ function setupRegisterModal() {
                         isValid = false;
                     }
                     break;
-                case 3:
-                    // Only validate Step 3 fields (Contact & Passport Information)
+                case 4:
+                    // Only validate Step 4 fields (Contact & Passport Information)
                     if (!form.querySelector('#id_passport_number').value.trim()) {
                         errors.push('Passport number is required.');
                         isValid = false;
@@ -460,15 +463,8 @@ function setupRegisterModal() {
                         errors.push('Passport expiry date is required.');
                         isValid = false;
                     }
-                    break;
-                case 4:
-                    // Only validate Step 4 fields (Academic Information)
                     if (!form.querySelector('#id_highest_education_level').value) {
                         errors.push('Education level is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_institution_name').value.trim()) {
-                        errors.push('Institution name is required.');
                         isValid = false;
                     }
                     if (!form.querySelector('#id_field_of_study').value.trim()) {
@@ -479,6 +475,9 @@ function setupRegisterModal() {
                         errors.push('Graduation year is required.');
                         isValid = false;
                     }
+                    break;
+                case 5:
+                    // Optional documents step
                     break;
             }
             
@@ -568,7 +567,7 @@ function setupRegisterModal() {
         }
         
         function submitRegisterForm() {
-            if (!validateStep(4)) return;
+            if (!validateStep(5)) return;
             
             const originalText = nextBtn.innerHTML;
             nextBtn.disabled = true;

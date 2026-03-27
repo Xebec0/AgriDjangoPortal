@@ -8,13 +8,14 @@
     <!-- Progress Bar -->
     <div class="px-3 pt-3">
         <div class="progress" style="height: 4px;">
-            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <div class="d-flex justify-content-between px-2 mt-1">
             <small class="text-muted step-label" data-step="1">Account</small>
-            <small class="text-muted step-label" data-step="2">Personal</small>
-            <small class="text-muted step-label" data-step="3">Contact</small>
-            <small class="text-muted step-label" data-step="4">Academic</small>
+            <small class="text-muted step-label" data-step="2">Basic Info</small>
+            <small class="text-muted step-label" data-step="3">Personal Details</small>
+            <small class="text-muted step-label" data-step="4">Passport/Academic</small>
+            <small class="text-muted step-label" data-step="5">Docs</small>
         </div>
     </div>
     <div class="modal-body">
@@ -102,231 +103,169 @@
                 </div>
             </div>
 
-            <!-- Step 2: Personal Information -->
+            <!-- Step 2: Basic Information -->
             <div id="step-2" class="form-step">
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-id-card me-2"></i> Personal Information
+                        <i class="fas fa-id-card me-2"></i> Basic Information
                     </h6>
-                    
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name <span class="text-danger">*</span></label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="text-danger small">{{ form.first_name.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name <span class="text-danger">*</span></label>
                             {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="text-danger small">{{ form.last_name.errors.0 }}</div>
-                            {% endif %}
+                            {% if form.last_name.errors %}<div class="text-danger small">{{ form.last_name.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name <span class="text-danger">*</span></label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}<div class="text-danger small">{{ form.first_name.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.middle_initial.id_for_label }}" class="form-label">Middle Initial</label>
+                            {{ form.middle_initial }}
+                            {% if form.middle_initial.errors %}<div class="text-danger small">{{ form.middle_initial.errors.0 }}</div>{% endif %}
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                            <input type="date"
-                                   id="{{ form.date_of_birth.id_for_label }}"
-                                   name="{{ form.date_of_birth.name }}"
-                                   class="form-control"
-                                   required>
-                            {% if form.date_of_birth.errors %}
-                                <div class="text-danger small">{{ form.date_of_birth.errors.0 }}</div>
-                            {% endif %}
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">Mobile Number</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}<div class="text-danger small">{{ form.phone_number.errors.0 }}</div>{% endif %}
                         </div>
-                        
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.gender.id_for_label }}" class="form-label">Sex <span class="text-danger">*</span></label>
-                            {{ form.gender }}
-                            {% if form.gender.errors %}
-                                <div class="text-danger small">{{ form.gender.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.nationality.id_for_label }}" class="form-label">Nationality <span class="text-danger">*</span></label>
-                            {{ form.nationality }}
-                            {% if form.nationality.errors %}
-                                <div class="text-danger small">{{ form.nationality.errors.0 }}</div>
-                            {% endif %}
+                            <label for="{{ form.address.id_for_label }}" class="form-label">Home Address</label>
+                            {{ form.address }}
+                            {% if form.address.errors %}<div class="text-danger small">{{ form.address.errors.0 }}</div>{% endif %}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 3: Contact and Passport Information -->
+            <!-- Step 3: Personal Details -->
             <div id="step-3" class="form-step">
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-address-card me-2"></i> Contact Information
+                        <i class="fas fa-user me-2"></i> Personal Details
                     </h6>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
-                            {{ form.phone_number }}
-                            <div class="form-text small">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Numbers only: e.g., +63 912 345 6789
-                            </div>
-                            <div class="invalid-feedback">
-                                Please enter a valid phone number
-                            </div>
-                            {% if form.phone_number.errors %}
-                                <div class="text-danger small">{{ form.phone_number.errors.0 }}</div>
-                            {% endif %}
+                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" id="{{ form.date_of_birth.id_for_label }}" name="{{ form.date_of_birth.name }}" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.gender.id_for_label }}" class="form-label">Sex <span class="text-danger">*</span></label>
+                            {{ form.gender }}
                         </div>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.address.id_for_label }}" class="form-label">Address</label>
-                        {{ form.address }}
-                        {% if form.address.errors %}
-                            <div class="text-danger small">{{ form.address.errors.0 }}</div>
-                        {% endif %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.religion.id_for_label }}" class="form-label">Religion</label>
+                            {{ form.religion }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.age.id_for_label }}" class="form-label">Age</label>
+                            {{ form.age }}
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.nationality.id_for_label }}" class="form-label">Nationality <span class="text-danger">*</span></label>
+                            {{ form.nationality }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.country_of_birth.id_for_label }}" class="form-label">Country of Birth</label>
+                            {{ form.country_of_birth }}
+                        </div>
+                    </div>
 
+                </div>
+            </div>
+
+            <!-- Step 4: Passport & Academic Information -->
+            <div id="step-4" class="form-step">
                 <!-- Passport Information -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
                         <i class="fas fa-passport me-2"></i> Passport Information
                     </h6>
-                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.passport_number.id_for_label }}" class="form-label">Passport Number <span class="text-danger">*</span></label>
                             {{ form.passport_number }}
-                            {% if form.passport_number.errors %}
-                                <div class="text-danger small">{{ form.passport_number.errors.0 }}</div>
-                            {% endif %}
                         </div>
-                        
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.confirm_passport_number.id_for_label }}" class="form-label">Confirm Passport <span class="text-danger">*</span></label>
+                            <label for="{{ form.confirm_passport_number.id_for_label }}" class="form-label">Confirm Passport Number <span class="text-danger">*</span></label>
                             {{ form.confirm_passport_number }}
-                            {% if form.confirm_passport_number.errors %}
-                                <div class="text-danger small">{{ form.confirm_passport_number.errors.0 }}</div>
-                            {% endif %}
                         </div>
                     </div>
-                    
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="{{ form.passport_issue_date.id_for_label }}" class="form-label">Issue Date <span class="text-danger">*</span></label>
-                            <input type="date"
-                                   id="{{ form.passport_issue_date.id_for_label }}"
-                                   name="{{ form.passport_issue_date.name }}"
-                                   class="form-control"
-                                   required>
-                            {% if form.passport_issue_date.errors %}
-                                <div class="text-danger small">{{ form.passport_issue_date.errors.0 }}</div>
-                            {% endif %}
+                            <input type="date" id="{{ form.passport_issue_date.id_for_label }}" name="{{ form.passport_issue_date.name }}" class="form-control" required>
                         </div>
-
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="{{ form.passport_expiry_date.id_for_label }}" class="form-label">Expiry Date <span class="text-danger">*</span></label>
-                            <input type="date"
-                                   id="{{ form.passport_expiry_date.id_for_label }}"
-                                   name="{{ form.passport_expiry_date.name }}"
-                                   class="form-control"
-                                   required>
-                            {% if form.passport_expiry_date.errors %}
-                                <div class="text-danger small">{{ form.passport_expiry_date.errors.0 }}</div>
-                            {% endif %}
+                            <input type="date" id="{{ form.passport_expiry_date.id_for_label }}" name="{{ form.passport_expiry_date.name }}" class="form-control" required>
                         </div>
-                        
-                        <div class="col-md-4 mb-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
                             <label for="{{ form.place_of_issue.id_for_label }}" class="form-label">Place of Issue</label>
                             {{ form.place_of_issue }}
-                            {% if form.place_of_issue.errors %}
-                                <div class="text-danger small">{{ form.place_of_issue.errors.0 }}</div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Step 4: Academic Information and Documents -->
-            <div id="step-4" class="form-step">
+                
                 <!-- Academic Information -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
                         <i class="fas fa-graduation-cap me-2"></i> Academic Information
                     </h6>
-                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.highest_education_level.id_for_label }}" class="form-label">Education Level <span class="text-danger">*</span></label>
+                            <label for="{{ form.highest_education_level.id_for_label }}" class="form-label">Highest Education Level <span class="text-danger">*</span></label>
                             {{ form.highest_education_level }}
-                            {% if form.highest_education_level.errors %}
-                                <div class="text-danger small">{{ form.highest_education_level.errors.0 }}</div>
-                            {% endif %}
                         </div>
-                        
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.institution_name.id_for_label }}" class="form-label">Institution Name <span class="text-danger">*</span></label>
-                            {{ form.institution_name }}
-                            {% if form.institution_name.errors %}
-                                <div class="text-danger small">{{ form.institution_name.errors.0 }}</div>
-                            {% endif %}
+                            <label for="{{ form.field_of_study.id_for_label }}" class="form-label">Course <span class="text-danger">*</span></label>
+                            {{ form.field_of_study }}
                         </div>
                     </div>
-                    
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.field_of_study.id_for_label }}" class="form-label">Field of Study <span class="text-danger">*</span></label>
-                            {{ form.field_of_study }}
-                            {% if form.field_of_study.errors %}
-                                <div class="text-danger small">{{ form.field_of_study.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.graduation_year.id_for_label }}" class="form-label">Graduation Year <span class="text-danger">*</span></label>
                             {{ form.graduation_year }}
-                            {% if form.graduation_year.errors %}
-                                <div class="text-danger small">{{ form.graduation_year.errors.0 }}</div>
-                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.year_graduated.id_for_label }}" class="form-label">Year Graduated</label>
+                            {{ form.year_graduated }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.university.id_for_label }}" class="form-label">University</label>
+                            {{ form.university }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.secondary_specialization.id_for_label }}" class="form-label">Secondary Specialization</label>
+                            {{ form.secondary_specialization }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.primary_specialization.id_for_label }}" class="form-label">Primary Specialization</label>
+                            {{ form.primary_specialization }}
                         </div>
                     </div>
                 </div>
-                
-                <!-- Additional Information -->
-                <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-info-circle me-2"></i> Additional Information
-                    </h6>
-                    
-                    <div class="mb-3">
-                        <div class="form-check">
-                            {{ form.willing_to_relocate }}
-                            <label class="form-check-label" for="{{ form.willing_to_relocate.id_for_label }}">
-                                Willing to relocate
-                            </label>
-                        </div>
-                        {% if form.willing_to_relocate.errors %}
-                            <div class="text-danger small">{{ form.willing_to_relocate.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.special_requirements.id_for_label }}" class="form-label">Special Requirements</label>
-                        {{ form.special_requirements }}
-                        <div class="form-text small">Dietary restrictions, medical conditions, etc.</div>
-                        {% if form.special_requirements.errors %}
-                            <div class="text-danger small">{{ form.special_requirements.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                </div>
-                
+            </div>
+
+            <!-- Step 5: Additional Information and Documents -->
+            <div id="step-5" class="form-step">
+
+
                 <!-- Document Uploads -->
                 <div class="mb-4">
                     <h6 class="border-bottom pb-2 mb-3">
@@ -334,109 +273,61 @@
                     </h6>
                     <p class="text-muted small mb-3">
                         <i class="fas fa-info-circle me-1"></i>
-                        Documents can be uploaded now or later. Required documents must be submitted before application validation.
+                        Documents can be uploaded now or later.
                     </p>
                     
+                    <!-- Primary Documents -->
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="{{ form.profile_image.id_for_label }}" class="form-label">Profile Photo</label>
                             {{ form.profile_image }}
-                            <div class="form-text small">Max 5MB (JPG, PNG)</div>
-                            {% if form.profile_image.errors %}
-                                <div class="text-danger small">{{ form.profile_image.errors.0 }}</div>
-                            {% endif %}
                         </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.passport_scan.id_for_label }}" class="form-label">
-                                Passport Scan <span class="badge bg-warning text-dark">Required</span>
-                            </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.passport_scan.id_for_label }}" class="form-label">Passport Scan <span class="badge bg-warning text-dark">Required</span></label>
                             {{ form.passport_scan }}
-                            <div class="form-text small">PDF/Image - Clear copy of passport bio page</div>
-                            {% if form.passport_scan.errors %}
-                                <div class="text-danger small">{{ form.passport_scan.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.tor.id_for_label }}" class="form-label">
-                                Transcript of Records <span class="badge bg-warning text-dark">Required</span>
-                            </label>
-                            {{ form.tor }}
-                            <div class="form-text small">PDF/Image - Official TOR from university</div>
-                            {% if form.tor.errors %}
-                                <div class="text-danger small">{{ form.tor.errors.0 }}</div>
-                            {% endif %}
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.diploma.id_for_label }}" class="form-label">
-                                Diploma <span class="badge bg-warning text-dark">Required</span>
-                            </label>
-                            {{ form.diploma }}
-                            <div class="form-text small">PDF/Image - Graduation diploma</div>
-                            {% if form.diploma.errors %}
-                                <div class="text-danger small">{{ form.diploma.errors.0 }}</div>
-                            {% endif %}
+
+                    <!-- Other Documents Group -->
+                    <div class="mt-4">
+                        <h6 class="text-muted small fw-bold text-uppercase border-bottom pb-2 mb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                            Other Required & Optional Documents
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.tor.id_for_label }}" class="form-label">Transcript of Records <span class="badge bg-warning text-dark">Required</span></label>
+                                {{ form.tor }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.diploma.id_for_label }}" class="form-label">Diploma <span class="badge bg-warning text-dark">Required</span></label>
+                                {{ form.diploma }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.good_moral.id_for_label }}" class="form-label">Good Moral <span class="badge bg-warning text-dark">Required</span></label>
+                                {{ form.good_moral }}
+                            </div>
                         </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.good_moral.id_for_label }}" class="form-label">
-                                Good Moral Certificate <span class="badge bg-warning text-dark">Required</span>
-                            </label>
-                            {{ form.good_moral }}
-                            <div class="form-text small">PDF/Image - Certificate of good moral character</div>
-                            {% if form.good_moral.errors %}
-                                <div class="text-danger small">{{ form.good_moral.errors.0 }}</div>
-                            {% endif %}
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.nbi_clearance.id_for_label }}" class="form-label">NBI Clearance <span class="badge bg-warning text-dark">Required</span></label>
+                                {{ form.nbi_clearance }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.license_scan.id_for_label }}" class="form-label">Driver's License</label>
+                                {{ form.license_scan }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.nc2_tesda.id_for_label }}" class="form-label">NC2 TESDA</label>
+                                {{ form.nc2_tesda }}
+                            </div>
                         </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.nbi_clearance.id_for_label }}" class="form-label">
-                                NBI Clearance <span class="badge bg-warning text-dark">Required</span>
-                            </label>
-                            {{ form.nbi_clearance }}
-                            <div class="form-text small">PDF/Image - Valid NBI clearance</div>
-                            {% if form.nbi_clearance.errors %}
-                                <div class="text-danger small">{{ form.nbi_clearance.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.license_scan.id_for_label }}" class="form-label">
-                                Driver's License <span class="badge bg-secondary">If Required</span>
-                            </label>
-                            {{ form.license_scan }}
-                            <div class="form-text small">PDF/Image - Required for some programs</div>
-                            {% if form.license_scan.errors %}
-                                <div class="text-danger small">{{ form.license_scan.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.nc2_tesda.id_for_label }}" class="form-label">
-                                NC2 TESDA Certificate
-                            </label>
-                            {{ form.nc2_tesda }}
-                            <div class="form-text small">PDF/Image - If applicable</div>
-                            {% if form.nc2_tesda.errors %}
-                                <div class="text-danger small">{{ form.nc2_tesda.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label for="{{ form.academic_certificate.id_for_label }}" class="form-label">
-                                Other Academic Certificate
-                            </label>
-                            {{ form.academic_certificate }}
-                            <div class="form-text small">PDF/Image - Additional certificates</div>
-                            {% if form.academic_certificate.errors %}
-                                <div class="text-danger small">{{ form.academic_certificate.errors.0 }}</div>
-                            {% endif %}
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.academic_certificate.id_for_label }}" class="form-label">Other Academic</label>
+                                {{ form.academic_certificate }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -446,7 +337,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
-        <span id="stepIndicator" class="align-self-center">Step 1 of 4</span>
+        <span id="stepIndicator" class="align-self-center">Step 1 of 5</span>
         <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
     </div>
 </div>
@@ -574,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentStep && currentStep.id !== 'step-1') {
                 currentStep.classList.remove('active');
                 document.getElementById('step-1').classList.add('active');
-                document.getElementById('stepIndicator').textContent = 'Step 1 of 4';
+                document.getElementById('stepIndicator').textContent = 'Step 1 of 5';
                 if (prevBtn) prevBtn.style.display = 'none';
                 if (nextBtn) nextBtn.textContent = 'Next';
             }
@@ -582,8 +473,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize progress bar for step 1
             const progressBar = registerModal.querySelector('.progress-bar');
             if (progressBar) {
-                progressBar.style.width = '25%';
-                progressBar.setAttribute('aria-valuenow', '25');
+                progressBar.style.width = '20%';
+                progressBar.setAttribute('aria-valuenow', '20');
             }
             // Click handlers are already bound in the main script
         });
@@ -734,6 +625,47 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 
+/* Registration scroll fix */
+#registerModal .modal-body {
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 15px; /* Space for scrollbar */
+}
+
+/* Custom Scrollbar for Modal Body */
+#registerModal .modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+#registerModal .modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#registerModal .modal-body::-webkit-scrollbar-thumb {
+    background: #28a745;
+    border-radius: 10px;
+}
+
+#registerModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #218838;
+}
+
+/* Ensure modal content doesn't overflow dialog */
+.modal-content {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    flex: 1 1 auto;
+}
+
+.modal-header, .modal-footer {
+    flex-shrink: 0;
+}
 </style>
 
 <script>
@@ -895,34 +827,27 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     const step2RequiredFields = [
-        'id_first_name', 'id_last_name', 'id_date_of_birth',
-        'id_gender', 'id_nationality'
+        'id_first_name', 'id_last_name'
     ];
 
     const step3RequiredFields = [
-        'id_passport_number', 'id_confirm_passport_number', 'id_passport_issue_date',
-        'id_passport_expiry_date'
+        'id_date_of_birth', 'id_gender', 'id_nationality'
     ];
 
     const step4RequiredFields = [
-        'id_highest_education_level', 'id_institution_name',
-        'id_field_of_study', 'id_graduation_year'
+        'id_passport_number', 'id_passport_issue_date', 'id_passport_expiry_date',
+        'id_highest_education_level', 'id_graduation_year', 'id_field_of_study'
     ];
+
+    const step5RequiredFields = [];
 
     let requiredFields = [];
     switch(stepNumber) {
-        case '1':
-            requiredFields = step1RequiredFields;
-            break;
-        case '2':
-            requiredFields = step2RequiredFields;
-            break;
-        case '3':
-            requiredFields = step3RequiredFields;
-            break;
-        case '4':
-            requiredFields = step4RequiredFields;
-            break;
+        case '1': requiredFields = step1RequiredFields; break;
+        case '2': requiredFields = step2RequiredFields; break;
+        case '3': requiredFields = step3RequiredFields; break;
+        case '4': requiredFields = step4RequiredFields; break;
+        case '5': requiredFields = step5RequiredFields; break;
     }
 
     // Clear previous validation states
@@ -967,7 +892,9 @@ document.addEventListener('DOMContentLoaded', function() {
             password2.classList.add('is-invalid');
             hasErrors = true;
         }
+    }
 
+    if (stepNumber === '3') {
         // Validate date of birth
         const dob = document.getElementById('id_date_of_birth');
         if (dob && dob.value) {
@@ -989,7 +916,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    if (stepNumber === '3') {
+    if (stepNumber === '4') {
         // Validate passport match
         const passport = document.getElementById('id_passport_number');
         const confirmPassport = document.getElementById('id_confirm_passport_number');
@@ -1037,17 +964,17 @@ document.addEventListener('DOMContentLoaded', function() {
     saveFormData();
 
     // Move to next step or submit
-    if (stepNumber < 4) {
+    if (stepNumber < 5) {
         const nextStepNum = parseInt(stepNumber) + 1;
         currentStep.classList.remove('active');
         document.getElementById(`step-${nextStepNum}`).classList.add('active');
-        document.getElementById('stepIndicator').textContent = `Step ${nextStepNum} of 4`;
+        document.getElementById('stepIndicator').textContent = `Step ${nextStepNum} of 5`;
         document.getElementById('prevBtn').style.display = 'inline-block';
 
         // Update progress bar
         const progressBar = document.querySelector('.progress-bar');
         if (progressBar) {
-            progressBar.style.width = `${nextStepNum * 25}%`;
+            progressBar.style.width = `${nextStepNum * 20}%`;
             // Add animation class
             progressBar.classList.add('progress-bar-animated');
             setTimeout(() => progressBar.classList.remove('progress-bar-animated'), 1000);
@@ -1057,7 +984,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.step-label').forEach(label => {
             const labelStep = parseInt(label.dataset.step);
             if (labelStep === nextStepNum) {
-                label.classList.remove('text-muted');
+                label.classList.remove('text-muted', 'text-success');
                 label.classList.add('text-primary', 'fw-bold');
             } else if (labelStep < nextStepNum) {
                 label.classList.remove('text-muted', 'text-primary', 'fw-bold');
@@ -1068,7 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        if (nextStepNum === 4) {
+        if (nextStepNum === 5) {
             this.textContent = 'Submit';
         }
     } else {
@@ -1076,6 +1003,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('registerModalForm').submit();
     }
 });
+    }
 
     // Previous button handler
     const prevBtn = document.getElementById('prevBtn');
@@ -1089,13 +1017,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const prevStepNum = parseInt(stepNumber) - 1;
                 currentStep.classList.remove('active');
                 document.getElementById(`step-${prevStepNum}`).classList.add('active');
-                document.getElementById('stepIndicator').textContent = `Step ${prevStepNum} of 4`;
+                document.getElementById('stepIndicator').textContent = `Step ${prevStepNum} of 5`;
                 document.getElementById('nextBtn').textContent = 'Next';
 
                 // Update progress bar
                 const progressBar = document.querySelector('.progress-bar');
                 if (progressBar) {
-                    progressBar.style.width = `${prevStepNum * 25}%`;
+                    progressBar.style.width = `${prevStepNum * 20}%`;
                 }
 
                 // Update step labels
@@ -1153,6 +1081,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
 
 </script>

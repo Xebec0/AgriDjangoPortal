@@ -455,6 +455,11 @@ def auth_required(request):
     return render(request, 'index.html', { 'programs': programs, 'auto_open_modal': 'login' })
 
 
+from django.http import JsonResponse, HttpResponseRedirect
+import logging
+
+logger = logging.getLogger(__name__)
+
 @login_required
 def profile(request):
     """User profile view - Shows admin dashboard for staff, regular profile for applicants"""
@@ -490,15 +495,34 @@ def profile(request):
                 if candidate_qs.exists():
                     candidate_qs.update(
                         first_name=request.user.first_name,
+                        middle_initial=request.user.profile.middle_initial,
                         last_name=request.user.last_name,
                         email=request.user.email,
-                        father_name=request.user.profile.father_name,
-                        mother_name=request.user.profile.mother_name,
+                        phone_number=request.user.profile.phone_number,
+                        address=request.user.profile.address,
                         date_of_birth=request.user.profile.date_of_birth,
                         gender=request.user.profile.gender,
                         country_of_birth=request.user.profile.country_of_birth,
                         nationality=request.user.profile.nationality,
                         religion=request.user.profile.religion,
+                        father_name=request.user.profile.father_name,
+                        mother_name=request.user.profile.mother_name,
+                        passport_number=request.user.profile.passport_number,
+                        passport_issue_date=request.user.profile.passport_issue_date,
+                        passport_expiry_date=request.user.profile.passport_expiry_date,
+                        place_of_issue=request.user.profile.place_of_issue,
+                        university=request.user.profile.university,
+                        highest_education_level=request.user.profile.highest_education_level,
+                        field_of_study=request.user.profile.field_of_study,
+                        graduation_year=request.user.profile.graduation_year,
+                        specialization=request.user.profile.specialization,
+                        secondary_specialization=request.user.profile.secondary_specialization,
+                        year_graduated=request.user.profile.year_graduated,
+                        shoes_size=request.user.profile.shoes_size,
+                        shirt_size=request.user.profile.shirt_size,
+                        health_condition=request.user.profile.health_condition,
+                        health_remarks=request.user.profile.health_remarks,
+                        smokes=request.user.profile.smokes,
                     )
             except Exception as e:
                 # Best-effort sync; do not block profile save on errors
@@ -512,8 +536,22 @@ def profile(request):
                 Notification.SUCCESS
             )
             
+            # Check if AJAX request
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Your profile has been updated!'
+                })
+            
             return redirect('profile')
         else:
+            # Handle invalid forms for AJAX
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'error',
+                    'errors': {**u_form.errors, **p_form.errors}
+                }, status=400)
+            
             form_with_errors = True
     else:
         u_form = UserUpdateForm(instance=request.user)
@@ -565,7 +603,7 @@ def admin_dashboard(request):
     recent_activities = ActivityLog.objects.select_related('user').order_by('-timestamp')[:10]
     
     # Recent candidates for the data table
-    recent_candidates = Candidate.objects.select_related('university', 'program').order_by('-created_at')[:10]
+    recent_candidates = Candidate.objects.select_related('program').order_by('-created_at')[:10]
     
     # Monthly application data for the current year (for chart)
     current_year = timezone.now().year
@@ -642,8 +680,8 @@ def admin_dashboard(request):
     
     # Deployed per SUC (University)
     deployed_per_suc = Candidate.objects.filter(
-        status='Approved', university__isnull=False
-    ).values('university__name').annotate(
+        status='Approved', university__isnull=False, university__gt=''
+    ).values('university').annotate(
         count=Count('id')
     ).order_by('-count')[:10]
     
@@ -723,8 +761,8 @@ def export_dashboard_report(request):
     ).values('program__location', 'program__country').annotate(count=Count('id')).order_by('-count')[:10])
     
     deployed_per_suc = list(Candidate.objects.filter(
-        status='Approved', university__isnull=False
-    ).values('university__name').annotate(count=Count('id')).order_by('-count')[:10])
+        status='Approved', university__isnull=False, university__gt=''
+    ).values('university').annotate(count=Count('id')).order_by('-count')[:10])
     
     deployed_per_sex = list(Candidate.objects.filter(
         status='Approved'
@@ -778,7 +816,7 @@ def export_dashboard_report(request):
         writer.writerow(['=== DEPLOYED PER SUC (UNIVERSITY) ==='])
         writer.writerow(['University', 'Count'])
         for item in deployed_per_suc:
-            writer.writerow([item['university__name'], item['count']])
+            writer.writerow([item['university'], item['count']])
         writer.writerow([])
         
         # Deployed Per Sex
@@ -872,7 +910,7 @@ def export_dashboard_report(request):
         worksheet.write(row, 1, 'Count', header_format)
         row += 1
         for item in deployed_per_suc:
-            worksheet.write(row, 0, item['university__name'])
+            worksheet.write(row, 0, item['university'])
             worksheet.write(row, 1, item['count'])
             row += 1
         row += 1
@@ -1053,6 +1091,9 @@ def program_list(request):
         'form': form,
     }
     
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'partials/_program_list_partial.html', context)
+    
     # Don't cache the full context - paginator objects can't be pickled
     # Note: Caching disabled here to avoid pickling errors with Django objects
     return render(request, 'program_list.html', context)
@@ -1191,10 +1232,11 @@ def apply_candidate(request, program_id):
                 
                 # Copy data from profile (handle empty names gracefully)
                 candidate.first_name = request.user.first_name or ''
+                candidate.middle_initial = profile.middle_initial or ''
                 candidate.last_name = request.user.last_name or ''
                 candidate.email = request.user.email or ''
-                candidate.father_name = profile.father_name or ''
-                candidate.mother_name = profile.mother_name or ''
+                candidate.phone_number = profile.phone_number or ''
+                candidate.address = profile.address or ''
                 
                 # These fields are validated before this point, so they should exist
                 # But we handle None gracefully since model now allows blank/null
@@ -1204,20 +1246,30 @@ def apply_candidate(request, program_id):
                 candidate.nationality = profile.nationality or ''
                 candidate.religion = profile.religion or ''
                 
+                # Family information
+                candidate.father_name = profile.father_name or ''
+                candidate.mother_name = profile.mother_name or ''
+                
                 # Passport details (validated fields)
                 candidate.passport_number = profile.passport_number or ''
                 candidate.passport_issue_date = profile.passport_issue_date
                 candidate.passport_expiry_date = profile.passport_expiry_date
+                candidate.place_of_issue = profile.place_of_issue or ''
                 
                 # Education (validated fields)
                 candidate.university = profile.university
+                candidate.highest_education_level = profile.highest_education_level or ''
+                candidate.field_of_study = profile.field_of_study or ''
+                candidate.graduation_year = profile.graduation_year
                 candidate.specialization = profile.specialization or ''
                 candidate.secondary_specialization = profile.secondary_specialization or ''
-                candidate.year_graduated = profile.graduation_year
+                candidate.year_graduated = profile.year_graduated
                 
-                # Physical attributes
+                # Physical attributes and health
                 candidate.shoes_size = profile.shoes_size or ''
                 candidate.shirt_size = profile.shirt_size or ''
+                candidate.health_condition = profile.health_condition or ''
+                candidate.health_remarks = profile.health_remarks or ''
                 candidate.smokes = profile.smokes or 'Never'
                 
                 # Documents - Copy ALL documents from profile to candidate
@@ -1403,10 +1455,10 @@ def cancel_registration(request, registration_id):
 def candidate_list(request):
     """List candidates. Staff see all; applicants see only their own submission(s)."""
     if request.user.is_staff:
-        candidates = Candidate.objects.select_related('university', 'program', 'created_by').all()
+        candidates = Candidate.objects.select_related('program', 'created_by').all()
     else:
         # Show only the current user's candidate records
-        candidates = Candidate.objects.select_related('university', 'program', 'created_by').filter(
+        candidates = Candidate.objects.select_related('program', 'created_by').filter(
             Q(created_by=request.user) | Q(email=request.user.email)
         )
     
@@ -1529,7 +1581,7 @@ def candidate_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'candidate_list.html', {
+    context = {
         'page_obj': page_obj,
         'form': form,
         'status_colors': {
@@ -1539,7 +1591,12 @@ def candidate_list(request):
             'Approved': 'success',
             'Rejected': 'danger'
         }
-    })
+    }
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'partials/_candidate_list_partial.html', context)
+        
+    return render(request, 'candidate_list.html', context)
 
 
 @login_required
@@ -1551,14 +1608,14 @@ def export_candidates_csv(request, candidates=None):
     
     # If candidates not provided, get all (used when directly accessing the export URL)
     if candidates is None:
-        candidates = Candidate.objects.select_related('university', 'program').all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('program').all().order_by('-created_at')
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="candidates.csv"'
     
     writer = csv.writer(response)
     writer.writerow([
-        'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
+        'Passport Number', 'First Name', 'Last Name', 'Email', 'Mobile Number', 'Date of Birth',
         'Gender', 'Nationality', 'University', 'Specialization', 'Status',
         'Program', 'Program Location', 'Date Added'
     ])
@@ -1570,10 +1627,11 @@ def export_candidates_csv(request, candidates=None):
             candidate.first_name,
             candidate.last_name,
             candidate.email or '',
+            candidate.phone_number or '',
             candidate.date_of_birth.strftime('%Y-%m-%d'),
             candidate.gender,
             candidate.nationality,
-            candidate.university.name,
+            candidate.university,
             candidate.specialization,
             candidate.status,
             (candidate.program.title if candidate.program else ''),
@@ -1593,7 +1651,7 @@ def export_candidates_excel(request, candidates=None):
     
     # If candidates not provided, get all (used when directly accessing the export URL)
     if candidates is None:
-        candidates = Candidate.objects.select_related('university', 'program').all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('program').all().order_by('-created_at')
     
     # Create an in-memory output file
     output = BytesIO()
@@ -1608,7 +1666,7 @@ def export_candidates_excel(request, candidates=None):
     
     # Write some data headers
     headers = [
-        'Passport Number', 'First Name', 'Last Name', 'Email', 'Date of Birth',
+        'Passport Number', 'First Name', 'Last Name', 'Email', 'Mobile Number', 'Date of Birth',
         'Gender', 'Nationality', 'Country of Birth', 'Religion', 'Father Name', 
         'Mother Name', 'University', 'Specialization', 'Secondary Specialization',
         'Smokes', 'Job Experience', 'Status', 'Program', 'Program Location', 'Date Added'
@@ -1627,6 +1685,7 @@ def export_candidates_excel(request, candidates=None):
         worksheet.write(row, col, candidate.first_name); col += 1
         worksheet.write(row, col, candidate.last_name); col += 1
         worksheet.write(row, col, candidate.email or ''); col += 1
+        worksheet.write(row, col, candidate.phone_number or ''); col += 1
         worksheet.write_datetime(row, col, candidate.date_of_birth, date_format); col += 1
         worksheet.write(row, col, candidate.gender); col += 1
         worksheet.write(row, col, candidate.nationality); col += 1
@@ -1634,7 +1693,7 @@ def export_candidates_excel(request, candidates=None):
         worksheet.write(row, col, candidate.religion or ''); col += 1
         worksheet.write(row, col, candidate.father_name or ''); col += 1
         worksheet.write(row, col, candidate.mother_name or ''); col += 1
-        worksheet.write(row, col, candidate.university.name); col += 1
+        worksheet.write(row, col, candidate.university); col += 1
         worksheet.write(row, col, candidate.specialization); col += 1
         worksheet.write(row, col, candidate.secondary_specialization or ''); col += 1
         worksheet.write(row, col, candidate.smokes); col += 1
@@ -1675,7 +1734,7 @@ def export_candidates_pdf(request, candidates=None):
     
     # If candidates not provided, get all (used when directly accessing the export URL)
     if candidates is None:
-        candidates = Candidate.objects.select_related('university', 'program').all().order_by('-created_at')
+        candidates = Candidate.objects.select_related('program').all().order_by('-created_at')
     
     # Create a file-like buffer to receive PDF data
     buffer = BytesIO()
@@ -1715,7 +1774,7 @@ def export_candidates_pdf(request, candidates=None):
 
     for candidate in candidates:
         name = Paragraph(f"{candidate.first_name} {candidate.last_name}", body_style)
-        university = Paragraph(candidate.university.name, body_style)
+        university = Paragraph(candidate.university or '', body_style)
         specialization = Paragraph(candidate.specialization, body_style)
         program_title = Paragraph((candidate.program.title if candidate.program else ''), body_style)
         program_loc = Paragraph((candidate.program.location if candidate.program else ''), body_style)
@@ -1798,6 +1857,7 @@ def add_candidate(request):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email,
+                'phone_number': user.profile.phone_number,
                 'confirm_first_name': user.first_name,
                 'confirm_surname': user.last_name
             }
@@ -1880,13 +1940,16 @@ def add_candidate(request):
 def edit_candidate(request, candidate_id):
     """Edit existing candidate"""
     # Check if user has staff privilege
-    if not request.user.is_staff:
-        messages.error(request, 'You do not have permission to access this page.')
-        return redirect('index')
-    
-    # Force refresh from database to get latest file data
     candidate = get_object_or_404(Candidate.objects.select_related('created_by__profile'), id=candidate_id)
     
+    # Permission Check:
+    # 1. Staff can edit any candidate
+    # 2. Regular users can only edit their OWN candidate application
+    if not request.user.is_staff:
+        if candidate.created_by != request.user:
+            messages.error(request, 'You do not have permission to edit this application.')
+            return redirect('profile')
+        
     if request.method == 'POST':
         form = CandidateForm(request.POST, request.FILES, instance=candidate)
         # Set created_by on form for duplicate file validation

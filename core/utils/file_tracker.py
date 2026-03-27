@@ -37,20 +37,29 @@ def register_model_files(instance, user, model_name):
         # If file exists and has a name, register it
         if file_field and hasattr(file_field, 'name') and file_field.name:
             try:
-                # Open the file to calculate hash
-                file_field.open('rb')
+                # Check if file is already open
+                is_opened = hasattr(file_field, 'file') and file_field.file is not None
                 
-                # Register the upload
-                UploadedFile.register_upload(
-                    user=user,
-                    document_type=field_name,
-                    file_obj=file_field,
-                    model_name=model_name,
-                    model_id=instance.pk
-                )
-                
-                # Close the file
-                file_field.close()
+                try:
+                    if not is_opened:
+                        file_field.open('rb')
+                    else:
+                        file_field.seek(0)
+                    
+                    # Register the upload
+                    UploadedFile.register_upload(
+                        user=user,
+                        document_type=field_name,
+                        file_obj=file_field,
+                        model_name=model_name,
+                        model_id=instance.pk
+                    )
+                    
+                    # Reset pointer after registration
+                    file_field.seek(0)
+                finally:
+                    if not is_opened:
+                        file_field.close()
             except Exception as e:
                 # Log error but don't fail the save operation
                 import logging

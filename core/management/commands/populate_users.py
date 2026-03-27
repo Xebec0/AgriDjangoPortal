@@ -62,7 +62,6 @@ class Command(BaseCommand):
             profile.passport_expiry_date = profile.passport_issue_date + timedelta(days=365*10)
             profile.place_of_issue = fake.city()
             profile.highest_education_level = random.choice(['high_school', 'bachelor', 'master', 'phd'])
-            profile.institution_name = fake.company()
             profile.graduation_year = random.randint(2000, 2023)
             profile.field_of_study = fake.job()
             profile.specialization = fake.job()

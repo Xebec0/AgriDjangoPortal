@@ -425,7 +425,6 @@ class AjaxRegistrationTests(TestCase):
                 'passport_issue_date': '2020-01-01',
                 'passport_expiry_date': '2030-01-01',
                 'highest_education_level': 'Bachelor',
-                'institution_name': 'Test University',
                 'graduation_year': '2020',
                 'field_of_study': 'Agriculture'
             },

@@ -58,11 +58,13 @@
         <h3 class="card-title">All Users</h3>
         <div class="search-box">
             <form method="get" class="d-flex gap-2">
-                <input type="text" name="q" class="search-input" placeholder="Search users..." value="{{ request.GET.q }}">
+                <input type="text" name="q" class="search-input" placeholder="Search users..."
+                    value="{{ request.GET.q }}">
                 <select name="status" class="filter-select" onchange="this.form.submit()">
                     <option value="">All Status</option>
                     <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Active</option>
-                    <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                    <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactive
+                    </option>
                     <option value="staff" {% if request.GET.status == 'staff' %}selected{% endif %}>Staff Only</option>
                 </select>
                 <button type="submit" class="btn-primary-custom">
@@ -71,7 +73,7 @@
             </form>
         </div>
     </div>
-    
+
     {% if users %}
     <table class="data-table">
         <thead>
@@ -90,7 +92,8 @@
             <tr>
                 <td>
                     <div class="d-flex align-items-center gap-2">
-                        <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600;">
+                        <div
+                            style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600;">
                             {{ user.username|first|upper }}
                         </div>
                         <div>
@@ -102,18 +105,19 @@
                 <td>{{ user.email|default:"-" }}</td>
                 <td>
                     {% if user.is_superuser %}
-                        <span class="status-badge" style="background: #f3e8ff; color: #9333ea;">Superuser</span>
+                    <span class="status-badge" style="background: #f3e8ff; color: #9333ea;">Superuser</span>
                     {% elif user.is_staff %}
-                        <span class="status-badge" style="background: var(--info-light); color: var(--info);">Staff</span>
+                    <span class="status-badge" style="background: var(--info-light); color: var(--info);">Staff</span>
                     {% else %}
-                        <span class="status-badge" style="background: var(--bg-main); color: var(--text-secondary);">User</span>
+                    <span class="status-badge"
+                        style="background: var(--bg-main); color: var(--text-secondary);">User</span>
                     {% endif %}
                 </td>
                 <td>
                     {% if user.is_active %}
-                        <span class="status-badge active">Active</span>
+                    <span class="status-badge active">Active</span>
                     {% else %}
-                        <span class="status-badge inactive">Inactive</span>
+                    <span class="status-badge inactive">Inactive</span>
                     {% endif %}
                 </td>
                 <td>{{ user.date_joined|date:"M d, Y" }}</td>
@@ -124,7 +128,8 @@
                             <i class="fas fa-edit"></i>
                         </a>
                         {% if not user.is_superuser and user != request.user %}
-                        <button type="button" class="action-btn delete" title="Delete" onclick="confirmDelete({{ user.id }}, '{{ user.username }}')">
+                        <button type="button" class="action-btn delete" title="Delete"
+                            onclick="confirmDelete({{ user.id }}, '{{ user.username }}')">
                             <i class="fas fa-trash"></i>
                         </button>
                         {% endif %}
@@ -134,7 +139,7 @@
             {% endfor %}
         </tbody>
     </table>
-    
+
     <!-- Pagination -->
     {% if is_paginated %}
     <div class="pagination-wrapper">
@@ -143,23 +148,28 @@
         </div>
         <div class="pagination-nav">
             {% if page_obj.has_previous %}
-                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">&laquo;</a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_obj.previous_page_number }}</a>
+            <a
+                href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">&laquo;</a>
+            <a
+                href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_obj.previous_page_number }}</a>
             {% endif %}
             <span class="active">{{ page_obj.number }}</span>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_obj.next_page_number }}</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">&raquo;</a>
+            <a
+                href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_obj.next_page_number }}</a>
+            <a
+                href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">&raquo;</a>
             {% endif %}
         </div>
     </div>
     {% endif %}
-    
+
     {% else %}
     <div class="empty-state">
         <i class="fas fa-users"></i>
         <h3>No users found</h3>
-        <p>{% if request.GET.q or request.GET.status %}Try adjusting your search or filters{% else %}Get started by adding your first user{% endif %}</p>
+        <p>{% if request.GET.q or request.GET.status %}Try adjusting your search or filters{% else %}Get started by
+            adding your first user{% endif %}</p>
         <a href="{% url 'manage_user_add' %}" class="btn-primary-custom">
             <i class="fas fa-plus"></i> Add User
         </a>
@@ -195,10 +205,10 @@
 
 {% block management_js %}
 <script>
-function confirmDelete(userId, username) {
-    document.getElementById('deleteUserName').textContent = username;
-    document.getElementById('deleteForm').action = "{% url 'manage_user_delete' 0 %}".replace('0', userId);
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
-}
+    function confirmDelete(userId, username) {
+        document.getElementById('deleteUserName').textContent = username;
+        document.getElementById('deleteForm').action = "{% url 'manage_user_delete' 0 %}".replace('0', userId);
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
 </script>
 {% endblock %}

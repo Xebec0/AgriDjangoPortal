@@ -799,6 +799,77 @@
         margin-bottom: 0.35rem;
     }
     
+    .doc-link {\r
+        width: 28px;\r
+        height: 28px;\r
+        font-size: 0.8rem;\r
+    }\r
+}\r
+\r
+@media (max-width: 480px) {\r
+    .documents-compact-grid {\r
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));\r
+        gap: 0.6rem;\r
+    }\r
+    \r
+    .doc-card {\r
+        padding: 0.6rem;\r
+        min-height: 90px;\r
+    }\r
+    \r
+    .doc-icon {\r
+        font-size: 1.4rem;\r
+        margin-bottom: 0.25rem;\r
+    }\r
+    \r
+    .doc-name {\r
+        font-size: 0.65rem;\r
+        margin-bottom: 0.3rem;\r
+    }\r
+    \r
+    .doc-link {\r
+        width: 26px;\r
+        height: 26px;\r
+        font-size: 0.75rem;\r
+    }\r
+    \r
+    .doc-card:hover .doc-icon {\r
+        font-size: 1.5rem;\r
+    }\r
+}\r
+\r
+/* --- View + Download action row inside doc-card --- */\r
+.doc-actions-row {\r
+    display: flex;\r
+    align-items: center;\r
+    justify-content: center;\r
+    gap: 0.4rem;\r
+    margin-top: 0.25rem;\r
+}\r
+\r
+/* View button – eye icon, blue circle */\r
+.doc-view-btn {\r
+    display: inline-flex;\r
+    align-items: center;\r
+    justify-content: center;\r
+    width: 32px;\r
+    height: 32px;\r
+    background: #3b82f6;\r
+    color: #fff;\r
+    border: none;\r
+    border-radius: 50%;\r
+    font-size: 0.85rem;\r
+    cursor: pointer;\r
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;\r
+    padding: 0;\r
+    flex-shrink: 0;\r
+}\r
+\r
+.doc-view-btn:hover {\r
+    background: #2563eb;\r
+    transform: scale(1.15);\r
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.35);\r
+}\r
     .doc-link {
         width: 28px;
         height: 28px;
@@ -811,30 +882,62 @@
         grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
         gap: 0.6rem;
     }
-    
+
     .doc-card {
         padding: 0.6rem;
         min-height: 90px;
     }
-    
+
     .doc-icon {
         font-size: 1.4rem;
         margin-bottom: 0.25rem;
     }
-    
+
     .doc-name {
         font-size: 0.65rem;
         margin-bottom: 0.3rem;
     }
-    
+
     .doc-link {
         width: 26px;
         height: 26px;
         font-size: 0.75rem;
     }
-    
+
     .doc-card:hover .doc-icon {
         font-size: 1.5rem;
     }
 }
 
+/* --- View + Download action row inside doc-card --- */
+.doc-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+}
+
+/* View button - eye icon, blue circle */
+.doc-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.doc-view-btn:hover {
+    background: #2563eb;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.35);
+}

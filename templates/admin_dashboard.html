@@ -5,953 +5,1047 @@
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.min.css">
 <style>
-:root {
-    --primary-blue: #4361ee;
-    --success-green: #10b981;
-    --warning-yellow: #f59e0b;
-    --danger-red: #ef4444;
-    --bg-light: #f8fafc;
-    --border-color: #e2e8f0;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-}
-
-body {
-    background-color: var(--bg-light);
-}
-
-.dashboard-container {
-    padding: 1.5rem;
-    max-width: 1600px;
-    margin: 0 auto;
-}
-
-/* Top Navigation Tabs */
-.nav-tabs-custom {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    border: none;
-}
-
-.nav-tabs-custom .nav-tab {
-    padding: 0.5rem 1.25rem;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.nav-tabs-custom .nav-tab.active {
-    background: var(--primary-blue);
-    color: white;
-}
-
-.nav-tabs-custom .nav-tab:hover:not(.active) {
-    background: #e2e8f0;
-}
-
-/* Top Stats Cards */
-.top-stats {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.stat-icon-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-}
-
-.stat-icon-circle.yellow { background: #fef3c7; color: #f59e0b; }
-.stat-icon-circle.red { background: #fee2e2; color: #ef4444; }
-.stat-icon-circle.green { background: #d1fae5; color: #10b981; }
-
-.stat-item .stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.stat-item .stat-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-top: 2px;
-}
-
-/* Main Content Grid */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 1.5rem;
-}
-
-/* Card Base Style */
-.dash-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    padding: 1.25rem;
-}
-
-.dash-card-header {
-    display: flex;
-    justify-content: between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.dash-card-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* Main Chart Card */
-.main-chart-card {
-    grid-column: 1;
-}
-
-.chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-}
-
-.chart-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.chart-change {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.chart-change.positive { background: #d1fae5; color: #10b981; }
-.chart-change.negative { background: #fee2e2; color: #ef4444; }
-
-.chart-container {
-    height: 200px;
-    position: relative;
-}
-
-/* Mini Charts Row */
-.mini-charts-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.mini-chart-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    padding: 1rem;
-}
-
-.mini-chart-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.mini-chart-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.75rem;
-}
-
-.mini-chart-container {
-    height: 60px;
-}
-
-/* Engagement Card (Right Sidebar) */
-.engagement-card {
-    grid-column: 2;
-    grid-row: 1 / 3;
-}
-
-.engagement-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.week-indicator {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.day-circle {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 600;
-    background: #f1f5f9;
-    color: var(--text-secondary);
-}
-
-.day-circle.active {
-    background: var(--primary-blue);
-    color: white;
-}
-
-.day-circle.completed {
-    background: #d1fae5;
-    color: #10b981;
-}
-
-.task-list {
-    margin-bottom: 1.5rem;
-}
-
-.task-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.task-item:last-child {
-    border-bottom: none;
-}
-
-.task-checkbox {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 2px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.task-checkbox.checked {
-    background: var(--success-green);
-    border-color: var(--success-green);
-    color: white;
-}
-
-.task-text {
-    flex: 1;
-    font-size: 0.875rem;
-    color: var(--text-primary);
-}
-
-.task-text.completed {
-    text-decoration: line-through;
-    color: var(--text-secondary);
-}
-
-/* Data Table */
-.data-table-card {
-    margin-top: 1.5rem;
-}
-
-.data-table {
-    width: 100%;
-    font-size: 0.875rem;
-}
-
-.data-table th {
-    text-align: left;
-    padding: 0.75rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-}
-
-.data-table td {
-    padding: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-primary);
-}
-
-.data-table tr:hover {
-    background: #f8fafc;
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.status-badge.approved { background: #d1fae5; color: #10b981; }
-.status-badge.pending, .status-badge.missing-docs { background: #fef3c7; color: #f59e0b; }
-.status-badge.rejected { background: #fee2e2; color: #ef4444; }
-.status-badge.validated { background: #dbeafe; color: #3b82f6; }
-.status-badge.draft { background: #f1f5f9; color: #64748b; }
-
-/* Bottom Grid */
-.bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-/* Quick Actions */
-.quick-actions-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-}
-
-.action-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem;
-    border-radius: 8px;
-    background: #f8fafc;
-    border: 1px solid var(--border-color);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.2s;
-}
-
-.action-btn:hover {
-    background: #e2e8f0;
-    text-decoration: none;
-    color: var(--text-primary);
-    transform: translateY(-2px);
-}
-
-.action-btn .action-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    color: white;
-}
-
-.action-btn .action-icon.blue { background: var(--primary-blue); }
-.action-btn .action-icon.green { background: var(--success-green); }
-.action-btn .action-icon.orange { background: #f97316; }
-.action-btn .action-icon.purple { background: #8b5cf6; }
-.action-btn .action-icon.red { background: var(--danger-red); }
-.action-btn .action-icon.teal { background: #14b8a6; }
-
-.action-btn .action-text {
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-/* Activity Feed */
-.activity-feed {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.feed-item {
-    display: flex;
-    gap: 0.75rem;
-    padding: 0.875rem 0;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.feed-item:last-child {
-    border-bottom: none;
-}
-
-.feed-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-blue), #818cf8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    flex-shrink: 0;
-}
-
-.feed-content {
-    flex: 1;
-}
-
-.feed-content .feed-title {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
-}
-
-.feed-content .feed-desc {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-.feed-time {
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-}
-
-/* Footer Stats */
-.footer-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.footer-stat {
-    text-align: center;
-}
-
-.footer-stat .value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.footer-stat .label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
-
-.footer-stat .change {
-    font-size: 0.7rem;
-    padding: 0.125rem 0.375rem;
-    border-radius: 4px;
-}
-
-.footer-stat .change.up { background: #d1fae5; color: #10b981; }
-.footer-stat .change.down { background: #fee2e2; color: #ef4444; }
-
-/* Application Status Analytics */
-.status-analytics-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.status-donut-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-}
-
-.status-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    flex-shrink: 0;
-}
-
-.legend-color.missing-docs { background: #f59e0b; }
-.legend-color.validated { background: #3b82f6; }
-.legend-color.approved { background: #10b981; }
-.legend-color.rejected { background: #ef4444; }
-
-.legend-label {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    flex: 1;
-}
-
-.legend-value {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-/* Status Timeline */
-.status-timeline {
-    padding: 1rem;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.timeline-item {
-    display: flex;
-    gap: 1rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.timeline-item:last-child {
-    border-bottom: none;
-}
-
-.timeline-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    flex-shrink: 0;
-}
-
-.timeline-icon.missing-docs { background: #fef3c7; color: #f59e0b; }
-.timeline-icon.validated { background: #dbeafe; color: #3b82f6; }
-.timeline-icon.approved { background: #d1fae5; color: #10b981; }
-.timeline-icon.rejected { background: #fee2e2; color: #ef4444; }
-
-.timeline-content {
-    flex: 1;
-}
-
-.timeline-title {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
-}
-
-.timeline-desc {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-.timeline-time {
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-    .status-analytics-grid {
-        grid-template-columns: 1fr;
+    :root {
+        --primary-blue: #4361ee;
+        --success-green: #10b981;
+        --warning-yellow: #f59e0b;
+        --danger-red: #ef4444;
+        --bg-light: #f8fafc;
+        --border-color: #e2e8f0;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
     }
-}
 
-/* Reports Section */
-.reports-charts-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.report-chart-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-}
-
-.report-chart-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.report-chart-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.report-chart-title i {
-    color: var(--primary-blue);
-}
-
-.report-chart-container {
-    height: 220px;
-    position: relative;
-}
-
-.report-chart-stats {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.report-stat-item {
-    text-align: center;
-    flex: 1;
-}
-
-.report-stat-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-}
-
-.report-stat-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
-}
-
-@media (max-width: 992px) {
-    .reports-charts-row {
-        grid-template-columns: 1fr;
+    body {
+        background-color: var(--bg-light);
     }
-}
 
-.reports-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.report-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.25rem;
-    border: 1px solid var(--border-color);
-}
-
-.report-card-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.report-card-header i {
-    color: var(--primary-blue);
-}
-
-.report-card-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.report-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.report-list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.report-list-item:last-child {
-    border-bottom: none;
-}
-
-.report-item-label {
-    font-size: 0.8125rem;
-    color: var(--text-secondary);
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 0.5rem;
-}
-
-.report-item-value {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    background: #f1f5f9;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    min-width: 40px;
-    text-align: center;
-}
-
-.report-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
-    border-top: 2px solid var(--border-color);
-}
-
-.report-total-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.report-total-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-}
-
-.report-empty {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--text-secondary);
-    font-size: 0.8125rem;
-}
-
-@media (max-width: 992px) {
-    .reports-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .reports-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Report Actions */
-.report-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-left: auto;
-}
-
-.report-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    background: white;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-}
-
-.report-btn:hover {
-    background: #f1f5f9;
-    color: var(--text-primary);
-    text-decoration: none;
-}
-
-.report-btn.primary {
-    background: var(--primary-blue);
-    color: white;
-    border-color: var(--primary-blue);
-}
-
-.report-btn.primary:hover {
-    background: #3651d4;
-}
-
-.report-btn i {
-    font-size: 0.7rem;
-}
-
-/* Print Styles */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    
-    .print-section, .print-section * {
-        visibility: visible;
-    }
-    
-    .print-section {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 20px;
-    }
-    
-    .no-print, .navbar, .sidebar, .footer, .report-actions, .nav-tabs-custom {
-        display: none !important;
-    }
-    
-    .dash-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        margin-bottom: 1rem;
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-    }
-    
-    .reports-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-    
-    .report-card {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-    
-    .status-analytics-grid {
-        grid-template-columns: 1fr !important;
-    }
-    
-    .print-header {
-        display: block !important;
-        text-align: center;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #333;
-    }
-    
-    .print-header h1 {
-        font-size: 1.5rem;
-        margin-bottom: 5px;
-    }
-    
-    .print-header p {
-        font-size: 0.875rem;
-        color: #666;
-    }
-}
-
-.print-header {
-    display: none;
-}
-
-/* Progress Ring */
-.progress-ring-container {
-    position: relative;
-    width: 80px;
-    height: 80px;
-}
-
-.progress-ring {
-    transform: rotate(-90deg);
-}
-
-.progress-ring-bg {
-    fill: none;
-    stroke: #e2e8f0;
-    stroke-width: 8;
-}
-
-.progress-ring-fill {
-    fill: none;
-    stroke: var(--success-green);
-    stroke-width: 8;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.5s ease;
-}
-
-.progress-ring-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-@media (max-width: 1200px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .engagement-card {
-        grid-column: 1;
-        grid-row: auto;
-    }
-    
-    .mini-charts-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
     .dashboard-container {
+        padding: 1.5rem;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    /* Top Navigation Tabs */
+    .nav-tabs-custom {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        border: none;
+    }
+
+    .nav-tabs-custom .nav-tab {
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .nav-tabs-custom .nav-tab.active {
+        background: var(--primary-blue);
+        color: white;
+    }
+
+    .nav-tabs-custom .nav-tab:hover:not(.active) {
+        background: #e2e8f0;
+    }
+
+    /* Top Stats Cards */
+    .top-stats {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .stat-icon-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+
+    .stat-icon-circle.yellow {
+        background: #fef3c7;
+        color: #f59e0b;
+    }
+
+    .stat-icon-circle.red {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    .stat-icon-circle.green {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .stat-item .stat-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1;
+    }
+
+    .stat-item .stat-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 2px;
+    }
+
+    /* Main Content Grid */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 1.5rem;
+    }
+
+    /* Card Base Style */
+    .dash-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        padding: 1.25rem;
+    }
+
+    .dash-card-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .dash-card-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Main Chart Card */
+    .main-chart-card {
+        grid-column: 1;
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .chart-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .chart-change {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .chart-change.positive {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .chart-change.negative {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    .chart-container {
+        height: 200px;
+        position: relative;
+    }
+
+    /* Mini Charts Row */
+    .mini-charts-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .mini-chart-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
         padding: 1rem;
     }
-    
-    .top-stats {
-        flex-wrap: wrap;
-        gap: 1rem;
+
+    .mini-chart-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
     }
-    
-    .mini-charts-row {
-        grid-template-columns: 1fr;
+
+    .mini-chart-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
     }
-    
+
+    .mini-chart-container {
+        height: 60px;
+    }
+
+    /* Engagement Card (Right Sidebar) */
+    .engagement-card {
+        grid-column: 2;
+        grid-row: 1 / 3;
+    }
+
+    .engagement-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .week-indicator {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .day-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 600;
+        background: #f1f5f9;
+        color: var(--text-secondary);
+    }
+
+    .day-circle.active {
+        background: var(--primary-blue);
+        color: white;
+    }
+
+    .day-circle.completed {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .task-list {
+        margin-bottom: 1.5rem;
+    }
+
+    .task-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .task-item:last-child {
+        border-bottom: none;
+    }
+
+    .task-checkbox {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        border: 2px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .task-checkbox.checked {
+        background: var(--success-green);
+        border-color: var(--success-green);
+        color: white;
+    }
+
+    .task-text {
+        flex: 1;
+        font-size: 0.875rem;
+        color: var(--text-primary);
+    }
+
+    .task-text.completed {
+        text-decoration: line-through;
+        color: var(--text-secondary);
+    }
+
+    /* Data Table */
+    .data-table-card {
+        margin-top: 1.5rem;
+    }
+
+    .data-table {
+        width: 100%;
+        font-size: 0.875rem;
+    }
+
+    .data-table th {
+        text-align: left;
+        padding: 0.75rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .data-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .data-table tr:hover {
+        background: #f8fafc;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .status-badge.approved {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .status-badge.pending,
+    .status-badge.missing-docs {
+        background: #fef3c7;
+        color: #f59e0b;
+    }
+
+    .status-badge.rejected {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    .status-badge.validated {
+        background: #dbeafe;
+        color: #3b82f6;
+    }
+
+    .status-badge.draft {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    /* Bottom Grid */
     .bottom-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
     }
-    
+
+    /* Quick Actions */
     .quick-actions-grid {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
     }
-}
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+        background: #e2e8f0;
+        text-decoration: none;
+        color: var(--text-primary);
+        transform: translateY(-2px);
+    }
+
+    .action-btn .action-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        color: white;
+    }
+
+    .action-btn .action-icon.blue {
+        background: var(--primary-blue);
+    }
+
+    .action-btn .action-icon.green {
+        background: var(--success-green);
+    }
+
+    .action-btn .action-icon.orange {
+        background: #f97316;
+    }
+
+    .action-btn .action-icon.purple {
+        background: #8b5cf6;
+    }
+
+    .action-btn .action-icon.red {
+        background: var(--danger-red);
+    }
+
+    .action-btn .action-icon.teal {
+        background: #14b8a6;
+    }
+
+    .action-btn .action-text {
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    /* Activity Feed */
+    .activity-feed {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .feed-item {
+        display: flex;
+        gap: 0.75rem;
+        padding: 0.875rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .feed-item:last-child {
+        border-bottom: none;
+    }
+
+    .feed-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-blue), #818cf8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .feed-content {
+        flex: 1;
+    }
+
+    .feed-content .feed-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .feed-content .feed-desc {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .feed-time {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+    }
+
+    /* Footer Stats */
+    .footer-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .footer-stat {
+        text-align: center;
+    }
+
+    .footer-stat .value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .footer-stat .label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+
+    .footer-stat .change {
+        font-size: 0.7rem;
+        padding: 0.125rem 0.375rem;
+        border-radius: 4px;
+    }
+
+    .footer-stat .change.up {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .footer-stat .change.down {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    /* Application Status Analytics */
+    .status-analytics-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .status-donut-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .status-legend {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        flex-shrink: 0;
+    }
+
+    .legend-color.missing-docs {
+        background: #f59e0b;
+    }
+
+    .legend-color.validated {
+        background: #3b82f6;
+    }
+
+    .legend-color.approved {
+        background: #10b981;
+    }
+
+    .legend-color.rejected {
+        background: #ef4444;
+    }
+
+    .legend-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        flex: 1;
+    }
+
+    .legend-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    /* Status Timeline */
+    .status-timeline {
+        padding: 1rem;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .timeline-item {
+        display: flex;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .timeline-item:last-child {
+        border-bottom: none;
+    }
+
+    .timeline-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .timeline-icon.missing-docs {
+        background: #fef3c7;
+        color: #f59e0b;
+    }
+
+    .timeline-icon.validated {
+        background: #dbeafe;
+        color: #3b82f6;
+    }
+
+    .timeline-icon.approved {
+        background: #d1fae5;
+        color: #10b981;
+    }
+
+    .timeline-icon.rejected {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    .timeline-content {
+        flex: 1;
+    }
+
+    .timeline-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .timeline-desc {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .timeline-time {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        .status-analytics-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Reports Section */
+    .reports-charts-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .report-chart-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .report-chart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .report-chart-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .report-chart-title i {
+        color: var(--primary-blue);
+    }
+
+    .report-chart-container {
+        height: 220px;
+        position: relative;
+    }
+
+    .report-chart-stats {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .report-stat-item {
+        text-align: center;
+        flex: 1;
+    }
+
+    .report-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+    }
+
+    .report-stat-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+    }
+
+    @media (max-width: 992px) {
+        .reports-charts-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .reports-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .report-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.25rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .report-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .report-card-header i {
+        color: var(--primary-blue);
+    }
+
+    .report-card-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .report-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .report-list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .report-list-item:last-child {
+        border-bottom: none;
+    }
+
+    .report-item-label {
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-right: 0.5rem;
+    }
+
+    .report-item-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        background: #f1f5f9;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .report-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 0.75rem;
+        border-top: 2px solid var(--border-color);
+    }
+
+    .report-total-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .report-total-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+    }
+
+    .report-empty {
+        text-align: center;
+        padding: 1.5rem;
+        color: var(--text-secondary);
+        font-size: 0.8125rem;
+    }
+
+    @media (max-width: 992px) {
+        .reports-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .reports-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Report Actions */
+    .report-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-left: auto;
+    }
+
+    .report-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: white;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .report-btn:hover {
+        background: #f1f5f9;
+        color: var(--text-primary);
+        text-decoration: none;
+    }
+
+    .report-btn.primary {
+        background: var(--primary-blue);
+        color: white;
+        border-color: var(--primary-blue);
+    }
+
+    .report-btn.primary:hover {
+        background: #3651d4;
+    }
+
+    .report-btn i {
+        font-size: 0.7rem;
+    }
+
+    /* Print Styles */
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .print-section,
+        .print-section * {
+            visibility: visible;
+        }
+
+        .print-section {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .no-print,
+        .navbar,
+        .sidebar,
+        .footer,
+        .report-actions,
+        .nav-tabs-custom {
+            display: none !important;
+        }
+
+        .dash-card {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 1rem;
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+
+        .reports-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .report-card {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .status-analytics-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .print-header {
+            display: block !important;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+        }
+
+        .print-header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .print-header p {
+            font-size: 0.875rem;
+            color: #666;
+        }
+    }
+
+    .print-header {
+        display: none;
+    }
+
+    /* Progress Ring */
+    .progress-ring-container {
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+
+    .progress-ring {
+        transform: rotate(-90deg);
+    }
+
+    .progress-ring-bg {
+        fill: none;
+        stroke: #e2e8f0;
+        stroke-width: 8;
+    }
+
+    .progress-ring-fill {
+        fill: none;
+        stroke: var(--success-green);
+        stroke-width: 8;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .progress-ring-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 1200px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .engagement-card {
+            grid-column: 1;
+            grid-row: auto;
+        }
+
+        .mini-charts-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-container {
+            padding: 1rem;
+        }
+
+        .top-stats {
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .mini-charts-row {
+            grid-template-columns: 1fr;
+        }
+
+        .bottom-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .quick-actions-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -960,7 +1054,7 @@ body {
     <!-- Navigation Tabs -->
     <div class="nav-tabs-custom">
         <button class="nav-tab active">Dashboard</button>
-        <button class="nav-tab" onclick="window.location.href='{% url 'admin:index' %}'">Admin Panel</button>
+        <button class="nav-tab" onclick="window.location.href='{% url "admin:index" %}'">Admin Panel</button>
     </div>
 
     <!-- Top Stats Row -->
@@ -1008,8 +1102,10 @@ body {
                     <div class="chart-value">{{ total_candidates }}</div>
                     <span class="text-muted" style="font-size: 0.875rem;">Total Applications</span>
                 </div>
-                <div class="chart-change {% if approved_candidates > rejected_candidates %}positive{% else %}negative{% endif %}">
-                    <i class="fas fa-arrow-{% if approved_candidates > rejected_candidates %}up{% else %}down{% endif %}"></i>
+                <div
+                    class="chart-change {% if approved_candidates > rejected_candidates %}positive{% else %}negative{% endif %}">
+                    <i
+                        class="fas fa-arrow-{% if approved_candidates > rejected_candidates %}up{% else %}down{% endif %}"></i>
                     {% widthratio approved_candidates total_candidates 100 %}% Approved
                 </div>
             </div>
@@ -1025,15 +1121,27 @@ body {
                     <i class="fas fa-tasks"></i> Quick Actions
                 </span>
             </div>
-            
+
             <!-- Week Activity Indicator (0=Monday, 6=Sunday) -->
             <div class="week-indicator">
-                <div class="day-circle {% if current_day_of_week == 0 %}active{% elif current_day_of_week > 0 %}completed{% endif %}">M</div>
-                <div class="day-circle {% if current_day_of_week == 1 %}active{% elif current_day_of_week > 1 %}completed{% endif %}">T</div>
-                <div class="day-circle {% if current_day_of_week == 2 %}active{% elif current_day_of_week > 2 %}completed{% endif %}">W</div>
-                <div class="day-circle {% if current_day_of_week == 3 %}active{% elif current_day_of_week > 3 %}completed{% endif %}">T</div>
-                <div class="day-circle {% if current_day_of_week == 4 %}active{% elif current_day_of_week > 4 %}completed{% endif %}">F</div>
-                <div class="day-circle {% if current_day_of_week == 5 %}active{% elif current_day_of_week > 5 %}completed{% endif %}">S</div>
+                <div
+                    class="day-circle {% if current_day_of_week == 0 %}active{% elif current_day_of_week > 0 %}completed{% endif %}">
+                    M</div>
+                <div
+                    class="day-circle {% if current_day_of_week == 1 %}active{% elif current_day_of_week > 1 %}completed{% endif %}">
+                    T</div>
+                <div
+                    class="day-circle {% if current_day_of_week == 2 %}active{% elif current_day_of_week > 2 %}completed{% endif %}">
+                    W</div>
+                <div
+                    class="day-circle {% if current_day_of_week == 3 %}active{% elif current_day_of_week > 3 %}completed{% endif %}">
+                    T</div>
+                <div
+                    class="day-circle {% if current_day_of_week == 4 %}active{% elif current_day_of_week > 4 %}completed{% endif %}">
+                    F</div>
+                <div
+                    class="day-circle {% if current_day_of_week == 5 %}active{% elif current_day_of_week > 5 %}completed{% endif %}">
+                    S</div>
                 <div class="day-circle {% if current_day_of_week == 6 %}active{% endif %}">S</div>
             </div>
 
@@ -1055,7 +1163,8 @@ body {
                     </div>
                     <span class="task-text">User management ({{ total_users }})</span>
                 </a>
-                <a href="{% url 'admin:core_activitylog_backup_manager' %}" class="task-item" style="text-decoration: none;">
+                <a href="{% url 'admin:core_activitylog_backup_manager' %}" class="task-item"
+                    style="text-decoration: none;">
                     <div class="task-checkbox">
                     </div>
                     <span class="task-text">Database backup</span>
@@ -1063,7 +1172,8 @@ body {
             </div>
 
             <!-- Progress Ring - Overall Approval Rate -->
-            <div class="d-flex align-items-center justify-content-between mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+            <div class="d-flex align-items-center justify-content-between mt-4 pt-3"
+                style="border-top: 1px solid var(--border-color);">
                 <div>
                     <div style="font-weight: 600; color: var(--text-primary);">Approval Rate</div>
                     <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ total_approved_decisions }}/{{ total_processed }} processed</div>
@@ -1071,9 +1181,8 @@ body {
                 <div class="progress-ring-container">
                     <svg class="progress-ring" width="80" height="80">
                         <circle class="progress-ring-bg" cx="40" cy="40" r="32"></circle>
-                        <circle class="progress-ring-fill" cx="40" cy="40" r="32" 
-                                stroke-dasharray="201" 
-                                stroke-dashoffset="{{ approval_ring_offset }}"></circle>
+                        <circle class="progress-ring-fill" cx="40" cy="40" r="32" stroke-dasharray="201"
+                            stroke-dashoffset="{{ approval_ring_offset }}"></circle>
                     </svg>
                     <div class="progress-ring-text">{{ approval_rate }}%</div>
                 </div>
@@ -1123,38 +1232,14 @@ body {
         <div class="dash-card">
             <div class="dash-card-header">
                 <span class="dash-card-title">
-                    <i class="fas fa-chart-pie"></i> Application Status Distribution
+                    <i class="fas fa-chart-bar"></i> Application Status Distribution
                 </span>
                 <button onclick="printAnalytics()" class="report-btn" style="margin-left: auto;">
                     <i class="fas fa-print"></i> Print
                 </button>
             </div>
-            <div style="display: flex; align-items: center;">
-                <div class="status-donut-container">
-                    <canvas id="statusDonutChart" width="180" height="180"></canvas>
-                </div>
-                <div class="status-legend">
-                    <div class="legend-item">
-                        <div class="legend-color missing-docs"></div>
-                        <span class="legend-label">Missing Documents</span>
-                        <span class="legend-value">{{ missing_docs_count }}</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color validated"></div>
-                        <span class="legend-label">Validated</span>
-                        <span class="legend-value">{{ validated_count }}</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color approved"></div>
-                        <span class="legend-label">Approved</span>
-                        <span class="legend-value">{{ approved_candidates }}</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color rejected"></div>
-                        <span class="legend-label">Rejected</span>
-                        <span class="legend-value">{{ rejected_candidates }}</span>
-                    </div>
-                </div>
+            <div style="padding: 1rem;">
+                <canvas id="statusDonutChart" height="160"></canvas>
             </div>
         </div>
 
@@ -1168,15 +1253,16 @@ body {
             <div class="status-timeline">
                 {% for candidate in recent_status_changes %}
                 <div class="timeline-item">
-                    <div class="timeline-icon {% if candidate.status == 'Missing_Docs' %}missing-docs{% elif candidate.status == 'Validated' %}validated{% elif candidate.status == 'Approved' %}approved{% else %}rejected{% endif %}">
+                    <div
+                        class="timeline-icon {% if candidate.status == 'Missing_Docs' %}missing-docs{% elif candidate.status == 'Validated' %}validated{% elif candidate.status == 'Approved' %}approved{% else %}rejected{% endif %}">
                         {% if candidate.status == 'Missing_Docs' %}
-                            <i class="fas fa-file-alt"></i>
+                        <i class="fas fa-file-alt"></i>
                         {% elif candidate.status == 'Validated' %}
-                            <i class="fas fa-clipboard-check"></i>
+                        <i class="fas fa-clipboard-check"></i>
                         {% elif candidate.status == 'Approved' %}
-                            <i class="fas fa-check"></i>
+                        <i class="fas fa-check"></i>
                         {% else %}
-                            <i class="fas fa-times"></i>
+                        <i class="fas fa-times"></i>
                         {% endif %}
                     </div>
                     <div class="timeline-content">
@@ -1223,7 +1309,7 @@ body {
                 </button>
             </div>
         </div>
-        
+
         <!-- Visual Charts Row -->
         <div class="reports-charts-row">
             <!-- Applicants vs Deployed Bar Chart -->
@@ -1251,12 +1337,12 @@ body {
                     </div>
                 </div>
             </div>
-            
-            <!-- Gender Distribution Pie Chart -->
+
+            <!-- Sex Distribution Bar Chart -->
             <div class="report-chart-card">
                 <div class="report-chart-header">
                     <div class="report-chart-title">
-                        <i class="fas fa-venus-mars"></i> Deployed by Gender
+                        <i class="fas fa-chart-bar"></i> Deployed by Sex
                     </div>
                 </div>
                 <div class="report-chart-container">
@@ -1265,14 +1351,16 @@ body {
                 <div class="report-chart-stats">
                     {% for item in deployed_per_sex %}
                     <div class="report-stat-item">
-                        <div class="report-stat-value" style="color: {% if item.gender == 'Male' %}#3b82f6{% elif item.gender == 'Female' %}#ec4899{% else %}#6b7280{% endif %};">{{ item.count }}</div>
+                        <div class="report-stat-value"
+                            style="color: {% if item.gender == 'Male' %}#3b82f6{% elif item.gender == 'Female' %}#ec4899{% else %}#6b7280{% endif %};">
+                            {{ item.count }}</div>
                         <div class="report-stat-label">{{ item.gender|default:"Not Specified" }}</div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-        
+
         <!-- Second Charts Row -->
         <div class="reports-charts-row">
             <!-- Programs Horizontal Bar Chart -->
@@ -1286,7 +1374,7 @@ body {
                     <canvas id="programBarChart"></canvas>
                 </div>
             </div>
-            
+
             <!-- University/SUC Horizontal Bar Chart -->
             <div class="report-chart-card">
                 <div class="report-chart-header">
@@ -1299,7 +1387,7 @@ body {
                 </div>
             </div>
         </div>
-        
+
         <!-- Detailed Data Cards -->
         <div class="reports-grid">
             <!-- Applicants Per Year -->
@@ -1362,6 +1450,10 @@ body {
                     <li class="report-empty">No data available</li>
                     {% endfor %}
                 </ul>
+                <div class="report-total">
+                    <span class="report-total-label">Total</span>
+                    <span class="report-total-value">{{ total_deployed }}</span>
+                </div>
             </div>
 
             <!-- Deployed Per Farm -->
@@ -1380,6 +1472,10 @@ body {
                     <li class="report-empty">No data available</li>
                     {% endfor %}
                 </ul>
+                <div class="report-total">
+                    <span class="report-total-label">Total</span>
+                    <span class="report-total-value">{{ total_deployed }}</span>
+                </div>
             </div>
 
             <!-- Deployed Per SUC (University) -->
@@ -1391,13 +1487,17 @@ body {
                 <ul class="report-list">
                     {% for item in deployed_per_suc %}
                     <li class="report-list-item">
-                        <span class="report-item-label" title="{{ item.university__name }}">{{ item.university__name|truncatechars:25 }}</span>
+                        <span class="report-item-label" title="{{ item.university }}">{{ item.university|truncatechars:25|default:"Unknown" }}</span>
                         <span class="report-item-value">{{ item.count }}</span>
                     </li>
                     {% empty %}
                     <li class="report-empty">No data available</li>
                     {% endfor %}
                 </ul>
+                <div class="report-total">
+                    <span class="report-total-label">Total</span>
+                    <span class="report-total-value">{{ total_deployed }}</span>
+                </div>
             </div>
 
             <!-- Deployed Per Sex -->
@@ -1445,10 +1545,11 @@ body {
                 {% for candidate in recent_candidates %}
                 <tr onclick="window.location.href='{% url 'view_candidate' candidate.id %}'" style="cursor: pointer;">
                     <td><strong>{{ candidate.first_name }} {{ candidate.last_name }}</strong></td>
-                    <td>{{ candidate.university.name|default:"-" }}</td>
+                    <td>{{ candidate.university|default:"-" }}</td>
                     <td>{{ candidate.program.title|default:"-" }}</td>
                     <td>
-                        <span class="status-badge {% if candidate.status == 'Approved' %}approved{% elif candidate.status == 'Rejected' %}rejected{% elif candidate.status == 'Validated' %}validated{% elif candidate.status == 'Missing_Docs' %}missing-docs{% else %}draft{% endif %}">
+                        <span
+                            class="status-badge {% if candidate.status == 'Approved' %}approved{% elif candidate.status == 'Rejected' %}rejected{% elif candidate.status == 'Validated' %}validated{% elif candidate.status == 'Missing_Docs' %}missing-docs{% else %}draft{% endif %}">
                             {{ candidate.status }}
                         </span>
                     </td>
@@ -1558,13 +1659,13 @@ body {
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Main Chart - Real monthly application data
-    const mainCtx = document.getElementById('mainChart');
-    if (mainCtx) {
-        // Monthly applications data from database
-        const monthlyData = [{% for count in monthly_applications %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
-        
+    document.addEventListener('DOMContentLoaded', function () {
+        // Main Chart - Real monthly application data
+        const mainCtx = document.getElementById('mainChart');
+        if (mainCtx) {
+            // Monthly applications data from database
+            const monthlyData = [{% for count in monthly_applications %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
         new Chart(mainCtx, {
             type: 'line',
             data: {
@@ -1595,8 +1696,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     y: {
                         grid: { color: '#e2e8f0' },
-                        ticks: { 
-                            color: '#64748b', 
+                        ticks: {
+                            color: '#64748b',
                             font: { size: 11 },
                             stepSize: 1,
                             beginAtZero: true
@@ -1635,7 +1736,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mini charts with real monthly data (last 6 months + current value)
     const approvedData = [{% for count in monthly_approved %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}].slice(-7);
     const applicationsData = [{% for count in monthly_applications %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}].slice(-7);
-    
+
     const mini1 = document.getElementById('miniChart1');
     if (mini1) new Chart(mini1, miniChartConfig('#10b981', approvedData.length ? approvedData : [0, 0, 0, 0, 0, 0, {{ approved_candidates }}]));
 
@@ -1648,24 +1749,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const mini4 = document.getElementById('miniChart4');
     if (mini4) new Chart(mini4, miniChartConfig('#4361ee', [0, 0, 0, 0, 0, 0, {{ active_programs }}]));
 
-    // Status Distribution Donut Chart
+    // Status Distribution Bar Chart
     const donutCtx = document.getElementById('statusDonutChart');
     if (donutCtx) {
         new Chart(donutCtx, {
-            type: 'doughnut',
+            type: 'bar',
             data: {
                 labels: ['Missing Documents', 'Validated', 'Approved', 'Rejected'],
                 datasets: [{
+                    label: 'Applications',
                     data: [{{ missing_docs_count }}, {{ validated_count }}, {{ approved_candidates }}, {{ rejected_candidates }}],
                     backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ef4444'],
-                    borderWidth: 0,
-                    hoverOffset: 4
+                    borderColor:     ['#d97706', '#2563eb', '#059669', '#dc2626'],
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderSkipped: false
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
-                cutout: '65%',
                 plugins: {
                     legend: { display: false },
                     tooltip: {
@@ -1673,10 +1776,20 @@ document.addEventListener('DOMContentLoaded', function() {
                             label: function(context) {
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 const value = context.raw;
-                                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                return context.label + ': ' + value + ' (' + percentage + '%)';
+                                const pct = total > 0 ? Math.round((value / total) * 100) : 0;
+                                return ' ' + value + ' applications (' + pct + '%)';
                             }
                         }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 },
+                        grid: { color: 'rgba(0,0,0,0.06)' }
+                    },
+                    x: {
+                        grid: { display: false }
                     }
                 }
             }
@@ -1684,24 +1797,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Print Reports Function
-function printReports() {
-    window.print();
-}
+    // Print Reports Function
+    function printReports() {
+        window.print();
+    }
 
-// Print Analytics Function
-function printAnalytics() {
-    window.print();
-}
+    // Print Analytics Function
+    function printAnalytics() {
+        window.print();
+    }
 
-// Reports Section Charts
-// Yearly Comparison Bar Chart (Applicants vs Deployed)
-const yearlyComparisonCtx = document.getElementById('yearlyComparisonChart');
-if (yearlyComparisonCtx) {
-    const applicantsYears = [{% for item in applicants_per_year %}'{{ item.year }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    // Reports Section Charts
+    // Yearly Comparison Bar Chart (Applicants vs Deployed)
+    const yearlyComparisonCtx = document.getElementById('yearlyComparisonChart');
+    if (yearlyComparisonCtx) {
+        const applicantsYears = [{% for item in applicants_per_year %} '{{ item.year }}'{% if not forloop.last %}, {% endif %} {% endfor %}];
     const applicantsCounts = [{% for item in applicants_per_year %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
     const deployedCounts = [{% for item in deployed_per_year %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
-    
+
     new Chart(yearlyComparisonCtx, {
         type: 'bar',
         data: {
@@ -1734,7 +1847,7 @@ if (yearlyComparisonCtx) {
                 legend: {
                     display: true,
                     position: 'top',
-                    labels: { 
+                    labels: {
                         usePointStyle: true,
                         padding: 20,
                         font: { size: 12 }
@@ -1749,8 +1862,8 @@ if (yearlyComparisonCtx) {
                 y: {
                     beginAtZero: true,
                     grid: { color: '#e2e8f0' },
-                    ticks: { 
-                        color: '#64748b', 
+                    ticks: {
+                        color: '#64748b',
                         font: { size: 11 },
                         stepSize: 1
                     }
@@ -1760,63 +1873,70 @@ if (yearlyComparisonCtx) {
     });
 }
 
-// Gender Pie Chart
-const genderPieCtx = document.getElementById('genderPieChart');
-if (genderPieCtx) {
-    const genderLabels = [{% for item in deployed_per_sex %}'{{ item.gender|default:"Not Specified" }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    // Sex Bar Chart
+    const genderPieCtx = document.getElementById('genderPieChart');
+    if (genderPieCtx) {
+        const genderLabels = [{% for item in deployed_per_sex %} '{{ item.gender|default:"Not Specified" }}'{% if not forloop.last %}, {% endif %} {% endfor %}];
     const genderData = [{% for item in deployed_per_sex %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
     const genderColors = genderLabels.map(label => {
         if (label === 'Male') return '#3b82f6';
         if (label === 'Female') return '#ec4899';
         return '#6b7280';
     });
-    
+    const genderBorderColors = genderLabels.map(label => {
+        if (label === 'Male') return '#2563eb';
+        if (label === 'Female') return '#db2777';
+        return '#4b5563';
+    });
+
     new Chart(genderPieCtx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels: genderLabels.length ? genderLabels : ['No Data'],
             datasets: [{
-                data: genderData.length ? genderData : [1],
+                label: 'Deployed',
+                data: genderData.length ? genderData : [0],
                 backgroundColor: genderColors.length ? genderColors : ['#e2e8f0'],
-                borderWidth: 0,
-                hoverOffset: 8
+                borderColor: genderBorderColors.length ? genderBorderColors : ['#cbd5e1'],
+                borderWidth: 1,
+                borderRadius: 6,
+                borderSkipped: false
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '60%',
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'right',
-                    labels: { 
-                        usePointStyle: true,
-                        padding: 15,
-                        font: { size: 12 }
-                    }
-                },
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
                             const value = context.raw;
-                            const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                            return context.label + ': ' + value + ' (' + percentage + '%)';
+                            const pct = total > 0 ? Math.round((value / total) * 100) : 0;
+                            return ' ' + value + ' deployed (' + pct + '%)';
                         }
                     }
                 }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 },
+                    grid: { color: 'rgba(0,0,0,0.06)' }
+                },
+                x: { grid: { display: false } }
             }
         }
     });
 }
 
-// Program Horizontal Bar Chart
-const programBarCtx = document.getElementById('programBarChart');
-if (programBarCtx) {
-    const programLabels = [{% for item in deployed_per_program %}'{{ item.program__title|truncatechars:20 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    // Program Horizontal Bar Chart
+    const programBarCtx = document.getElementById('programBarChart');
+    if (programBarCtx) {
+        const programLabels = [{% for item in deployed_per_program %} '{{ item.program__title|truncatechars:20 }}'{% if not forloop.last %}, {% endif %} {% endfor %}];
     const programData = [{% for item in deployed_per_program %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
-    
+
     new Chart(programBarCtx, {
         type: 'bar',
         data: {
@@ -1847,14 +1967,14 @@ if (programBarCtx) {
                 x: {
                     beginAtZero: true,
                     grid: { color: '#e2e8f0' },
-                    ticks: { 
+                    ticks: {
                         color: '#64748b',
                         stepSize: 1
                     }
                 },
                 y: {
                     grid: { display: false },
-                    ticks: { 
+                    ticks: {
                         color: '#64748b',
                         font: { size: 11 }
                     }
@@ -1864,12 +1984,12 @@ if (programBarCtx) {
     });
 }
 
-// University Horizontal Bar Chart
-const universityBarCtx = document.getElementById('universityBarChart');
-if (universityBarCtx) {
-    const uniLabels = [{% for item in deployed_per_suc %}'{{ item.university__name|truncatechars:20 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    // University Horizontal Bar Chart
+    const universityBarCtx = document.getElementById('universityBarChart');
+    if (universityBarCtx) {
+        const uniLabels = [{% for item in deployed_per_suc %}'{{ item.university|truncatechars:20 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
     const uniData = [{% for item in deployed_per_suc %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
-    
+
     new Chart(universityBarCtx, {
         type: 'bar',
         data: {
@@ -1900,14 +2020,14 @@ if (universityBarCtx) {
                 x: {
                     beginAtZero: true,
                     grid: { color: '#e2e8f0' },
-                    ticks: { 
+                    ticks: {
                         color: '#64748b',
                         stepSize: 1
                     }
                 },
                 y: {
                     grid: { display: false },
-                    ticks: { 
+                    ticks: {
                         color: '#64748b',
                         font: { size: 11 }
                     }

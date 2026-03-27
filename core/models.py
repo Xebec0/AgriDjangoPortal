@@ -18,6 +18,7 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     
     # Extended personal information for syncing with applications
+    middle_initial = models.CharField(max_length=5, blank=True, null=True, verbose_name="Middle Initial")
     father_name = models.CharField(max_length=100, blank=True, null=True)
     mother_name = models.CharField(max_length=100, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -48,13 +49,11 @@ class Profile(models.Model):
         ('other', 'Other'),
     ]
     highest_education_level = models.CharField(max_length=20, choices=EDUCATION_LEVEL_CHOICES, blank=True, null=True, verbose_name="Highest Education Level")
-    
-    institution_name = models.CharField(max_length=200, blank=True, null=True, verbose_name="Institution Name")
     graduation_year = models.PositiveIntegerField(blank=True, null=True, verbose_name="Graduation Year")
     field_of_study = models.CharField(max_length=100, blank=True, null=True, verbose_name="Field of Study")
     
     # Additional candidate-style fields for comprehensive profile
-    university = models.ForeignKey('University', on_delete=models.SET_NULL, blank=True, null=True, verbose_name="University")
+    university = models.CharField(max_length=200, blank=True, null=True, verbose_name="University")
     specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Primary Specialization")
     secondary_specialization = models.CharField(max_length=100, blank=True, null=True, verbose_name="Secondary Specialization")
     year_graduated = models.PositiveIntegerField(blank=True, null=True, verbose_name="Year Graduated")
@@ -72,6 +71,14 @@ class Profile(models.Model):
     preferred_country = models.CharField(max_length=100, blank=True, null=True, verbose_name="Preferred Country")
     willing_to_relocate = models.BooleanField(default=True, verbose_name="Willing to Relocate")
     special_requirements = models.TextField(blank=True, null=True, verbose_name="Special Requirements")
+
+    HEALTH_CHOICES = [
+        ('Excellent', 'Excellent'),
+        ('Fair', 'Fair'),
+        ('Poor', 'Poor'),
+    ]
+    health_condition = models.CharField(max_length=20, choices=HEALTH_CHOICES, blank=True, null=True, verbose_name="Health Condition")
+    health_remarks = models.TextField(blank=True, null=True, verbose_name="Health Remarks")
     
     passport_scan = models.FileField(upload_to='passport_scans/', blank=True, null=True, verbose_name="Passport Scan")
     academic_certificate = models.FileField(upload_to='academic_certificates/', blank=True, null=True, verbose_name="Academic Certificate")
@@ -267,6 +274,8 @@ class Candidate(models.Model):
     first_name = models.CharField(max_length=100, blank=True, default='')  # Allow blank for incomplete profiles
     last_name = models.CharField(max_length=100, blank=True, default='')  # Allow blank for incomplete profiles
     email = models.EmailField(blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Phone Number")
+    address = models.TextField(blank=True, null=True, verbose_name="Address")
     
     # Personal details
     date_of_birth = models.DateField(blank=True, null=True)  # Allow null for incomplete profiles
@@ -281,8 +290,8 @@ class Candidate(models.Model):
     # Passport details
     passport_issue_date = models.DateField(blank=True, null=True)  # Allow null for incomplete profiles
     passport_expiry_date = models.DateField(blank=True, null=True)  # Allow null for incomplete profiles
+    place_of_issue = models.CharField(max_length=100, blank=True, null=True, verbose_name="Place of Issue")
     
-    # Physical details
     GENDER_CHOICES = [
         ('Male', 'Male'),
         ('Female', 'Female'),
@@ -293,8 +302,18 @@ class Candidate(models.Model):
     shirt_size = models.CharField(max_length=10, blank=True, null=True)
     
     # Education details
-    university = models.ForeignKey(University, on_delete=models.CASCADE, blank=True, null=True)  # Allow null for incomplete profiles
+    EDUCATION_LEVEL_CHOICES = [
+        ('high_school', 'High School'),
+        ('bachelor', "Bachelor's Degree"),
+        ('master', "Master's Degree"),
+        ('phd', 'PhD'),
+        ('other', 'Other'),
+    ]
+    university = models.CharField(max_length=200, blank=True, null=True, verbose_name="University")
     year_graduated = models.IntegerField(blank=True, null=True)
+    highest_education_level = models.CharField(max_length=20, choices=EDUCATION_LEVEL_CHOICES, blank=True, null=True, verbose_name="Highest Education Level")
+    field_of_study = models.CharField(max_length=100, blank=True, null=True, verbose_name="Field of Study")
+    graduation_year = models.IntegerField(blank=True, null=True, verbose_name="Graduation Year")
     specialization = models.CharField(max_length=100, blank=True)  # Allow blank for incomplete profiles
     secondary_specialization = models.CharField(max_length=100, blank=True, null=True)
     
@@ -321,6 +340,17 @@ class Candidate(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=DRAFT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    # Personal Information
+    middle_initial = models.CharField(max_length=5, blank=True, null=True, verbose_name="Middle Initial")
+    
+    HEALTH_CHOICES = [
+        ('Excellent', 'Excellent'),
+        ('Fair', 'Fair'),
+        ('Poor', 'Poor'),
+    ]
+    health_condition = models.CharField(max_length=20, choices=HEALTH_CHOICES, blank=True, null=True, verbose_name="Health Condition")
+    health_remarks = models.TextField(blank=True, null=True, verbose_name="Health Remarks")
     
     # Files
     profile_image = models.ImageField(upload_to='candidate_images/', blank=True, null=True, verbose_name="Profile Image")
@@ -658,7 +688,14 @@ class UploadedFile(models.Model):
         Register a new file upload or update existing record.
         Uses get_or_create to avoid unique constraint violations.
         """
+        if hasattr(file_obj, 'seek'):
+            file_obj.seek(0)
+            
         file_hash = cls.calculate_file_hash(file_obj)
+        
+        if hasattr(file_obj, 'seek'):
+            file_obj.seek(0)
+            
         file_name = getattr(file_obj, 'name', 'unknown')
         file_size = getattr(file_obj, 'size', 0)
         file_path = getattr(file_obj, 'name', '')

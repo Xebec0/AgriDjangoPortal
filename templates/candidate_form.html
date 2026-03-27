@@ -102,7 +102,15 @@
                     </h4>
                     
                     <div class="row">
-                        <div class="col-md-6 mb-3 required-field">
+                        <div class="col-md-5 mb-3 required-field">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Surname</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-danger">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-5 mb-3 required-field">
                             <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
                             {{ form.first_name }}
                             {% if form.first_name.errors %}
@@ -110,11 +118,39 @@
                             {% endif %}
                         </div>
 
-                        <div class="col-md-6 mb-3 required-field">
-                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Surname</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="text-danger">{{ form.last_name.errors }}</div>
+                        <div class="col-md-2 mb-3">
+                            <label for="{{ form.middle_initial.id_for_label }}" class="form-label">M.I.</label>
+                            {{ form.middle_initial }}
+                            {% if form.middle_initial.errors %}
+                                <div class="text-danger">{{ form.middle_initial.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">Mobile number</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                <div class="text-danger">{{ form.phone_number.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.address.id_for_label }}" class="form-label">Home Address</label>
+                            {{ form.address }}
+                            {% if form.address.errors %}
+                                <div class="text-danger">{{ form.address.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -150,10 +186,20 @@
                         </div>
                         
                         <div class="col-md-6 mb-3 required-field">
-                            <label for="{{ form.gender.id_for_label }}" class="form-label">Gender</label>
+                            <label for="{{ form.gender.id_for_label }}" class="form-label">Sex</label>
                             {{ form.gender }}
                             {% if form.gender.errors %}
                                 <div class="text-danger">{{ form.gender.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.religion.id_for_label }}" class="form-label">Religion</label>
+                            {{ form.religion }}
+                            {% if form.religion.errors %}
+                                <div class="text-danger">{{ form.religion.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -175,25 +221,33 @@
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="{{ form.religion.id_for_label }}" class="form-label">Religion</label>
-                            {{ form.religion }}
-                            {% if form.religion.errors %}
-                                <div class="text-danger">{{ form.religion.errors }}</div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.health_condition.id_for_label }}" class="form-label">Health Condition</label>
+                            {{ form.health_condition }}
+                            {% if form.health_condition.errors %}
+                                <div class="text-danger">{{ form.health_condition.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.health_remarks.id_for_label }}" class="form-label">Health Remarks</label>
+                            {{ form.health_remarks }}
+                            {% if form.health_remarks.errors %}
+                                <div class="text-danger">{{ form.health_remarks.errors }}</div>
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="text-danger">{{ form.email.errors }}</div>
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.job_experience.id_for_label }}" class="form-label">Job Experience</label>
+                            {{ form.job_experience }}
+                            {% if form.job_experience.errors %}
+                                <div class="text-danger">{{ form.job_experience.errors }}</div>
                             {% endif %}
-                            <div class="help-text">Communication regarding application status will be sent to this address.</div>
+                            <div class="help-text">Describe your relevant work experience, including job titles, companies, and responsibilities.</div>
                         </div>
                     </div>
                 </div>
@@ -248,7 +302,7 @@
                             {% if form.passport_scan.errors %}
                                 <div class="text-danger">{{ form.passport_scan.errors }}</div>
                             {% endif %}
-                            <div class="help-text">Passport information page (PDF/Image).</div>
+                            <div class="help-text">Passport information page (PDF, JPG, or PNG).</div>
                         </div>
                         
                         <div class="col-md-6 mb-3">
@@ -284,7 +338,7 @@
                             {% if form.license_scan.errors %}
                                 <div class="text-danger">{{ form.license_scan.errors }}</div>
                             {% endif %}
-                            <div class="help-text">Upload license scan if applicable (PDF/Image).</div>
+                            <div class="help-text">Upload license scan if applicable (PDF, JPG, or PNG).</div>
                         </div>
                     </div>
                 </div>
@@ -296,6 +350,26 @@
                     </h4>
                     
                     <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.highest_education_level.id_for_label }}" class="form-label">Highest Educational Level</label>
+                            {{ form.highest_education_level }}
+                            {% if form.highest_education_level.errors %}
+                                <div class="text-danger">{{ form.highest_education_level.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.field_of_study.id_for_label }}" class="form-label">Course</label>
+                            {{ form.field_of_study }}
+                            {% if form.field_of_study.errors %}
+                                <div class="text-danger">{{ form.field_of_study.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-12 mb-3 required-field">
                             <label for="{{ form.university.id_for_label }}" class="form-label">University</label>
                             {{ form.university }}
@@ -304,9 +378,16 @@
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.graduation_year.id_for_label }}" class="form-label">Graduation Year</label>
+                            {{ form.graduation_year }}
+                            {% if form.graduation_year.errors %}
+                                <div class="text-danger">{{ form.graduation_year.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="{{ form.year_graduated.id_for_label }}" class="form-label">Year Graduated</label>
                             {{ form.year_graduated }}
                             {% if form.year_graduated.errors %}
@@ -314,7 +395,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3 required-field">
                             <label for="{{ form.specialization.id_for_label }}" class="form-label">Primary Specialization</label>
@@ -364,17 +445,6 @@
                                 <div class="text-danger">{{ form.shoes_size.errors }}</div>
                             {% endif %}
                             <div class="help-text">European size standard</div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="{{ form.job_experience.id_for_label }}" class="form-label">Job Experience</label>
-                            {{ form.job_experience }}
-                            {% if form.job_experience.errors %}
-                                <div class="text-danger">{{ form.job_experience.errors }}</div>
-                            {% endif %}
-                            <div class="help-text">Describe your relevant work experience, including job titles, companies, and responsibilities.</div>
                         </div>
                     </div>
                 </div>

@@ -58,7 +58,8 @@
         <h3 class="card-title">All Programs</h3>
         <div class="search-box">
             <form method="get" class="d-flex gap-2">
-                <input type="text" name="q" class="search-input" placeholder="Search programs..." value="{{ request.GET.q }}">
+                <input type="text" name="q" class="search-input" placeholder="Search programs..."
+                    value="{{ request.GET.q }}">
                 <select name="location" class="filter-select" onchange="this.form.submit()">
                     <option value="">All Locations</option>
                     {% for loc in locations %}
@@ -71,7 +72,7 @@
             </form>
         </div>
     </div>
-    
+
     {% if programs %}
     <table class="data-table">
         <thead>
@@ -109,16 +110,16 @@
                 <td>{{ program.start_date|date:"M d, Y" }}</td>
                 <td>
                     {% if program.is_registration_open %}
-                        <span class="status-badge active">Open</span>
+                    <span class="status-badge active">Open</span>
                     {% else %}
-                        <span class="status-badge inactive">Closed</span>
+                    <span class="status-badge inactive">Closed</span>
                     {% endif %}
                 </td>
                 <td>
                     {% if program.is_featured %}
-                        <i class="fas fa-star" style="color: var(--warning);"></i>
+                    <i class="fas fa-star" style="color: var(--warning);"></i>
                     {% else %}
-                        <i class="far fa-star" style="color: var(--text-secondary);"></i>
+                    <i class="far fa-star" style="color: var(--text-secondary);"></i>
                     {% endif %}
                 </td>
                 <td>
@@ -129,7 +130,8 @@
                         <a href="{% url 'manage_program_edit' program.id %}" class="action-btn edit" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button type="button" class="action-btn delete" title="Delete" onclick="confirmDelete({{ program.id }}, '{{ program.title|escapejs }}')">
+                        <button type="button" class="action-btn delete" title="Delete"
+                            onclick="confirmDelete({{ program.id }}, '{{ program.title|escapejs }}')">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -138,7 +140,7 @@
             {% endfor %}
         </tbody>
     </table>
-    
+
     <!-- Pagination -->
     {% if is_paginated %}
     <div class="pagination-wrapper">
@@ -147,23 +149,28 @@
         </div>
         <div class="pagination-nav">
             {% if page_obj.has_previous %}
-                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">&laquo;</a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">{{ page_obj.previous_page_number }}</a>
+            <a
+                href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">&laquo;</a>
+            <a
+                href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">{{ page_obj.previous_page_number }}</a>
             {% endif %}
             <span class="active">{{ page_obj.number }}</span>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">{{ page_obj.next_page_number }}</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">&raquo;</a>
+            <a
+                href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">{{ page_obj.next_page_number }}</a>
+            <a
+                href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">&raquo;</a>
             {% endif %}
         </div>
     </div>
     {% endif %}
-    
+
     {% else %}
     <div class="empty-state">
         <i class="fas fa-seedling"></i>
         <h3>No programs found</h3>
-        <p>{% if request.GET.q or request.GET.location %}Try adjusting your search or filters{% else %}Get started by adding your first program{% endif %}</p>
+        <p>{% if request.GET.q or request.GET.location %}Try adjusting your search or filters{% else %}Get started by
+            adding your first program{% endif %}</p>
         <a href="{% url 'manage_program_add' %}" class="btn-primary-custom">
             <i class="fas fa-plus"></i> Add Program
         </a>
@@ -199,10 +206,10 @@
 
 {% block management_js %}
 <script>
-function confirmDelete(programId, programTitle) {
-    document.getElementById('deleteProgramName').textContent = programTitle;
-    document.getElementById('deleteForm').action = "{% url 'manage_program_delete' 0 %}".replace('0', programId);
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
-}
+    function confirmDelete(programId, programTitle) {
+        document.getElementById('deleteProgramName').textContent = programTitle;
+        document.getElementById('deleteForm').action = "{% url 'manage_program_delete' 0 %}".replace('0', programId);
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
 </script>
 {% endblock %}
