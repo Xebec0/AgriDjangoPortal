@@ -74,3 +74,4 @@ django-unfold>=0.38.0  # Modern admin interface with custom theming
 django-allauth>=0.52.0  # Comprehensive social authentication
 requests>=2.31.0  # For OAuth API requests
 PyJWT>=2.8.0  # For JWT token handling in OAuth
+cryptography>=41.0.0  # Required by django-allauth for Google OAuth JWT verification
