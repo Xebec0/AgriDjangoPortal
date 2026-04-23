@@ -110,7 +110,7 @@ class CandidateModelComprehensiveTests(TestCase):
                 gender='Male',
                 passport_issue_date=date.today(),
                 passport_expiry_date=date.today() + timedelta(days=3650),
-                university=university,
+                university=university.name,
                 specialization='Agronomy',
                 status=status,
                 created_by=user
@@ -137,7 +137,7 @@ class CandidateModelComprehensiveTests(TestCase):
                 gender=gender,
                 passport_issue_date=date.today(),
                 passport_expiry_date=date.today() + timedelta(days=3650),
-                university=university,
+                university=university.name,
                 specialization='Agronomy',
                 created_by=user
             )

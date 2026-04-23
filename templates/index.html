@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="position-relative mb-4 hero-section">
-    <img src="/static/images/agrostudies.png" class="w-100 hero-image" alt="Agrostudies PNG Image" style="max-height: 600px; object-fit: cover;">
+    <img src="/static/images/agrostudies.png" class="w-100 hero-image" alt="Agrostudies PNG Image" loading="eager" style="max-height: 600px; object-fit: cover;">
     <div class="position-absolute d-flex align-items-center justify-content-center" style="top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5));">
         <div class="text-center px-3 px-md-4">
             <h1 class="hero-title fw-bold text-white mb-3 mb-md-4">
@@ -29,81 +29,86 @@
 
 <!-- Hero Section Mobile Styles -->
 <style>
+/* Mobile-first hero styles — base = 320px+ */
 .hero-section {
-    min-height: 400px;
+    min-height: 250px;
 }
 
 .hero-title {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-    letter-spacing: -1px;
+    letter-spacing: 0;
     line-height: 1.2;
 }
 
 .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
     max-width: 800px;
+    padding: 0 1rem;
+}
+
+.hero-image {
+    max-height: 250px;
 }
 
 .hero-button {
-    font-size: 1.1rem;
-    padding: 0.75rem 2rem;
-    min-width: 200px;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+    min-width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
-/* Mobile Responsive Styles */
-@media (max-width: 767px) {
+/* Small devices (576px+) */
+@media (min-width: 576px) {
     .hero-section {
         min-height: 300px;
     }
-    
+
     .hero-image {
-        max-height: 300px !important;
+        max-height: 300px;
     }
-    
+
     .hero-title {
-        font-size: 1.75rem !important;
-        letter-spacing: 0;
-        margin-bottom: 1rem !important;
+        font-size: 1.75rem;
     }
-    
+
     .hero-subtitle {
-        font-size: 0.95rem !important;
-        padding: 0 1rem;
-        margin-bottom: 1.5rem !important;
+        font-size: 0.95rem;
     }
-    
+
     .hero-button {
-        font-size: 0.95rem !important;
-        padding: 0.65rem 1.5rem !important;
-        min-width: 100% !important;
-        max-width: 300px;
-        margin: 0 auto;
+        font-size: 0.95rem;
+        padding: 0.65rem 1.5rem;
+        min-width: auto;
     }
 }
 
-/* Very small mobile */
-@media (max-width: 479px) {
+/* Tablets (768px+) */
+@media (min-width: 768px) {
     .hero-section {
-        min-height: 250px;
+        min-height: 400px;
     }
-    
+
     .hero-image {
-        max-height: 250px !important;
+        max-height: 600px;
     }
-    
+
     .hero-title {
-        font-size: 1.5rem !important;
+        font-size: 2.5rem;
+        letter-spacing: -1px;
     }
-    
+
     .hero-subtitle {
-        font-size: 0.85rem !important;
+        font-size: 1.2rem;
+        padding: 0;
     }
-    
+
     .hero-button {
-        font-size: 0.9rem !important;
-        padding: 0.6rem 1.25rem !important;
+        font-size: 1.1rem;
+        padding: 0.75rem 2rem;
+        min-width: 200px;
     }
 }
 </style>
@@ -116,7 +121,7 @@
 
 <div class="row">
     {% for program in programs %}
-    <div class="col-md-4 mb-4">
+    <div class="col-sm-6 col-md-4 mb-4">
         <div class="program-card card h-100 scroll-animate">
             {% if program.is_featured %}
             <div class="position-absolute top-0 end-0 m-2">
@@ -168,7 +173,7 @@
 </div>
 
 <div class="row mt-5">
-    <div class="col-md-4">
+    <div class="col-sm-6 col-md-4">
         <div class="card text-center h-100 feature-card">
             <div class="card-body">
                 <div class="icon-circle mb-4">
@@ -181,7 +186,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-6 col-md-4">
         <div class="card text-center h-100 feature-card">
             <div class="card-body">
                 <div class="icon-circle mb-4">
@@ -194,7 +199,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-6 col-md-4">
         <div class="card text-center h-100 feature-card">
             <div class="card-body">
                 <div class="icon-circle mb-4">

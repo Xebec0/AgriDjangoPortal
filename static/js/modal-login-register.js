@@ -259,13 +259,20 @@ function setupRegisterModal() {
             // Only load if not already loaded or if there was an error
             if (!registerModalContent.querySelector('form') || 
                 registerModalContent.querySelector('.alert-danger')) {
-                loadModalContent('/modal/register/', registerModalContent);
+                // Content will be replaced — new DOM needs fresh initialization
+                var oldForm = registerModalContent.querySelector('#registerModalForm');
+                if (oldForm) delete oldForm.dataset.initialized;
+                loadModalContent('/modal/register/', registerModalContent).then(() => {
+                    setTimeout(() => {
+                        initializeMultiStep();
+                    }, 100);
+                });
+            } else {
+                // Initialize multi-step immediately if already loaded
+                setTimeout(() => {
+                    initializeMultiStep();
+                }, 100);
             }
-            
-            // Initialize multi-step after content loads
-            setTimeout(() => {
-                initializeMultiStep();
-            }, 100);
         });
         
         // Reset modal when hidden
@@ -325,15 +332,13 @@ function setupRegisterModal() {
             currentStep = 1;
             showStep(currentStep);
             
-            // Attach event listeners
-            nextBtn.addEventListener('click', handleNextClick);
-            prevBtn.addEventListener('click', handlePrevClick);
-            
-            // Real-time validation for confirm fields
-            setupRealTimeValidation();
-            
-            // Remove existing submit listener to avoid conflicts
-            // Since we're handling submit manually on step 3
+            // Prevent duplicate listener attachment on re-open
+            if (!form.dataset.initialized) {
+                nextBtn.addEventListener('click', handleNextClick);
+                prevBtn.addEventListener('click', handlePrevClick);
+                setupRealTimeValidation();
+                form.dataset.initialized = 'true';
+            }
         }
         
         function showStep(n) {
@@ -342,41 +347,28 @@ function setupRegisterModal() {
                 step.classList.toggle('active', index + 1 === n);
             });
 
-            prevBtn.style.display = n === 1 ? 'none' : 'inline-block';
+            prevBtn.style.display = n === 1 ? 'none' : 'inline-flex';
 
             if (n === totalSteps) {
-                nextBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i> Create Account';
+                nextBtn.innerHTML = '<i class="fas fa-user-plus me-1"></i> Create Account';
                 nextBtn.classList.add('submit-btn');
             } else {
-                nextBtn.innerHTML = 'Next';
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
                 nextBtn.classList.remove('submit-btn');
             }
 
             stepIndicator.textContent = `Step ${n} of ${totalSteps}`;
 
-            // Update progress bar
-            const progressBar = registerModalContent.querySelector('.progress-bar');
-            if (progressBar) {
-                const progressPercentage = (n / totalSteps) * 100;
-                progressBar.style.width = `${progressPercentage}%`;
-                progressBar.setAttribute('aria-valuenow', progressPercentage);
-            }
+            // Update stepper circles (validation-driven)
+            refreshStepperState();
 
-            // Update step labels
-            const stepLabels = registerModalContent.querySelectorAll('.step-label');
-            stepLabels.forEach((label, index) => {
-                const stepNumber = index + 1;
-                if (stepNumber === n) {
-                    label.classList.remove('text-muted', 'text-success');
-                    label.classList.add('text-primary', 'fw-bold');
-                } else if (stepNumber < n) {
-                    label.classList.remove('text-muted', 'text-primary', 'fw-bold');
-                    label.classList.add('text-success');
-                } else {
-                    label.classList.remove('text-primary', 'text-success', 'fw-bold');
-                    label.classList.add('text-muted');
-                }
-            });
+            // Animate stepper fill line (scaleX relative to its own width)
+            var stepperFill = document.querySelector('#registerModal #regStepperFill');
+            if (stepperFill) {
+                var totalGaps = totalSteps - 1;
+                var fillFraction = n > 1 ? (n - 1) / totalGaps : 0;
+                stepperFill.style.transform = 'scaleX(' + fillFraction + ')';
+            }
 
             // Scroll to top of modal body
             const modalBody = registerModal.querySelector('.modal-body');
@@ -385,113 +377,140 @@ function setupRegisterModal() {
             }
         }
         
-        function validateStep(step) {
+        function validateStep(step, silent) {
             let isValid = true;
             const errors = [];
 
-            // Clear previous step errors
-            if (errorElement) {
+            // Clear previous step errors (skip in silent mode)
+            if (!silent && errorElement) {
                 errorElement.innerHTML = '';
                 errorElement.classList.add('d-none');
             }
 
+            // Helper: check required field and add visual feedback
+            function req(selector, label) {
+                const field = form.querySelector(selector);
+                if (!field) return;
+                if (!field.value || !field.value.trim()) {
+                    errors.push(label + ' is required.');
+                    isValid = false;
+                    if (!silent) {
+                        field.classList.add('is-invalid');
+                        field.classList.remove('is-valid');
+                    }
+                } else if (!silent) {
+                    field.classList.add('is-valid');
+                    field.classList.remove('is-invalid');
+                }
+            }
+
+            // Helper: check matching fields
+            function match(sel1, sel2, label) {
+                const f1 = form.querySelector(sel1);
+                const f2 = form.querySelector(sel2);
+                if (!f1 || !f2) return;
+                if (f1.value && f2.value && f1.value.trim() !== f2.value.trim()) {
+                    errors.push(label + ' do not match.');
+                    isValid = false;
+                    if (!silent) {
+                        f2.classList.add('is-invalid');
+                        f2.classList.remove('is-valid');
+                    }
+                }
+            }
+
             switch (step) {
                 case 1:
-                    // Only validate Step 1 fields (Account Information)
-                    if (!form.querySelector('#id_username').value.trim()) {
-                        errors.push('Username is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_email').value.trim()) {
-                        errors.push('Email is required.');
-                        isValid = false;
-                    }
-                    if (form.querySelector('#id_email').value !== form.querySelector('#id_confirm_email').value) {
-                        errors.push('Emails do not match.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_password1').value) {
-                        errors.push('Password is required.');
-                        isValid = false;
-                    }
-                    if (form.querySelector('#id_password1').value !== form.querySelector('#id_password2').value) {
-                        errors.push('Passwords do not match.');
-                        isValid = false;
-                    }
+                    req('#id_username', 'Username');
+                    req('#id_email', 'Email');
+                    req('#id_confirm_email', 'Confirm Email');
+                    match('#id_email', '#id_confirm_email', 'Emails');
+                    req('#id_password1', 'Password');
+                    req('#id_password2', 'Confirm Password');
+                    match('#id_password1', '#id_password2', 'Passwords');
                     break;
                 case 2:
-                    // Only validate Step 2 fields (Basic Information)
-                    if (!form.querySelector('#id_first_name').value.trim()) {
-                        errors.push('First name is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_last_name').value.trim()) {
-                        errors.push('Last name is required.');
-                        isValid = false;
-                    }
+                    req('#id_first_name', 'First name');
+                    req('#id_last_name', 'Last name');
                     break;
                 case 3:
-                    // Only validate Step 3 fields (Personal Details)
-                    if (!form.querySelector('#id_date_of_birth').value) {
-                        errors.push('Date of birth is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_gender').value) {
-                        errors.push('Gender is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_nationality').value) {
-                        errors.push('Nationality is required.');
-                        isValid = false;
-                    }
+                    req('#id_date_of_birth', 'Date of birth');
+                    req('#id_gender', 'Gender');
+                    req('#id_nationality', 'Nationality');
                     break;
                 case 4:
-                    // Only validate Step 4 fields (Contact & Passport Information)
-                    if (!form.querySelector('#id_passport_number').value.trim()) {
-                        errors.push('Passport number is required.');
-                        isValid = false;
-                    }
-                    if (form.querySelector('#id_passport_number').value !== form.querySelector('#id_confirm_passport_number').value) {
-                        errors.push('Passport numbers do not match.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_passport_issue_date').value) {
-                        errors.push('Passport issue date is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_passport_expiry_date').value) {
-                        errors.push('Passport expiry date is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_highest_education_level').value) {
-                        errors.push('Education level is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_field_of_study').value.trim()) {
-                        errors.push('Field of study is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_graduation_year').value) {
-                        errors.push('Graduation year is required.');
-                        isValid = false;
-                    }
+                    req('#id_passport_number', 'Passport number');
+                    req('#id_confirm_passport_number', 'Confirm Passport number');
+                    match('#id_passport_number', '#id_confirm_passport_number', 'Passport numbers');
+                    req('#id_passport_issue_date', 'Passport issue date');
+                    req('#id_passport_expiry_date', 'Passport expiry date');
+                    // Validate expiry > issue
+                    (function() {
+                        var issue = form.querySelector('#id_passport_issue_date');
+                        var expiry = form.querySelector('#id_passport_expiry_date');
+                        if (issue && expiry && issue.value && expiry.value) {
+                            if (new Date(expiry.value) <= new Date(issue.value)) {
+                                errors.push('Passport expiry date must be after issue date.');
+                                isValid = false;
+                                expiry.classList.add('is-invalid');
+                                expiry.classList.remove('is-valid');
+                            }
+                        }
+                    })();
+                    req('#id_highest_education_level', 'Education level');
+                    req('#id_field_of_study', 'Field of study');
+                    req('#id_graduation_year', 'Graduation year');
                     break;
                 case 5:
                     // Optional documents step
                     break;
             }
             
-            // Use toast notification instead of inline error
-            if (!isValid) {
+            // Use toast notification instead of inline error (skip in silent mode)
+            if (!isValid && !silent) {
                 if (typeof showRegisterToast === 'function') {
                     showRegisterToast(errors, 'error', true);
                 } else if (errorElement) {
                     errorElement.innerHTML = errors.join('<br>');
                     errorElement.classList.remove('d-none');
                 }
+                // Focus first invalid field in the active step
+                var firstInvalid = form.querySelector('.form-step.active .is-invalid');
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstInvalid.focus();
+                }
             }
             
             return isValid;
+        }
+
+        // Silent validator — returns true/false without touching UI
+        function isStepValid(step) {
+            return validateStep(step, true);
+        }
+
+        // Refresh stepper circles based on current step + validation state
+        function refreshStepperState() {
+            var regSteps = document.querySelectorAll('#registerModal .reg-step');
+            regSteps.forEach(function(stepEl) {
+                var stepNum = parseInt(stepEl.getAttribute('data-step'), 10);
+                stepEl.classList.remove('active', 'completed', 'valid');
+                if (stepNum === currentStep) {
+                    stepEl.classList.add('active');
+                    // Mark as valid (green) if all required fields are valid
+                    if (isStepValid(stepNum)) {
+                        stepEl.classList.add('valid');
+                    }
+                } else if (stepNum < currentStep) {
+                    // Past steps: green + checkmark if still valid, else in-progress look
+                    if (isStepValid(stepNum)) {
+                        stepEl.classList.add('completed');
+                    } else {
+                        stepEl.classList.add('active');
+                    }
+                }
+            });
         }
         
         function handleNextClick() {
@@ -514,56 +533,230 @@ function setupRegisterModal() {
         }
         
         function setupRealTimeValidation() {
-            // Email confirmation
-            const emailInput = form.querySelector('#id_email');
-            const confirmEmailInput = form.querySelector('#id_confirm_email');
-            if (emailInput && confirmEmailInput) {
-                const validateEmails = () => {
-                    if (confirmEmailInput.value && emailInput.value !== confirmEmailInput.value) {
-                        confirmEmailInput.classList.add('is-invalid');
-                        confirmEmailInput.classList.remove('is-valid');
-                    } else if (confirmEmailInput.value) {
-                        confirmEmailInput.classList.remove('is-invalid');
-                        confirmEmailInput.classList.add('is-valid');
+            // ---- Helpers ----
+            function attachValidator(selector, validatorFn, opts) {
+                opts = opts || {};
+                var field = form.querySelector(selector);
+                if (!field) return;
+                var handler = function() {
+                    var val = field.value.trim();
+                    if (!val) {
+                        if (opts.required) {
+                            field.classList.add('is-invalid');
+                            field.classList.remove('is-valid');
+                        } else {
+                            field.classList.remove('is-valid', 'is-invalid');
+                        }
+                        return;
+                    }
+                    if (validatorFn(val)) {
+                        field.classList.add('is-valid');
+                        field.classList.remove('is-invalid');
+                    } else {
+                        field.classList.add('is-invalid');
+                        field.classList.remove('is-valid');
                     }
                 };
-                confirmEmailInput.addEventListener('input', validateEmails);
-                emailInput.addEventListener('input', validateEmails);
+                field.addEventListener('input', handler);
+                if (opts.alsoOnChange) field.addEventListener('change', handler);
             }
-            
-            // Password confirmation
-            const password1Input = form.querySelector('#id_password1');
-            const password2Input = form.querySelector('#id_password2');
-            if (password1Input && password2Input) {
-                const validatePasswords = () => {
-                    if (password2Input.value && password1Input.value !== password2Input.value) {
-                        password2Input.classList.add('is-invalid');
-                        password2Input.classList.remove('is-valid');
-                    } else if (password2Input.value) {
-                        password2Input.classList.remove('is-invalid');
-                        password2Input.classList.add('is-valid');
+
+            function attachPairValidator(srcSel, confirmSel) {
+                var src = form.querySelector(srcSel);
+                var confirm = form.querySelector(confirmSel);
+                if (!src || !confirm) return;
+                var validate = function() {
+                    if (!confirm.value) {
+                        confirm.classList.remove('is-valid', 'is-invalid');
+                        return;
+                    }
+                    if (src.value === confirm.value) {
+                        confirm.classList.add('is-valid');
+                        confirm.classList.remove('is-invalid');
+                    } else {
+                        confirm.classList.add('is-invalid');
+                        confirm.classList.remove('is-valid');
                     }
                 };
-                password2Input.addEventListener('input', validatePasswords);
-                password1Input.addEventListener('input', validatePasswords);
+                confirm.addEventListener('input', validate);
+                src.addEventListener('input', function() { if (confirm.value) validate(); });
             }
-            
-            // Passport confirmation
-            const passportInput = form.querySelector('#id_passport_number');
-            const confirmPassportInput = form.querySelector('#id_confirm_passport_number');
-            if (passportInput && confirmPassportInput) {
-                const validatePassports = () => {
-                    if (confirmPassportInput.value && passportInput.value !== confirmPassportInput.value) {
-                        confirmPassportInput.classList.add('is-invalid');
-                        confirmPassportInput.classList.remove('is-valid');
-                    } else if (confirmPassportInput.value) {
-                        confirmPassportInput.classList.remove('is-invalid');
-                        confirmPassportInput.classList.add('is-valid');
+
+            // ==== Step 1: Account Information ====
+            attachValidator('#id_username', function(v) { return /^[a-zA-Z0-9_]{3,20}$/.test(v); }, { required: true });
+            attachValidator('#id_email', function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, { required: true });
+            attachPairValidator('#id_email', '#id_confirm_email');
+
+            // Password with strength indicator
+            var pw1 = form.querySelector('#id_password1');
+            var pw2 = form.querySelector('#id_password2');
+            if (pw1) {
+                pw1.addEventListener('input', function() {
+                    var val = this.value;
+                    var strengthDiv = this.closest('.mb-3') ? this.closest('.mb-3').querySelector('.password-strength') : null;
+
+                    if (val) {
+                        if (strengthDiv) strengthDiv.style.display = 'block';
+                        var reqs = {
+                            length: val.length >= 8,
+                            uppercase: /[A-Z]/.test(val),
+                            lowercase: /[a-z]/.test(val),
+                            number: /[0-9]/.test(val)
+                        };
+                        var score = 0;
+                        for (var k in reqs) { if (reqs[k]) score++; }
+
+                        // Update progress bar
+                        var bar = strengthDiv ? strengthDiv.querySelector('.progress-bar') : null;
+                        if (bar) {
+                            bar.style.width = (score / 4 * 100) + '%';
+                            bar.className = 'progress-bar ' + (
+                                score <= 1 ? 'bg-danger' :
+                                score <= 2 ? 'bg-warning' :
+                                score <= 3 ? 'bg-info' : 'bg-success'
+                            );
+                        }
+
+                        // Update requirement icons
+                        for (var req in reqs) {
+                            var el = strengthDiv ? strengthDiv.querySelector('[data-requirement="' + req + '"]') : null;
+                            if (el) {
+                                var icon = el.querySelector('i');
+                                if (icon) icon.className = reqs[req] ? 'fas fa-check text-success' : 'fas fa-times text-danger';
+                            }
+                        }
+
+                        // Field valid/invalid state
+                        var strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(val);
+                        if (strong) {
+                            this.classList.add('is-valid');
+                            this.classList.remove('is-invalid');
+                        } else {
+                            this.classList.add('is-invalid');
+                            this.classList.remove('is-valid');
+                        }
+                    } else {
+                        if (strengthDiv) strengthDiv.style.display = 'none';
+                        this.classList.remove('is-valid', 'is-invalid');
+                    }
+
+                    // Re-check password match
+                    if (pw2 && pw2.value) pw2.dispatchEvent(new Event('input'));
+                });
+            }
+
+            // Password match indicator
+            if (pw1 && pw2) {
+                pw2.addEventListener('input', function() {
+                    var matchDiv = this.closest('.mb-3') ? this.closest('.mb-3').querySelector('.password-match') : null;
+                    if (!this.value) {
+                        this.classList.remove('is-valid', 'is-invalid');
+                        if (matchDiv) matchDiv.style.display = 'none';
+                        return;
+                    }
+                    var isMatch = pw1.value === this.value;
+                    if (matchDiv) {
+                        matchDiv.style.display = 'block';
+                        matchDiv.innerHTML = isMatch
+                            ? '<small class="text-success"><i class="fas fa-check-circle"></i> Passwords match</small>'
+                            : '<small class="text-danger"><i class="fas fa-times-circle"></i> Passwords do not match</small>';
+                    }
+                    if (isMatch) {
+                        this.classList.add('is-valid');
+                        this.classList.remove('is-invalid');
+                    } else {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    }
+                });
+            }
+
+            // ==== Step 2: Basic Information ====
+            attachValidator('#id_first_name', function(v) { return /^[a-zA-Z\s\-']+$/.test(v); }, { required: true });
+            attachValidator('#id_last_name', function(v) { return /^[a-zA-Z\s\-']+$/.test(v); }, { required: true });
+            attachValidator('#id_middle_initial', function() { return true; });
+            attachValidator('#id_address', function() { return true; });
+
+            // Phone: allow only digits and phone chars
+            var phoneField = form.querySelector('#id_phone_number');
+            if (phoneField) {
+                phoneField.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^0-9\s\-\+\(\)\.]/g, '');
+                    if (this.value.trim()) {
+                        this.classList.add('is-valid');
+                        this.classList.remove('is-invalid');
+                    } else {
+                        this.classList.remove('is-valid', 'is-invalid');
+                    }
+                });
+                phoneField.addEventListener('keypress', function(e) {
+                    if (!/^[0-9\s\-\+\(\)\.]$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            // ==== Step 3: Personal Details ====
+            var dobField = form.querySelector('#id_date_of_birth');
+            var ageField = form.querySelector('#id_age');
+            if (dobField) {
+                var calcAge = function() {
+                    if (dobField.value) {
+                        var dob = new Date(dobField.value);
+                        var today = new Date();
+                        if (dob < today && dob.getFullYear() > 1900) {
+                            dobField.classList.add('is-valid');
+                            dobField.classList.remove('is-invalid');
+                            if (ageField) {
+                                var age = today.getFullYear() - dob.getFullYear();
+                                var m = today.getMonth() - dob.getMonth();
+                                if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+                                ageField.value = age >= 0 ? age : 0;
+                                ageField.setAttribute('readonly', 'readonly');
+                                ageField.style.backgroundColor = '#e9ecef';
+                            }
+                        } else {
+                            dobField.classList.add('is-invalid');
+                            dobField.classList.remove('is-valid');
+                        }
+                    } else {
+                        dobField.classList.remove('is-valid', 'is-invalid');
+                        if (ageField) ageField.value = '';
                     }
                 };
-                confirmPassportInput.addEventListener('input', validatePassports);
-                passportInput.addEventListener('input', validatePassports);
+                dobField.addEventListener('change', calcAge);
+                dobField.addEventListener('input', calcAge);
             }
+
+            attachValidator('#id_gender', function(v) { return v !== ''; }, { required: true, alsoOnChange: true });
+            attachValidator('#id_nationality', function(v) { return v !== ''; }, { required: true, alsoOnChange: true });
+            attachValidator('#id_country_of_birth', function() { return true; }, { alsoOnChange: true });
+            attachValidator('#id_religion', function() { return true; });
+
+            // ==== Step 4: Passport & Academic ====
+            attachValidator('#id_passport_number', function(v) { return v.length > 0; }, { required: true });
+            attachPairValidator('#id_passport_number', '#id_confirm_passport_number');
+            attachValidator('#id_passport_issue_date', function(v) { return !!v; }, { required: true, alsoOnChange: true });
+            attachValidator('#id_passport_expiry_date', function(v) {
+                if (!v) return false;
+                var expiry = new Date(v);
+                var issueVal = form.querySelector('#id_passport_issue_date') ? form.querySelector('#id_passport_issue_date').value : '';
+                if (issueVal && new Date(issueVal) >= expiry) return false;
+                return expiry > new Date();
+            }, { required: true, alsoOnChange: true });
+            attachValidator('#id_place_of_issue', function() { return true; });
+            attachValidator('#id_highest_education_level', function(v) { return v !== ''; }, { required: true, alsoOnChange: true });
+            attachValidator('#id_field_of_study', function(v) { return v.length > 0; }, { required: true });
+            attachValidator('#id_graduation_year', function(v) { return v !== ''; }, { required: true, alsoOnChange: true });
+            attachValidator('#id_year_graduated', function() { return true; }, { alsoOnChange: true });
+            attachValidator('#id_university', function() { return true; }, { alsoOnChange: true });
+            attachValidator('#id_secondary_specialization', function() { return true; });
+            attachValidator('#id_primary_specialization', function() { return true; });
+
+            // Global listener: refresh stepper state on any field change
+            // so the active circle turns green when all required fields are valid
+            form.addEventListener('input', refreshStepperState);
+            form.addEventListener('change', refreshStepperState);
         }
         
         function submitRegisterForm() {
@@ -908,7 +1101,7 @@ function loadModalContent(url, container) {
     `;
     
     // Fetch the content
-    fetch(url, {
+    return fetch(url, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }

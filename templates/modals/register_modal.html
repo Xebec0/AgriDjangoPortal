@@ -1,25 +1,55 @@
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title" id="registerModalLabel">
-            <i class="fas fa-user-plus me-2"></i> Create Account
+            <i class="fas fa-user-plus"></i> Create Account
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <!-- Progress Bar -->
-    <div class="px-3 pt-3">
-        <div class="progress" style="height: 4px;">
-            <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        <div class="d-flex justify-content-between px-2 mt-1">
-            <small class="text-muted step-label" data-step="1">Account</small>
-            <small class="text-muted step-label" data-step="2">Basic Info</small>
-            <small class="text-muted step-label" data-step="3">Personal Details</small>
-            <small class="text-muted step-label" data-step="4">Passport/Academic</small>
-            <small class="text-muted step-label" data-step="5">Docs</small>
+
+    <!-- Stepper -->
+    <div class="reg-stepper" role="navigation" aria-label="Registration steps">
+        <div class="reg-stepper-track">
+            <div class="reg-stepper-fill" id="regStepperFill"></div>
+            <div class="reg-step active" data-step="1">
+                <div class="reg-step-circle">
+                    <span class="step-num">1</span>
+                    <i class="fas fa-check step-check"></i>
+                </div>
+                <span class="reg-step-label step-label" data-step="1">Account</span>
+            </div>
+            <div class="reg-step" data-step="2">
+                <div class="reg-step-circle">
+                    <span class="step-num">2</span>
+                    <i class="fas fa-check step-check"></i>
+                </div>
+                <span class="reg-step-label step-label" data-step="2">Basic Info</span>
+            </div>
+            <div class="reg-step" data-step="3">
+                <div class="reg-step-circle">
+                    <span class="step-num">3</span>
+                    <i class="fas fa-check step-check"></i>
+                </div>
+                <span class="reg-step-label step-label" data-step="3">Personal</span>
+            </div>
+            <div class="reg-step" data-step="4">
+                <div class="reg-step-circle">
+                    <span class="step-num">4</span>
+                    <i class="fas fa-check step-check"></i>
+                </div>
+                <span class="reg-step-label step-label" data-step="4">Passport</span>
+            </div>
+            <div class="reg-step" data-step="5">
+                <div class="reg-step-circle">
+                    <span class="step-num">5</span>
+                    <i class="fas fa-check step-check"></i>
+                </div>
+                <span class="reg-step-label step-label" data-step="5">Documents</span>
+            </div>
         </div>
     </div>
+
     <div class="modal-body">
-        <p class="text-muted mb-4">Complete your profile to apply for agricultural programs</p>
+        <p class="reg-subtitle">Complete your profile to apply for agricultural programs</p>
         
         <form id="registerModalForm" action="/api/ajax-register/" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -27,9 +57,10 @@
             <!-- Step 1: Account Information -->
             <div id="step-1" class="form-step active">
                 <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-user-circle me-2"></i> Account Information
-                    </h6>
+                    <div class="reg-section-title">
+                        <i class="fas fa-user-circle"></i>
+                        <h6>Account Information</h6>
+                    </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -106,9 +137,10 @@
             <!-- Step 2: Basic Information -->
             <div id="step-2" class="form-step">
                 <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-id-card me-2"></i> Basic Information
-                    </h6>
+                    <div class="reg-section-title">
+                        <i class="fas fa-id-card"></i>
+                        <h6>Basic Information</h6>
+                    </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name <span class="text-danger">*</span></label>
@@ -145,9 +177,10 @@
             <!-- Step 3: Personal Details -->
             <div id="step-3" class="form-step">
                 <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-user me-2"></i> Personal Details
-                    </h6>
+                    <div class="reg-section-title">
+                        <i class="fas fa-user"></i>
+                        <h6>Personal Details</h6>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -187,9 +220,10 @@
             <div id="step-4" class="form-step">
                 <!-- Passport Information -->
                 <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-passport me-2"></i> Passport Information
-                    </h6>
+                    <div class="reg-section-title">
+                        <i class="fas fa-passport"></i>
+                        <h6>Passport Information</h6>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.passport_number.id_for_label }}" class="form-label">Passport Number <span class="text-danger">*</span></label>
@@ -220,9 +254,10 @@
                 
                 <!-- Academic Information -->
                 <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-graduation-cap me-2"></i> Academic Information
-                    </h6>
+                    <div class="reg-section-title">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h6>Academic Information</h6>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.highest_education_level.id_for_label }}" class="form-label">Highest Education Level <span class="text-danger">*</span></label>
@@ -268,9 +303,10 @@
 
                 <!-- Document Uploads -->
                 <div class="mb-4">
-                    <h6 class="border-bottom pb-2 mb-3">
-                        <i class="fas fa-file-upload me-2"></i> Documents
-                    </h6>
+                    <div class="reg-section-title">
+                        <i class="fas fa-file-upload"></i>
+                        <h6>Documents</h6>
+                    </div>
                     <p class="text-muted small mb-3">
                         <i class="fas fa-info-circle me-1"></i>
                         Documents can be uploaded now or later.
@@ -292,7 +328,7 @@
 
                     <!-- Other Documents Group -->
                     <div class="mt-4">
-                        <h6 class="text-muted small fw-bold text-uppercase border-bottom pb-2 mb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                        <h6 class="reg-docs-group-title">
                             Other Required & Optional Documents
                         </h6>
                         <div class="row">
@@ -336,9 +372,13 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
-        <span id="stepIndicator" class="align-self-center">Step 1 of 5</span>
-        <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+        <button type="button" class="btn" id="prevBtn" style="display: none;">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <span id="stepIndicator">Step 1 of 5</span>
+        <button type="button" class="btn" id="nextBtn">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
     </div>
 </div>
 
@@ -354,732 +394,3 @@
         </div>
     </div>
 </div>
-
-<script>
-// Initialize form event handlers when modal is shown
-// Form data persistence
-function saveFormData() {
-    const form = document.getElementById('registerModalForm');
-    const formData = new FormData(form);
-    const data = {};
-    for (let [key, value] of formData.entries()) {
-        // Don't save sensitive data like passwords
-        if (!key.includes('password')) {
-            data[key] = value;
-        }
-    }
-    sessionStorage.setItem('registerFormData', JSON.stringify(data));
-}
-
-function loadFormData() {
-    const savedData = sessionStorage.getItem('registerFormData');
-    if (savedData) {
-        const data = JSON.parse(savedData);
-        const form = document.getElementById('registerModalForm');
-        for (let key in data) {
-            const input = form.querySelector(`[name="${key}"]`);
-            if (input) {
-                input.value = data[key];
-            }
-        }
-    }
-}
-
-// Password strength checker
-function checkPasswordStrength(password) {
-    const requirements = {
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        number: /[0-9]/.test(password)
-    };
-    
-    let strength = 0;
-    Object.values(requirements).forEach(req => {
-        if (req) strength += 25;
-    });
-    
-    return { strength, requirements };
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const registerModal = document.getElementById('registerModal');
-    if (registerModal) {
-        // Initialize password strength indicator
-        const password1 = document.getElementById('id_password1');
-        const password2 = document.getElementById('id_password2');
-        const strengthDiv = password1.parentElement.querySelector('.password-strength');
-        const progressBar = strengthDiv?.querySelector('.progress-bar');
-        const matchDiv = password2.parentElement.querySelector('.password-match');
-
-        if (password1 && strengthDiv) {
-            password1.addEventListener('input', function() {
-                strengthDiv.style.display = 'block';
-                const { strength, requirements } = checkPasswordStrength(this.value);
-                
-                // Update progress bar
-                if (progressBar) {
-                    progressBar.style.width = `${strength}%`;
-                    progressBar.className = `progress-bar ${
-                        strength < 50 ? 'bg-danger' :
-                        strength < 75 ? 'bg-warning' :
-                        'bg-success'
-                    }`;
-                }
-                
-                // Update requirement checks
-                Object.entries(requirements).forEach(([req, met]) => {
-                    const reqEl = strengthDiv.querySelector(`[data-requirement="${req}"]`);
-                    if (reqEl) {
-                        const icon = reqEl.querySelector('i');
-                        icon.className = met ? 'fas fa-check text-success' : 'fas fa-times text-danger';
-                    }
-                });
-            });
-        }
-
-        // Password match checker
-        if (password2 && matchDiv) {
-            password2.addEventListener('input', function() {
-                matchDiv.style.display = 'block';
-                const match = this.value === password1.value;
-                matchDiv.innerHTML = match ?
-                    '<small class="text-success"><i class="fas fa-check"></i> Passwords match</small>' :
-                    '<small class="text-danger"><i class="fas fa-times"></i> Passwords do not match</small>';
-            });
-        }
-
-        // Form data persistence
-        registerModal.addEventListener('shown.bs.modal', function() {
-            console.log('Modal shown, initializing step handlers...');
-            loadFormData();
-            
-            // Initialize step handlers
-            const nextBtn = document.getElementById('nextBtn');
-            const prevBtn = document.getElementById('prevBtn');
-            
-            // Progress bar will be updated by the main modal script
-
-            // Reset form to first step
-            const currentStep = document.querySelector('.form-step.active');
-            if (currentStep && currentStep.id !== 'step-1') {
-                currentStep.classList.remove('active');
-                document.getElementById('step-1').classList.add('active');
-                document.getElementById('stepIndicator').textContent = 'Step 1 of 5';
-                if (prevBtn) prevBtn.style.display = 'none';
-                if (nextBtn) nextBtn.textContent = 'Next';
-            }
-
-            // Initialize progress bar for step 1
-            const progressBar = registerModal.querySelector('.progress-bar');
-            if (progressBar) {
-                progressBar.style.width = '20%';
-                progressBar.setAttribute('aria-valuenow', '20');
-            }
-            // Click handlers are already bound in the main script
-        });
-    }
-});
-</script>
-
-<style>
-.form-step {
-    display: none;
-}
-.form-step.active {
-    display: block;
-}
-.step-indicator {
-    font-weight: 500;
-    color: #6c757d;
-}
-
-/* Toast notification styles */
-#registerToast {
-    min-width: 350px;
-    max-width: 500px;
-    animation: slideInRight 0.3s ease-out;
-}
-
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOutRight {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-}
-
-#registerToast.hiding {
-    animation: slideOutRight 0.3s ease-in;
-}
-
-/* Success toast styling */
-#registerToast.toast-success .toast-header {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-#registerToast.toast-success .toast-body {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-#registerToast.toast-success #toastIcon {
-    color: #28a745;
-}
-
-/* Error toast styling */
-#registerToast.toast-error .toast-header {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-#registerToast.toast-error .toast-body {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-#registerToast.toast-error #toastIcon {
-    color: #dc3545;
-}
-
-/* Warning toast styling */
-#registerToast.toast-warning .toast-header {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-#registerToast.toast-warning .toast-body {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-#registerToast.toast-warning #toastIcon {
-    color: #ffc107;
-}
-
-#toastContent ul {
-    margin: 0.5rem 0 0 0;
-    padding-left: 20px;
-    list-style-type: disc;
-}
-
-#toastContent ul li {
-    margin-bottom: 0.5rem;
-}
-
-#toastContent ul li:last-child {
-    margin-bottom: 0;
-}
-
-#toastContent p {
-    margin: 0;
-}
-
-/* Hide inline error messages - errors will show in toasts */
-.text-danger.small {
-    display: none !important;
-}
-
-/* Email suggestion styles */
-.email-suggestion {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-top: none;
-    border-radius: 0 0 0.375rem 0.375rem;
-    padding: 0.5rem 0.75rem;
-    z-index: 10;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-.email-suggestion small {
-    margin: 0;
-    line-height: 1.2;
-}
-
-/* Remove Bootstrap's default validation styles for cleaner look */
-.is-invalid {
-    border-color: #dc3545 !important;
-}
-
-.is-valid {
-    border-color: #28a745 !important;
-}
-
-
-/* Registration scroll fix */
-#registerModal .modal-body {
-    max-height: 65vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 15px; /* Space for scrollbar */
-}
-
-/* Custom Scrollbar for Modal Body */
-#registerModal .modal-body::-webkit-scrollbar {
-    width: 6px;
-}
-
-#registerModal .modal-body::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-#registerModal .modal-body::-webkit-scrollbar-thumb {
-    background: #28a745;
-    border-radius: 10px;
-}
-
-#registerModal .modal-body::-webkit-scrollbar-thumb:hover {
-    background: #218838;
-}
-
-/* Ensure modal content doesn't overflow dialog */
-.modal-content {
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-body {
-    flex: 1 1 auto;
-}
-
-.modal-header, .modal-footer {
-    flex-shrink: 0;
-}
-</style>
-
-<script>
-// Enhanced toast notification function
-function showRegisterToast(message, type = 'error', autoHide = true) {
-    const toastEl = document.getElementById('registerToast');
-    const toastContent = document.getElementById('toastContent');
-    const toastTitle = document.getElementById('toastTitle');
-    const toastIcon = document.getElementById('toastIcon');
-    const toastHeader = document.getElementById('toastHeader');
-    
-    if (!toastEl || !toastContent || !toastTitle || !toastIcon) return;
-    
-    // Clear previous classes
-    toastEl.classList.remove('toast-success', 'toast-error', 'toast-warning', 'hiding');
-    
-    // Set title and icon based on type
-    switch(type) {
-        case 'success':
-            toastEl.classList.add('toast-success');
-            toastTitle.textContent = 'Success';
-            toastIcon.className = 'fas fa-check-circle me-2';
-            break;
-        case 'warning':
-            toastEl.classList.add('toast-warning');
-            toastTitle.textContent = 'Warning';
-            toastIcon.className = 'fas fa-exclamation-triangle me-2';
-            break;
-        case 'error':
-        default:
-            toastEl.classList.add('toast-error');
-            toastTitle.textContent = 'Validation Error';
-            toastIcon.className = 'fas fa-exclamation-circle me-2';
-            break;
-    }
-    
-    // Set content
-    if (typeof message === 'object' && message !== null && !Array.isArray(message)) {
-        // Handle error object with multiple fields
-        let html = '<ul>';
-        let errorCount = 0;
-        for (const [field, errors] of Object.entries(message)) {
-            const fieldName = field === '__all__' ? 'Form' : field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            if (Array.isArray(errors)) {
-                errors.forEach(error => {
-                    html += `<li><strong>${fieldName}:</strong> ${error}</li>`;
-                    errorCount++;
-                });
-            } else {
-                html += `<li><strong>${fieldName}:</strong> ${errors}</li>`;
-                errorCount++;
-            }
-        }
-        html += '</ul>';
-        toastContent.innerHTML = html;
-        
-        // Update title to show count
-        if (errorCount > 1) {
-            toastTitle.textContent = `${errorCount} Validation Errors`;
-        }
-    } else if (Array.isArray(message)) {
-        // Handle array of errors
-        let html = '<ul>';
-        message.forEach(error => {
-            html += `<li>${error}</li>`;
-        });
-        html += '</ul>';
-        toastContent.innerHTML = html;
-    } else {
-        // Handle simple string message
-        toastContent.innerHTML = `<p>${message}</p>`;
-    }
-    
-    // Initialize and show toast with animation
-    const toast = new bootstrap.Toast(toastEl, {
-        autohide: autoHide,
-        delay: autoHide ? (type === 'success' ? 3000 : 6000) : 999999
-    });
-    
-    toast.show();
-    
-    // Add hiding class before actual hide for animation
-    toastEl.addEventListener('hide.bs.toast', function() {
-        toastEl.classList.add('hiding');
-    }, { once: true });
-}
-
-// Phone number validation - prevent letters
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the phone field using Django's template variable
-    const phoneField = document.getElementById('{{ form.phone_number.id_for_label }}');
-    if (phoneField) {
-        console.log('Phone field found:', phoneField);
-
-        phoneField.addEventListener('keypress', function(e) {
-            // Allow: backspace, delete, tab, escape, enter, and phone number characters
-            if (e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Tab' ||
-                e.key === 'Escape' || e.key === 'Enter' || e.key === 'ArrowLeft' ||
-                e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                return;
-            }
-
-            // Prevent input if it's not a number or phone formatting character
-            const allowedChars = /^[0-9\s\-\+\(\)\.]$/;
-            if (!allowedChars.test(e.key)) {
-                e.preventDefault();
-                return false;
-            }
-        });
-
-        phoneField.addEventListener('paste', function(e) {
-            e.preventDefault();
-            let pasteText = e.clipboardData.getData('text/plain');
-            // Only allow numbers and phone formatting characters
-            pasteText = pasteText.replace(/[^0-9\s\-\+\(\)\.]/g, '');
-            this.value = pasteText;
-        });
-
-        phoneField.addEventListener('input', function(e) {
-            // Remove any non-allowed characters as user types
-            let value = this.value;
-            let cleanValue = value.replace(/[^0-9\s\-\+\(\)\.]/g, '');
-            if (value !== cleanValue) {
-                this.value = cleanValue;
-            }
-        });
-
-        phoneField.addEventListener('focus', function() {
-            console.log('Phone field focused');
-        });
-
-        phoneField.addEventListener('keypress', function(e) {
-            console.log('Phone keypress:', e.key, 'Allowed:', /^[0-9\s\-\+\(\)\.]$/.test(e.key));
-        });
-    } else {
-        console.error('Phone field NOT found! Looking for {{ form.phone_number.id_for_label }}');
-    }
-});
-
-//Event listeners for email suggestion are now moved into DOMContentLoaded
-
-// Initialize form handlers when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Form validation on step navigation
-    const nextBtn = document.getElementById('nextBtn');
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
-            const currentStep = document.querySelector('.form-step.active');
-            if (!currentStep) return;
-            const stepNumber = currentStep.id.split('-')[1];
-
-    let errors = {};
-    let hasErrors = false;
-
-    // Define required fields for each step
-    const step1RequiredFields = [
-        'id_username', 'id_email', 'id_confirm_email',
-        'id_password1', 'id_password2'
-    ];
-
-    const step2RequiredFields = [
-        'id_first_name', 'id_last_name'
-    ];
-
-    const step3RequiredFields = [
-        'id_date_of_birth', 'id_gender', 'id_nationality'
-    ];
-
-    const step4RequiredFields = [
-        'id_passport_number', 'id_passport_issue_date', 'id_passport_expiry_date',
-        'id_highest_education_level', 'id_graduation_year', 'id_field_of_study'
-    ];
-
-    const step5RequiredFields = [];
-
-    let requiredFields = [];
-    switch(stepNumber) {
-        case '1': requiredFields = step1RequiredFields; break;
-        case '2': requiredFields = step2RequiredFields; break;
-        case '3': requiredFields = step3RequiredFields; break;
-        case '4': requiredFields = step4RequiredFields; break;
-        case '5': requiredFields = step5RequiredFields; break;
-    }
-
-    // Clear previous validation states
-    requiredFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            field.classList.remove('is-invalid', 'is-valid');
-        }
-    });
-
-    // Validate required fields
-    requiredFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            if (!field.value.trim()) {
-                const label = field.closest('.mb-3')?.querySelector('label')?.textContent.replace('*', '').trim() || field.name;
-                errors[label] = ['This field is required.'];
-                hasErrors = true;
-                field.classList.add('is-invalid');
-            } else {
-                field.classList.add('is-valid');
-            }
-        }
-    });
-
-    // Additional validation for specific fields
-    if (stepNumber === '1') {
-        // Validate email match
-        const email = document.getElementById('id_email');
-        const confirmEmail = document.getElementById('id_confirm_email');
-        if (email && confirmEmail && email.value && confirmEmail.value && email.value !== confirmEmail.value) {
-            errors['Confirm Email'] = ['Emails do not match.'];
-            confirmEmail.classList.add('is-invalid');
-            hasErrors = true;
-        }
-
-        // Validate password match
-        const password1 = document.getElementById('id_password1');
-        const password2 = document.getElementById('id_password2');
-        if (password1 && password2 && password1.value && password2.value && password1.value !== password2.value) {
-            errors['Confirm Password'] = ['Passwords do not match.'];
-            password2.classList.add('is-invalid');
-            hasErrors = true;
-        }
-    }
-
-    if (stepNumber === '3') {
-        // Validate date of birth
-        const dob = document.getElementById('id_date_of_birth');
-        if (dob && dob.value) {
-            const birthDate = new Date(dob.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            if (birthDate >= today) {
-                errors['Date of Birth'] = ['Date of birth must be in the past.'];
-                dob.classList.add('is-invalid');
-                hasErrors = true;
-            }
-
-            if (birthDate.getFullYear() < 1900) {
-                errors['Date of Birth'] = ['Please enter a valid date of birth.'];
-                dob.classList.add('is-invalid');
-                hasErrors = true;
-            }
-        }
-    }
-
-    if (stepNumber === '4') {
-        // Validate passport match
-        const passport = document.getElementById('id_passport_number');
-        const confirmPassport = document.getElementById('id_confirm_passport_number');
-        if (passport && confirmPassport && passport.value && confirmPassport.value && passport.value !== confirmPassport.value) {
-            errors['Confirm Passport'] = ['Passport numbers do not match.'];
-            confirmPassport.classList.add('is-invalid');
-            hasErrors = true;
-        }
-
-        // Validate passport dates
-        const issueDate = document.getElementById('id_passport_issue_date');
-        const expiryDate = document.getElementById('id_passport_expiry_date');
-        if (issueDate && expiryDate && issueDate.value && expiryDate.value) {
-            const issue = new Date(issueDate.value);
-            const expiry = new Date(expiryDate.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            if (expiry <= issue) {
-                errors['Passport Expiry Date'] = ['Expiry date must be after issue date.'];
-                expiryDate.classList.add('is-invalid');
-                hasErrors = true;
-            }
-
-            if (expiry < today) {
-                errors['Passport Expiry Date'] = ['Passport must not be expired.'];
-                expiryDate.classList.add('is-invalid');
-                hasErrors = true;
-            }
-        }
-    }
-
-    if (hasErrors) {
-        showRegisterToast(errors, 'error', true);
-        // Scroll to first invalid field
-        const firstInvalid = currentStep.querySelector('.is-invalid');
-        if (firstInvalid) {
-            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            firstInvalid.focus();
-        }
-        return;
-    }
-
-    // Save form data before proceeding
-    saveFormData();
-
-    // Move to next step or submit
-    if (stepNumber < 5) {
-        const nextStepNum = parseInt(stepNumber) + 1;
-        currentStep.classList.remove('active');
-        document.getElementById(`step-${nextStepNum}`).classList.add('active');
-        document.getElementById('stepIndicator').textContent = `Step ${nextStepNum} of 5`;
-        document.getElementById('prevBtn').style.display = 'inline-block';
-
-        // Update progress bar
-        const progressBar = document.querySelector('.progress-bar');
-        if (progressBar) {
-            progressBar.style.width = `${nextStepNum * 20}%`;
-            // Add animation class
-            progressBar.classList.add('progress-bar-animated');
-            setTimeout(() => progressBar.classList.remove('progress-bar-animated'), 1000);
-        }
-
-        // Update step labels
-        document.querySelectorAll('.step-label').forEach(label => {
-            const labelStep = parseInt(label.dataset.step);
-            if (labelStep === nextStepNum) {
-                label.classList.remove('text-muted', 'text-success');
-                label.classList.add('text-primary', 'fw-bold');
-            } else if (labelStep < nextStepNum) {
-                label.classList.remove('text-muted', 'text-primary', 'fw-bold');
-                label.classList.add('text-success');
-            } else {
-                label.classList.remove('text-primary', 'text-success', 'fw-bold');
-                label.classList.add('text-muted');
-            }
-        });
-
-        if (nextStepNum === 5) {
-            this.textContent = 'Submit';
-        }
-    } else {
-        // Submit form
-        document.getElementById('registerModalForm').submit();
-    }
-});
-    }
-
-    // Previous button handler
-    const prevBtn = document.getElementById('prevBtn');
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function() {
-            const currentStep = document.querySelector('.form-step.active');
-            if (!currentStep) return;
-            const stepNumber = currentStep.id.split('-')[1];
-
-            if (stepNumber > 1) {
-                const prevStepNum = parseInt(stepNumber) - 1;
-                currentStep.classList.remove('active');
-                document.getElementById(`step-${prevStepNum}`).classList.add('active');
-                document.getElementById('stepIndicator').textContent = `Step ${prevStepNum} of 5`;
-                document.getElementById('nextBtn').textContent = 'Next';
-
-                // Update progress bar
-                const progressBar = document.querySelector('.progress-bar');
-                if (progressBar) {
-                    progressBar.style.width = `${prevStepNum * 20}%`;
-                }
-
-                // Update step labels
-                document.querySelectorAll('.step-label').forEach(label => {
-                    const labelStep = parseInt(label.dataset.step);
-                    if (labelStep === prevStepNum) {
-                        label.classList.remove('text-muted', 'text-success');
-                        label.classList.add('text-primary', 'fw-bold');
-                    } else if (labelStep < prevStepNum) {
-                        label.classList.remove('text-muted', 'text-primary', 'fw-bold');
-                        label.classList.add('text-success');
-                    } else {
-                        label.classList.remove('text-primary', 'text-success', 'fw-bold');
-                        label.classList.add('text-muted');
-                    }
-                });
-
-                if (prevStepNum === 1) {
-                    this.style.display = 'none';
-                }
-            }
-        });
-    }
-
-    // Initialize any email-related handlers
-    const emailConfirmField = document.getElementById('id_confirm_email');
-    if (emailConfirmField) {
-        emailConfirmField.addEventListener('blur', function() {
-            setTimeout(() => {
-                const suggestionDiv = document.getElementById('emailSuggestion');
-                if (suggestionDiv) {
-                    suggestionDiv.style.display = 'none';
-                }
-            }, 150);
-        });
-    }
-
-    const useEmailSuggestionBtn = document.getElementById('useEmailSuggestion');
-    if (useEmailSuggestionBtn) {
-        useEmailSuggestionBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const emailField = document.getElementById('id_email');
-            const confirmEmailField = document.getElementById('id_confirm_email');
-            const suggestionDiv = document.getElementById('emailSuggestion');
-
-            if (emailField && confirmEmailField) {
-                confirmEmailField.value = emailField.value.trim();
-                confirmEmailField.classList.remove('is-invalid');
-                confirmEmailField.classList.add('is-valid');
-                if (suggestionDiv) {
-                    suggestionDiv.style.display = 'none';
-                }
-                confirmEmailField.focus();
-            }
-        });
-    }
-});
-
-</script>

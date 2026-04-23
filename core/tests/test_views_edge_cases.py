@@ -112,6 +112,25 @@ class ProfileViewEdgeCases(TestCase):
         self.client.login(username='testuser', password='TestPass123!')
         response = self.client.get(reverse('profile'))
         self.assertEqual(response.status_code, 200)
+
+    def test_profile_includes_completeness_context(self):
+        """Profile view exposes readiness metrics for the UI."""
+        self.client.login(username='testuser', password='TestPass123!')
+        response = self.client.get(reverse('profile'))
+        self.assertEqual(response.status_code, 200)
+        pc = response.context['profile_completeness']
+        self.assertIn('percent', pc)
+        self.assertIn('filled', pc)
+        self.assertIn('total', pc)
+        self.assertIn('missing', pc)
+        self.assertIn('more_missing', pc)
+        self.assertGreaterEqual(pc['percent'], 0)
+        self.assertLessEqual(pc['percent'], 100)
+        self.assertEqual(pc['total'], 18)
+        self.assertLessEqual(len(pc['missing']), 5)
+        if not pc['more_missing']:
+            self.assertEqual(pc['filled'] + len(pc['missing']), pc['total'])
+
         
     def test_profile_update_username_only(self):
         """Test updating only username"""
@@ -247,7 +266,7 @@ class CandidateEditEdgeCases(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             status=Candidate.DRAFT,
             program=program,
@@ -634,7 +653,7 @@ class DeleteCandidateEdgeCases(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             status=Candidate.DRAFT,
             program=program,

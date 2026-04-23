@@ -61,6 +61,9 @@ class AjaxEndpointTests(TestCase):
         
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
+        if not data.get('success'):
+            with open('test_errors_ajax.txt', 'w') as f:
+                f.write(str(data))
         self.assertTrue(data['success'])
         
     def test_ajax_login_failure(self):
@@ -87,14 +90,32 @@ class AjaxEndpointTests(TestCase):
                 'first_name': 'New',
                 'last_name': 'User',
                 'email': 'new@example.com',
+                'confirm_email': 'new@example.com',
                 'password1': 'NewPass123!',
-                'password2': 'NewPass123!'
+                'password2': 'NewPass123!',
+                'date_of_birth': '1995-01-01',
+                'gender': 'Male',
+                'nationality': 'Filipino',
+                'passport_number': 'AJAX123456',
+                'confirm_passport_number': 'AJAX123456',
+                'passport_issue_date': '2020-01-01',
+                'passport_expiry_date': '2030-01-01',
+                'highest_education_level': 'bachelor',
+                'graduation_year': '2015',
+                'field_of_study': 'Agronomy',
+                'phone_number': '09123456789',
+                'location': 'Test Location',
+                'smokes': 'Never',
+                'terms_accepted': 'on'
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
         
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
+        if not data.get('success'):
+            with open('test_errors_ajax.txt', 'w') as f:
+                f.write(str(data))
         self.assertTrue(data['success'])
         
         # User should be created
@@ -108,9 +129,23 @@ class AjaxEndpointTests(TestCase):
                 'username': 'testuser',  # Already exists
                 'first_name': 'Test',
                 'last_name': 'User',
-                'email': 'another@example.com',
-                'password1': 'TestPass123!',
-                'password2': 'TestPass123!'
+                'email': 'test2@example.com',
+                'confirm_email': 'test2@example.com',
+                'password1': 'NewPass123!',
+                'password2': 'NewPass123!',
+                'date_of_birth': '1995-01-01',
+                'gender': 'Male',
+                'nationality': 'Filipino',
+                'passport_number': 'AJAX1234567',
+                'confirm_passport_number': 'AJAX1234567',
+                'passport_issue_date': '2020-01-01',
+                'passport_expiry_date': '2030-01-01',
+                'highest_education_level': 'bachelor',
+                'graduation_year': '2015',
+                'field_of_study': 'Agronomy',
+                'phone_number': '09123456789',
+                'location': 'Test Location',
+                'smokes': 'Never'
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
@@ -130,7 +165,14 @@ class AjaxEndpointTests(TestCase):
         )
         
         # Should return JSON response
+        data = response.json()
+        if not data.get('success'):
+            with open('test_ajax_errors.txt', 'w') as f:
+                f.write(str(data))
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
+        if not data.get('success'):
+            with open('test_errors_ajax.txt', 'w') as f:
+                f.write(str(data))
         self.assertTrue(data['success'])
         self.assertIn('applications', data)

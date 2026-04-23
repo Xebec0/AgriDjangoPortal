@@ -99,9 +99,12 @@ def log_post_save(sender, instance, created, **kwargs):
     action = ActivityLog.ACTION_CREATE if created else ActivityLog.ACTION_UPDATE
     if not _activitylog_ready():
         return
+    user = get_request_user()
+    if user and not user.is_authenticated:
+        user = None
     try:
         ActivityLog.objects.create(
-            user=get_request_user(),
+            user=user,
             action_type=action,
             model_name=label,
             object_id=str(instance.pk),
@@ -125,9 +128,12 @@ def log_pre_delete(sender, instance, **kwargs):
     before = _serialize_instance(instance)
     if not _activitylog_ready():
         return
+    user = get_request_user()
+    if user and not user.is_authenticated:
+        user = None
     try:
         ActivityLog.objects.create(
-            user=get_request_user(),
+            user=user,
             action_type=ActivityLog.ACTION_DELETE,
             model_name=label,
             object_id=str(instance.pk),

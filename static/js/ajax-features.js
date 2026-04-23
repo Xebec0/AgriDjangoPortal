@@ -3,7 +3,7 @@
  * Provides asynchronous functionality for better user experience
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     setupUsernameAvailabilityCheck();
     setupAjaxFormSubmissions();
     setupApplicationStatusTracking();
@@ -17,14 +17,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function setupUsernameAvailabilityCheck() {
     // Only apply this to the registration form, not the login form
     const registerForm = document.getElementById('registerForm');
-    
+
     // If we're not on the registration page, don't set up username checking
     if (!registerForm) {
         return;
     }
-    
+
     const usernameField = document.getElementById('id_username');
-    
+
     if (usernameField) {
         // Create feedback element if it doesn't exist
         let feedbackElement = document.getElementById('username-feedback');
@@ -34,25 +34,25 @@ function setupUsernameAvailabilityCheck() {
             feedbackElement.className = 'mt-1 small';
             usernameField.parentNode.appendChild(feedbackElement);
         }
-        
+
         // Add debounced event listener
         let debounceTimer;
-        usernameField.addEventListener('input', function() {
+        usernameField.addEventListener('input', function () {
             const username = this.value.trim();
-            
+
             // Clear previous feedback while typing
             feedbackElement.innerHTML = '';
             feedbackElement.className = 'mt-1 small';
-            
+
             // Clear previous timer
             clearTimeout(debounceTimer);
-            
+
             // Only check if username is at least 3 characters
             if (username.length >= 3) {
                 feedbackElement.innerHTML = '<span class="text-muted"><i class="fas fa-spinner fa-spin"></i> Checking availability...</span>';
-                
+
                 // Set new timer to prevent too many requests
-                debounceTimer = setTimeout(function() {
+                debounceTimer = setTimeout(function () {
                     checkUsernameAvailability(username, feedbackElement);
                 }, 500);
             }
@@ -96,14 +96,14 @@ function setupAjaxFormSubmissions() {
     const staticRegisterForm = document.querySelector('form.register-form:not([id*="Modal"])');
 
     if (staticLoginForm) {
-        staticLoginForm.addEventListener('submit', function(e) {
+        staticLoginForm.addEventListener('submit', function (e) {
             e.preventDefault();
             submitFormWithAjax(this, '/api/ajax-login/');
         });
     }
 
     if (staticRegisterForm) {
-        staticRegisterForm.addEventListener('submit', function(e) {
+        staticRegisterForm.addEventListener('submit', function (e) {
             e.preventDefault();
             submitFormWithAjax(this, '/api/ajax-register/');
         });
@@ -119,11 +119,11 @@ function submitFormWithAjax(form, url) {
     const originalText = submitButton.innerHTML;
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    
+
     // Clear previous error messages
     const modalErrorContainer = document.getElementById('loginModalErrors');
     const formErrorContainer = document.getElementById('form-errors');
-    
+
     if (modalErrorContainer) {
         modalErrorContainer.innerHTML = '';
         modalErrorContainer.style.display = 'none';
@@ -132,15 +132,15 @@ function submitFormWithAjax(form, url) {
         formErrorContainer.innerHTML = '';
         formErrorContainer.style.display = 'none';
     }
-    
+
     // Reset any previous error states
     form.querySelectorAll('.is-invalid').forEach(field => {
         field.classList.remove('is-invalid');
     });
-    
+
     // Get CSRF token
     const csrfToken = getCookie('csrftoken');
-    
+
     // Submit the form
     fetch(url, {
         method: 'POST',
@@ -153,35 +153,35 @@ function submitFormWithAjax(form, url) {
         credentials: 'same-origin',
         mode: 'same-origin'
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Show success message
-            showToast('Success', data.message, 'success');
-            
-            // Redirect if specified
-            if (data.redirect) {
-                setTimeout(function() {
-                    window.location.href = data.redirect;
-                }, 1500);
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                showToast('Success', data.message, 'success');
+
+                // Redirect if specified
+                if (data.redirect) {
+                    setTimeout(function () {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                }
+            } else {
+                // Show error messages
+                displayFormErrors(form, data.errors);
+
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
             }
-        } else {
-            // Show error messages
-            displayFormErrors(form, data.errors);
-            
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+            showToast('Error', 'An error occurred. Please try again.', 'danger');
+
             // Reset button
             submitButton.disabled = false;
             submitButton.innerHTML = originalText;
-        }
-    })
-    .catch(error => {
-        console.error('Error submitting form:', error);
-        showToast('Error', 'An error occurred. Please try again.', 'danger');
-        
-        // Reset button
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalText;
-    });
+        });
 }
 
 /**
@@ -189,10 +189,10 @@ function submitFormWithAjax(form, url) {
  */
 function displayFormErrors(form, errors) {
     // Get the appropriate error container based on form type
-    let errorContainer = form.id === 'loginModalForm' ? 
-        document.getElementById('loginModalErrors') : 
+    let errorContainer = form.id === 'loginModalForm' ?
+        document.getElementById('loginModalErrors') :
         document.getElementById('form-errors');
-    
+
     // Create error container if it doesn't exist
     if (!errorContainer) {
         errorContainer = document.createElement('div');
@@ -200,10 +200,10 @@ function displayFormErrors(form, errors) {
         errorContainer.className = 'alert alert-danger';
         form.prepend(errorContainer);
     }
-    
+
     let errorList = document.createElement('ul');
     errorList.className = 'mb-0';
-    
+
     // Display non-field errors
     if (errors.__all__) {
         errors.__all__.forEach(error => {
@@ -212,7 +212,7 @@ function displayFormErrors(form, errors) {
             errorList.appendChild(li);
         });
     }
-    
+
     // Display field-specific errors
     for (const [field, fieldErrors] of Object.entries(errors)) {
         if (field !== '__all__') {
@@ -220,7 +220,7 @@ function displayFormErrors(form, errors) {
             const fieldElement = form.querySelector(`[name="${field}"]`);
             if (fieldElement) {
                 fieldElement.classList.add('is-invalid');
-                
+
                 // Display error message
                 const feedbackElement = fieldElement.parentNode.querySelector('.invalid-feedback');
                 if (feedbackElement) {
@@ -228,7 +228,7 @@ function displayFormErrors(form, errors) {
                     feedbackElement.style.display = 'block';
                 }
             }
-            
+
             // Add to the error list
             fieldErrors.forEach(error => {
                 let li = document.createElement('li');
@@ -237,12 +237,12 @@ function displayFormErrors(form, errors) {
             });
         }
     }
-    
+
     if (errorList.children.length > 0) {
         errorContainer.innerHTML = '';
         errorContainer.appendChild(errorList);
         errorContainer.style.display = 'block';
-        
+
         // Scroll to errors
         errorContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -255,9 +255,9 @@ function setupApplicationStatusTracking() {
     const applicationContainer = document.getElementById('user-applications');
     if (applicationContainer) {
         fetchAndUpdateApplications(applicationContainer);
-        
+
         // Refresh every 30 seconds
-        setInterval(function() {
+        setInterval(function () {
             fetchAndUpdateApplications(applicationContainer);
         }, 30000);
     }
@@ -286,10 +286,15 @@ function fetchAndUpdateApplications(container) {
  */
 function updateApplicationsUI(container, applications) {
     let html = '<div class="list-group">';
-    
+
     applications.forEach(app => {
         let statusClass = getStatusClass(app.status_code);
-        
+
+        const viewDetailsBtn = '<a href="/registrations/' + app.id + '/" class="btn btn-sm btn-outline-primary">View Details</a>';
+        const cancelBtn = app.status_code === 'pending' ?
+            '<a href="/registrations/' + app.id + '/cancel/" class="btn btn-sm btn-outline-danger">Cancel Application</a>' :
+            '';
+
         html += `
             <div class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
@@ -299,13 +304,13 @@ function updateApplicationsUI(container, applications) {
                 <p class="mb-1">Applied on: ${app.application_date}</p>
                 <small class="text-muted">Last updated: ${app.last_updated}</small>
                 <div class="mt-2">
-                    <a href="/registrations/${app.id}/" class="btn btn-sm btn-outline-primary">View Details</a>
-                    ${app.status_code === 'pending' ? `<a href="/registrations/${app.id}/cancel/" class="btn btn-sm btn-outline-danger">Cancel Application</a>` : ''}
+                    ${viewDetailsBtn}
+                    ${cancelBtn}
                 </div>
             </div>
         `;
     });
-    
+
     html += '</div>';
     container.innerHTML = html;
 }
@@ -314,7 +319,7 @@ function updateApplicationsUI(container, applications) {
  * Get Bootstrap class based on status code
  */
 function getStatusClass(statusCode) {
-    switch(statusCode) {
+    switch (statusCode) {
         case 'approved':
             return 'bg-success';
         case 'pending':
@@ -335,7 +340,7 @@ function setupNotificationRefresh() {
     const notificationDropdown = document.getElementById('notificationDropdown');
     if (notificationDropdown) {
         // Refresh notifications every 60 seconds
-        setInterval(function() {
+        setInterval(function () {
             refreshNotifications();
         }, 60000);
     }
@@ -348,7 +353,7 @@ function refreshNotifications() {
     const notificationList = document.getElementById('notificationList');
     const notificationBadge = document.querySelector('#notificationDropdown .badge');
     const dropdownEl = document.getElementById('notificationDropdown');
-    
+
     if (notificationList) {
         fetch('/api/notifications/')
             .then(response => response.json())
@@ -362,7 +367,7 @@ function refreshNotifications() {
                 } else if (notificationBadge) {
                     notificationBadge.style.display = 'none';
                 }
-                
+
                 // Only update the dropdown content if it's not currently open
                 if (!dropdownEl || !dropdownEl.classList.contains('show')) {
                     // We don't update the content here to avoid disrupting user interaction
@@ -387,7 +392,7 @@ function showToast(title, message, type) {
         toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
         document.body.appendChild(toastContainer);
     }
-    
+
     // Create the toast
     const toastId = 'toast-' + Date.now();
     const toast = document.createElement('div');
@@ -396,7 +401,7 @@ function showToast(title, message, type) {
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
     toast.setAttribute('aria-atomic', 'true');
-    
+
     toast.innerHTML = `
         <div class="toast-header bg-${type} text-white">
             <strong class="me-auto">${title}</strong>
@@ -407,15 +412,15 @@ function showToast(title, message, type) {
             ${message}
         </div>
     `;
-    
+
     toastContainer.appendChild(toast);
-    
+
     // Show the toast
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
-    
+
     // Remove toast after it's hidden
-    toast.addEventListener('hidden.bs.toast', function() {
+    toast.addEventListener('hidden.bs.toast', function () {
         toast.remove();
     });
 }

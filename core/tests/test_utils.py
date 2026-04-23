@@ -79,7 +79,7 @@ class UtilityFunctionTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             created_by=self.user
         )
@@ -106,7 +106,7 @@ class UtilityFunctionTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             created_by=self.user,
             tor=self.test_pdf
@@ -139,7 +139,7 @@ class UtilityFunctionTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             created_by=self.user
         )
@@ -168,7 +168,7 @@ class UtilityFunctionTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             created_by=self.user
         )
@@ -200,7 +200,7 @@ class UtilityFunctionTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             created_by=self.user
         )

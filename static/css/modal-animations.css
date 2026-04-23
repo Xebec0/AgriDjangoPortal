@@ -70,7 +70,7 @@
 }
 
 .modal-header:hover {
-    background-position: center !important;
+    background-position: center;
 }
 
 /* Modal animations for Agrostudies Registration System */
@@ -84,26 +84,66 @@
     transform: translate(0, 0);
 }
 
-/* Touch-friendly modals - easier to dismiss */
+/* Prevent double scrollbar when any modal is open */
+body.modal-open {
+    overflow: hidden !important;
+}
+
+html:has(body.modal-open) {
+    overflow: hidden !important;
+}
+
+/* Touch-friendly modals — mobile-first base */
 .modal-header .btn-close {
     padding: 1rem;
     margin: -0.5rem -0.5rem -0.5rem auto;
     font-size: 1.25rem;
 }
 
-/* Enhanced mobile responsiveness for modals */
-@media (max-width: 991px) {
-    .modal-dialog {
-        margin: 0.75rem;
-        max-width: calc(100% - 1.5rem);
-    }
-    
-    .modal-body {
-        padding: 1.25rem;
-    }
+/* --- MOBILE-FIRST MODAL RESPONSIVE --- */
+/* Base = small mobile (320px+) */
+.modal-dialog {
+    margin: 0.25rem;
+    max-width: calc(100% - 0.5rem);
 }
 
-@media (max-width: 767px) {
+.modal-body {
+    padding: 0.85rem;
+}
+
+.modal-header {
+    padding: 0.85rem 1rem;
+}
+
+.modal-footer {
+    padding: 0.75rem;
+    flex-direction: column;
+}
+
+.modal-footer .btn {
+    width: 100%;
+    margin: 0.25rem 0;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Prevent iOS zoom on form fields */
+.modal-body .form-control,
+.modal-body .form-select,
+.modal-body .input-group {
+    font-size: 16px;
+    min-height: 44px;
+    margin-bottom: 1rem;
+}
+
+.modal-body label {
+    margin-bottom: 0.5rem;
+}
+
+/* Small devices (576px+) */
+@media (min-width: 576px) {
     .modal-dialog {
         margin: 0.5rem;
         max-width: calc(100% - 1rem);
@@ -112,57 +152,53 @@
     .modal-body {
         padding: 1rem;
     }
-    
-    .modal-header {
-        padding: 0.85rem 1rem;
-    }
-    
+
     .modal-footer {
-        padding: 0.75rem;
+        flex-direction: row;
         flex-wrap: wrap;
         gap: 0.5rem;
     }
-    
+
     .modal-footer .btn {
+        width: auto;
         flex: 1;
         min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 }
 
-@media (max-width: 479px) {
+/* Tablets (768px+) */
+@media (min-width: 768px) {
     .modal-dialog {
-        margin: 0.25rem;
-        max-width: calc(100% - 0.5rem);
+        margin: 0.75rem;
+        max-width: calc(100% - 1.5rem);
     }
-    
+
     .modal-body {
-        padding: 0.85rem;
+        padding: 1.25rem;
     }
-    
-    .modal-footer {
-        flex-direction: column;
+
+    .modal-header {
+        padding: 1rem 1.25rem;
     }
-    
-    .modal-footer .btn {
-        width: 100%;
-        margin: 0.25rem 0;
-        min-height: 48px;
-    }
-    
-    /* Make form controls more touch-friendly */
+
     .modal-body .form-control,
     .modal-body .form-select,
     .modal-body .input-group {
-        font-size: 16px; /* Prevents iOS zoom */
-        min-height: 44px;
-        margin-bottom: 1rem;
+        font-size: inherit;
+        min-height: auto;
+        margin-bottom: 0.75rem;
     }
-    
-    .modal-body label {
-        margin-bottom: 0.5rem;
+}
+
+/* Desktop (992px+) */
+@media (min-width: 992px) {
+    .modal-dialog {
+        margin: 1.75rem auto;
+        max-width: 500px;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
     }
 }
 
@@ -215,19 +251,16 @@
 
 /* Animated gradient backgrounds for headers - disabled */
 .modal-header.bg-gradient-primary-to-secondary {
-    background-size: 100% 100% !important;
-    background: #1e7e34 !important;
-    transition: none !important;
+    background-size: 100% 100%;
+    background: #1e7e34;
 }
 
 .modal-header.bg-gradient-success-to-secondary {
-    background-size: 100% 100% !important;
-    background: #28a745 !important;
-    transition: none !important;
+    background-size: 100% 100%;
+    background: #28a745;
 }
 
 .modal-header.bg-gradient-danger-to-dark {
-    background-size: 100% 100% !important;
-    background: #dc3545 !important;
-    transition: none !important;
+    background-size: 100% 100%;
+    background: #dc3545;
 }

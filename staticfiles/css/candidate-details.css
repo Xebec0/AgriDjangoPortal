@@ -657,3 +657,287 @@
         padding: 0.75rem 0.5rem;
     }
 }
+
+/* Compact Documents Grid Styles */
+.documents-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.doc-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 120px;
+    text-align: center;
+}
+
+.doc-card:hover {
+    border-color: #20c997;
+    box-shadow: 0 6px 12px rgba(40, 167, 69, 0.2);
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.doc-card.doc-missing {
+    border-color: #dee2e6;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    opacity: 0.6;
+}
+
+.doc-card.doc-missing:hover {
+    border-color: #dee2e6;
+    box-shadow: none;
+    transform: none;
+    opacity: 0.6;
+}
+
+.doc-icon {
+    font-size: 2rem;
+    color: #28a745;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.doc-card:hover .doc-icon {
+    font-size: 2.3rem;
+    color: #20c997;
+    transform: scale(1.1);
+}
+
+.doc-card.doc-missing .doc-icon {
+    color: #adb5bd;
+}
+
+.doc-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.doc-card.doc-missing .doc-name {
+    color: #6c757d;
+}
+
+.doc-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #28a745;
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.doc-link:hover {
+    background: #218838;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.doc-status {
+    color: #adb5bd;
+    font-size: 1.5rem;
+}
+
+/* Responsive design for documents */
+@media (max-width: 1024px) {
+    .documents-compact-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .doc-card {
+        padding: 0.8rem;
+        min-height: 110px;
+    }
+    
+    .doc-icon {
+        font-size: 1.8rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .doc-name {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .documents-compact-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.7rem;
+    }
+    
+    .doc-card {
+        padding: 0.7rem;
+        min-height: 100px;
+    }
+    
+    .doc-icon {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .doc-name {
+        font-size: 0.7rem;
+        margin-bottom: 0.35rem;
+    }
+    
+    .doc-link {\r
+        width: 28px;\r
+        height: 28px;\r
+        font-size: 0.8rem;\r
+    }\r
+}\r
+\r
+@media (max-width: 480px) {\r
+    .documents-compact-grid {\r
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));\r
+        gap: 0.6rem;\r
+    }\r
+    \r
+    .doc-card {\r
+        padding: 0.6rem;\r
+        min-height: 90px;\r
+    }\r
+    \r
+    .doc-icon {\r
+        font-size: 1.4rem;\r
+        margin-bottom: 0.25rem;\r
+    }\r
+    \r
+    .doc-name {\r
+        font-size: 0.65rem;\r
+        margin-bottom: 0.3rem;\r
+    }\r
+    \r
+    .doc-link {\r
+        width: 26px;\r
+        height: 26px;\r
+        font-size: 0.75rem;\r
+    }\r
+    \r
+    .doc-card:hover .doc-icon {\r
+        font-size: 1.5rem;\r
+    }\r
+}\r
+\r
+/* --- View + Download action row inside doc-card --- */\r
+.doc-actions-row {\r
+    display: flex;\r
+    align-items: center;\r
+    justify-content: center;\r
+    gap: 0.4rem;\r
+    margin-top: 0.25rem;\r
+}\r
+\r
+/* View button – eye icon, blue circle */\r
+.doc-view-btn {\r
+    display: inline-flex;\r
+    align-items: center;\r
+    justify-content: center;\r
+    width: 32px;\r
+    height: 32px;\r
+    background: #3b82f6;\r
+    color: #fff;\r
+    border: none;\r
+    border-radius: 50%;\r
+    font-size: 0.85rem;\r
+    cursor: pointer;\r
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;\r
+    padding: 0;\r
+    flex-shrink: 0;\r
+}\r
+\r
+.doc-view-btn:hover {\r
+    background: #2563eb;\r
+    transform: scale(1.15);\r
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.35);\r
+}\r
+    .doc-link {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .documents-compact-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 0.6rem;
+    }
+
+    .doc-card {
+        padding: 0.6rem;
+        min-height: 90px;
+    }
+
+    .doc-icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .doc-name {
+        font-size: 0.65rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .doc-link {
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
+    }
+
+    .doc-card:hover .doc-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- View + Download action row inside doc-card --- */
+.doc-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+}
+
+/* View button - eye icon, blue circle */
+.doc-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.doc-view-btn:hover {
+    background: #2563eb;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.35);
+}

@@ -9,6 +9,7 @@ urlpatterns = [
     # Authentication and profile
     path('', views.index, name='index'),
     path('auth-required/', views.auth_required, name='auth_required'),
+    path('verify-email/resend/', views.resend_verification, name='resend_verification'),
     path('verify-email/<str:token>/', views.verify_email, name='verify_email'),
     path('register/', views.register, name='register'),
     path('register/social/', views.social_register, name='social_register'),
@@ -21,6 +22,9 @@ urlpatterns = [
     # OAuth URLs
     path('auth/<str:provider>/initiate/', views.oauth_initiate, name='oauth_initiate'),
     path('auth/<str:provider>/callback/', views.oauth_callback, name='oauth_callback'),
+    path('auth/set-password/', views.oauth_set_password, name='oauth_set_password'),
+    path('auth/verify-code/', views.oauth_verify_code, name='oauth_verify_code'),
+    path('auth/resend-code/', views.oauth_resend_code, name='oauth_resend_code'),
     
     # Password Reset URLs
     path('password_reset/', views.custom_password_reset, name='password_reset'),

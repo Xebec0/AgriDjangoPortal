@@ -76,3 +76,46 @@ class RequestContextMiddleware(MiddlewareMixin):
             # Always clear thread locals after response to avoid leaks
             set_request_context(None, None, None)
         return response
+
+
+class SecurityHeadersMiddleware(MiddlewareMixin):
+    """Add manual security headers like Content-Security-Policy."""
+
+    def process_response(self, request, response):
+        # Start in Report-Only mode to avoid breaking things
+        # Basic CSP: Allow self, Google Fonts, FontAwesome, BootStrap, and 'unsafe-inline' for existing JS
+        csp_policy = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://accounts.google.com https://www.google.com; "
+            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
+            "img-src 'self' data: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com *.google.com *.googleusercontent.com; "
+            "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; "
+            "frame-src 'self' https://www.google.com https://accounts.google.com; "
+            "connect-src 'self' https://*.google.com;"
+        )
+
+        # Use Content-Security-Policy-Report-Only for safety
+        # This will log violations to the console but NOT block anything
+        response['Content-Security-Policy-Report-Only'] = csp_policy
+        return response
+        try:
+            return self.get_response(request)
+        except Exception as e:
+            path = request.path
+            import logging
+            logger = logging.getLogger(__name__)
+            
+            # Catch noise paths (DJDT often crashes on scanner hits)
+            if '/__debug__/' in path:
+                logger.warning("ScannerHardeningMiddleware: Caught exception in debug path %s: %s", path, e)
+                from django.http import HttpResponseBadRequest
+                return HttpResponseBadRequest("Bad Request: Invalid debug API call.")
+                
+            # Catch known RuntimeError from Django's APPEND_SLASH if it somehow bypassed the above
+            if isinstance(e, RuntimeError) and "trailing slash" in str(e):
+                logger.warning("ScannerHardeningMiddleware: Caught RuntimeError for %s: %s", path, e)
+                from django.http import HttpResponseBadRequest
+                return HttpResponseBadRequest("Bad Request: POST requests must include a trailing slash.")
+                
+            # Re-raise anything truly unexpected
+            raise e

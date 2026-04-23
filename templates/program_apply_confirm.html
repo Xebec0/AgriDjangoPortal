@@ -1,980 +1,2462 @@
 {% extends 'base.html' %}
 
+
+
 {% block title %}Confirm Application - AgroStudies{% endblock %}
 
+
+
 {% block extra_css %}
+
 <style>
+
+    /* ══════════════════════════════════════════════
+
+       AgroStudies Nature-Inspired Color Palette
+
+       ══════════════════════════════════════════════
+
+       Primary:   #2d6a4f  (Deep Forest Green)
+
+       Accent:    #40916c  (Sage Green)
+
+       Dark:      #1b4332  (Dark Forest)
+
+       Light BG:  #f0f7f4  (Mint Cream)
+
+       Underline: #b7e4c7  (Soft Sage)
+
+       Label:     #5c4033  (Warm Brown)
+
+       Divider:   #e8e0d8  (Warm Neutral)
+
+       Missing:   #c0392b  (Terra Cotta Red)
+
+       ══════════════════════════════════════════════ */
+
+
+
+    /* Mobile-first: base = 320px+ */
+
     .info-section {
-        border-bottom: 1px solid #eee;
-        padding-bottom: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .info-section:last-child {
-        border-bottom: none;
-    }
-    
-    .info-section-title {
-        margin-bottom: 1rem;
-        color: #0275d8;
-        font-weight: 600;
-    }
-    
-    .info-row {
-        display: flex;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #f8f9fa;
-    }
-    
-    .info-label {
-        font-weight: 600;
-        min-width: 200px;
-        color: #495057;
-    }
-    
-    .info-value {
-        flex: 1;
-        color: #212529;
-    }
-    
-    .missing-info {
-        color: #dc3545;
-        font-style: italic;
-    }
-    
-    .program-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 10px;
-        padding: 2rem;
-        margin-bottom: 2rem;
+
+        border-bottom: 1px solid #e8e0d8;
+
+        padding-bottom: 1.25rem;
+
+        margin-bottom: 1.25rem;
+
     }
 
-    /* Inline Editing Styles */
+
+
+    .info-section:last-child {
+
+        border-bottom: none;
+
+    }
+
+
+
+    .info-section-title {
+
+        margin-bottom: 1rem;
+
+        color: #2d6a4f;
+
+        font-weight: 600;
+
+        border-bottom: 2px solid #b7e4c7;
+
+        padding-bottom: 0.5rem;
+
+    }
+
+
+
+    /* Mobile: single column grid */
+
+    .info-grid {
+
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+    }
+
+
+
+    .grid-full-width {
+
+        grid-column: span 1;
+
+    }
+
+
+
+    /* Mobile: stack label above value */
+
+    .info-row {
+
+        display: flex;
+
+        flex-direction: column;
+
+        padding: 0.5rem 0;
+
+        border-bottom: 1px solid #f0ebe5;
+
+        align-items: stretch;
+
+        gap: 0.15rem;
+
+    }
+
+
+
+    .info-label {
+
+        font-weight: 600;
+
+        min-width: 0;
+
+        color: #5c4033;
+
+        font-size: 0.85rem;
+
+    }
+
+
+
+    .info-value {
+
+        flex: 1;
+
+        color: #2b2b2b;
+
+        font-size: 0.95rem;
+
+    }
+
+
+
+    .missing-info {
+
+        color: #c0392b;
+
+        font-style: italic;
+
+    }
+
+
+
+    /* Tablets (768px+) — side-by-side layout */
+
+    @media (min-width: 768px) {
+
+        .info-row {
+
+            flex-direction: row;
+
+            align-items: flex-start;
+
+            gap: 0;
+
+        }
+
+
+
+        .info-label {
+
+            min-width: 160px;
+
+            font-size: 0.95rem;
+
+        }
+
+    }
+
+
+
+    /* Desktop (992px+) — 2-column grid */
+
+    @media (min-width: 992px) {
+
+        .info-grid {
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 0 2.5rem;
+
+        }
+
+
+
+        .grid-full-width {
+
+            grid-column: span 2;
+
+        }
+
+    }
+
+
+
+    /* ── Program Header Card ── */
+
+    .program-card {
+
+        background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+
+        color: white;
+
+        border-radius: 10px;
+
+        padding: 1.25rem;
+
+        margin-bottom: 1.5rem;
+
+    }
+
+
+
+    @media (min-width: 768px) {
+
+        .program-card {
+
+            padding: 1.5rem 2rem;
+
+        }
+
+    }
+
+
+
+    /* ── Scoped Bootstrap Overrides (Agro palette) ── */
+
+    .card-header.bg-primary {
+
+        background-color: #2d6a4f !important;
+
+        border-bottom: 2px solid #1b4332;
+
+    }
+
+
+
+    .btn-outline-primary {
+
+        color: #2d6a4f !important;
+
+        border-color: #2d6a4f !important;
+
+    }
+
+    .btn-outline-primary:hover,
+
+    .btn-outline-primary:focus {
+
+        background-color: #2d6a4f !important;
+
+        border-color: #2d6a4f !important;
+
+        color: #fff !important;
+
+    }
+
+
+
+    .btn-primary {
+
+        background-color: #2d6a4f !important;
+
+        border-color: #2d6a4f !important;
+
+    }
+
+    .btn-primary:hover,
+
+    .btn-primary:focus {
+
+        background-color: #245c43 !important;
+
+        border-color: #1b4332 !important;
+
+    }
+
+
+
+    .btn-success {
+
+        background-color: #40916c !important;
+
+        border-color: #40916c !important;
+
+    }
+
+    .btn-success:hover,
+
+    .btn-success:focus {
+
+        background-color: #2d6a4f !important;
+
+        border-color: #2d6a4f !important;
+
+    }
+
+
+
+    .btn-secondary {
+
+        background-color: #6b5b4f !important;
+
+        border-color: #6b5b4f !important;
+
+    }
+
+    .btn-secondary:hover,
+
+    .btn-secondary:focus {
+
+        background-color: #5c4033 !important;
+
+        border-color: #5c4033 !important;
+
+    }
+
+
+
+    .btn-outline-success {
+
+        color: #40916c !important;
+
+        border-color: #40916c !important;
+
+    }
+
+    .btn-outline-success:hover,
+
+    .btn-outline-success:focus {
+
+        background-color: #40916c !important;
+
+        color: #fff !important;
+
+    }
+
+
+
+    .badge.bg-success {
+
+        background-color: #40916c !important;
+
+    }
+
+
+
+    .badge.bg-warning {
+
+        background-color: #d4a24e !important;
+
+        color: #3d2e17 !important;
+
+    }
+
+
+
+    .badge.bg-danger {
+
+        background-color: #c0392b !important;
+
+    }
+
+
+
+    .badge.bg-info {
+
+        background-color: #52796f !important;
+
+        color: #fff !important;
+
+    }
+
+
+
+    .alert-info {
+
+        background-color: #f0f7f4 !important;
+
+        border-color: #b7e4c7 !important;
+
+        color: #1b4332 !important;
+
+    }
+
+
+
+    .alert-warning {
+
+        background-color: #fdf6ec !important;
+
+        border-color: #e8d5a8 !important;
+
+        color: #5c4033 !important;
+
+    }
+
+
+
+    .form-control:focus,
+
+    .form-select:focus {
+
+        border-color: #40916c !important;
+
+        box-shadow: 0 0 0 0.2rem rgba(45, 106, 79, 0.2) !important;
+
+    }
+
+
+
+    .form-check-input:checked {
+
+        background-color: #2d6a4f !important;
+
+        border-color: #2d6a4f !important;
+
+    }
+
+
+
+    /* ── Page title accent ── */
+
+    .container > .d-flex > h1 {
+
+        color: #1b4332;
+
+    }
+
+
+
+    /* ── Card border accent ── */
+
+    .card.shadow {
+
+        border: 1px solid #d8f3dc;
+
+    }
+
+
+
+    /* ── Crossfade animations ── */
+
+    @keyframes editFadeSlideIn {
+
+        from { opacity: 0; transform: translateY(10px); }
+
+        to   { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    @keyframes editRowHighlight {
+
+        from { background-color: transparent; }
+
+        to   { background-color: #ffffff; }
+
+    }
+
+
+
+    @keyframes editBtnFadeIn {
+
+        from { opacity: 0; transform: translateY(6px); }
+
+        to   { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    /* --- Read → Edit transition --- */
+
     .edit-mode .display-value {
+
         display: none !important;
+
     }
+
+
+
     .edit-mode .edit-input {
+
         display: block !important;
+
+        animation: editFadeSlideIn 0.32s ease forwards;
+
     }
+
+
+
     .edit-mode .info-row {
-        background-color: #fff9db;
+
         border-radius: 4px;
-        transition: background-color 0.3s ease;
+
+        animation: editRowHighlight 0.35s ease forwards;
+
     }
+
+
+
+    .edit-mode .info-section {
+
+        animation: editFadeSlideIn 0.35s ease forwards;
+
+    }
+
+
+
+    /* Stagger sections for cascading effect */
+
+    .edit-mode .info-section:nth-child(1) { animation-delay: 0s; }
+
+    .edit-mode .info-section:nth-child(2) { animation-delay: 0.06s; }
+
+    .edit-mode .info-section:nth-child(3) { animation-delay: 0.12s; }
+
+    .edit-mode .info-section:nth-child(4) { animation-delay: 0.18s; }
+
+    .edit-mode .info-section:nth-child(5) { animation-delay: 0.24s; }
+
+    .edit-mode .info-section:nth-child(6) { animation-delay: 0.30s; }
+
+
+
+    /* --- Button swap --- */
+
     .save-controls {
+
         display: none;
+
     }
+
+
+
     .edit-mode .save-controls {
+
         display: flex !important;
+
+        animation: editBtnFadeIn 0.3s ease 0.1s both;
+
     }
+
+
+
     .edit-mode .edit-controls {
+
         display: none !important;
+
     }
+
+
+
+    /* --- Reduced motion --- */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .edit-mode .edit-input,
+
+        .edit-mode .info-row,
+
+        .edit-mode .info-section,
+
+        .edit-mode .save-controls {
+
+            animation: none !important;
+
+        }
+
+        .edit-mode .info-row {
+
+            background-color: #ffffff;
+
+        }
+
+    }
+
+
+
+    /* Mobile header stacking */
+
+    @media (max-width: 575.98px) {
+
+        .d-flex.justify-content-between.align-items-center.mb-4 {
+
+            flex-direction: column;
+
+            gap: 0.75rem;
+
+            text-align: center;
+
+        }
+
+    }
+
 </style>
+
 {% endblock %}
+
+
 
 {% block content %}
+
 <div class="container">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <h1 class="h3">Confirm Your Application</h1>
+
         <a href="{% url 'program_detail' program.id %}" class="btn btn-secondary">
+
             <i class="fas fa-arrow-left"></i> Back to Program
+
         </a>
+
     </div>
+
+
 
     <!-- Program Information -->
+
     <div class="program-card shadow">
-        <h3 class="mb-3"><i class="fas fa-seedling me-2"></i>{{ program.title }}</h3>
-        <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i><strong>Location:</strong> {{ program.location }}</p>
-        <p class="mb-2"><i class="fas fa-calendar-alt me-2"></i><strong>Start Date:</strong> {{ program.start_date|date:"F d, Y" }}</p>
-        <p class="mb-0"><i class="fas fa-users me-2"></i><strong>Available Slots:</strong> {{ program.capacity }}</p>
+
+        <h3 class="h4 mb-3"><i class="fas fa-seedling me-2 text-success"></i>{{ program.title }}</h3>
+
+        <div class="d-flex flex-wrap gap-x-4 gap-y-2 text-light">
+
+            <div class="me-4"><i class="fas fa-map-marker-alt me-2"></i><strong>Location:</strong> {{ program.location }}</div>
+
+            <div class="me-4"><i class="fas fa-calendar-alt me-2"></i><strong>Start Date:</strong> {{ program.start_date|date:"F d, Y" }}</div>
+
+            <div><i class="fas fa-users me-2"></i><strong>Available Slots:</strong> {{ program.capacity }}</div>
+
+        </div>
+
     </div>
+
+
 
     <div class="card shadow">
+
         <div class="card-header bg-primary text-white">
+
             <h5 class="mb-0"><i class="fas fa-user-check me-2"></i>Review Your Information</h5>
+
         </div>
+
         <div class="card-body">
+
             {% if missing_fields %}
+
             <div class="alert alert-warning">
+
                 <i class="fas fa-exclamation-triangle me-2"></i>
+
                 <strong>Missing Information:</strong> The following fields are not yet provided: <strong>{{ missing_fields|join:", " }}</strong>.
+
                 You can still submit your application, but please complete these fields as soon as possible.
+
                 Click the "Edit Information" button below to update your details.
+
             </div>
+
             {% endif %}
+
             
+
             <div class="alert alert-info">
+
                 <i class="fas fa-info-circle me-2"></i>
+
                 <strong>Please review your information below.</strong> This data was collected from your profile. 
+
                 You can edit your information directly on this page using the "Edit Information" button.
+
             </div>
+
             
+
+
 
             <div id="inlineEditContainer">
+
                 <form id="inlineEditForm" enctype="multipart/form-data">
+
                     {% csrf_token %}
+
                     <input type="hidden" name="username" value="{{ user.username }}">
+
                 
+
                 <!-- Personal Information Section -->
+
                 <div class="info-section">
+
                     <h4 class="info-section-title">
+
                         <i class="fas fa-user me-2"></i> Personal Information
+
                     </h4>
+
+                    <div class="info-grid">
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Full Name:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">{{ user.first_name }} {% if profile.middle_initial %}{{ profile.middle_initial }}. {% endif %}{{ user.last_name }}</span>
+
                             <div class="edit-input d-none">
+
                                 <div class="row g-2">
+
                                     <div class="col-sm-5"><input type="text" name="first_name" class="form-control form-control-sm" value="{{ user.first_name }}" placeholder="First Name"></div>
+
                                     <div class="col-sm-2"><input type="text" name="middle_initial" class="form-control form-control-sm" value="{{ profile.middle_initial }}" placeholder="M.I."></div>
+
                                     <div class="col-sm-5"><input type="text" name="last_name" class="form-control form-control-sm" value="{{ user.last_name }}" placeholder="Last Name"></div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Email:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">{{ user.email }}</span>
+
                             <div class="edit-input d-none">
+
                                 <input type="email" name="email" class="form-control form-control-sm" value="{{ user.email }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Mobile Number:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.phone_number %}
+
                                     {{ profile.phone_number }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="phone_number" class="form-control form-control-sm" value="{{ profile.phone_number }}" placeholder="e.g., +63 912 345 6789">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Profile Picture:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.profile_image %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.profile_image.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="profile_image" class="form-control form-control-sm" accept="image/*">
+
                                     {% if profile.profile_image %}
+
                                         <a href="{{ profile.profile_image.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Date of Birth:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.date_of_birth %}
+
                                     {{ profile.date_of_birth|date:"F d, Y" }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="date" name="date_of_birth" class="form-control form-control-sm" value="{{ profile.date_of_birth|date:'Y-m-d' }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Country of Birth:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.country_of_birth %}
+
                                     {{ profile.country_of_birth }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="country_of_birth" class="form-control form-control-sm" value="{{ profile.country_of_birth }}">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
-                        <div class="info-label">Gender / Sex:</div>
+
+                        <div class="info-label">Gender:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.gender %}
+
                                     {{ profile.gender }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <select name="gender" class="form-select form-select-sm">
+
                                     <option value="">Select Gender</option>
+
                                     <option value="Male" {% if profile.gender == 'Male' %}selected{% endif %}>Male</option>
+
                                     <option value="Female" {% if profile.gender == 'Female' %}selected{% endif %}>Female</option>
+
                                 </select>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Nationality:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.nationality %}
+
                                     {{ profile.nationality }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="nationality" class="form-control form-control-sm" value="{{ profile.nationality }}" placeholder="e.g., Filipino">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
-                    <div class="info-row">
+
+                    <div class="info-row grid-full-width">
+
                         <div class="info-label">Address:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.address %}
+
                                     {{ profile.address|linebreaksbr }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <textarea name="address" class="form-control form-control-sm" rows="2">{{ profile.address }}</textarea>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Religion:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.religion %}
+
                                     {{ profile.religion }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="religion" class="form-control form-control-sm" value="{{ profile.religion }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
-                    <div class="info-row">
+
+                    <div class="info-row grid-full-width">
+
                         <div class="info-label">Parents:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.father_name %}Father: {{ profile.father_name }}<br>{% endif %}
+
                                 {% if profile.mother_name %}Mother: {{ profile.mother_name }}{% endif %}
+
                                 {% if not profile.father_name and not profile.mother_name %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="row g-2">
+
                                     <div class="col-sm-6">
+
                                         <label class="small text-muted mb-1">Father's Name</label>
+
                                         <input type="text" name="father_name" class="form-control form-control-sm" value="{{ profile.father_name }}" placeholder="Father's Name">
+
                                     </div>
+
                                     <div class="col-sm-6">
+
                                         <label class="small text-muted mb-1">Mother's Name</label>
+
                                         <input type="text" name="mother_name" class="form-control form-control-sm" value="{{ profile.mother_name }}" placeholder="Mother's Name">
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
+                    </div> <!-- end info-grid -->
+
                 </div>
+
                 
+
                 <!-- Passport Information Section -->
+
                 <div class="info-section">
+
                     <h4 class="info-section-title">
+
                         <i class="fas fa-passport me-2"></i> Passport Information
+
                     </h4>
+
+                    <div class="info-grid">
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Passport Number:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.passport_number %}
+
                                     {{ profile.passport_number }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="passport_number" class="form-control form-control-sm" value="{{ profile.passport_number }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Place of Issue:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.place_of_issue %}
+
                                     {{ profile.place_of_issue }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="place_of_issue" class="form-control form-control-sm" value="{{ profile.place_of_issue }}">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Issue Date:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.passport_issue_date %}
+
                                     {{ profile.passport_issue_date|date:"F d, Y" }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="date" name="passport_issue_date" class="form-control form-control-sm" value="{{ profile.passport_issue_date|date:'Y-m-d' }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Expiry Date:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.passport_expiry_date %}
+
                                     {{ profile.passport_expiry_date|date:"F d, Y" }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="date" name="passport_expiry_date" class="form-control form-control-sm" value="{{ profile.passport_expiry_date|date:'Y-m-d' }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Passport Scan <span class="badge bg-warning text-dark">Required</span>:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.passport_scan %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="passport_scan" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.passport_scan %}
+
                                         <a href="{{ profile.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
+                    </div> <!-- end info-grid -->
+
                 </div>
+
                 
+
                 <!-- Academic Information Section -->
+
                 <div class="info-section">
+
                     <h4 class="info-section-title">
+
                         <i class="fas fa-graduation-cap me-2"></i> Academic Information
+
                     </h4>
+
+                    <div class="info-grid">
+
     
-                    <div class="info-row">
+
+                    <div class="info-row grid-full-width">
+
                         <div class="info-label">University:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.university %}
+
                                     {{ profile.university }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="university" class="form-control form-control-sm" value="{{ profile.university }}">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
-                        <div class="info-label">Level of Education:</div>
+
+                        <div class="info-label">Highest Education Level:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.highest_education_level %}
+
                                     {{ profile.get_highest_education_level_display }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <select name="highest_education_level" class="form-select form-select-sm">
+
                                     <option value="">Select Level</option>
+
                                     <option value="high_school" {% if profile.highest_education_level == 'high_school' %}selected{% endif %}>High School</option>
+
                                     <option value="bachelor" {% if profile.highest_education_level == 'bachelor' %}selected{% endif %}>Bachelor's Degree</option>
+
                                     <option value="master" {% if profile.highest_education_level == 'master' %}selected{% endif %}>Master's Degree</option>
+
                                     <option value="phd" {% if profile.highest_education_level == 'phd' %}selected{% endif %}>PhD</option>
+
                                     <option value="other" {% if profile.highest_education_level == 'other' %}selected{% endif %}>Other</option>
+
                                 </select>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
-                        <div class="info-label">Course / field_of_study:</div>
+
+                        <div class="info-label">Course:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.field_of_study %}
+
                                     {{ profile.field_of_study }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="field_of_study" class="form-control form-control-sm" value="{{ profile.field_of_study }}">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Specialization:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.specialization %}
+
                                     {{ profile.specialization }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="specialization" class="form-control form-control-sm" value="{{ profile.specialization }}">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Secondary Specialization:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.secondary_specialization %}
+
                                     {{ profile.secondary_specialization }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="secondary_specialization" class="form-control form-control-sm" value="{{ profile.secondary_specialization }}">
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Graduation Year:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.graduation_year %}
+
                                     {{ profile.graduation_year }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="number" name="graduation_year" class="form-control form-control-sm" value="{{ profile.graduation_year }}">
+
                             </div>
+
                         </div>
-                    </div>
-                    
-                    <div class="info-row">
-                        <div class="info-label">Year Graduated:</div>
-                        <div class="info-value">
-                            <span class="display-value">
-                                {% if profile.year_graduated %}
-                                    {{ profile.year_graduated }}
-                                {% else %}
-                                    <span class="missing-info">Not provided</span>
-                                {% endif %}
-                            </span>
-                            <div class="edit-input d-none">
-                                <input type="number" name="year_graduated" class="form-control form-control-sm" value="{{ profile.year_graduated }}">
-                            </div>
-                        </div>
+
                     </div>
 
+                    
+
                     <div class="info-row">
-                        <div class="info-label">Academic Certificate:</div>
+
+                        <div class="info-label">Year Graduated:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
-                                {% if profile.academic_certificate %}
-                                    <span class="badge bg-success">Uploaded</span>
-                                    <a href="{{ profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
-                                        <i class="fas fa-eye"></i> View
-                                    </a>
+
+                                {% if profile.year_graduated %}
+
+                                    {{ profile.year_graduated }}
+
                                 {% else %}
-                                    <span class="missing-info">Not uploaded</span>
+
+                                    <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
-                                <div class="d-flex align-items-center gap-2">
-                                    <input type="file" name="academic_certificate" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
-                                    {% if profile.academic_certificate %}
-                                        <a href="{{ profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    {% endif %}
-                                </div>
+
+                                <input type="number" name="year_graduated" class="form-control form-control-sm" value="{{ profile.year_graduated }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
+
+
+                    <div class="info-row">
+
+                        <div class="info-label">Academic Certificate:</div>
+
+                        <div class="info-value">
+
+                            <span class="display-value">
+
+                                {% if profile.academic_certificate %}
+
+                                    <span class="badge bg-success">Uploaded</span>
+
+                                    <a href="{{ profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
+                                        <i class="fas fa-eye"></i> View
+
+                                    </a>
+
+                                {% else %}
+
+                                    <span class="missing-info">Not uploaded</span>
+
+                                {% endif %}
+
+                            </span>
+
+                            <div class="edit-input d-none">
+
+                                <div class="d-flex align-items-center gap-2">
+
+                                    <input type="file" name="academic_certificate" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
+                                    {% if profile.academic_certificate %}
+
+                                        <a href="{{ profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
+                                            <i class="fas fa-eye"></i>
+
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    </div> <!-- end info-grid -->
+
                 </div>
+
+
 
                 <!-- Required Documents Section -->
+
                 <div class="info-section">
+
                     <h4 class="info-section-title">
+
                         <i class="fas fa-file-upload me-2"></i> Required Documents
+
                     </h4>
 
+                    <div class="info-grid">
+
+
+
                     <div class="info-row">
+
                         <div class="info-label">TOR <span class="badge bg-warning text-dark">Required</span>:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.tor %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.tor.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="tor" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.tor %}
+
                                         <a href="{{ profile.tor.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">NC2 from TESDA:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.nc2_tesda %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.nc2_tesda.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="nc2_tesda" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.nc2_tesda %}
+
                                         <a href="{{ profile.nc2_tesda.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Diploma <span class="badge bg-warning text-dark">Required</span>:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.diploma %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.diploma.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="diploma" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.diploma %}
+
                                         <a href="{{ profile.diploma.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Good Moral Certificate <span class="badge bg-warning text-dark">Required</span>:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.good_moral %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.good_moral.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="good_moral" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.good_moral %}
+
                                         <a href="{{ profile.good_moral.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">NBI Clearance <span class="badge bg-warning text-dark">Required</span>:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.nbi_clearance %}
+
                                     <span class="badge bg-success">Uploaded</span>
+
                                     <a href="{{ profile.nbi_clearance.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                         <i class="fas fa-eye"></i> View
+
                                     </a>
+
                                 {% else %}
+
                                     <span class="missing-info">Not uploaded</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="nbi_clearance" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.nbi_clearance %}
+
                                         <a href="{{ profile.nbi_clearance.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
+                    </div> <!-- end info-grid -->
+
                 </div>
+
                 
+
                 <!-- Physical & Health Section -->
+
                 <div class="info-section">
+
                     <h4 class="info-section-title">
+
                         <i class="fas fa-heartbeat me-2"></i> Physical & Health
+
                     </h4>
+
+                    <div class="info-grid">
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Health Condition:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.health_condition %}
+
                                     {{ profile.health_condition }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <select name="health_condition" class="form-select form-select-sm">
+
                                     <option value="">Select Condition</option>
+
                                     <option value="Excellent" {% if profile.health_condition == 'Excellent' %}selected{% endif %}>Excellent</option>
+
                                     <option value="Fair" {% if profile.health_condition == 'Fair' %}selected{% endif %}>Fair</option>
+
                                     <option value="Poor" {% if profile.health_condition == 'Poor' %}selected{% endif %}>Poor</option>
+
                                 </select>
+
                             </div>
+
                         </div>
+
                     </div>
 
-                    <div class="info-row">
+
+
+                    <div class="info-row grid-full-width">
+
                         <div class="info-label">Health Remarks:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.health_remarks %}
+
                                     {{ profile.health_remarks|linebreaksbr }}
+
                                 {% else %}
+
                                     <span class="missing-info">None</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <textarea name="health_remarks" class="form-control form-control-sm" rows="2">{{ profile.health_remarks }}</textarea>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
                     <div class="info-row">
+
                         <div class="info-label">Smoking Habits:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.smokes %}
+
                                     {{ profile.smokes }}
+
                                 {% else %}
+
                                     Never
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <select name="smokes" class="form-select form-select-sm">
+
                                     <option value="Never" {% if profile.smokes == 'Never' %}selected{% endif %}>Never</option>
+
                                     <option value="Sometimes" {% if profile.smokes == 'Sometimes' %}selected{% endif %}>Sometimes</option>
+
                                     <option value="Often" {% if profile.smokes == 'Often' %}selected{% endif %}>Often</option>
+
                                 </select>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Shirt Size:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.shirt_size %}
+
                                     {{ profile.shirt_size }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="shirt_size" class="form-control form-control-sm" value="{{ profile.shirt_size }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">Shoes Size:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.shoes_size %}
+
                                     {{ profile.shoes_size }}
+
                                 {% else %}
+
                                     <span class="missing-info">Not provided</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <input type="text" name="shoes_size" class="form-control form-control-sm" value="{{ profile.shoes_size }}">
+
                             </div>
+
                         </div>
+
                     </div>
+
+                    </div> <!-- end info-grid -->
+
                 </div>
+
                 
+
                 <!-- License Information -->
+
                 {% if program.requires_license %}
+
                 <div class="info-section">
+
                     <h4 class="info-section-title">
+
                         <i class="fas fa-id-card me-2"></i> Driver's License
+
                     </h4>
+
+                    <div class="info-grid">
+
                     
+
                     <div class="info-row">
+
                         <div class="info-label">International License:</div>
+
                         <div class="info-value">
+
                             <span class="display-value">
+
                                 {% if profile.has_international_license %}
+
                                     <span class="badge bg-success">Yes</span>
+
                                     {% if profile.license_scan %}
+
                                         <a href="{{ profile.license_scan.url }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+
                                             <i class="fas fa-eye"></i> View License
+
                                         </a>
+
                                     {% endif %}
+
                                 {% else %}
+
                                     <span class="badge bg-danger">No</span>
+
                                 {% endif %}
+
                             </span>
+
                             <div class="edit-input d-none">
+
                                 <div class="form-check mb-2">
+
                                     <input class="form-check-input" type="checkbox" name="has_international_license" value="true" id="hasLicenseInline" {% if profile.has_international_license %}checked{% endif %}>
+
                                     <label class="form-check-label" for="hasLicenseInline">I have an International License</label>
+
                                 </div>
+
                                 <div class="d-flex align-items-center gap-2">
+
                                     <input type="file" name="license_scan" class="form-control form-control-sm" accept=".pdf,.jpg,.jpeg,.png">
+
                                     {% if profile.license_scan %}
+
                                         <a href="{{ profile.license_scan.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+
                                             <i class="fas fa-eye"></i>
+
                                         </a>
+
                                     {% endif %}
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
+                    </div> <!-- end info-grid -->
+
                 </div>
+
                 {% endif %}
+
                 </form>
+
                 
+
                 <form method="post">
+
                 {% csrf_token %}
+
                 <div class="alert alert-warning mt-4">
+
                     <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h5>
+
                     <ul class="mb-0">
+
                         <li>By submitting this application, you confirm that the information provided is accurate to the best of your knowledge.</li>
+
                         <li>You can only apply to ONE program. Once submitted, you cannot apply to other programs.</li>
+
                         <li>You can complete or update missing information in your <a href="{% url 'profile' %}" class="alert-link" target="_blank">profile page</a> even after submitting your application.</li>
+
                         <li>Please ensure all required documents and information are complete before the program start date.</li>
+
                     </ul>
+
                 </div>
+
                 
+
                 <div class="form-check mb-4">
+
                     <input class="form-check-input" type="checkbox" id="confirmAccuracy" required>
+
                     <label class="form-check-label" for="confirmAccuracy">
+
                         <strong>I confirm that all the information above is accurate and I understand that I can only apply to one program.</strong>
+
                     </label>
+
                 </div>
+
                 
+
                 <!-- Control Buttons -->
+
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
+
                     <div class="edit-controls">
+
                         <button type="button" class="btn btn-outline-primary btn-lg" id="editBtn">
+
                             <i class="fas fa-edit me-2"></i> Edit Information
+
                         </button>
+
                     </div>
+
                     <div class="save-controls">
+
                         <button type="button" class="btn btn-secondary btn-lg me-2" id="cancelBtn">
+
                             <i class="fas fa-times me-2"></i> Cancel
+
                         </button>
+
                         <button type="button" class="btn btn-primary btn-lg" id="saveInlineBtn">
+
                             <i class="fas fa-save me-2"></i> Save Changes
+
                         </button>
+
                     </div>
+
                 </div>
+
             </div>
 
+
+
                 <!-- Submit Button -->
+
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+
                     <button type="submit" class="btn btn-success btn-lg px-5" id="submitBtn" disabled>
+
                         <i class="fas fa-check-circle me-2"></i> Confirm & Submit Application
+
                     </button>
+
                 </div>
+
                 <div class="text-center mt-3">
+
                     <small class="text-muted">
+
                         <i class="fas fa-info-circle me-1"></i>
+
                         Tip: Click "Edit Information" to modify your details directly on this page.
+
                     </small>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
+
 </div>
+
 {% endblock %}
 
+
+
 {% block extra_js %}
+
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
+
         const checkbox = document.getElementById('confirmAccuracy');
+
         const submitBtn = document.getElementById('submitBtn');
+
         const editBtn = document.getElementById('editBtn');
+
         const cancelBtn = document.getElementById('cancelBtn');
+
         const saveInlineBtn = document.getElementById('saveInlineBtn');
+
         const inlineEditContainer = document.getElementById('inlineEditContainer');
+
         const inlineEditForm = document.getElementById('inlineEditForm');
+
         
+
         // Confirmation checkbox logic
+
         if (checkbox) {
+
             checkbox.addEventListener('change', function() {
+
                 submitBtn.disabled = !this.checked;
+
             });
+
         }
+
         
-        // Toggle Edit Mode
+
+        // Toggle Edit Mode (with animation restart)
+
         if (editBtn) {
+
             editBtn.addEventListener('click', function() {
-                inlineEditContainer.classList.add('edit-mode');
-            });
-        }
-        
-        // Cancel Edit Mode
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', function() {
+
+                // Force-restart animations if re-entering edit mode
+
                 inlineEditContainer.classList.remove('edit-mode');
-                // Optional: reset form fields to original values
-                inlineEditForm.reset();
+
+                void inlineEditContainer.offsetWidth; // trigger reflow
+
+                inlineEditContainer.classList.add('edit-mode');
+
+                // Smooth scroll to top of edit area
+
+                inlineEditContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
             });
+
         }
+
         
-        // Save Inline Changes
-        if (saveInlineBtn) {
-            saveInlineBtn.addEventListener('click', function() {
-                const formData = new FormData(inlineEditForm);
-                
-                // Show loading state
-                saveInlineBtn.disabled = true;
-                saveInlineBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
-                
-                fetch('{% url "profile" %}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success' || (data.message && !data.errors)) {
-                        // Success: Show message and reload to reflect changes in display mode
-                        alert('✓ ' + (data.message || 'Information updated successfully!'));
-                        window.location.reload();
-                    } else {
-                        // Error handling
-                        let errorMsg = '⚠ Error updating information:\n';
-                        if (data.errors) {
-                            for (let field in data.errors) {
-                                errorMsg += `- ${field}: ${data.errors[field].join(', ')}\n`;
-                            }
-                        } else {
-                            errorMsg += (data.message || 'Please try again.');
-                        }
-                        alert(errorMsg);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('⚠ Connection error. Please try again.');
-                })
-                .finally(() => {
-                    saveInlineBtn.disabled = false;
-                    saveInlineBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
-                });
+
+        // Cancel Edit Mode
+
+        if (cancelBtn) {
+
+            cancelBtn.addEventListener('click', function() {
+
+                inlineEditContainer.classList.remove('edit-mode');
+
+                inlineEditForm.reset();
+
+                // Scroll back to top of section
+
+                inlineEditContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
             });
+
         }
+
+        
+
+        // Save Inline Changes
+
+        if (saveInlineBtn) {
+
+            saveInlineBtn.addEventListener('click', function() {
+
+                const formData = new FormData(inlineEditForm);
+
+                
+
+                // Show loading state
+
+                saveInlineBtn.disabled = true;
+
+                saveInlineBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
+
+                
+
+                fetch('{% url "profile" %}', {
+
+                    method: 'POST',
+
+                    body: formData,
+
+                    headers: {
+
+                        'X-Requested-With': 'XMLHttpRequest',
+
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+
+                    }
+
+                })
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    if (data.status === 'success' || (data.message && !data.errors)) {
+
+                        // Success: Show message and reload to reflect changes in display mode
+
+                        alert('✓ ' + (data.message || 'Information updated successfully!'));
+
+                        window.location.reload();
+
+                    } else {
+
+                        // Error handling
+
+                        let errorMsg = '⚠ Error updating information:\n';
+
+                        if (data.errors) {
+
+                            for (let field in data.errors) {
+
+                                errorMsg += `- ${field}: ${data.errors[field].join(', ')}\n`;
+
+                            }
+
+                        } else {
+
+                            errorMsg += (data.message || 'Please try again.');
+
+                        }
+
+                        alert(errorMsg);
+
+                    }
+
+                })
+
+                .catch(error => {
+
+                    console.error('Error:', error);
+
+                    alert('⚠ Connection error. Please try again.');
+
+                })
+
+                .finally(() => {
+
+                    saveInlineBtn.disabled = false;
+
+                    saveInlineBtn.innerHTML = '<i class="fas fa-save me-2"></i> Save Changes';
+
+                });
+
+            });
+
+        }
+
     });
+
 </script>
+
 {% endblock %}
+

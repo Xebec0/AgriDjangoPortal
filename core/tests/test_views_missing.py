@@ -203,7 +203,7 @@ class CandidateApplyMissingTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             created_by=self.user
         )
@@ -248,7 +248,7 @@ class CandidateListMissingTests(TestCase):
                 gender='Male',
                 passport_issue_date=date.today(),
                 passport_expiry_date=date.today() + timedelta(days=3650),
-                university=university,
+                university=university.name,
                 specialization='Agronomy',
                 status=status,
                 created_by=self.staff_user
@@ -516,7 +516,7 @@ class CandidateViewMissingTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             status=Candidate.DRAFT,
             program=program,

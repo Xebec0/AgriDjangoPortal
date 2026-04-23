@@ -1,0 +1,112 @@
+/* ========================================
+   MOBILE ENHANCEMENTS
+   Bottom nav, scroll-to-top, landscape,
+   safe areas, touch optimizations
+   ======================================== */
+
+/* --- Global mobile overflow guard --- */
+html, body {
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* --- Touch optimization --- */
+a, button, input, select, textarea,
+.btn, .nav-link, .dropdown-item {
+    touch-action: manipulation;
+}
+
+
+
+/* --- Scroll-to-Top Button --- */
+.scroll-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 16px;
+    z-index: 1035;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 14px rgba(40, 167, 69, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    background: #218838;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.45);
+}
+
+.scroll-to-top:active {
+    transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+    .scroll-to-top {
+        bottom: 24px;
+        right: 24px;
+    }
+}
+
+/* --- Landscape Orientation Support --- */
+@media (orientation: landscape) and (max-height: 500px) {
+    .guest-hero,
+    .hero-section {
+        min-height: 300px;
+        height: auto;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-badge {
+        margin-bottom: 0.75rem;
+    }
+
+}
+
+/* --- iOS Safe Areas --- */
+@supports (padding: max(0px)) {
+
+    .container, .container-fluid {
+        padding-left: max(0.75rem, env(safe-area-inset-left));
+        padding-right: max(0.75rem, env(safe-area-inset-right));
+    }
+}
+
+/* --- Focus States for Accessibility --- */
+.scroll-to-top:focus-visible {
+    outline: 3px solid #28a745;
+    outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #28a745;
+    outline-offset: 2px;
+}

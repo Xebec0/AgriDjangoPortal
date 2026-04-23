@@ -55,6 +55,12 @@ class AgricultureProgramAdmin(ModelAdmin):
     has_image.boolean = True
     has_image.short_description = 'Has Image'
 
+    def get_readonly_fields(self, request, obj=None):
+        if not request.user.is_superuser:
+            return self.readonly_fields + ('image', 'is_featured')
+        return self.readonly_fields
+
+
 @admin.register(Registration)
 class RegistrationAdmin(ModelAdmin):
     list_display = ('user', 'program', 'registration_date', 'status')

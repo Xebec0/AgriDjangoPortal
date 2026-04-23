@@ -71,7 +71,7 @@ class CandidateModelTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             status=Candidate.APPROVED,
             created_by=self.user

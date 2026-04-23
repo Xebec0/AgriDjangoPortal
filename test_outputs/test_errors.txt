@@ -1,0 +1,2 @@
+P_FORM ERRORS: <ul class="errorlist"><li>smokes<ul class="errorlist" id="id_smokes_error"><li>This field is required.</li></ul></li></ul>
+U_FORM ERRORS: 

@@ -1,0 +1,397 @@
+﻿python : Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+At line:1 char:1
++ python manage.py test core.tests.test_auth_module -v 2 > test_auth_er ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Creating test d...che=shared')...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[EMAIL CONFIG] SMTP: smtp.gmail.com:587 User: merlielatosa@gmail.com
+Found 15 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: allauth, cachalot, debug_toolbar, django_crontab, facebook, google, messages, microsoft, sslserver, staticfiles, unfold, unfold_filters, unfold_forms
+  Apply all migrations: account, admin, auth, contenttypes, core, sessions, sites, socialaccount
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying account.0001_initial... OK
+  Applying account.0002_email_max_length... OK
+  Applying account.0003_alter_emailaddress_create_unique_verified_email... OK
+  Applying account.0004_alter_emailaddress_drop_unique_email... OK
+  Applying account.0005_emailaddress_idx_upper_email... OK
+  Applying account.0006_emailaddress_lower... OK
+  Applying account.0007_emailaddress_idx_email... OK
+  Applying account.0008_emailaddress_unique_primary_email_fixup... OK
+  Applying account.0009_emailaddress_unique_primary_email... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying core.0002_university_candidate... OK
+  Applying core.0003_remove_candidate_health_statement_ayalon_and_more... OK
+  Applying core.0004_candidate_year_graduated... OK
+  Applying core.0005_profile_email_verified_profile_phone_number_and_more... OK
+  Applying core.0006_registration_additional_document_and_more... OK
+  Applying core.0007_remove_registration_additional_document_and_more... OK
+  Applying core.0008_candidate_program_registration_processed... OK
+  Applying core.0009_remove_agricultureprogram_end_date... OK
+  Applying core.0010_profile_country_of_birth_profile_date_of_birth_and_more... OK
+  Applying core.0011_activitylog... OK
+  Applying core.0012_rename_core_activ_user_id_2a2fba_idx_core_activi_user_id_ae0b38_idx_and_more... OK
+  Applying core.0013_agricultureprogram_required_gender_and_more... OK
+  Applying core.0014_profile_has_international_license... OK
+  Applying core.0015_profile_license_scan... OK
+  Applying core.0016_add_program_image_and_featured... OK
+  Applying core.0017_candidate_is_complete_candidate_user_and_more... OK
+  Applying core.0018_remove_candidate_is_complete_remove_candidate_user_and_more... OK
+  Applying core.0019_profile_passport_number... OK
+  Applying core.0020_profile_secondary_specialization_profile_shirt_size_and_more... OK
+  Applying core.0017_add_program_deadline_and_country... OK
+  Applying core.0021_merge_20251024_0750... OK
+  Applying core.0022_populate_program_country... OK
+  Applying core.0023_add_document_fields_to_profile... OK
+  Applying core.0024_add_profile_fields... OK
+  Applying core.0025_uploadedfile... OK
+  Applying core.0026_make_candidate_fields_optional... OK
+  Applying core.0027_remove_candidate_unique_constraint... OK
+  Applying core.0028_allow_blank_names_in_candidate... OK
+  Applying core.0029_add_missing_candidate_fields... OK
+  Applying core.0030_profile_oauth_id_profile_oauth_picture_url_and_more... OK
+  Applying core.0031_add_validation_deadline_fields... OK
+  Applying core.0032_add_job_experience_field... OK
+  Applying core.0033_add_required_experience_years... OK
+  Applying core.0034_candidate_health_condition_candidate_health_remarks_and_more... OK
+  Applying core.0035_remove_profile_institution_name... OK
+  Applying core.0036_alter_profile_university... OK
+  Applying core.0037_alter_candidate_university... OK
+  Applying core.0038_candidate_address_candidate_field_of_study_and_more... OK
+  Applying core.0039_candidate_phone_number... OK
+  Applying sessions.0001_initial... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+  Applying socialaccount.0001_initial... OK
+  Applying socialaccount.0002_token_max_lengths... OK
+  Applying socialaccount.0003_extra_data_default_dict... OK
+  Applying socialaccount.0004_app_provider_id_settings... OK
+  Applying socialaccount.0005_socialtoken_nullable_app... OK
+test_admin_registration (core.tests.test_auth_module.AuthenticationModuleTest.test_admin_registration)
+Verify admin registration form creates an admin-enabled user. ... INFO request POST /admin-register/ 200 user= 
+ip=127.0.0.1 duration_ms=68
+ok
+test_ajax_login_failure (core.tests.test_auth_module.AuthenticationModuleTest.test_ajax_login_failure)
+Verify AJAX login returns JSON failure on wrong password. ... INFO request POST /api/ajax-login/ 200 user= 
+ip=127.0.0.1 duration_ms=1133
+ok
+test_ajax_login_success (core.tests.test_auth_module.AuthenticationModuleTest.test_ajax_login_success)
+Verify AJAX login returns JSON success. ... INFO request POST /api/ajax-login/ 200 user=existinguser ip=127.0.0.1 
+duration_ms=1279
+ok
+test_ajax_register_success (core.tests.test_auth_module.AuthenticationModuleTest.test_ajax_register_success)
+Verify AJAX registration returns JSON success and creates user. ... INFO request POST /api/ajax-register/ 200 user= 
+ip=127.0.0.1 duration_ms=611
+ok
+test_check_username_api (core.tests.test_auth_module.AuthenticationModuleTest.test_check_username_api)
+Verify check_username endpoint correctly reports availability. ... INFO request GET /api/check-username/ 200 user= 
+ip=127.0.0.1 duration_ms=1
+INFO request GET /api/check-username/ 200 user= ip=127.0.0.1 duration_ms=0
+ok
+test_comprehensive_registration (core.tests.test_auth_module.AuthenticationModuleTest.test_comprehensive_registration)
+Verify completely valid registration creates user, profile, and redirects. ... INFO request POST /register/ 302 user= 
+ip=127.0.0.1 duration_ms=589
+ok
+test_login_invalid_password (core.tests.test_auth_module.AuthenticationModuleTest.test_login_invalid_password)
+Verify login fails with incorrect password. ... INFO request POST /login/ 200 user= ip=127.0.0.1 duration_ms=1161
+ok
+test_login_nonexistent_user (core.tests.test_auth_module.AuthenticationModuleTest.test_login_nonexistent_user)
+Verify login fails with unknown username. ... INFO request POST /login/ 200 user= ip=127.0.0.1 duration_ms=1160
+ok
+test_login_success (core.tests.test_auth_module.AuthenticationModuleTest.test_login_success)
+Verify successful login redirects properly. ... INFO request POST /login/ 302 user=existinguser ip=127.0.0.1 
+duration_ms=1200
+INFO request GET / 200 user=existinguser ip=127.0.0.1 duration_ms=6
+ok
+test_logout (core.tests.test_auth_module.AuthenticationModuleTest.test_logout)
+Verify session is terminated on logout. ... INFO request GET /logout/ 302 user= ip=127.0.0.1 duration_ms=2
+ok
+test_oauth_initiate_redirect (core.tests.test_auth_module.AuthenticationModuleTest.test_oauth_initiate_redirect)
+Verify OAuth initiation sets state and redirects (even if provider misconfigured). ... ERROR SocialApp not found for 
+provider: google
+INFO request GET /auth/google/initiate/ 302 user= ip=127.0.0.1 duration_ms=1
+ok
+test_registration_duplicate_email 
+(core.tests.test_auth_module.AuthenticationModuleTest.test_registration_duplicate_email)
+Verify registration prevents duplicate emails. ... INFO request POST /register/ 200 user= ip=127.0.0.1 duration_ms=51
+ok
+test_registration_duplicate_username 
+(core.tests.test_auth_module.AuthenticationModuleTest.test_registration_duplicate_username)
+Verify registration prevents duplicate usernames. ... INFO request POST /register/ 200 user= ip=127.0.0.1 
+duration_ms=43
+ERROR
+test_verify_email_invalid_token (core.tests.test_auth_module.AuthenticationModuleTest.test_verify_email_invalid_token)
+Verify clicking an invalid token fails safely. ... ERROR Internal Server Error: /verify-email/fake-token-123/
+Traceback (most recent call last):
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\exception.py", 
+line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\base.py", line 
+198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 346, in verify_email
+    return render(request, 'email_verification.html', {
+        'success': False,
+        'error_message': error_message if 'error_message' in locals() else 'Verification failed.'
+    })
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\shortcuts.py", line 25, in 
+render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\loader.py", line 62, 
+in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\backends\django.py", 
+line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 174, 
+in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\utils.py", line 114, in 
+instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\loader_tags.py", line 
+160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\utils.py", line 114, in 
+instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\loader_tags.py", line 
+66, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\defaulttags.py", line 
+333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\defaulttags.py", line 
+511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\urls\base.py", line 98, in 
+reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\urls\resolvers.py", line 842, 
+in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'resend_verification' not found. 'resend_verification' is not a 
+valid view function or pattern name.
+INFO request GET /verify-email/fake-token-123/ 500 user= ip=127.0.0.1 duration_ms=10
+ERROR
+test_verify_email_valid_token (core.tests.test_auth_module.AuthenticationModuleTest.test_verify_email_valid_token)
+Verify clicking a valid token link verifies the profile. ... INFO request GET 
+/verify-email/ae43eff8-7f82-40d7-828a-f86cd553c1c0/ 200 user= ip=127.0.0.1 duration_ms=5
+ok
+
+======================================================================
+ERROR: test_registration_duplicate_username 
+(core.tests.test_auth_module.AuthenticationModuleTest.test_registration_duplicate_username)
+Verify registration prevents duplicate usernames.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_auth_module.py", line 116, in 
+test_registration_duplicate_username
+    self.assertFormError(response, 'form', 'username', ['A user with that username already exists.'])
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\testcases.py", line 708, 
+in assertFormError
+    self._assert_form_error(form, field, errors, msg_prefix)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\testcases.py", line 665, 
+in _assert_form_error
+    if not form.is_bound:
+           ^^^^^^^^^^^^^
+AttributeError: 'HttpResponse' object has no attribute 'is_bound'
+
+======================================================================
+ERROR: test_verify_email_invalid_token 
+(core.tests.test_auth_module.AuthenticationModuleTest.test_verify_email_invalid_token)
+Verify clicking an invalid token fails safely.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_auth_module.py", line 212, in 
+test_verify_email_invalid_token
+    response = self.client.get(reverse('verify_email', args=['fake-token-123']))
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 1124, in 
+get
+    response = super().get(
+        path,
+    ...<4 lines>...
+        **extra,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 475, in 
+get
+    return self.generic(
+           ~~~~~~~~~~~~^
+        "GET",
+        ^^^^^^
+    ...<4 lines>...
+        **extra,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 671, in 
+generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 1087, in 
+request
+    self.check_exception(response)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 802, in 
+check_exception
+    raise exc_value
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\exception.py", 
+line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\base.py", line 
+198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 346, in verify_email
+    return render(request, 'email_verification.html', {
+        'success': False,
+        'error_message': error_message if 'error_message' in locals() else 'Verification failed.'
+    })
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\shortcuts.py", line 25, in 
+render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\loader.py", line 62, 
+in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\backends\django.py", 
+line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 174, 
+in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\utils.py", line 114, in 
+instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\loader_tags.py", line 
+160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\utils.py", line 114, in 
+instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\loader_tags.py", line 
+66, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\defaulttags.py", line 
+333, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1091, 
+in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\base.py", line 1052, 
+in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\template\defaulttags.py", line 
+511, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\urls\base.py", line 98, in 
+reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\urls\resolvers.py", line 842, 
+in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'resend_verification' not found. 'resend_verification' is not a 
+valid view function or pattern name.
+
+----------------------------------------------------------------------
+Ran 15 tests in 17.146s
+
+FAILED (errors=2)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+  Applying socialaccount.0006_alter_socialaccount_extra_data... OK
+System check identified no issues (0 silenced).

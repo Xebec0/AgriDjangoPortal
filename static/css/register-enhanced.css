@@ -1,233 +1,876 @@
-/* Enhanced Registration Page Styling */
+/* ========================================
+   REGISTER MODAL — Production Styles
+   Scoped to #registerModal
+   Mobile-first, accessible, modern
+   ======================================== */
 
-/* Modern light background for registration page */
-.register-container {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
-    min-height: 100vh;
+/* --- Design Tokens --- */
+:root {
+    --reg-primary: #28a745;
+    --reg-primary-hover: #218838;
+    --reg-primary-dark: #1c5631;
+    --reg-primary-light: #e9f9ef;
+    --reg-primary-ring: rgba(40, 167, 69, 0.2);
+    --reg-text: #1a202c;
+    --reg-text-secondary: #4a5568;
+    --reg-text-muted: #a0aec0;
+    --reg-border: #e2e8f0;
+    --reg-bg: #f7fafc;
+    --reg-bg-input: #f7fafc;
+    --reg-white: #ffffff;
+    --reg-danger: #e53e3e;
+    --reg-danger-light: #fff5f5;
+    --reg-danger-ring: rgba(229, 62, 62, 0.2);
+    --reg-warning: #dd6b20;
+    --reg-warning-light: #fffaf0;
+    --reg-success-light: #f0fff4;
+    --reg-radius: 10px;
+    --reg-radius-lg: 14px;
+    --reg-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --reg-shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --reg-shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+    --reg-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   MODAL CONTAINER
+   ======================================== */
+#registerModal .modal-dialog {
+    margin: 0.75rem auto;
+    max-width: calc(100% - 1.5rem);
+}
+
+#registerModal .modal-content {
+    border: none;
+    border-radius: var(--reg-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--reg-shadow-lg);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--reg-white);
+}
+
+/* ========================================
+   MODAL HEADER
+   ======================================== */
+#registerModal .modal-header {
+    background: linear-gradient(135deg, var(--reg-primary) 0%, var(--reg-primary-dark) 100%);
+    border-bottom: none;
+    padding: 0.875rem 1rem;
+    flex-shrink: 0;
+}
+
+#registerModal .modal-header .modal-title {
+    color: var(--reg-white);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#registerModal .modal-header .modal-title i {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+#registerModal .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+    transition: opacity var(--reg-transition);
+}
+
+#registerModal .modal-header .btn-close:hover {
+    opacity: 1;
+}
+
+/* ========================================
+   STEPPER / PROGRESS INDICATOR
+   ======================================== */
+#registerModal .reg-stepper {
+    background: var(--reg-white);
+    padding: 0.75rem 0.5rem 0.5rem;
+    border-bottom: 1px solid var(--reg-border);
+    flex-shrink: 0;
+}
+
+#registerModal .reg-stepper-track {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 0.25rem;
+}
+
+/* Connector line behind circles */
+#registerModal .reg-stepper-track::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: var(--reg-border);
+    z-index: 0;
+}
+
+/* Animated fill line */
+#registerModal .reg-stepper-fill {
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: var(--reg-primary);
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+/* Individual step */
+#registerModal .reg-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 0 0 auto;
+    width: 20%;
+}
+
+/* Step circle */
+#registerModal .reg-step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1rem;
-}
-
-/* Main registration box with animated border */
-.register-box {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--reg-white);
+    border: 2px solid var(--reg-border);
+    color: var(--reg-text-muted);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    background-color: white;
-    color: #333;
-    border-radius: 12px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 800px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    z-index: 1;
 }
 
-/* Animated border effect */
-.register-box::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    z-index: -1;
-    background: linear-gradient(90deg, #28a745, #0056b3, #28a745);
-    background-size: 300% 300%;
-    border-radius: 16px;
-    animation: borderAnimation 4s infinite ease-in-out;
-}
-
-/* Keyframes for the border animation */
-@keyframes borderAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Registration header */
-.register-header {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-weight: bold;
-    font-size: 1.75rem;
-    letter-spacing: 1px;
-    color: #28a745;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.register-header:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(90deg, #28a745, #0056b3);
-}
-
-/* Custom form styling */
-.register-form .form-control {
-    background-color: #f8f9fa;
-    border: 1px solid #e4e9f2;
-    color: #333;
-    padding: 12px 15px;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    transition: all 0.3s;
-}
-
-.register-form .form-control:focus {
-    background-color: #fff;
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-}
-
-.register-form .form-label {
-    color: #495057;
+/* Step label */
+#registerModal .reg-step-label {
+    font-size: 0.6rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-/* Validation styles */
-.register-form .form-control.is-valid {
-    border-color: #28a745;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.register-form .form-control.is-invalid {
-    border-color: #dc3545;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.valid-feedback,
-.invalid-feedback {
-    display: none;
-    width: 100%;
+    color: var(--reg-text-muted);
     margin-top: 0.25rem;
-    font-size: 0.875em;
-}
-
-.valid-feedback {
-    color: #28a745;
-}
-
-.invalid-feedback {
-    color: #dc3545;
-}
-
-.was-validated .form-control:valid ~ .valid-feedback,
-.was-validated .form-control:invalid ~ .invalid-feedback,
-.form-control.is-valid ~ .valid-feedback,
-.form-control.is-invalid ~ .invalid-feedback {
-    display: block;
-}
-
-/* Submit button styling */
-.register-btn {
-    width: 100%;
-    background: linear-gradient(to right, #28a745, #20c997);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
-}
-
-.register-btn:hover {
-    background: linear-gradient(to right, #218838, #1aa179);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(40, 167, 69, 0.3);
-}
-
-/* Password strength indicator */
-.password-strength-meter {
-    height: 5px;
-    background-color: #eeeeee;
-    margin-top: 5px;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.password-strength-meter div {
-    height: 100%;
-    width: 0;
-    transition: width 0.3s ease;
-}
-
-.strength-weak {
-    background-color: #dc3545;
-}
-
-.strength-medium {
-    background-color: #ffc107;
-}
-
-.strength-strong {
-    background-color: #28a745;
-}
-
-/* Helper text styling */
-.form-text {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-top: 0.25rem;
-}
-
-/* Links styling */
-.register-links {
     text-align: center;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    transition: color var(--reg-transition);
+    line-height: 1.2;
+    max-width: 60px;
 }
 
-.register-links a {
-    color: #28a745;
-    text-decoration: none;
-    transition: all 0.2s;
+/* Active step — in-progress look (ring, not filled) */
+#registerModal .reg-step.active .reg-step-circle {
+    background: var(--reg-white);
+    border-color: var(--reg-primary);
+    color: var(--reg-primary);
+    box-shadow: 0 0 0 4px var(--reg-primary-ring);
+    transform: scale(1.08);
+}
+
+#registerModal .reg-step.active .reg-step-label,
+#registerModal .reg-stepper .reg-step.active .reg-step-label {
+    color: var(--reg-primary) !important;
+    font-weight: 600 !important;
+}
+
+/* Active step — all required fields valid (filled green, ready to proceed) */
+#registerModal .reg-step.active.valid .reg-step-circle {
+    background: var(--reg-primary);
+    border-color: var(--reg-primary);
+    color: var(--reg-white);
+    box-shadow: 0 0 0 4px var(--reg-primary-ring);
+    transform: scale(1.08);
+}
+
+/* Completed step (past, validated — green with checkmark) */
+#registerModal .reg-step.completed .reg-step-circle {
+    background: var(--reg-primary);
+    border-color: var(--reg-primary);
+    color: var(--reg-white);
+}
+
+#registerModal .reg-step.completed .reg-step-label,
+#registerModal .reg-stepper .reg-step.completed .reg-step-label {
+    color: var(--reg-primary-hover) !important;
+    font-weight: 500;
+}
+
+/* Checkmark icon for completed steps (injected via JS) */
+#registerModal .reg-step.completed .reg-step-circle .step-num {
+    display: none;
+}
+
+#registerModal .reg-step.completed .reg-step-circle .step-check {
+    display: inline;
+}
+
+#registerModal .reg-step-circle .step-check {
+    display: none;
+}
+
+/* ========================================
+   MODAL BODY
+   ======================================== */
+#registerModal .modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--reg-primary) transparent;
+    /* Auto height on mobile, fixed at larger breakpoints */
+    height: auto;
+    min-height: 200px;
+    max-height: 48vh;
+}
+
+/* Webkit scrollbar */
+#registerModal .modal-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+#registerModal .modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#registerModal .modal-body::-webkit-scrollbar-thumb {
+    background: var(--reg-primary);
+    border-radius: 10px;
+}
+
+#registerModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--reg-primary-hover);
+}
+
+/* Subtitle */
+#registerModal .reg-subtitle {
+    color: var(--reg-text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+}
+
+/* ========================================
+   FORM STEPS — Visibility & Transitions
+   ======================================== */
+#registerModal .form-step {
+    display: none;
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+#registerModal .form-step.active {
+    display: block;
+    animation: regStepIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes regStepIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   SECTION HEADINGS
+   ======================================== */
+#registerModal .reg-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding-bottom: 0.625rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--reg-border);
     position: relative;
 }
 
-.register-links a:hover {
-    color: #218838;
-}
-
-.register-links a::after {
+#registerModal .reg-section-title::after {
     content: '';
     position: absolute;
-    width: 0;
-    height: 1px;
     bottom: -2px;
     left: 0;
-    background-color: #28a745;
-    transition: width 0.3s;
+    width: 40px;
+    height: 2px;
+    background: var(--reg-primary);
+    border-radius: 1px;
 }
 
-.register-links a:hover::after {
-    width: 100%;
+#registerModal .reg-section-title i {
+    color: var(--reg-primary);
+    font-size: 1rem;
+    flex-shrink: 0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .register-box {
-        padding: 1.5rem;
+#registerModal .reg-section-title h6 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--reg-text);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+/* ========================================
+   FORM LABELS
+   ======================================== */
+#registerModal .form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--reg-text);
+    margin-bottom: 0.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+#registerModal .form-label .text-danger {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+/* ========================================
+   FORM INPUTS
+   ======================================== */
+#registerModal .form-control,
+#registerModal .form-select {
+    background-color: var(--reg-bg-input);
+    border: 1.5px solid var(--reg-border);
+    border-radius: var(--reg-radius);
+    color: var(--reg-text);
+    font-size: 0.875rem;
+    padding: 0.625rem 0.875rem;
+    min-height: 44px;
+    transition: border-color var(--reg-transition),
+                box-shadow var(--reg-transition),
+                background-color var(--reg-transition);
+}
+
+#registerModal .form-control::placeholder {
+    color: var(--reg-text-muted);
+    font-weight: 400;
+}
+
+#registerModal .form-control:hover,
+#registerModal .form-select:hover {
+    border-color: #cbd5e0;
+    background-color: var(--reg-white);
+}
+
+#registerModal .form-control:focus,
+#registerModal .form-select:focus {
+    border-color: var(--reg-primary);
+    background-color: var(--reg-white);
+    box-shadow: 0 0 0 3px var(--reg-primary-ring);
+    outline: none;
+}
+
+/* Validation states */
+#registerModal .form-control.is-valid,
+#registerModal .form-select.is-valid {
+    border-color: var(--reg-primary) !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+}
+
+#registerModal .form-control.is-invalid,
+#registerModal .form-select.is-invalid {
+    border-color: var(--reg-danger) !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e53e3e' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e53e3e' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+    box-shadow: 0 0 0 3px var(--reg-danger-ring);
+}
+
+#registerModal .form-control.is-invalid:focus {
+    box-shadow: 0 0 0 3px var(--reg-danger-ring);
+}
+
+/* File inputs */
+#registerModal input[type="file"].form-control {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    cursor: pointer;
+}
+
+#registerModal input[type="file"].form-control::file-selector-button {
+    background: var(--reg-primary);
+    color: var(--reg-white);
+    border: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 0.75rem;
+    transition: background var(--reg-transition);
+}
+
+#registerModal input[type="file"].form-control::file-selector-button:hover {
+    background: var(--reg-primary-hover);
+}
+
+/* Helper text */
+#registerModal .form-text {
+    font-size: 0.75rem;
+    color: var(--reg-text-muted);
+    margin-top: 0.3125rem;
+    line-height: 1.4;
+}
+
+/* Required badge for documents */
+#registerModal .badge.bg-warning {
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    vertical-align: middle;
+}
+
+/* ========================================
+   PASSWORD STRENGTH
+   ======================================== */
+#registerModal .password-strength {
+    background: var(--reg-bg);
+    border-radius: 8px;
+    padding: 0.625rem 0.75rem;
+    margin-top: 0.5rem;
+}
+
+#registerModal .password-strength .progress {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--reg-border);
+    overflow: hidden;
+}
+
+#registerModal .password-strength .progress-bar {
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 2px;
+}
+
+#registerModal .password-strength .requirements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 0.75rem;
+}
+
+#registerModal .password-strength .requirement {
+    font-size: 0.7rem;
+    color: var(--reg-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.125rem 0;
+}
+
+#registerModal .password-strength .requirement i {
+    font-size: 0.6rem;
+    width: 12px;
+    text-align: center;
+}
+
+/* Password match indicator */
+#registerModal .password-match {
+    margin-top: 0.375rem;
+}
+
+#registerModal .password-match small {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* ========================================
+   EMAIL SUGGESTION
+   ======================================== */
+#registerModal .email-suggestion {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--reg-white);
+    border: 1px solid var(--reg-border);
+    border-top: none;
+    border-radius: 0 0 var(--reg-radius) var(--reg-radius);
+    padding: 0.5rem 0.75rem;
+    z-index: 10;
+    box-shadow: var(--reg-shadow-sm);
+}
+
+/* ========================================
+   DOCUMENTS SECTION
+   ======================================== */
+#registerModal .reg-docs-group-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--reg-text-muted);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.875rem;
+    border-bottom: 1px solid var(--reg-border);
+}
+
+/* ========================================
+   MODAL FOOTER / CTA BUTTONS
+   ======================================== */
+#registerModal .modal-footer {
+    border-top: 1px solid var(--reg-border);
+    padding: 0.625rem 1rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    background: var(--reg-bg);
+}
+
+#registerModal .modal-footer #stepIndicator {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--reg-text-muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* Previous button */
+#registerModal .modal-footer #prevBtn {
+    background: var(--reg-white);
+    color: var(--reg-text-secondary);
+    border: 1.5px solid var(--reg-border);
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    transition: all var(--reg-transition);
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+#registerModal .modal-footer #prevBtn:hover {
+    background: var(--reg-bg);
+    border-color: #cbd5e0;
+    color: var(--reg-text);
+}
+
+/* Next / Submit button */
+#registerModal .modal-footer #nextBtn {
+    background: var(--reg-primary);
+    color: var(--reg-white);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    transition: all var(--reg-transition);
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.25);
+}
+
+#registerModal .modal-footer #nextBtn:hover {
+    background: var(--reg-primary-hover);
+    box-shadow: 0 4px 14px rgba(40, 167, 69, 0.35);
+    transform: translateY(-1px);
+}
+
+#registerModal .modal-footer #nextBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(40, 167, 69, 0.2);
+}
+
+#registerModal .modal-footer #nextBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Submit state (final step) */
+#registerModal .modal-footer #nextBtn.submit-btn {
+    background: linear-gradient(135deg, var(--reg-primary) 0%, #20c997 100%);
+    padding: 0.5rem 1.75rem;
+    box-shadow: 0 3px 12px rgba(40, 167, 69, 0.3);
+}
+
+#registerModal .modal-footer #nextBtn.submit-btn:hover {
+    box-shadow: 0 5px 18px rgba(40, 167, 69, 0.4);
+}
+
+/* ========================================
+   TOAST NOTIFICATIONS
+   ======================================== */
+#registerToast {
+    min-width: 320px;
+    max-width: 460px;
+    border-radius: var(--reg-radius) !important;
+    overflow: hidden;
+    animation: regToastIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+}
+
+@keyframes regToastIn {
+    from {
+        transform: translateX(100%) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+#registerToast.hiding {
+    animation: regToastOut 0.25s ease-in forwards;
+}
+
+@keyframes regToastOut {
+    to {
+        transform: translateX(100%) scale(0.95);
+        opacity: 0;
+    }
+}
+
+/* Success */
+#registerToast.toast-success .toast-header {
+    background: var(--reg-success-light);
+    color: #276749;
+    border-bottom: 1px solid #c6f6d5;
+}
+#registerToast.toast-success .toast-body {
+    background: var(--reg-success-light);
+    color: #276749;
+}
+#registerToast.toast-success #toastIcon { color: var(--reg-primary); }
+
+/* Error */
+#registerToast.toast-error .toast-header {
+    background: var(--reg-danger-light);
+    color: #9b2c2c;
+    border-bottom: 1px solid #fed7d7;
+}
+#registerToast.toast-error .toast-body {
+    background: var(--reg-danger-light);
+    color: #9b2c2c;
+}
+#registerToast.toast-error #toastIcon { color: var(--reg-danger); }
+
+/* Warning */
+#registerToast.toast-warning .toast-header {
+    background: var(--reg-warning-light);
+    color: #9c4221;
+    border-bottom: 1px solid #feebc8;
+}
+#registerToast.toast-warning .toast-body {
+    background: var(--reg-warning-light);
+    color: #9c4221;
+}
+#registerToast.toast-warning #toastIcon { color: var(--reg-warning); }
+
+/* Toast content */
+#registerToast .toast-header {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8125rem;
+}
+#registerToast .toast-header strong {
+    font-weight: 700;
+}
+#registerToast .toast-body {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+#registerToast .toast-body ul {
+    margin: 0.25rem 0 0;
+    padding-left: 1.125rem;
+    list-style-type: disc;
+}
+#registerToast .toast-body ul li {
+    margin-bottom: 0.25rem;
+}
+#registerToast .toast-body ul li:last-child {
+    margin-bottom: 0;
+}
+#registerToast .toast-body p {
+    margin: 0;
+}
+
+/* Hide inline Django error divs — use toast instead */
+#registerModal .text-danger.small {
+    display: none !important;
+}
+
+/* ========================================
+   RESPONSIVE — Mobile First
+   ======================================== */
+
+/* Small (576px+) */
+@media (min-width: 576px) {
+    #registerModal .modal-dialog {
+        margin: 1rem auto;
+        max-width: calc(100% - 2rem);
+    }
+
+    #registerModal .modal-content {
+        max-height: 88vh;
+    }
+
+    #registerModal .modal-header {
+        padding: 1rem 1.25rem;
+    }
+
+    #registerModal .modal-header .modal-title {
+        font-size: 1.0625rem;
+    }
+
+    #registerModal .reg-stepper {
+        padding: 1rem 0.75rem 0.625rem;
+    }
+
+    #registerModal .modal-body {
+        padding: 1.25rem;
+        height: 52vh;
+        min-height: 300px;
+        max-height: 52vh;
+    }
+
+    #registerModal .reg-step-label {
+        font-size: 0.675rem;
+        max-width: 80px;
+    }
+
+    #registerModal .reg-step-circle {
+        width: 34px;
+        height: 34px;
+        font-size: 0.8rem;
+    }
+
+    #registerModal .reg-stepper-track::before,
+    #registerModal .reg-stepper-fill {
+        top: 16px;
+        left: 22px;
+        right: 22px;
+    }
+
+    #registerModal .modal-footer {
+        padding: 0.75rem 1.25rem;
+    }
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+    #registerModal .modal-dialog {
+        margin: 1.75rem auto;
+    }
+
+    #registerModal .modal-content {
+        max-height: 90vh;
+    }
+
+    #registerModal .modal-header {
+        padding: 1.25rem 1.5rem;
+    }
+
+    #registerModal .modal-header .modal-title {
+        font-size: 1.125rem;
+    }
+
+    #registerModal .modal-body {
+        padding: 1.5rem 1.75rem;
+        height: 55vh;
+        min-height: 340px;
+        max-height: 55vh;
+    }
+
+    #registerModal .modal-footer {
+        padding: 1rem 1.75rem;
+    }
+
+    #registerModal .reg-stepper {
+        padding: 1.25rem 1.5rem 0.75rem;
+    }
+
+    #registerModal .reg-step-circle {
+        width: 38px;
+        height: 38px;
+        font-size: 0.85rem;
+    }
+
+    #registerModal .reg-stepper-track::before,
+    #registerModal .reg-stepper-fill {
+        top: 18px;
+        left: 24px;
+        right: 24px;
+    }
+
+    #registerModal .reg-step-label {
+        font-size: 0.725rem;
+        max-width: 90px;
+    }
+
+    #registerModal .form-control,
+    #registerModal .form-select {
+        font-size: 0.875rem;
+        padding: 0.625rem 0.875rem;
+    }
+}
+
+/* Desktop (992px+) */
+@media (min-width: 992px) {
+    #registerModal .modal-dialog {
+        max-width: 720px;
+    }
+
+    #registerModal .modal-body {
+        height: 58vh;
+        min-height: 380px;
+        max-height: 58vh;
+    }
+
+    #registerModal .reg-step-label {
+        font-size: 0.75rem;
+        max-width: none;
+    }
+
+    #registerModal .form-control,
+    #registerModal .form-select {
+        font-size: inherit;
+        min-height: auto;
+    }
+}
+
+/* Large desktop (1200px+) */
+@media (min-width: 1200px) {
+    #registerModal .modal-dialog {
+        max-width: 780px;
     }
 }

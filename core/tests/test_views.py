@@ -23,8 +23,22 @@ class AuthenticationTests(TestCase):
             'first_name': 'Test',
             'last_name': 'User',
             'email': 'test@example.com',
+            'confirm_email': 'test@example.com',
             'password1': 'TestPass123!',
-            'password2': 'TestPass123!'
+            'password2': 'TestPass123!',
+            'date_of_birth': '1995-01-01',
+            'gender': 'Male',
+            'nationality': 'Filipino',
+            'passport_number': 'TEST123456',
+            'confirm_passport_number': 'TEST123456',
+            'passport_issue_date': '2020-01-01',
+            'passport_expiry_date': '2030-01-01',
+            'highest_education_level': 'bachelor',
+            'graduation_year': '2015',
+            'field_of_study': 'Agronomy',
+            'phone_number': '09123456789',
+            'location': 'Test Location',
+            'smokes': 'Never'
         })
         
         # Should redirect after successful registration
@@ -150,7 +164,7 @@ class CandidateApplicationTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             status=Candidate.APPROVED,
             program=self.program,
@@ -253,7 +267,7 @@ class PermissionTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             created_by=self.user
         )

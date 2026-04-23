@@ -94,6 +94,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.RequestContextMiddleware',
+    'core.middleware.SecurityHeadersMiddleware',
 ]
 
 # Add debug toolbar middleware only in DEBUG mode
@@ -239,10 +240,15 @@ LOGGING = {
             'level': LOG_LEVEL,
         },
         'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
+            # Use plain FileHandler on Windows/dev to avoid PermissionError
+            # during log rotation (Windows locks open files).
+            # RotatingFileHandler is used in production (Linux).
+            'class': 'logging.FileHandler' if (DEBUG or os.name == 'nt') else 'logging.handlers.RotatingFileHandler',
             'filename': str(LOG_DIR / 'app.log'),
-            'maxBytes': 1024 * 1024 * 5,  # 5MB
-            'backupCount': 5,
+            **({} if (DEBUG or os.name == 'nt') else {
+                'maxBytes': 1024 * 1024 * 5,  # 5MB
+                'backupCount': 5,
+            }),
             'formatter': 'verbose',
             'level': LOG_LEVEL,
         },
@@ -269,6 +275,14 @@ CRONTAB_COMMAND_PREFIX = 'DJANGO_SETTINGS_MODULE=agrostudies_project.settings'
 CRONTAB_COMMAND_SUFFIX = '2>&1'
 
 # ----- Security Settings -----
+# Cookie and Session security (safe for both dev/prod)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 86400  # 24 hours
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_REFERRER_POLICY = "same-origin"
+
 # Explicitly disable SSL redirect in development to prevent HTTP/HTTPS conflicts
 if DEBUG:
     SECURE_SSL_REDIRECT = False
@@ -280,11 +294,6 @@ else:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-
-    # Security Headers
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
 
     # HSTS Settings
     SECURE_HSTS_SECONDS = 31536000  # 1 year
@@ -335,8 +344,6 @@ else:
     }
     # Use database sessions for reliability in dev/non-Redis environments
     SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-
-SESSION_COOKIE_AGE = 86400  # 24 hours
 
 # Cache time to live settings
 CACHE_TTL = {
@@ -405,7 +412,7 @@ AUTHENTICATION_BACKENDS = [
 # Allauth adapter settings
 SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 SOCIALACCOUNT_AUTO_SIGNUP = False  # Require manual signup, we'll handle it custom
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}  # Use modern approach instead of ACCOUNT_AUTHENTICATION_METHOD
 
@@ -452,4 +459,3 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {},
     }
 }
-

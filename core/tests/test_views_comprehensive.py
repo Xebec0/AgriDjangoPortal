@@ -197,7 +197,7 @@ class CandidateStatusUpdateTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             status=Candidate.DRAFT,
             created_by=self.staff_user
@@ -312,6 +312,9 @@ class IndexViewTests(TestCase):
                 capacity=10
             )
         
+        user = User.objects.create_user(username='testviewer', password='password')
+        self.client.login(username='testviewer', password='password')
+
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('programs', response.context)

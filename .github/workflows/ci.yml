@@ -75,13 +75,11 @@ jobs:
         export DEBUG=False
         python manage.py check --settings=agrostudies_project.settings
         
-    - name: Run tests with coverage
+    - name: Run tests with coverage (pytest)
       run: |
         export SECRET_KEY='test-secret-key-for-ci'
         export DEBUG=True
-        coverage run --source='.' manage.py test core.tests
-        coverage report --show-missing
-        coverage xml
+        pytest --cov=core.utils --cov=core.models --cov=core.middleware --cov-report=term-missing --cov-report=xml --cov-fail-under=95
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3

@@ -1,0 +1,352 @@
+﻿python : Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+At line:1 char:1
++ python manage.py test core.tests.test_applicant_profile_module -v 2 > ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Creating test d...che=shared')...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[EMAIL CONFIG] SMTP: smtp.gmail.com:587 User: merlielatosa@gmail.com
+Found 10 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: allauth, cachalot, debug_toolbar, django_crontab, facebook, google, messages, microsoft, sslserver, staticfiles, unfold, unfold_filters, unfold_forms
+  Apply all migrations: account, admin, auth, contenttypes, core, sessions, sites, socialaccount
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying account.0001_initial... OK
+  Applying account.0002_email_max_length... OK
+  Applying account.0003_alter_emailaddress_create_unique_verified_email... OK
+  Applying account.0004_alter_emailaddress_drop_unique_email... OK
+  Applying account.0005_emailaddress_idx_upper_email... OK
+  Applying account.0006_emailaddress_lower... OK
+  Applying account.0007_emailaddress_idx_email... OK
+  Applying account.0008_emailaddress_unique_primary_email_fixup... OK
+  Applying account.0009_emailaddress_unique_primary_email... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying core.0002_university_candidate... OK
+  Applying core.0003_remove_candidate_health_statement_ayalon_and_more... OK
+  Applying core.0004_candidate_year_graduated... OK
+  Applying core.0005_profile_email_verified_profile_phone_number_and_more... OK
+  Applying core.0006_registration_additional_document_and_more... OK
+  Applying core.0007_remove_registration_additional_document_and_more... OK
+  Applying core.0008_candidate_program_registration_processed... OK
+  Applying core.0009_remove_agricultureprogram_end_date... OK
+  Applying core.0010_profile_country_of_birth_profile_date_of_birth_and_more... OK
+  Applying core.0011_activitylog... OK
+  Applying core.0012_rename_core_activ_user_id_2a2fba_idx_core_activi_user_id_ae0b38_idx_and_more... OK
+  Applying core.0013_agricultureprogram_required_gender_and_more... OK
+  Applying core.0014_profile_has_international_license... OK
+  Applying core.0015_profile_license_scan... OK
+  Applying core.0016_add_program_image_and_featured... OK
+  Applying core.0017_candidate_is_complete_candidate_user_and_more... OK
+  Applying core.0018_remove_candidate_is_complete_remove_candidate_user_and_more... OK
+  Applying core.0019_profile_passport_number... OK
+  Applying core.0020_profile_secondary_specialization_profile_shirt_size_and_more... OK
+  Applying core.0017_add_program_deadline_and_country... OK
+  Applying core.0021_merge_20251024_0750... OK
+  Applying core.0022_populate_program_country... OK
+  Applying core.0023_add_document_fields_to_profile... OK
+  Applying core.0024_add_profile_fields... OK
+  Applying core.0025_uploadedfile... OK
+  Applying core.0026_make_candidate_fields_optional... OK
+  Applying core.0027_remove_candidate_unique_constraint... OK
+  Applying core.0028_allow_blank_names_in_candidate... OK
+  Applying core.0029_add_missing_candidate_fields... OK
+  Applying core.0030_profile_oauth_id_profile_oauth_picture_url_and_more... OK
+  Applying core.0031_add_validation_deadline_fields... OK
+  Applying core.0032_add_job_experience_field... OK
+  Applying core.0033_add_required_experience_years... OK
+  Applying core.0034_candidate_health_condition_candidate_health_remarks_and_more... OK
+  Applying core.0035_remove_profile_institution_name... OK
+  Applying core.0036_alter_profile_university... OK
+  Applying core.0037_alter_candidate_university... OK
+  Applying core.0038_candidate_address_candidate_field_of_study_and_more... OK
+  Applying core.0039_candidate_phone_number... OK
+  Applying sessions.0001_initial... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+  Applying socialaccount.0001_initial... OK
+  Applying socialaccount.0002_token_max_lengths... OK
+  Applying socialaccount.0003_extra_data_default_dict... OK
+  Applying socialaccount.0004_app_provider_id_settings... OK
+  Applying socialaccount.0005_socialtoken_nullable_app... OK
+test_admin_dashboard_redirect 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_admin_dashboard_redirect)
+Verify that staff accessing /profile/ get the admin dashboard rendered instead of a standard profile. ... INFO request 
+GET /profile/ 200 user=staffuser ip=127.0.0.1 duration_ms=136
+ok
+test_ajax_profile_update (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_ajax_profile_update)
+Verify the JSON response structure when an XMLHttpRequest hits /profile/ ... INFO request POST /profile/ 400 
+user=testapplicant ip=127.0.0.1 duration_ms=54
+WARNING Bad Request: /profile/
+FAIL
+test_clear_all_documents_view 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_clear_all_documents_view)
+Test the explicit profile documents clearing endpoint. ... INFO request POST /profile/clear-documents/ 302 
+user=testapplicant ip=127.0.0.1 duration_ms=9
+INFO request GET /profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=60
+ok
+test_profile_candidate_sync 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_candidate_sync)
+CRITICAL: Ensure updating a Profile pushes equivalent edits down to active Candidate records. ... INFO request POST 
+/profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=55
+FAIL
+test_profile_image_deletion 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_deletion)
+Test sending the delete_image deletion flag strips the image DB entry. ... WARNING Error processing file profile_image 
+for profile 1: [Errno 2] No such file or directory: 
+'C:\\Users\\Arvin\\Documents\\AgriDjangoPortal\\media\\profiles\\fake_image.png'
+WARNING Error processing file profile_image for profile 1: [Errno 2] No such file or directory: 
+'C:\\Users\\Arvin\\Documents\\AgriDjangoPortal\\media\\profiles\\fake_image.png'
+ERROR Internal Server Error: /profile/
+Traceback (most recent call last):
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\exception.py", 
+line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\base.py", line 
+198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\contrib\auth\decorators.py", 
+line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 477, in profile
+    if u_form.is_valid() and p_form.is_valid():
+                             ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 206, in 
+is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 201, in 
+errors
+    self.full_clean()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 337, in 
+full_clean
+    self._clean_fields()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 347, in 
+_clean_fields
+    value = getattr(self, "clean_%s" % name)()
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\forms.py", line 220, in clean_profile_image
+    if profile_image.size > 2 * 1024 * 1024:
+       ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\fields\files.py", 
+line 76, in size
+    return self.storage.size(self.name)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File 
+"C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\files\storage\filesystem.py", 
+line 199, in size
+    return os.path.getsize(self.path(name))
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 86, in getsize
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 
+'C:\\Users\\Arvin\\Documents\\AgriDjangoPortal\\media\\profiles\\fake_image.png'
+INFO request POST /profile/ 500 user=testapplicant ip=127.0.0.1 duration_ms=17
+ERROR
+test_profile_image_upload 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_upload)
+Test uploading a valid profile profile image. ... INFO request POST /profile/ 200 user=testapplicant ip=127.0.0.1 
+duration_ms=69
+FAIL
+test_profile_update_success 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_update_success)
+Test submitting valid POST data perfectly updates User and Profile objects. ... INFO request POST /profile/ 302 
+user=testapplicant ip=127.0.0.1 duration_ms=21
+ok
+test_profile_update_validation 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_update_validation)
+Test phone number missing digits or checking a license without upload ... INFO request POST /profile/ 200 
+user=testapplicant ip=127.0.0.1 duration_ms=43
+ERROR
+test_signal_creates_profile 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_signal_creates_profile)
+Ensure a Profile is built and attached whenever a User is saved. ... ok
+test_unauthenticated_profile_access 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_unauthenticated_profile_access)
+Verify profile views redirect to login when unauthenticated. ... INFO request GET /profile/ 302 user= ip=127.0.0.1 
+duration_ms=0
+FAIL
+
+======================================================================
+ERROR: test_profile_image_deletion 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_deletion)
+Test sending the delete_image deletion flag strips the image DB entry.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 204, in 
+test_profile_image_deletion
+    response = self.client.post(reverse('profile'), {
+        'username': self.username,
+    ...<4 lines>...
+        'delete_image': 'on'
+    })
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 1153, in 
+post
+    response = super().post(
+        path,
+    ...<5 lines>...
+        **extra,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 499, in 
+post
+    return self.generic(
+           ~~~~~~~~~~~~^
+        "POST",
+        ^^^^^^^
+    ...<6 lines>...
+        **extra,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 671, in 
+generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 1087, in 
+request
+    self.check_exception(response)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 802, in 
+check_exception
+    raise exc_value
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\exception.py", 
+line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\base.py", line 
+198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\contrib\auth\decorators.py", 
+line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 477, in profile
+    if u_form.is_valid() and p_form.is_valid():
+                             ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 206, in 
+is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 201, in 
+errors
+    self.full_clean()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 337, in 
+full_clean
+    self._clean_fields()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\forms\forms.py", line 347, in 
+_clean_fields
+    value = getattr(self, "clean_%s" % name)()
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\forms.py", line 220, in clean_profile_image
+    if profile_image.size > 2 * 1024 * 1024:
+       ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\fields\files.py", 
+line 76, in size
+    return self.storage.size(self.name)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File 
+"C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\files\storage\filesystem.py", 
+line 199, in size
+    return os.path.getsize(self.path(name))
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 86, in getsize
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 
+'C:\\Users\\Arvin\\Documents\\AgriDjangoPortal\\media\\profiles\\fake_image.png'
+
+======================================================================
+ERROR: test_profile_update_validation 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_update_validation)
+Test phone number missing digits or checking a license without upload
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 112, in 
+test_profile_update_validation
+    self.assertFormError(response, 'p_form', 'has_international_license',
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         'An international license scan is required if you claim to have one.')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\testcases.py", line 708, 
+in assertFormError
+    self._assert_form_error(form, field, errors, msg_prefix)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\testcases.py", line 665, 
+in _assert_form_error
+    if not form.is_bound:
+           ^^^^^^^^^^^^^
+AttributeError: 'HttpResponse' object has no attribute 'is_bound'
+
+======================================================================
+FAIL: test_ajax_profile_update 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_ajax_profile_update)
+Verify the JSON response structure when an XMLHttpRequest hits /profile/
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 127, in 
+test_ajax_profile_update
+    self.assertEqual(response.status_code, 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200
+
+======================================================================
+FAIL: test_profile_candidate_sync 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_candidate_sync)
+CRITICAL: Ensure updating a Profile pushes equivalent edits down to active Candidate records.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 159, in 
+test_profile_candidate_sync
+    self.assertEqual(response.status_code, 302)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 302
+
+======================================================================
+FAIL: test_profile_image_upload 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_upload)
+Test uploading a valid profile profile image.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 193, in 
+test_profile_image_upload
+    self.assertEqual(response.status_code, 302)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 302
+
+======================================================================
+FAIL: test_unauthenticated_profile_access 
+(core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_unauthenticated_profile_access)
+Verify profile views redirect to login when unauthenticated.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 59, in 
+test_unauthenticated_profile_access
+    self.assertIn(reverse('login'), response.url)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '/login/' not found in '/auth-required/?next=/profile/'
+
+----------------------------------------------------------------------
+Ran 10 tests in 31.044s
+
+FAILED (failures=4, errors=2)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+  Applying socialaccount.0006_alter_socialaccount_extra_data... OK
+System check identified no issues (0 silenced).

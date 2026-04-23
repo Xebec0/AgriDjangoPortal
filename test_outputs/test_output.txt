@@ -1,0 +1,631 @@
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+[EMAIL CONFIG] SMTP: smtp.gmail.com:587 User: merlielatosa@gmail.com
+Found 10 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: allauth, cachalot, debug_toolbar, django_crontab, facebook, google, messages, microsoft, sslserver, staticfiles, unfold, unfold_filters, unfold_forms
+  Apply all migrations: account, admin, auth, contenttypes, core, sessions, sites, socialaccount
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying account.0001_initial... OK
+  Applying account.0002_email_max_length... OK
+  Applying account.0003_alter_emailaddress_create_unique_verified_email... OK
+  Applying account.0004_alter_emailaddress_drop_unique_email... OK
+  Applying account.0005_emailaddress_idx_upper_email... OK
+  Applying account.0006_emailaddress_lower... OK
+  Applying account.0007_emailaddress_idx_email... OK
+  Applying account.0008_emailaddress_unique_primary_email_fixup... OK
+  Applying account.0009_emailaddress_unique_primary_email... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying core.0002_university_candidate... OK
+  Applying core.0003_remove_candidate_health_statement_ayalon_and_more... OK
+  Applying core.0004_candidate_year_graduated... OK
+  Applying core.0005_profile_email_verified_profile_phone_number_and_more... OK
+  Applying core.0006_registration_additional_document_and_more... OK
+  Applying core.0007_remove_registration_additional_document_and_more... OK
+  Applying core.0008_candidate_program_registration_processed... OK
+  Applying core.0009_remove_agricultureprogram_end_date... OK
+  Applying core.0010_profile_country_of_birth_profile_date_of_birth_and_more... OK
+  Applying core.0011_activitylog... OK
+  Applying core.0012_rename_core_activ_user_id_2a2fba_idx_core_activi_user_id_ae0b38_idx_and_more... OK
+  Applying core.0013_agricultureprogram_required_gender_and_more... OK
+  Applying core.0014_profile_has_international_license... OK
+  Applying core.0015_profile_license_scan... OK
+  Applying core.0016_add_program_image_and_featured... OK
+  Applying core.0017_candidate_is_complete_candidate_user_and_more... OK
+  Applying core.0018_remove_candidate_is_complete_remove_candidate_user_and_more... OK
+  Applying core.0019_profile_passport_number... OK
+  Applying core.0020_profile_secondary_specialization_profile_shirt_size_and_more... OK
+  Applying core.0017_add_program_deadline_and_country... OK
+  Applying core.0021_merge_20251024_0750... OK
+  Applying core.0022_populate_program_country... OK
+  Applying core.0023_add_document_fields_to_profile... OK
+  Applying core.0024_add_profile_fields... OK
+  Applying core.0025_uploadedfile... OK
+  Applying core.0026_make_candidate_fields_optional... OK
+  Applying core.0027_remove_candidate_unique_constraint... OK
+  Applying core.0028_allow_blank_names_in_candidate... OK
+  Applying core.0029_add_missing_candidate_fields... OK
+  Applying core.0030_profile_oauth_id_profile_oauth_picture_url_and_more... OK
+  Applying core.0031_add_validation_deadline_fields... OK
+  Applying core.0032_add_job_experience_field... OK
+  Applying core.0033_add_required_experience_years... OK
+  Applying core.0034_candidate_health_condition_candidate_health_remarks_and_more... OK
+  Applying core.0035_remove_profile_institution_name... OK
+  Applying core.0036_alter_profile_university... OK
+  Applying core.0037_alter_candidate_university... OK
+  Applying core.0038_candidate_address_candidate_field_of_study_and_more... OK
+  Applying core.0039_candidate_phone_number... OK
+  Applying sessions.0001_initial... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+  Applying socialaccount.0001_initial... OK
+  Applying socialaccount.0002_token_max_lengths... OK
+  Applying socialaccount.0003_extra_data_default_dict... OK
+  Applying socialaccount.0004_app_provider_id_settings... OK
+  Applying socialaccount.0005_socialtoken_nullable_app... OK
+  Applying socialaccount.0006_alter_socialaccount_extra_data...test_admin_dashboard_redirect (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_admin_dashboard_redirect)
+Verify that staff accessing /profile/ get the admin dashboard rendered instead of a standard profile. ... INFO request GET /profile/ 200 user=staffuser ip=127.0.0.1 duration_ms=123
+ok
+test_ajax_profile_update (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_ajax_profile_update)
+Verify the JSON response structure when an XMLHttpRequest hits /profile/ ... INFO request POST /profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=67
+ok
+test_clear_all_documents_view (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_clear_all_documents_view)
+Test the explicit profile documents clearing endpoint. ... INFO request POST /profile/clear-documents/ 302 user=testapplicant ip=127.0.0.1 duration_ms=10
+INFO request GET /profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=56
+ok
+test_profile_candidate_sync (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_candidate_sync)
+CRITICAL: Ensure updating a Profile pushes equivalent edits down to active Candidate records. ... ERROR Failed to sync candidate data for user 1: NOT NULL constraint failed: core_candidate.country_of_birth
+Traceback (most recent call last):
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: core_candidate.country_of_birth
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 530, in profile
+    candidate.save()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1110, in _save_table
+    results = self._do_update(
+        base_qs,
+    ...<5 lines>...
+        returning_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1213, in _do_update
+    return filtered._update(values, returning_fields)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 1327, in _update
+    return query.get_compiler(self.db).execute_returning_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 2140, in execute_returning_sql
+    row_count = self.execute_sql(ROW_COUNT)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 118, in inner
+    return original(write_compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 2111, in execute_sql
+    row_count = super().execute_sql(result_type)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 93, in inner
+    return execute_query_func()
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 85, in <lambda>
+    execute_query_func = lambda: original(compiler, *args, **kwargs)
+                                 ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 142, in inner
+    return original(cursor, sql, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: core_candidate.country_of_birth
+ERROR Internal Server Error: /profile/
+Traceback (most recent call last):
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: core_candidate.country_of_birth
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 530, in profile
+    candidate.save()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1110, in _save_table
+    results = self._do_update(
+        base_qs,
+    ...<5 lines>...
+        returning_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1213, in _do_update
+    return filtered._update(values, returning_fields)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 1327, in _update
+    return query.get_compiler(self.db).execute_returning_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 2140, in execute_returning_sql
+    row_count = self.execute_sql(ROW_COUNT)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 118, in inner
+    return original(write_compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 2111, in execute_sql
+    row_count = super().execute_sql(result_type)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 93, in inner
+    return execute_query_func()
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 85, in <lambda>
+    execute_query_func = lambda: original(compiler, *args, **kwargs)
+                                 ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 142, in inner
+    return original(cursor, sql, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: core_candidate.country_of_birth
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 539, in profile
+    Notification.add_notification(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request.user,
+        ^^^^^^^^^^^^^
+        "Your profile has been successfully updated.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        Notification.SUCCESS
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\models.py", line 534, in add_notification
+    return cls.objects.create(
+           ~~~~~~~~~~~~~~~~~~^
+        user=user,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        link=link
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1220, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 118, in inner
+    return original(write_compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 1925, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 142, in inner
+    return original(cursor, sql, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 99, in _execute
+    self.db.validate_no_broken_transaction()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\base\base.py", line 521, in validate_no_broken_transaction
+    raise TransactionManagementError(
+    ...<2 lines>...
+    ) from self.rollback_exc
+django.db.transaction.TransactionManagementError: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+INFO request POST /profile/ 500 user=testapplicant ip=127.0.0.1 duration_ms=51
+ERROR
+test_profile_image_deletion (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_deletion)
+Test sending the delete_image deletion flag strips the image DB entry. ... INFO request POST /profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=81
+INFO request POST /profile/ 302 user=testapplicant ip=127.0.0.1 duration_ms=20
+ok
+test_profile_image_upload (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_upload)
+Test uploading a valid profile profile image. ... INFO request POST /profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=54
+FAIL
+test_profile_update_success (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_update_success)
+Test submitting valid POST data perfectly updates User and Profile objects. ... INFO request POST /profile/ 302 user=testapplicant ip=127.0.0.1 duration_ms=21
+ok
+test_profile_update_validation (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_update_validation)
+Test phone number missing digits or checking a license without upload ... INFO request POST /profile/ 200 user=testapplicant ip=127.0.0.1 duration_ms=47
+FAIL
+test_signal_creates_profile (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_signal_creates_profile)
+Ensure a Profile is built and attached whenever a User is saved. ... ok
+test_unauthenticated_profile_access (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_unauthenticated_profile_access)
+Verify profile views redirect to login when unauthenticated. ... INFO request GET /profile/ 302 user= ip=127.0.0.1 duration_ms=0
+ok
+
+======================================================================
+ERROR: test_profile_candidate_sync (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_candidate_sync)
+CRITICAL: Ensure updating a Profile pushes equivalent edits down to active Candidate records.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: core_candidate.country_of_birth
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 530, in profile
+    candidate.save()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1110, in _save_table
+    results = self._do_update(
+        base_qs,
+    ...<5 lines>...
+        returning_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1213, in _do_update
+    return filtered._update(values, returning_fields)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 1327, in _update
+    return query.get_compiler(self.db).execute_returning_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 2140, in execute_returning_sql
+    row_count = self.execute_sql(ROW_COUNT)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 118, in inner
+    return original(write_compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 2111, in execute_sql
+    row_count = super().execute_sql(result_type)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 93, in inner
+    return execute_query_func()
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 85, in <lambda>
+    execute_query_func = lambda: original(compiler, *args, **kwargs)
+                                 ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 142, in inner
+    return original(cursor, sql, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\sqlite3\base.py", line 359, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: core_candidate.country_of_birth
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 154, in test_profile_candidate_sync
+    response = self.client.post(reverse('profile'), {
+        'username': self.username,
+    ...<9 lines>...
+        'has_international_license': False
+    })
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 1153, in post
+    response = super().post(
+        path,
+    ...<5 lines>...
+        **extra,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 499, in post
+    return self.generic(
+           ~~~~~~~~~~~~^
+        "POST",
+        ^^^^^^^
+    ...<6 lines>...
+        **extra,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 671, in generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 1087, in request
+    self.check_exception(response)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\test\client.py", line 802, in check_exception
+    raise exc_value
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\views.py", line 539, in profile
+    Notification.add_notification(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request.user,
+        ^^^^^^^^^^^^^
+        "Your profile has been successfully updated.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        Notification.SUCCESS
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\models.py", line 534, in add_notification
+    return cls.objects.create(
+           ~~~~~~~~~~~~~~~~~~^
+        user=user,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        link=link
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\base.py", line 1220, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 38, in inner
+    return original(compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 118, in inner
+    return original(write_compiler, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\models\sql\compiler.py", line 1925, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\cachalot\monkey_patch.py", line 142, in inner
+    return original(cursor, sql, *args, **kwargs)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\utils.py", line 99, in _execute
+    self.db.validate_no_broken_transaction()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Arvin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\django\db\backends\base\base.py", line 521, in validate_no_broken_transaction
+    raise TransactionManagementError(
+    ...<2 lines>...
+    ) from self.rollback_exc
+django.db.transaction.TransactionManagementError: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+
+======================================================================
+FAIL: test_profile_image_upload (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_image_upload)
+Test uploading a valid profile profile image.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 206, in test_profile_image_upload
+    self.assertEqual(response.status_code, 302)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 302
+
+======================================================================
+FAIL: test_profile_update_validation (core.tests.test_applicant_profile_module.ApplicantProfileModuleTest.test_profile_update_validation)
+Test phone number missing digits or checking a license without upload
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_applicant_profile_module.py", line 111, in test_profile_update_validation
+    self.assertContains(response, 'An international license scan is required')
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : Couldn't find 'An international license scan is required' in the following response
+b'    \n<!DOCTYPE html>\n<html lang="en"> \n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">\n    <title>My Profile - Agrostudies Registration System</title>\n    \n    <!-- Bootstrap CSS from CDN -->\n    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">\n    \n    <!-- Font Awesome for icons -->\n    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">\n    \n    <!-- Custom CSS -->\n    <link rel="stylesheet" href="/static/css/theme.css">\n    <link rel="stylesheet" href="/static/css/main.css">\n    <link rel="stylesheet" href="/static/css/modal-animations.css">\n    \n    \n<style>\n    .profile-hero {\n        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);\n        padding: 3rem 0 6rem 0;\n        margin-bottom: -4rem;\n        border-radius: 0 0 20px 20px;\n    }\n\n    .profile-card-main {\n        background: white;\n        border-radius: 20px;\n        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);\n        padding: 2rem;\n        margin-bottom: 2rem;\n        position: relative;\n        z-index: 10;\n    }\n\n    .profile-avatar-container {\n        position: relative;\n        width: 150px;\n        height: 150px;\n        margin: 0 auto 1.5rem;\n    }\n\n    .profile-avatar {\n        width: 150px;\n        height: 150px;\n        border-radius: 50%;\n        border: 5px solid white;\n        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);\n        object-fit: cover;\n    }\n\n    .profile-avatar-placeholder {\n        width: 150px;\n        height: 150px;\n        border-radius: 50%;\n        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 4rem;\n        font-weight: 700;\n        color: white;\n        border: 5px solid white;\n        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);\n    }\n\n    .profile-badge {\n        position: absolute;\n        bottom: 10px;\n        right: 10px;\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        color: white;\n        font-size: 1.2rem;\n        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);\n        border: 3px solid white;\n    }\n\n    .profile-name {\n        font-size: 2rem;\n        font-weight: 700;\n        color: #333;\n        margin-bottom: 0.5rem;\n    }\n\n    .profile-meta {\n        color: #666;\n        font-size: 1.05rem;\n        margin-bottom: 1.5rem;\n    }\n\n    .info-card {\n        background: white;\n        border-radius: 16px;\n        padding: 2rem;\n        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);\n        margin-bottom: 2rem;\n        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n        border: 1px solid rgba(0, 0, 0, 0.03);\n    }\n\n    .info-card:hover {\n        transform: translateY(-4px);\n        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);\n    }\n\n    .info-card-header {\n        display: flex;\n        align-items: center;\n        margin-bottom: 2rem;\n        padding-bottom: 1.25rem;\n        border-bottom: 1px solid #f0f0f0;\n    }\n\n    .info-card-icon {\n        width: 44px;\n        height: 44px;\n        border-radius: 12px;\n        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        color: white;\n        font-size: 1.25rem;\n        margin-right: 1.25rem;\n        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);\n    }\n\n    .info-card-title {\n        font-size: 1.25rem;\n        font-weight: 700;\n        color: #1a1a1a;\n        margin: 0;\n        letter-spacing: -0.01em;\n    }\n\n    .info-grid {\n        display: grid;\n        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n        gap: 1.5rem;\n    }\n\n    .info-group {\n        display: flex;\n        flex-direction: column;\n    }\n\n    .info-label {\n        font-size: 0.75rem;\n        font-weight: 700;\n        color: #888;\n        text-transform: uppercase;\n        letter-spacing: 0.05em;\n        margin-bottom: 0.4rem;\n    }\n\n    .info-value {\n        color: #333;\n        font-size: 1.05rem;\n        font-weight: 500;\n        line-height: 1.5;\n        word-break: break-word;\n    }\n\n    .info-value.not-provided {\n        color: #bbb;\n        font-style: italic;\n        font-weight: 400;\n    }\n\n    .btn-edit-profile {\n        background: linear-gradient(135deg, #28a745 0%, #218838 100%);\n        color: white;\n        padding: 0.75rem 2rem;\n        border-radius: 25px;\n        font-weight: 600;\n        border: none;\n        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n        transition: all 0.3s ease;\n    }\n\n    .btn-edit-profile:hover {\n        transform: translateY(-2px);\n        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);\n        color: white;\n    }\n\n    .bg-success-soft {\n        background-color: rgba(40, 167, 69, 0.1);\n    }\n\n    .application-card {\n        background: white;\n        border-radius: 12px;\n        padding: 1.25rem;\n        margin-bottom: 1rem;\n        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);\n        transition: all 0.3s ease;\n        border-left: 4px solid transparent;\n    }\n\n    .application-card:hover {\n        transform: translateX(5px);\n        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);\n        border-left-color: #28a745;\n    }\n\n    .application-program {\n        font-weight: 600;\n        color: #333;\n        font-size: 1.1rem;\n        margin-bottom: 0.5rem;\n    }\n\n    .application-meta {\n        color: #666;\n        font-size: 0.9rem;\n    }\n\n    .empty-state {\n        text-align: center;\n        padding: 3rem 2rem;\n    }\n\n    .empty-icon {\n        font-size: 4rem;\n        color: #e0e0e0;\n        margin-bottom: 1rem;\n    }\n\n    .empty-state h5 {\n        color: #666;\n        margin-bottom: 1rem;\n    }\n\n    .empty-state p {\n        color: #999;\n    }\n\n    .edit-form-card {\n        background: white;\n        border-radius: 15px;\n        padding: 2rem;\n        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);\n        margin-bottom: 2rem;\n    }\n\n    .form-section-title {\n        font-size: 1.2rem;\n        font-weight: 600;\n        color: #28a745;\n        margin-bottom: 1.5rem;\n        padding-bottom: 0.75rem;\n        border-bottom: 2px solid #f0f0f0;\n    }\n\n    @media (max-width: 768px) {\n        .profile-hero {\n            padding: 2rem 0 4rem 0;\n            margin-bottom: -3rem;\n        }\n\n        .profile-name {\n            font-size: 1.5rem;\n        }\n\n        .info-label {\n            min-width: 100px;\n            font-size: 0.85rem;\n        }\n    }\n</style>\n\n    \n    <style>\n    /* Modern Notification Dropdown Styles */\n    .notification-dropdown-modern {\n        width: 380px;\n        max-height: 550px;\n        border-radius: 15px;\n        border: none;\n        padding: 0;\n        overflow: hidden;\n    }\n\n    .notification-header {\n        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);\n        padding: 1rem 1.25rem;\n        display: flex;\n        justify-content: space-between;\n        align-items: center;\n    }\n\n    .notification-title {\n        color: white;\n        margin: 0;\n        font-size: 1.1rem;\n        font-weight: 600;\n    }\n\n    .btn-mark-all {\n        color: white;\n        text-decoration: none;\n        font-size: 0.85rem;\n        padding: 0.35rem 0.75rem;\n        border-radius: 20px;\n        background: rgba(255, 255, 255, 0.2);\n        transition: all 0.3s ease;\n    }\n\n    .btn-mark-all:hover {\n        background: rgba(255, 255, 255, 0.3);\n        color: white;\n    }\n\n    .notification-list {\n        max-height: 400px;\n        overflow-y: auto;\n        background: white;\n    }\n\n    .notification-loading {\n        text-align: center;\n        padding: 3rem 2rem;\n        color: #666;\n    }\n\n    .notification-empty {\n        text-align: center;\n        padding: 3rem 2rem;\n    }\n\n    .empty-icon {\n        font-size: 3.5rem;\n        color: #d0d0d0;\n        margin-bottom: 1rem;\n    }\n\n    .empty-title {\n        color: #666;\n        font-weight: 600;\n        margin-bottom: 0.5rem;\n    }\n\n    .empty-text {\n        color: #999;\n        font-size: 0.9rem;\n        margin: 0;\n    }\n\n    .notification-item-modern {\n        padding: 1rem 1.25rem;\n        border-bottom: 1px solid #f0f0f0;\n        transition: all 0.3s ease;\n        animation: slideInRight 0.3s ease-out;\n    }\n\n    @keyframes slideInRight {\n        from {\n            opacity: 0;\n            transform: translateX(20px);\n        }\n        to {\n            opacity: 1;\n            transform: translateX(0);\n        }\n    }\n\n    .notification-item-modern:hover {\n        background: #f8f9fa;\n    }\n\n    .notification-item-modern.unread {\n        background: #e8f5e9;\n        border-left: 4px solid #28a745;\n    }\n\n    .notification-item-modern.unread:hover {\n        background: #d4edda;\n    }\n\n    .notification-item-content {\n        display: flex;\n        gap: 0.75rem;\n    }\n\n    .notification-icon-wrapper {\n        width: 40px;\n        height: 40px;\n        border-radius: 50%;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        flex-shrink: 0;\n        font-size: 1.1rem;\n    }\n\n    .notification-success {\n        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);\n        color: white;\n    }\n\n    .notification-warning {\n        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);\n        color: white;\n    }\n\n    .notification-error {\n        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);\n        color: white;\n    }\n\n    .notification-info {\n        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);\n        color: white;\n    }\n\n    .notification-body {\n        flex: 1;\n    }\n\n    .notification-message {\n        color: #333;\n        font-size: 0.95rem;\n        margin-bottom: 0.5rem;\n        line-height: 1.4;\n    }\n\n    .notification-meta {\n        display: flex;\n        justify-content: space-between;\n        align-items: center;\n        gap: 0.5rem;\n        flex-wrap: wrap;\n    }\n\n    .notification-time {\n        color: #999;\n        font-size: 0.8rem;\n    }\n\n    .notification-actions {\n        display: flex;\n        gap: 0.5rem;\n    }\n\n    .btn-notification-action {\n        padding: 0.25rem 0.75rem;\n        border-radius: 15px;\n        font-size: 0.8rem;\n        font-weight: 600;\n        text-decoration: none;\n        background: #28a745;\n        color: white;\n        transition: all 0.3s ease;\n        border: none;\n        display: inline-block;\n    }\n\n    .btn-notification-action:hover {\n        background: #218838;\n        color: white;\n        transform: scale(1.05);\n    }\n\n    .btn-notification-action.secondary {\n        background: #6c757d;\n    }\n\n    .btn-notification-action.secondary:hover {\n        background: #5a6268;\n    }\n\n    .notification-footer {\n        background: #f8f9fa;\n        padding: 0.75rem 1.25rem;\n        text-align: center;\n        border-top: 1px solid #e0e0e0;\n    }\n\n    .btn-clear-all {\n        color: #dc3545;\n        text-decoration: none;\n        font-size: 0.9rem;\n        font-weight: 600;\n        transition: all 0.3s ease;\n    }\n\n    .btn-clear-all:hover {\n        color: #c82333;\n    }\n\n    .notification-list::-webkit-scrollbar {\n        width: 6px;\n    }\n\n    .notification-list::-webkit-scrollbar-track {\n        background: #f1f1f1;\n    }\n\n    .notification-list::-webkit-scrollbar-thumb {\n        background: #28a745;\n        border-radius: 3px;\n    }\n\n    .notification-list::-webkit-scrollbar-thumb:hover {\n        background: #218838;\n    }\n    </style>\n</head>\n<body>\n    <!-- Navigation -->\n    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">\n        <div class="container">\n            <div class="d-flex align-items-center">\n                <a href="/" class="me-3">\n                    <img src="/static/images/logo-agrostudies.png" alt="AgroStudies Logo" height="32" style="border-radius: 8px;">\n                </a>\n                <a class="navbar-brand" href="/">AgroStudies</a>\n            </div>\n            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">\n                <span class="navbar-toggler-icon"></span>\n            </button>\n            <div class="collapse navbar-collapse" id="navbarNav">\n                <ul class="navbar-nav me-auto">\n                    <li class="nav-item">\n                        <a class="nav-link" href="/">Home</a>\n                    </li>\n                    <li class="nav-item">\n                        <a class="nav-link" href="/programs/">Programs</a>\n                    </li>\n                    \n                    <li class="nav-item">\n                        <a class="nav-link" href="/help/">Help</a>\n                    </li>\n                    <li class="nav-item d-none">\n                        <a class="nav-link" href="/contact/">Contact</a>\n                    </li>\n                </ul>\n                <ul class="navbar-nav ms-auto">\n                    \n                        <li class="nav-item dropdown">\n                            <a class="nav-link" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">\n                                <i class="fas fa-bell"></i>\n                                \n                            </a>\n                            <div class="dropdown-menu dropdown-menu-end notification-dropdown-modern shadow-lg" aria-labelledby="notificationDropdown">\n                                <div class="notification-header">\n                                    <h6 class="notification-title"><i class="fas fa-bell me-2"></i>Notifications</h6>\n                                    <a href="/notifications/mark-all-read/" class="btn-mark-all">\n                                        <i class="fas fa-check-double me-1"></i>Mark all as read\n                                    </a>\n                                </div>\n                                <div id="notificationList" class="notification-list">\n                                    <div class="notification-loading">\n                                        <div class="spinner-border text-success" role="status">\n                                            <span class="visually-hidden">Loading...</span>\n                                        </div>\n                                        <p class="mb-0 mt-2">Loading notifications...</p>\n                                    </div>\n                                </div>\n                                <div class="notification-footer">\n                                    <a href="#" id="clearAllNotifications" class="btn-clear-all">\n                                        <i class="fas fa-trash-alt me-1"></i>Clear all\n                                    </a>\n                                </div>\n                            </div>\n                        </li>\n                        <li class="nav-item">\n                            <a class="nav-link" href="/profile/">\n                                <i class="fas fa-user"></i> testapplicant\n                            </a>\n                        </li>\n                        \n                        <li class="nav-item">\n                            <a class="nav-link" href="/logout/">\n                                <i class="fas fa-sign-out-alt"></i> Logout\n                            </a>\n                        </li>\n                    \n                </ul>\n            </div>\n        </div>\n    </nav>\n\n    <!-- Messages -->\n    <div class="container mt-3">\n        \n    </div>\n    \n    <script>\n        // Auto-dismiss alerts after 4 seconds\n        document.addEventListener(\'DOMContentLoaded\', function() {\n            const alerts = document.querySelectorAll(\'.auto-dismiss-alert\');\n            alerts.forEach(function(alert) {\n                setTimeout(function() {\n                    const bsAlert = new bootstrap.Alert(alert);\n                    bsAlert.close();\n                }, 4000); // 4 seconds\n            });\n        });\n    </script>\n\n    <!-- Main content -->\n    <main class="container my-4">\n        \n<div class="profile-hero"></div>\n\n<div class="container">\n    <!-- Main Profile Card -->\n    <div class="profile-card-main">\n        <div class="row">\n            <div class="col-md-4 text-center">\n                <div class="profile-avatar-container">\n                    \n                    <div class="profile-avatar-placeholder">\n                        T\n                    </div>\n                    \n                    \n                    <div class="profile-badge" title="Student"\n                        style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">\n                        <i class="fas fa-user-graduate"></i>\n                    </div>\n                    \n                </div>\n            </div>\n            <div class="col-md-5">\n                <h1 class="profile-name">Name User</h1>\n                <div class="profile-meta">\n                    <div class="mb-2">\n                        <i class="fas fa-at text-success me-2"></i>testapplicant\n                    </div>\n                    <div class="mb-2">\n                        <i class="fas fa-envelope text-success me-2"></i>valid@example.com\n                    </div>\n                    <div>\n                        <i class="fas fa-calendar text-success me-2"></i>Member since April 9, 2026\n                    </div>\n                </div>\n            </div>\n            <div class="col-md-3 text-md-end d-flex align-items-center justify-content-md-end">\n                <button class="btn-edit-profile" data-bs-toggle="collapse" href="#editProfileForm" role="button">\n                    <i class="fas fa-edit me-2"></i>Edit Profile\n                </button>\n            </div>\n        </div>\n    </div>\n\n    <!-- Edit Profile Form (Collapsible) -->\n    <div class="collapse show" id="editProfileForm">\n        <div class="edit-form-card">\n            <!-- Global Form Errors -->\n            \n            <div class="premium-alert premium-alert-error">\n                <div class="alert-icon-wrapper">\n                    <i class="fas fa-exclamation-circle fs-4"></i>\n                </div>\n                <div class="alert-content-wrapper">\n                    <div class="alert-headline">Action Required: Form Errors</div>\n                    <p class="alert-subtext">Some information is missing or invalid. Please check the sections below for specific error messages.</p>\n                </div>\n            </div>\n            \n\n            <!-- Premium Notice Box -->\n            <div class="premium-alert premium-alert-info">\n                <div class="alert-icon-wrapper">\n                    <i class="fas fa-rocket fs-4"></i>\n                </div>\n                <div class="alert-content-wrapper">\n                    <div class="alert-headline">Complete your profile</div>\n                    <p class="alert-subtext">Ready to apply? Fill in the details below. Recommended sections include Passport, Academic, and Document uploads.</p>\n                </div>\n            </div>\n\n            <form method="POST" enctype="multipart/form-data">\n                <input type="hidden" name="csrfmiddlewaretoken" value="xPtSlZhc4Br6Wk0gZUURk4sqCYbIr1OmEb7o60LvxjFkjFwvkibqGQhuiEaLFi14">\n\n                <div class="form-section-title"><i class="fas fa-user me-2"></i>Basic Information</div>\n                <div class="row">\n                    <div class="col-md-4 mb-3">\n                        <label for="id_first_name" class="form-label">First Name <span\n                                class="text-danger">*</span></label>\n                        <input type="text" name="first_name" value="Name" maxlength="150" class="form-control" id="id_first_name">\n                    </div>\n                    <div class="col-md-4 mb-3">\n                        <label for="id_middle_initial" class="form-label">M.I.</label>\n                        <input type="text" name="middle_initial" class="form-control" placeholder="M.I." maxlength="5" id="id_middle_initial">\n                    </div>\n                    <div class="col-md-4 mb-3">\n                        <label for="id_last_name" class="form-label">Last Name <span\n                                class="text-danger">*</span></label>\n                        <input type="text" name="last_name" value="User" maxlength="150" class="form-control" id="id_last_name">\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_username" class="form-label">Username <span\n                                class="text-danger">*</span></label>\n                        <input type="text" name="username" value="testapplicant" maxlength="150" class="form-control" required aria-describedby="id_username_helptext" id="id_username">\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_email" class="form-label">Email <span\n                                class="text-danger">*</span></label>\n                        <input type="email" name="email" value="valid@example.com" maxlength="320" class="form-control" required id="id_email">\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_phone_number" class="form-label">Mobile Number</label>\n                        <input type="text" name="phone_number" value="123" class="form-control" placeholder="e.g., +63 912 345 6789" maxlength="20" type="tel" pattern="^[\\d\\s\\-\\+\\(\\)\\.]+$" title="Phone number can only contain numbers, spaces, dashes, plus signs, parentheses, and dots." aria-invalid="true" aria-describedby="id_phone_number_error" id="id_phone_number">\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_address" class="form-label">Home Address</label>\n                        <textarea name="address" cols="40" rows="3" class="form-control" id="id_address">\n</textarea>\n                    </div>\n                </div>\n\n                <div class="form-section-title mt-4"><i class="fas fa-users me-2"></i>Personal Details</div>\n                <div class="row">\n                    <div class="col-md-3 mb-3">\n                        <label for="id_gender" class="form-label">Sex <span\n                                class="text-danger">*</span></label>\n                        <select name="gender" class="form-control" aria-describedby="id_gender_helptext" id="id_gender">\n  <option value="" selected>---------</option>\n\n  <option value="Male">Male</option>\n\n  <option value="Female">Female</option>\n\n</select>\n                    </div>\n                    <div class="col-md-3 mb-3">\n                        <label for="id_date_of_birth" class="form-label">Date of Birth <span\n                                class="text-danger">*</span></label>\n                        <input type="date" name="date_of_birth" class="form-control" aria-describedby="id_date_of_birth_helptext" id="id_date_of_birth">\n                    </div>\n                    <div class="col-md-2 mb-3">\n                        <label class="form-label text-muted">Age</label>\n                        <input type="text" id="calculated_age" class="form-control" readonly placeholder="-">\n                    </div>\n                    <div class="col-md-4 mb-3">\n                        <label for="id_country_of_birth" class="form-label">Country of Birth\n                            <span class="text-danger">*</span></label>\n                        <input type="text" name="country_of_birth" class="form-control" maxlength="100" aria-describedby="id_country_of_birth_helptext" id="id_country_of_birth">\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_nationality" class="form-label">Nationality <span\n                                class="text-danger">*</span></label>\n                        <input type="text" name="nationality" class="form-control" maxlength="100" aria-describedby="id_nationality_helptext" id="id_nationality">\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_religion" class="form-label">Religion</label>\n                        <input type="text" name="religion" class="form-control" maxlength="100" id="id_religion">\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_father_name" class="form-label">Father\'s Name</label>\n                        <input type="text" name="father_name" class="form-control" placeholder="Name of father" maxlength="100" id="id_father_name">\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_mother_name" class="form-label">Mother\'s Name</label>\n                        <input type="text" name="mother_name" class="form-control" placeholder="Name of mother" maxlength="100" id="id_mother_name">\n                    </div>\n                </div>\n\n                <div class="form-section-title mt-4"><i class="fas fa-passport me-2"></i>Passport Information</div>\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_passport_number" class="form-label">Passport Number <span\n                                class="text-danger">*</span></label>\n                        <input type="text" name="passport_number" class="form-control" placeholder="Enter passport number" maxlength="20" aria-describedby="id_passport_number_helptext" id="id_passport_number">\n                        \n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_place_of_issue" class="form-label">Place of Issue</label>\n                        <input type="text" name="place_of_issue" class="form-control" placeholder="Place of issue" maxlength="100" id="id_place_of_issue">\n                        \n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_passport_issue_date" class="form-label">Passport Issue\n                            Date <span class="text-danger">*</span></label>\n                        <input type="date" name="passport_issue_date" class="form-control" type="date" aria-describedby="id_passport_issue_date_helptext" id="id_passport_issue_date">\n                        \n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_passport_expiry_date" class="form-label">Passport Expiry\n                            Date <span class="text-danger">*</span></label>\n                        <input type="date" name="passport_expiry_date" class="form-control" type="date" aria-describedby="id_passport_expiry_date_helptext" id="id_passport_expiry_date">\n                        \n                        <div class="form-text">Passport must be valid for at least 6 months after the program start\n                            date.</div>\n                    </div>\n                </div>\n\n                <div class="form-section-title mt-4"><i class="fas fa-graduation-cap me-2"></i>Academic Information\n                </div>\n                <div class="row">\n                    <div class="col-md-12 mb-3">\n                        <label for="id_highest_education_level" class="form-label">Highest\n                            Education Level</label>\n                        <select name="highest_education_level" class="form-control" id="id_highest_education_level">\n  <option value="" selected>---------</option>\n\n  <option value="high_school">High School</option>\n\n  <option value="bachelor">Bachelor&#x27;s Degree</option>\n\n  <option value="master">Master&#x27;s Degree</option>\n\n  <option value="phd">PhD</option>\n\n  <option value="other">Other</option>\n\n</select>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-12 mb-3">\n                        <label for="id_field_of_study" class="form-label">Course</label>\n                        <input type="text" name="field_of_study" class="form-control" placeholder="Course" maxlength="100" id="id_field_of_study">\n                    </div>\n                </div>\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_graduation_year" class="form-label">Graduation Year</label>\n                        <input type="number" name="graduation_year" class="form-control" placeholder="Graduation year" min="0" id="id_graduation_year">\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_year_graduated" class="form-label">Year Graduated</label>\n                        <input type="number" name="year_graduated" class="form-control" placeholder="Year graduated" min="0" id="id_year_graduated">\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-12 mb-3">\n                        <label for="id_university" class="form-label">Preferred Partner\n                            University <span class="text-danger">*</span></label>\n                        <select name="university" class="form-control" aria-describedby="id_university_helptext" id="id_university">\n  <option value="" selected>Select University</option>\n\n  <option value="Test Uni">Test Uni</option>\n\n</select>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_specialization" class="form-label">Primary Specialization\n                            <span class="text-danger">*</span></label>\n                        <input type="text" name="specialization" class="form-control" placeholder="Primary specialization" maxlength="100" aria-describedby="id_specialization_helptext" id="id_specialization">\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_secondary_specialization" class="form-label">Secondary\n                            Specialization</label>\n                        <input type="text" name="secondary_specialization" class="form-control" placeholder="Secondary specialization" maxlength="100" id="id_secondary_specialization">\n                    </div>\n                </div>\n\n                <div class="form-section-title mt-4"><i class="fas fa-info-circle me-2"></i>Additional Information and\n                    Documents</div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_health_condition" class="form-label">Health\n                            Condition</label>\n                        <select name="health_condition" class="form-control" id="id_health_condition">\n  <option value="" selected>---------</option>\n\n  <option value="Excellent">Excellent</option>\n\n  <option value="Fair">Fair</option>\n\n  <option value="Poor">Poor</option>\n\n</select>\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_health_remarks" class="form-label">Health Remarks</label>\n                        <textarea name="health_remarks" cols="40" rows="2" class="form-control" placeholder="Any remarks..." id="id_health_remarks">\n</textarea>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-4 mb-3">\n                        <label for="id_smokes" class="form-label">Smoking Habits</label>\n                        <select name="smokes" class="form-control" aria-invalid="true" aria-describedby="id_smokes_error" id="id_smokes">\n  <option value="Never">Never</option>\n\n  <option value="Sometimes">Sometimes</option>\n\n  <option value="Often">Often</option>\n\n</select>\n                    </div>\n                    <div class="col-md-4 mb-3">\n                        <label for="id_shirt_size" class="form-label">Shirt Size</label>\n                        <input type="text" name="shirt_size" class="form-control" placeholder="e.g., S, M, L, XL, XXL" maxlength="10" id="id_shirt_size">\n                    </div>\n                    <div class="col-md-4 mb-3">\n                        <label for="id_shoes_size" class="form-label">Shoes Size</label>\n                        <input type="text" name="shoes_size" class="form-control" placeholder="e.g., 8, 9, 10, 42, 43" maxlength="10" id="id_shoes_size">\n                    </div>\n                </div>\n\n\n                <h6 class="mt-4 mb-3 fw-bold"><i class="fas fa-image me-2"></i>Profile Picture\n                    \n                </h6>\n                <div class="row">\n                    <div class="col-md-12 mb-3">\n                        <label for="id_profile_image" class="form-label">Upload New\n                            Picture</label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="profile_image" accept="image/*" class="form-control" id="id_profile_image">\n                        </div>\n                        <div class="form-text">Upload JPG, PNG, or GIF (Max 2MB)</div>\n                        \n                    </div>\n                </div>\n\n                \n                <h6 class="mt-4 mb-3 fw-bold"><i class="fas fa-id-card me-2"></i>Driver\'s License</h6>\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <div class="form-check">\n                            <input type="checkbox" name="has_international_license" id="id_has_international_license" checked>\n                            <label for="id_has_international_license" class="form-check-label">\n                                I have an international driver\'s license\n                            </label>\n                        </div>\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_license_scan" class="form-label">Upload License Scan <span\n                                class="badge bg-secondary">If Program Requires</span>\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="license_scan" class="form-control" accept=".pdf,.jpg,.jpeg,.png" aria-invalid="true" aria-describedby="id_license_scan_error" id="id_license_scan">\n                        </div>\n                    </div>\n                </div>\n\n                <h6 class="mt-4 mb-3 fw-bold">\n                    <div class="d-flex justify-content-between align-items-center">\n                        <div><i class="fas fa-file-upload me-2"></i>Required Documents</div>\n                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"\n                            data-bs-target="#clearAllDocsModal">\n                            <i class="fas fa-trash-alt me-1"></i>CLEAR ALL DOCUMENTS\n                        </button>\n                    </div>\n                </h6>\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_tor" class="form-label">Transcript of Records (TOR) \n                            <span class="badge bg-warning text-dark">Required</span>\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="tor" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_tor">\n                        </div>\n                        \n                        <div class="form-text">Upload your Transcript of Records (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_nc2_tesda" class="form-label">NC2 from TESDA\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="nc2_tesda" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_nc2_tesda">\n                        </div>\n                        \n                        <div class="form-text">Upload your NC2 from TESDA certificate (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_diploma" class="form-label">Diploma \n                            <span class="badge bg-warning text-dark">Required</span>\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="diploma" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_diploma">\n                        </div>\n                        \n                        <div class="form-text">Upload your diploma (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_good_moral" class="form-label">Good Moral Certificate\n                            <span class="badge bg-warning text-dark">Required</span>\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="good_moral" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_good_moral">\n                        </div>\n                        \n                        <div class="form-text">Upload your Good Moral Character certificate (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_nbi_clearance" class="form-label">NBI Clearance \n                            <span class="badge bg-warning text-dark">Required</span>\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="nbi_clearance" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_nbi_clearance">\n                        </div>\n                        \n                        <div class="form-text">Upload your NBI Clearance (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                    <div class="col-md-6 mb-3">\n                        <label for="id_passport_scan" class="form-label">Passport Scan \n                            <span class="badge bg-warning text-dark">Required</span>\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="passport_scan" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_passport_scan">\n                        </div>\n                        \n                        <div class="form-text">Upload a clear scan of your passport (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="col-md-6 mb-3">\n                        <label for="id_academic_certificate" class="form-label">Academic Certificate\n                            \n                        </label>\n                        <div class="document-input-wrapper">\n                            <input type="file" name="academic_certificate" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="id_academic_certificate">\n                        </div>\n                        \n                        <div class="form-text">Upload your academic certificate or diploma (PDF/JPG/PNG, max 5MB)</div>\n                    </div>\n                </div>\n                \n\n                <div class="d-grid gap-2 mt-4">\n                    <button class="btn-edit-profile" type="submit">\n                        <i class="fas fa-save me-2"></i>Save Changes\n                    </button>\n                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"\n                        data-bs-target="#editProfileForm">\n                        Cancel\n                    </button>\n                </div>\n            </form>\n        </div>\n    </div>\n\n    <!-- Profile Information -->\n    <div class="row">\n        <!-- Basic Information -->\n        <div class="col-md-6">\n            <div class="info-card h-100">\n                <div class="info-card-header">\n                    <div class="info-card-icon">\n                        <i class="fas fa-user"></i>\n                    </div>\n                    <h5 class="info-card-title">Basic Information</h5>\n                </div>\n                <div class="info-grid">\n                    <div class="info-group">\n                        <div class="info-label">Full Name</div>\n                        <div class="info-value">Name User</div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Username</div>\n                        <div class="info-value">testapplicant</div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Email Address</div>\n                        <div class="info-value">valid@example.com</div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Mobile Number</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group" style="grid-column: 1 / -1;">\n                        <div class="info-label">Home Address</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- Personal Details -->\n        <div class="col-md-6">\n            <div class="info-card h-100">\n                <div class="info-card-header">\n                    <div class="info-card-icon" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">\n                        <i class="fas fa-users"></i>\n                    </div>\n                    <h5 class="info-card-title">Personal Details</h5>\n                </div>\n                <div class="info-grid">\n                    <div class="info-group">\n                        <div class="info-label">Sex</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Date of Birth & Age</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                            \n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Country of Birth</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Nationality</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Religion</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Father\'s Name</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Mother\'s Name</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Passport, Academic, and Additional Information -->\n    <div class="row">\n        <!-- Passport Information -->\n        <div class="col-md-4">\n            <div class="info-card h-100">\n                <div class="info-card-header">\n                    <div class="info-card-icon" style="background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);">\n                        <i class="fas fa-passport"></i>\n                    </div>\n                    <h5 class="info-card-title">Passport Info</h5>\n                </div>\n                <div class="info-grid" style="grid-template-columns: 1fr;">\n                    <div class="info-group">\n                        <div class="info-label">Passport No.</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Place of Issue</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Issue Date</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Expiry Date</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- Academic Information -->\n        <div class="col-md-4">\n            <div class="info-card h-100">\n                <div class="info-card-header">\n                    <div class="info-card-icon" style="background: linear-gradient(135deg, #fd7e14 0%, #e8680d 100%);">\n                        <i class="fas fa-graduation-cap"></i>\n                    </div>\n                    <h5 class="info-card-title">Academic Info</h5>\n                </div>\n                <div class="info-grid" style="grid-template-columns: 1fr;">\n                    <div class="info-group">\n                        <div class="info-label">Highest Education</div>\n                        <div\n                            class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Course</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Graduation Year</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Year Graduated</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">University</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Specialization</div>\n                        <div\n                            class="info-value not-provided">\n                            Not provided\n                            \n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- Additional Information -->\n        <div class="col-md-4">\n            <div class="info-card h-100">\n                <div class="info-card-header">\n                    <div class="info-card-icon" style="background: linear-gradient(135deg, #e83e8c 0%, #d81b60 100%);">\n                        <i class="fas fa-plus-circle"></i>\n                    </div>\n                    <h5 class="info-card-title">Additional Info</h5>\n                </div>\n                <div class="info-grid" style="grid-template-columns: 1fr;">\n                    <div class="info-group">\n                        <div class="info-label">Health Status</div>\n                        <div class="info-value not-provided">\n                            Not provided\n                            \n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Smoking Habits</div>\n                        <div class="info-value ">\n                            Never\n                        </div>\n                    </div>\n                    <div class="info-group">\n                        <div class="info-label">Sizes (Shirt/Shoes)</div>\n                        <div class="info-value">\n                            \n                            <span class="not-provided">Not provided</span>\n                            \n                        </div>\n                    </div>\n                    \n                    <div class="info-group">\n                        <div class="info-label">Int\'l Driver\'s License</div>\n                        <div class="info-value">\n                            \n                            <span class="badge bg-success-soft text-success">\n                                <i class="fas fa-check-circle me-1"></i>Yes, valid\n                            </span>\n                            \n                        </div>\n                    </div>\n                    \n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Applications (for non-staff users) -->\n    \n    <div class="info-card">\n        <div class="info-card-header">\n            <div class="info-card-icon" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">\n                <i class="fas fa-clipboard-list"></i>\n            </div>\n            <h5 class="info-card-title">My Applications</h5>\n        </div>\n\n        \n        <div class="empty-state">\n            <div class="empty-icon">\n                <i class="fas fa-inbox"></i>\n            </div>\n            <h5>No Applications Yet</h5>\n            <p>You haven\'t submitted any applications.</p>\n            <a href="/programs/" class="btn-edit-profile mt-3">\n                <i class="fas fa-search me-2"></i>Browse Programs\n            </a>\n        </div>\n        \n    </div>\n    \n</div>\n\n<!-- Clear All Documents Confirmation Modal -->\n<div class="modal fade" id="clearAllDocsModal" tabindex="-1" aria-labelledby="clearAllDocsModalLabel"\n    aria-hidden="true">\n    <div class="modal-dialog">\n        <div class="modal-content">\n            <div class="modal-header bg-danger text-white">\n                <h5 class="modal-title" id="clearAllDocsModalLabel">\n                    <i class="fas fa-exclamation-triangle me-2"></i>Clear All Documents\n                </h5>\n                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"\n                    aria-label="Close"></button>\n            </div>\n            <div class="modal-body">\n                <p class="mb-3"><strong>Are you sure you want to clear all required documents?</strong></p>\n                <p class="text-muted mb-2">This will remove the following documents:</p>\n                <ul class="text-muted">\n                    <li>Transcript of Records (TOR)</li>\n                    <li>NC2 from TESDA</li>\n                    <li>Diploma</li>\n                    <li>Good Moral Character</li>\n                    <li>NBI Clearance</li>\n                    <li>Passport Scan</li>\n                    <li>Academic Certificate</li>\n                </ul>\n                <div class="alert alert-warning">\n                    <i class="fas fa-exclamation-circle me-2"></i>\n                    <strong>Warning:</strong> This action cannot be undone. You will need to re-upload all documents.\n                </div>\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">\n                    <i class="fas fa-times me-1"></i>Cancel\n                </button>\n                <form method="post" action="/profile/clear-documents/" style="display: inline;">\n                    <input type="hidden" name="csrfmiddlewaretoken" value="xPtSlZhc4Br6Wk0gZUURk4sqCYbIr1OmEb7o60LvxjFkjFwvkibqGQhuiEaLFi14">\n                    <button type="submit" class="btn btn-danger">\n                        <i class="fas fa-trash-alt me-1"></i>Yes, Clear All Documents\n                    </button>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>\n        </div>\n    </div>\n</div>\n\n\n<script>\n    document.addEventListener(\'DOMContentLoaded\', function () {\n        // Tab persistence logic\n        const tabList = document.querySelectorAll(\'button[data-bs-toggle="tab"]\');\n        const storageKey = \'profileActiveTab\';\n\n        // Restore last active tab or auto-switch to error tab\n        let activeTabId = sessionStorage.getItem(storageKey);\n\n        // If there are errors, find the first tab with errors and switch to it\n        const tabsWithErrors = document.querySelectorAll(\'.tab-pane .invalid-feedback\');\n        if (tabsWithErrors.length > 0) {\n            const firstErrorPane = tabsWithErrors[0].closest(\'.tab-pane\');\n            if (firstErrorPane) {\n                activeTabId = \'nav-\' + firstErrorPane.id.replace(\'nav-\', \'\') + \'-tab\';\n            }\n        }\n\n        if (activeTabId) {\n            const tabTrigger = document.getElementById(activeTabId);\n            if (tabTrigger) {\n                const tab = new bootstrap.Tab(tabTrigger);\n                tab.show();\n            }\n        }\n\n        // Save active tab on change\n        tabList.forEach(trigger => {\n            trigger.addEventListener(\'shown.bs.tab\', function (event) {\n                sessionStorage.setItem(storageKey, event.target.id);\n            });\n        });\n\n        // Calculate Age dynamically\n        const dobInput = document.getElementById(\'id_date_of_birth\');\n        const ageInput = document.getElementById(\'calculated_age\');\n\n        function calculateAge() {\n            if (dobInput && ageInput && dobInput.value) {\n                const dob = new Date(dobInput.value);\n                const today = new Date();\n                let age = today.getFullYear() - dob.getFullYear();\n                const m = today.getMonth() - dob.getMonth();\n                if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {\n                    age--;\n                }\n                ageInput.value = age >= 0 ? age : 0;\n            } else if (ageInput) {\n                ageInput.value = \'\';\n            }\n        }\n\n        if (dobInput) {\n            dobInput.addEventListener(\'change\', calculateAge);\n            calculateAge(); // Initial calculation\n        }\n    });\n</script>\n\n\n    </main>\n\n    <!-- Footer -->\n    <footer class="bg-dark text-white py-4 mt-5">\n        <div class="container">\n            <div class="row">\n                <div class="col-md-6">\n                    <h5>Agrostudies Registration System for Farm Selection</h5>\n                    <p>Connecting students with agricultural farm programs worldwide.</p>\n                </div>\n                <div class="col-md-3">\n                    <h5>Quick Links</h5>\n                    <ul class="list-unstyled">\n                        <li><a href="/" class="text-white">Home</a></li>\n                        <li><a href="/programs/" class="text-white">Programs</a></li>\n                        \n                            <li><a href="/profile/" class="text-white">My Profile</a></li>\n                        \n                        <li><a href="/help/" class="text-white">Help</a></li>\n                        <li><a href="/contact/" class="text-white">Contact</a></li>\n                    </ul>\n                </div>\n                <div class="col-md-3">\n                    <h5>Contact</h5>\n                    <address>\n                        <i class="fas fa-map-marker-alt"></i> 123 Agriculture St.<br>\n                        <i class="fas fa-envelope"></i> info@agrostudies.com<br>\n                        <i class="fas fa-phone"></i> +1 (123) 456-7890\n                    </address>\n                </div>\n            </div>\n            <hr>\n            <div class="text-center">\n                <p>&copy; 2026 Agrostudies Registration System. All rights reserved.</p>\n                <p>Developed by: Greyson Latosa</p>\n            </div>\n        </div>\n    </footer>\n\n    <!-- Bootstrap JS Bundle with Popper -->\n    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>\n    \n    <!-- AJAX Features -->\n    <script src="/static/js/ajax-features.js"></script>\n    \n    <!-- Modal Login/Register -->\n    <script src="/static/js/modal-login-register.js?v=4"></script>\n    \n    <!-- Registration Validation -->\n    <script src="/static/js/register-validation.js"></script>\n    \n    <!-- Custom JS -->\n    <script>\n        // Notification dropdown functionality\n        document.addEventListener(\'DOMContentLoaded\', function() {\n            const notificationDropdown = document.getElementById(\'notificationDropdown\');\n            const notificationList = document.getElementById(\'notificationList\');\n            const clearAllNotifications = document.getElementById(\'clearAllNotifications\');\n            \n            if (notificationDropdown) {\n                notificationDropdown.addEventListener(\'show.bs.dropdown\', function() {\n                    // Fetch notifications via AJAX\n                    fetch(\'/api/notifications/\')\n                        .then(response => response.json())\n                        .then(data => {\n                            // Clear loading spinner\n                            notificationList.innerHTML = \'\';\n                            \n                            if (data.notifications.length === 0) {\n                                notificationList.innerHTML = `\n                                    <div class="notification-empty">\n                                        <div class="empty-icon">\n                                            <i class="fas fa-bell-slash"></i>\n                                        </div>\n                                        <h6 class="empty-title">No notifications</h6>\n                                        <p class="empty-text">You\'re all caught up!</p>\n                                    </div>`;\n                                return;\n                            }\n                            \n                            // Add notifications to the dropdown\n                            data.notifications.forEach(notification => {\n                                const notificationItem = document.createElement(\'div\');\n                                notificationItem.className = \'notification-item-modern\';\n                                if (!notification.read) {\n                                    notificationItem.classList.add(\'unread\');\n                                }\n                                \n                                let iconClass = \'fas fa-info-circle text-info\';\n                                let badgeClass = \'bg-info\';\n                                if (notification.notification_type === \'success\') {\n                                    iconClass = \'fas fa-check-circle text-success\';\n                                    badgeClass = \'bg-success\';\n                                } else if (notification.notification_type === \'warning\') {\n                                    iconClass = \'fas fa-exclamation-triangle text-warning\';\n                                    badgeClass = \'bg-warning\';\n                                } else if (notification.notification_type === \'error\') {\n                                    iconClass = \'fas fa-times-circle text-danger\';\n                                    badgeClass = \'bg-danger\';\n                                }\n                                \n                                // Fix for old admin links\n                                let notificationLink = notification.link;\n                                if (notificationLink && notificationLink.includes(\'/admin/core/registration/\')) {\n                                    // Extract registration ID from admin URL\n                                    const regIdMatch = notificationLink.match(/\\/admin\\/core\\/registration\\/(\\d+)\\/change\\//);\n                                    if (regIdMatch && regIdMatch[1]) {\n                                        notificationLink = `/registrations/${regIdMatch[1]}/`;\n                                    }\n                                }\n                                \n                                let typeClass = notification.notification_type || \'info\';\n                                // Use string concatenation for the href to avoid ZAP crawling literal template strings\n                                const viewLinkHtml = notificationLink ? \n                                    \'<a href="\' + notificationLink + \'" class="btn-notification-action mark-as-read" data-notification-id="\' + notification.id + \'"><i class="fas fa-eye me-1"></i>View</a>\' : \n                                    \'\';\n\n                                let notificationHtml = `\n                                    <div class="notification-item-content">\n                                        <div class="notification-icon-wrapper notification-${typeClass}">\n                                            <i class="${iconClass.split(\' \')[0]}"></i>\n                                        </div>\n                                        <div class="notification-body">\n                                            <p class="notification-message">${notification.message}</p>\n                                            <div class="notification-meta">\n                                                <span class="notification-time"><i class="far fa-clock me-1"></i>${notification.created_at}</span>\n                                                <div class="notification-actions">\n                                                    ${viewLinkHtml}\n                                                    <a href="/notifications/${notification.id}/mark-read/" class="btn-notification-action secondary"><i class="fas fa-check me-1"></i>Read</a>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </div>\n                                `;\n                                \n                                notificationItem.innerHTML = notificationHtml;\n                                notificationList.appendChild(notificationItem);\n                            });\n                        })\n                        .catch(error => {\n                            console.error(\'Error fetching notifications:\', error);\n                            notificationList.innerHTML = \'<div class="text-center p-3"><p class="mb-0 text-danger">Error loading notifications</p></div>\';\n                        });\n                });\n            }\n            \n            if (clearAllNotifications) {\n                clearAllNotifications.addEventListener(\'click\', function(e) {\n                    e.preventDefault();\n                    \n                    if (confirm(\'Are you sure you want to delete all notifications?\')) {\n                        fetch(\'/api/notifications/clear-all/\', {\n                            method: \'POST\',\n                            headers: {\n                                \'X-CSRFToken\': getCookie(\'csrftoken\'),\n                                \'Content-Type\': \'application/json\'\n                            }\n                        })\n                        .then(response => response.json())\n                        .then(data => {\n                            if (data.success) {\n                                // Clear notification list\n                                notificationList.innerHTML = `\n                                    <div class="text-center p-4">\n                                        <i class="fas fa-bell-slash text-muted mb-2" style="font-size: 2rem;"></i>\n                                        <p class="mb-0 text-muted">No notifications</p>\n                                    </div>`;\n                                \n                                // Update badge count\n                                const badge = document.querySelector(\'#notificationDropdown .badge\');\n                                if (badge) {\n                                    badge.remove();\n                                }\n                            }\n                        })\n                        .catch(error => {\n                            console.error(\'Error clearing notifications:\', error);\n                        });\n                    }\n                });\n            }\n            \n            // Add event listener to mark notifications as read when view button is clicked\n            notificationList.addEventListener(\'click\', function(e) {\n                if (e.target.classList.contains(\'mark-as-read\') || e.target.closest(\'.mark-as-read\')) {\n                    const clickedElement = e.target.classList.contains(\'mark-as-read\') ? e.target : e.target.closest(\'.mark-as-read\');\n                    const notificationId = clickedElement.getAttribute(\'data-notification-id\');\n                    \n                    // Store the href to navigate to after marking as read\n                    const href = clickedElement.getAttribute(\'href\');\n                    \n                    // Prevent default navigation\n                    e.preventDefault();\n                    \n                    fetch(`/notifications/${notificationId}/mark-read/`, {\n                        method: \'POST\',\n                        headers: {\n                            \'X-CSRFToken\': getCookie(\'csrftoken\'),\n                            \'Content-Type\': \'application/json\',\n                            \'X-Requested-With\': \'XMLHttpRequest\'\n                        }\n                    })\n                    .then(response => response.json())\n                    .then(data => {\n                        if (data.success) {\n                            // Update notification item\n                            const notificationItem = clickedElement.closest(\'.notification-item\');\n                            notificationItem.classList.remove(\'bg-light\');\n                            \n                            // Update notification count\n                            const badge = document.querySelector(\'#notificationDropdown .badge\');\n                            if (badge) {\n                                if (data.unread_count > 0) {\n                                    badge.textContent = data.unread_count;\n                                } else {\n                                    badge.remove();\n                                }\n                            }\n                            \n                            // Navigate to the destination\n                            window.location.href = href;\n                        }\n                    })\n                    .catch(error => {\n                        console.error(\'Error marking notification as read:\', error);\n                        // Navigate anyway in case of error\n                        window.location.href = href;\n                    });\n                }\n            });\n            \n            // Helper function to get CSRF token from cookies\n            function getCookie(name) {\n                let cookieValue = null;\n                if (document.cookie && document.cookie !== \'\') {\n                    const cookies = document.cookie.split(\';\');\n                    for (let i = 0; i < cookies.length; i++) {\n                        const cookie = cookies[i].trim();\n                        if (cookie.substring(0, name.length + 1) === (name + \'=\')) {\n                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));\n                            break;\n                        }\n                    }\n                }\n                return cookieValue;\n            }\n        });\n        \n        // Get CSRF token for AJAX requests and apply responsive enhancements\n        document.addEventListener(\'DOMContentLoaded\', function() {\n            // Function to get the CSRF token from cookies\n            function getCookie(name) {\n                let cookieValue = null;\n                if (document.cookie && document.cookie !== \'\') {\n                    const cookies = document.cookie.split(\';\');\n                    for (let i = 0; i < cookies.length; i++) {\n                        const cookie = cookies[i].trim();\n                        if (cookie.substring(0, name.length + 1) === (name + \'=\')) {\n                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));\n                            break;\n                        }\n                    }\n                }\n                return cookieValue;\n            }\n            \n            // Apply lazy loading to all images for better mobile performance\n            const allImages = document.querySelectorAll(\'img\');\n            allImages.forEach(img => {\n                if (!img.hasAttribute(\'loading\')) {\n                    img.setAttribute(\'loading\', \'lazy\');\n                }\n            });\n            \n            // Improve touch targets on mobile devices\n            if (window.innerWidth < 768) {\n                const smallButtons = document.querySelectorAll(\'.btn-sm\');\n                smallButtons.forEach(btn => {\n                    btn.classList.remove(\'btn-sm\');\n                });\n                \n                // Make dropdown menus more touch-friendly\n                const dropdownItems = document.querySelectorAll(\'.dropdown-item\');\n                dropdownItems.forEach(item => {\n                    item.style.padding = \'0.75rem 1rem\';\n                });\n            }\n\n            // Auto open modal if requested by context (no template logic inside JS)\n            const autoOpen = "";\n            if (autoOpen === \'login\') {\n                const loginModal = new bootstrap.Modal(document.getElementById(\'loginModal\'));\n                loginModal.show();\n            } else if (autoOpen === \'register\') {\n                const registerModal = new bootstrap.Modal(document.getElementById(\'registerModal\'));\n                registerModal.show();\n            }\n        });\n    </script>\n    \n    \n<script>\n    document.addEventListener(\'DOMContentLoaded\', function () {\n        // Tab persistence logic\n        const tabList = document.querySelectorAll(\'button[data-bs-toggle="tab"]\');\n        const storageKey = \'profileActiveTab\';\n\n        // Restore last active tab or auto-switch to error tab\n        let activeTabId = sessionStorage.getItem(storageKey);\n\n        // If there are errors, find the first tab with errors and switch to it\n        const tabsWithErrors = document.querySelectorAll(\'.tab-pane .invalid-feedback\');\n        if (tabsWithErrors.length > 0) {\n            const firstErrorPane = tabsWithErrors[0].closest(\'.tab-pane\');\n            if (firstErrorPane) {\n                activeTabId = \'nav-\' + firstErrorPane.id.replace(\'nav-\', \'\') + \'-tab\';\n            }\n        }\n\n        if (activeTabId) {\n            const tabTrigger = document.getElementById(activeTabId);\n            if (tabTrigger) {\n                const tab = new bootstrap.Tab(tabTrigger);\n                tab.show();\n            }\n        }\n\n        // Save active tab on change\n        tabList.forEach(trigger => {\n            trigger.addEventListener(\'shown.bs.tab\', function (event) {\n                sessionStorage.setItem(storageKey, event.target.id);\n            });\n        });\n\n        // Calculate Age dynamically\n        const dobInput = document.getElementById(\'id_date_of_birth\');\n        const ageInput = document.getElementById(\'calculated_age\');\n\n        function calculateAge() {\n            if (dobInput && ageInput && dobInput.value) {\n                const dob = new Date(dobInput.value);\n                const today = new Date();\n                let age = today.getFullYear() - dob.getFullYear();\n                const m = today.getMonth() - dob.getMonth();\n                if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {\n                    age--;\n                }\n                ageInput.value = age >= 0 ? age : 0;\n            } else if (ageInput) {\n                ageInput.value = \'\';\n            }\n        }\n\n        if (dobInput) {\n            dobInput.addEventListener(\'change\', calculateAge);\n            calculateAge(); // Initial calculation\n        }\n    });\n</script>\n\n    <!-- Login Modal -->\n    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">\n        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">\n            <div id="loginModalContent" class="w-100">\n                <!-- Content will be loaded here via AJAX -->\n                <div class="modal-content text-center">\n                    <div class="modal-header bg-gradient-primary-to-secondary text-white text-center" style="background: linear-gradient(45deg, #1e7e34, #17a2b8);">\n                        <h5 class="modal-title w-100" id="loginModalLoadingLabel">Loading</h5>\n                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>\n                    </div>\n                    <div class="modal-body p-5">\n                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">\n                            <span class="visually-hidden">Loading...</span>\n                        </div>\n                        <p class="mt-3">Loading login form...</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Registration Modal -->\n    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">\n        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">\n            <div id="registerModalContent" class="w-100">\n                <!-- Content will be loaded here via AJAX -->\n                <div class="modal-content text-center">\n                    <div class="modal-header bg-gradient-success-to-secondary text-white text-center" style="background: linear-gradient(45deg, #28a745, #17a2b8);">\n                        <h5 class="modal-title w-100" id="registerModalLoadingLabel">Loading</h5>\n                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>\n                    </div>\n                    <div class="modal-body p-5">\n                        <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">\n                            <span class="visually-hidden">Loading...</span>\n                        </div>\n                        <p class="mt-3">Loading registration form...</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    \n    <!-- Admin Registration Modal -->\n    <div class="modal fade" id="adminRegisterModal" tabindex="-1" aria-labelledby="adminRegisterModalLabel" aria-hidden="true">\n        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">\n            <div id="adminRegisterModalContent" class="w-100">\n                <!-- Content will be loaded here via AJAX -->\n                <div class="modal-content text-center">\n                    <div class="modal-header bg-gradient-danger-to-dark text-white text-center" style="background: linear-gradient(45deg, #dc3545, #343a40);">\n                        <h5 class="modal-title w-100" id="adminRegisterModalLoadingLabel">Loading</h5>\n                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>\n                    </div>\n                    <div class="modal-body p-5">\n                        <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">\n                            <span class="visually-hidden">Loading...</span>\n                        </div>\n                        <p class="mt-3">Loading admin registration form...</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</body>\n</html>\n'
+
+----------------------------------------------------------------------
+Ran 10 tests in 29.289s
+
+FAILED (failures=2, errors=1)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+ OK
+System check identified no issues (0 silenced).

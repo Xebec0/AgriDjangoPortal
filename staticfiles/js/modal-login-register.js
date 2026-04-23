@@ -244,7 +244,7 @@ function setupRegisterModal() {
     
     if (registerModal) {
         let currentStep = 1;
-        const totalSteps = 4;
+        const totalSteps = 5;
         let nextBtn, prevBtn, stepIndicator, form, errorElement;
         
         // Load the registration form when the modal is shown
@@ -259,13 +259,17 @@ function setupRegisterModal() {
             // Only load if not already loaded or if there was an error
             if (!registerModalContent.querySelector('form') || 
                 registerModalContent.querySelector('.alert-danger')) {
-                loadModalContent('/modal/register/', registerModalContent);
+                loadModalContent('/modal/register/', registerModalContent).then(() => {
+                    setTimeout(() => {
+                        initializeMultiStep();
+                    }, 100);
+                });
+            } else {
+                // Initialize multi-step immediately if already loaded
+                setTimeout(() => {
+                    initializeMultiStep();
+                }, 100);
             }
-            
-            // Initialize multi-step after content loads
-            setTimeout(() => {
-                initializeMultiStep();
-            }, 100);
         });
         
         // Reset modal when hidden
@@ -282,6 +286,18 @@ function setupRegisterModal() {
         
         // Clean up after animation completes
         registerModal.addEventListener('hidden.bs.modal', function() {
+            // Clear OAuth session data when modal is closed
+            fetch('/api/clear-oauth-session/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            }).catch(error => {
+                console.log('Failed to clear OAuth session:', error);
+            });
+            
             // We don't clear the content to avoid flickering on reopening
             // Just clear any error messages
             const errorElement = registerModalContent.querySelector('.alert-danger');
@@ -394,7 +410,7 @@ function setupRegisterModal() {
                         errors.push('Email is required.');
                         isValid = false;
                     }
-                    if (form.querySelector('#id_email').value !== form.querySelector('#id_confirm_email').value) {
+                    if (form.querySelector('#id_email').value.trim() !== form.querySelector('#id_confirm_email').value.trim()) {
                         errors.push('Emails do not match.');
                         isValid = false;
                     }
@@ -408,7 +424,7 @@ function setupRegisterModal() {
                     }
                     break;
                 case 2:
-                    // Only validate Step 2 fields (Personal Information)
+                    // Only validate Step 2 fields (Basic Information)
                     if (!form.querySelector('#id_first_name').value.trim()) {
                         errors.push('First name is required.');
                         isValid = false;
@@ -417,6 +433,9 @@ function setupRegisterModal() {
                         errors.push('Last name is required.');
                         isValid = false;
                     }
+                    break;
+                case 3:
+                    // Only validate Step 3 fields (Personal Details)
                     if (!form.querySelector('#id_date_of_birth').value) {
                         errors.push('Date of birth is required.');
                         isValid = false;
@@ -430,8 +449,8 @@ function setupRegisterModal() {
                         isValid = false;
                     }
                     break;
-                case 3:
-                    // Only validate Step 3 fields (Contact & Passport Information)
+                case 4:
+                    // Only validate Step 4 fields (Contact & Passport Information)
                     if (!form.querySelector('#id_passport_number').value.trim()) {
                         errors.push('Passport number is required.');
                         isValid = false;
@@ -448,15 +467,8 @@ function setupRegisterModal() {
                         errors.push('Passport expiry date is required.');
                         isValid = false;
                     }
-                    break;
-                case 4:
-                    // Only validate Step 4 fields (Academic Information)
                     if (!form.querySelector('#id_highest_education_level').value) {
                         errors.push('Education level is required.');
-                        isValid = false;
-                    }
-                    if (!form.querySelector('#id_institution_name').value.trim()) {
-                        errors.push('Institution name is required.');
                         isValid = false;
                     }
                     if (!form.querySelector('#id_field_of_study').value.trim()) {
@@ -467,6 +479,9 @@ function setupRegisterModal() {
                         errors.push('Graduation year is required.');
                         isValid = false;
                     }
+                    break;
+                case 5:
+                    // Optional documents step
                     break;
             }
             
@@ -508,10 +523,12 @@ function setupRegisterModal() {
             const confirmEmailInput = form.querySelector('#id_confirm_email');
             if (emailInput && confirmEmailInput) {
                 const validateEmails = () => {
-                    if (confirmEmailInput.value && emailInput.value !== confirmEmailInput.value) {
+                    const emailVal = emailInput.value.trim();
+                    const confirmVal = confirmEmailInput.value.trim();
+                    if (confirmVal && emailVal !== confirmVal) {
                         confirmEmailInput.classList.add('is-invalid');
                         confirmEmailInput.classList.remove('is-valid');
-                    } else if (confirmEmailInput.value) {
+                    } else if (confirmVal) {
                         confirmEmailInput.classList.remove('is-invalid');
                         confirmEmailInput.classList.add('is-valid');
                     }
@@ -556,7 +573,7 @@ function setupRegisterModal() {
         }
         
         function submitRegisterForm() {
-            if (!validateStep(4)) return;
+            if (!validateStep(5)) return;
             
             const originalText = nextBtn.innerHTML;
             nextBtn.disabled = true;
@@ -897,7 +914,7 @@ function loadModalContent(url, container) {
     `;
     
     // Fetch the content
-    fetch(url, {
+    return fetch(url, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }

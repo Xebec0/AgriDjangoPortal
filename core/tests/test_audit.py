@@ -35,7 +35,7 @@ class AuditSignalsTests(TestCase):
             passport_issue_date=date(2020, 1, 1),
             passport_expiry_date=date(2030, 1, 1),
             gender='Male',
-            university=uni,
+            university=uni.name,
             specialization='Agriculture',
             created_by=self.user,
         )

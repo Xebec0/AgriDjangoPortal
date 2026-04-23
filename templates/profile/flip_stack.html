@@ -1,0 +1,1180 @@
+<form id="profileMainForm" class="profile-flip-stack" method="POST" enctype="multipart/form-data" novalidate>
+
+    {% csrf_token %}
+
+
+
+    {% if u_form.errors or p_form.errors %}
+
+    <div class="premium-alert premium-alert-error mb-3">
+
+        <div class="alert-icon-wrapper">
+
+            <i class="fas fa-exclamation-circle fs-4"></i>
+
+        </div>
+
+        <div class="alert-content-wrapper">
+
+            <div class="alert-headline">Action Required: Form Errors</div>
+
+            <p class="alert-subtext mb-0">Turn the card to edit and check the fields marked below.</p>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <div id="section-student-profile" class="flip-card flip-card--unified section-anchor">
+
+        <div class="flip-card-inner">
+
+            {# —— Front: all read-only student info —— #}
+
+            <div class="flip-card-front flip-card-face profile-card-overview">
+
+                <div class="d-flex flex-column flex-md-row align-items-center gap-3 mb-4">
+
+                    <div class="text-center">
+
+                        <div class="profile-avatar-container mx-auto">
+
+                            {% if user.profile.profile_image %}
+
+                            <img src="{{ user.profile.profile_image.url }}" alt="{{ user.username }}" class="profile-avatar">
+
+                            {% else %}
+
+                            <div class="profile-avatar-placeholder">{{ user.username|first|upper }}</div>
+
+                            {% endif %}
+
+                            {% if user.is_staff %}
+
+                            <div class="profile-badge profile-badge--staff" title="Administrator"><i class="fas fa-crown"></i></div>
+
+                            {% else %}
+
+                            <div class="profile-badge profile-badge--student" title="Student"><i class="fas fa-user-graduate"></i></div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="flex-grow-1 text-center text-md-start w-100">
+
+                        <div class="d-flex flex-column flex-lg-row align-items-lg-start justify-content-lg-between gap-3 w-100">
+
+                            <div class="text-center text-lg-start">
+
+                                <h2 class="profile-name mb-2">{{ user.first_name }} {{ user.last_name }}</h2>
+
+                                <div class="profile-meta">
+
+                                    <div class="mb-1"><i class="fas fa-at text-success me-2"></i>{{ user.username }}</div>
+
+                                    <div class="mb-1"><i class="fas fa-envelope text-success me-2"></i>{{ user.email }}</div>
+
+                                    <div><i class="fas fa-calendar text-success me-2"></i>Member since {{ user.date_joined|date:"F j, Y"|default:"Not available" }}</div>
+
+                                </div>
+
+                            </div>
+
+                            {% if profile_completeness %}
+
+                            <div class="profile-completeness-inline mx-auto ms-lg-auto me-lg-0 text-lg-end">
+
+                                <div class="d-flex justify-content-between small text-muted mb-1">
+
+                                    <span>Profile tracker</span>
+
+                                    <span class="fw-semibold text-dark">{{ profile_completeness.percent }}%</span>
+
+                                </div>
+
+                                <div class="progress profile-completeness-bar" style="height:10px;">
+
+                                    <div class="progress-bar rounded-pill" role="progressbar" style="width: {{ profile_completeness.percent }}%;"
+
+                                         aria-valuenow="{{ profile_completeness.percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                </div>
+
+                                {% if profile_completeness.missing %}
+
+                                <p class="small text-muted mb-0 mt-2 text-start">Next: {{ profile_completeness.missing|join:", " }}{% if profile_completeness.more_missing %}, …{% endif %}</p>
+
+                                {% else %}
+
+                                <p class="small text-success mb-0 mt-2 text-start"><i class="fas fa-check-circle me-1"></i>Complete</p>
+
+                                {% endif %}
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-none d-md-block">
+
+                        <button type="button" class="btn-edit-profile btn-profile-floating-edit js-profile-edit-toggle" aria-expanded="false">
+
+                            <i class="fas fa-edit me-2"></i>Edit profile
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="d-md-none w-100 mb-4">
+
+                    <button type="button" class="btn-edit-profile w-100 btn-profile-floating-edit js-profile-edit-toggle" aria-expanded="false">
+
+                        <i class="fas fa-edit me-2"></i>Edit profile
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="profile-unified-scroll">
+
+                    <div class="profile-unified-section profile-read-vertical">
+
+                        <div class="info-card-header info-card-header--vertical pt-0">
+
+                            <div class="info-card-icon"><i class="fas fa-address-card"></i></div>
+
+                            <h3 class="info-card-title">Contact &amp; Account</h3>
+
+                        </div>
+
+                        <div class="info-grid info-grid--single">
+
+                            <div class="info-group">
+
+                                <div class="info-label">Full name</div>
+
+                                <div class="info-value">{{ user.first_name }} {% if user.profile.middle_initial %}{{ user.profile.middle_initial }}. {% endif %}{{ user.last_name }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Username</div>
+
+                                <div class="info-value">{{ user.username }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Email</div>
+
+                                <div class="info-value">{{ user.email }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Mobile</div>
+
+                                <div class="info-value {% if not user.profile.phone_number %}not-provided{% endif %}">{{ user.profile.phone_number|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Address</div>
+
+                                <div class="info-value {% if not user.profile.address %}not-provided{% endif %}">{{ user.profile.address|default:"Not provided"|linebreaksbr }}</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="profile-unified-section profile-read-vertical">
+
+                        <div class="info-card-header info-card-header--vertical">
+
+                            <div class="info-card-icon"><i class="fas fa-users"></i></div>
+
+                            <h3 class="info-card-title">Personal details</h3>
+
+                        </div>
+
+                        <div class="info-grid info-grid--single">
+
+                            <div class="info-group">
+
+                                <div class="info-label">Sex</div>
+
+                                <div class="info-value {% if not user.profile.gender %}not-provided{% endif %}">{{ user.profile.gender|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Date of birth</div>
+
+                                <div class="info-value {% if not user.profile.date_of_birth %}not-provided{% endif %}">
+
+                                    {{ user.profile.date_of_birth|date:"F j, Y"|default:"Not provided" }}
+
+                                    {% if user.profile.age %}<span class="text-muted small ms-1">({{ user.profile.age }} yrs)</span>{% endif %}
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Country of birth</div>
+
+                                <div class="info-value {% if not user.profile.country_of_birth %}not-provided{% endif %}">{{ user.profile.country_of_birth|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Nationality</div>
+
+                                <div class="info-value {% if not user.profile.nationality %}not-provided{% endif %}">{{ user.profile.nationality|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Religion</div>
+
+                                <div class="info-value {% if not user.profile.religion %}not-provided{% endif %}">{{ user.profile.religion|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Father's name</div>
+
+                                <div class="info-value {% if not user.profile.father_name %}not-provided{% endif %}">{{ user.profile.father_name|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Mother's name</div>
+
+                                <div class="info-value {% if not user.profile.mother_name %}not-provided{% endif %}">{{ user.profile.mother_name|default:"Not provided" }}</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="profile-unified-section profile-read-vertical">
+
+                        <div class="info-card-header info-card-header--vertical">
+
+                            <div class="info-card-icon"><i class="fas fa-passport"></i></div>
+
+                            <h3 class="info-card-title">Passport</h3>
+
+                        </div>
+
+                        <div class="info-grid info-grid--single">
+
+                            <div class="info-group">
+
+                                <div class="info-label">Passport no.</div>
+
+                                <div class="info-value {% if not user.profile.passport_number %}not-provided{% endif %}">{{ user.profile.passport_number|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Place of issue</div>
+
+                                <div class="info-value {% if not user.profile.place_of_issue %}not-provided{% endif %}">{{ user.profile.place_of_issue|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Issue date</div>
+
+                                <div class="info-value {% if not user.profile.passport_issue_date %}not-provided{% endif %}">{{ user.profile.passport_issue_date|date:"M d, Y"|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Expiry date</div>
+
+                                <div class="info-value {% if not user.profile.passport_expiry_date %}not-provided{% endif %}">{{ user.profile.passport_expiry_date|date:"M d, Y"|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Passport scan</div>
+
+                                <div class="info-value">{% if user.profile.passport_scan %}<span class="badge bg-success-soft text-success"><i class="fas fa-check-circle me-1"></i>Uploaded</span>{% else %}<span class="badge bg-light text-warning"><i class="fas fa-exclamation-triangle me-1"></i>Missing</span>{% endif %}</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="profile-unified-section profile-read-vertical">
+
+                        <div class="info-card-header info-card-header--vertical">
+
+                            <div class="info-card-icon"><i class="fas fa-graduation-cap"></i></div>
+
+                            <h3 class="info-card-title">Academic</h3>
+
+                        </div>
+
+                        <div class="info-grid info-grid--single">
+
+                            <div class="info-group">
+
+                                <div class="info-label">Highest education</div>
+
+                                <div class="info-value {% if not user.profile.highest_education_level %}not-provided{% endif %}">{{ user.profile.get_highest_education_level_display|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Course</div>
+
+                                <div class="info-value {% if not user.profile.field_of_study %}not-provided{% endif %}">{{ user.profile.field_of_study|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Graduation year</div>
+
+                                <div class="info-value {% if not user.profile.graduation_year %}not-provided{% endif %}">{{ user.profile.graduation_year|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Year graduated</div>
+
+                                <div class="info-value {% if not user.profile.year_graduated %}not-provided{% endif %}">{{ user.profile.year_graduated|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">University</div>
+
+                                <div class="info-value {% if not user.profile.university %}not-provided{% endif %}">{{ user.profile.university|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Specialization</div>
+
+                                <div class="info-value {% if not user.profile.specialization and not user.profile.secondary_specialization %}not-provided{% endif %}">
+
+                                    {{ user.profile.specialization|default:"Not provided" }}
+
+                                    {% if user.profile.secondary_specialization %}<div class="small text-muted mt-1">{{ user.profile.secondary_specialization }}</div>{% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="profile-unified-section profile-read-vertical">
+
+                        <div class="info-card-header info-card-header--vertical">
+
+                            <div class="info-card-icon"><i class="fas fa-heart-pulse"></i></div>
+
+                            <h3 class="info-card-title">Additional</h3>
+
+                        </div>
+
+                        <div class="info-grid info-grid--single">
+
+                            <div class="info-group">
+
+                                <div class="info-label">Health</div>
+
+                                <div class="info-value {% if not user.profile.health_condition %}not-provided{% endif %}">
+
+                                    {{ user.profile.health_condition|default:"Not provided" }}
+
+                                    {% if user.profile.health_remarks %}<div class="small text-muted mt-1">{{ user.profile.health_remarks }}</div>{% endif %}
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Smoking habits</div>
+
+                                <div class="info-value">{{ user.profile.smokes|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Shirt size</div>
+
+                                <div class="info-value {% if not user.profile.shirt_size %}not-provided{% endif %}">{{ user.profile.shirt_size|default:"Not provided" }}</div>
+
+                            </div>
+
+                            <div class="info-group">
+
+                                <div class="info-label">Shoes size</div>
+
+                                <div class="info-value {% if not user.profile.shoes_size %}not-provided{% endif %}">{{ user.profile.shoes_size|default:"Not provided" }}</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    {% if not user.is_staff %}
+
+                    <div class="profile-unified-section profile-read-vertical">
+
+                        <div class="info-card-header info-card-header--vertical">
+
+                            <div class="info-card-icon"><i class="fas fa-folder-open"></i></div>
+
+                            <h3 class="info-card-title">Documents</h3>
+
+                        </div>
+
+                        <div class="info-grid info-grid--single info-grid--docs">
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-id-card {% if user.profile.license_scan %}text-success{% else %}text-muted{% endif %}"></i> Int'l driver's license</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.license_scan %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.license_scan.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% elif user.profile.has_international_license %}
+
+                                        <span class="text-warning small">Not uploaded</span>
+
+                                        {% else %}
+
+                                        <span class="text-muted small">N/A</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-file-alt {% if user.profile.tor %}text-success{% else %}text-muted{% endif %}"></i> Transcript of Records (TOR)</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.tor %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.tor.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-warning small">Missing</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-file-alt {% if user.profile.diploma %}text-success{% else %}text-muted{% endif %}"></i> Diploma</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.diploma %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.diploma.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-warning small">Missing</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-file-alt {% if user.profile.good_moral %}text-success{% else %}text-muted{% endif %}"></i> Good moral certificate</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.good_moral %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.good_moral.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-warning small">Missing</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-file-alt {% if user.profile.nbi_clearance %}text-success{% else %}text-muted{% endif %}"></i> NBI clearance</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.nbi_clearance %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.nbi_clearance.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-warning small">Missing</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-file-alt {% if user.profile.passport_scan %}text-success{% else %}text-muted{% endif %}"></i> Passport scan</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.passport_scan %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.passport_scan.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-warning small">Missing</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-file-alt {% if user.profile.nc2_tesda %}text-success{% else %}text-muted{% endif %}"></i> NC2 TESDA</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.nc2_tesda %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.nc2_tesda.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-muted small">Optional</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="info-group profile-doc-stack">
+
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div class="profile-doc-name d-flex align-items-center gap-2"><i class="fas fa-graduation-cap {% if user.profile.academic_certificate %}text-success{% else %}text-muted{% endif %}"></i> Academic certificate</div>
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        {% if user.profile.academic_certificate %}
+
+                                        <span class="text-success small">Uploaded</span>
+
+                                        <a href="{{ user.profile.academic_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-success profile-doc-view-btn"><i class="fas fa-eye me-1"></i>View</a>
+
+                                        {% else %}
+
+                                        <span class="text-muted small">Optional</span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+
+            {# —— Back: full edit form —— #}
+
+            <div class="flip-card-back flip-card-face">
+
+                <div class="profile-unified-scroll">
+
+                    <div class="info-card-header border-0 pb-2 mb-3">
+
+                        <div class="info-card-icon"><i class="fas fa-edit"></i></div>
+
+                        <h3 class="info-card-title mb-0">Edit student profile</h3>
+
+                    </div>
+
+
+
+                    <div class="form-section-title"><i class="fas fa-image me-2"></i>Profile picture</div>
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-12">
+
+                            <label for="{{ p_form.profile_image.id_for_label }}" class="form-label">Upload new picture</label>
+
+                            <div class="document-input-wrapper">{{ p_form.profile_image }}</div>
+
+                            <div class="form-text">JPG, PNG, or GIF (max 2MB)</div>
+
+                            {% if user.profile.profile_image %}
+
+                            <div class="form-check mt-2">
+
+                                <input class="form-check-input" type="checkbox" name="delete_image" id="delete_image">
+
+                                <label class="form-check-label" for="delete_image">Remove current picture</label>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-section-title"><i class="fas fa-address-card me-2"></i>Contact &amp; account</div>
+
+                    <div class="row g-2 mb-4">
+
+                        <div class="col-md-5">
+
+                            <label for="{{ u_form.first_name.id_for_label }}" class="form-label">First name <span class="text-danger">*</span></label>
+
+                            {{ u_form.first_name }}
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <label for="{{ p_form.middle_initial.id_for_label }}" class="form-label">M.I.</label>
+
+                            {{ p_form.middle_initial }}
+
+                        </div>
+
+                        <div class="col-md-5">
+
+                            <label for="{{ u_form.last_name.id_for_label }}" class="form-label">Last name <span class="text-danger">*</span></label>
+
+                            {{ u_form.last_name }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ u_form.username.id_for_label }}" class="form-label">Username <span class="text-danger">*</span></label>
+
+                            {{ u_form.username }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ u_form.email.id_for_label }}" class="form-label">Email <span class="text-danger">*</span></label>
+
+                            {{ u_form.email }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.phone_number.id_for_label }}" class="form-label">Mobile number</label>
+
+                            {{ p_form.phone_number }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.address.id_for_label }}" class="form-label">Home address</label>
+
+                            {{ p_form.address }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-section-title"><i class="fas fa-users me-2"></i>Personal details</div>
+
+                    <div class="row g-2 mb-4">
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.gender.id_for_label }}" class="form-label">Sex <span class="text-danger">*</span></label>
+
+                            {{ p_form.gender }}
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <label for="{{ p_form.date_of_birth.id_for_label }}" class="form-label">Birth Date <span class="text-danger">*</span></label>
+
+                            {{ p_form.date_of_birth }}
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <label class="form-label text-muted">Age</label>
+
+                            <input type="text" id="calculated_age" class="form-control" readonly placeholder="-">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.country_of_birth.id_for_label }}" class="form-label">Country of Birth <span class="text-danger">*</span></label>
+
+                            {{ p_form.country_of_birth }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.nationality.id_for_label }}" class="form-label">Nationality <span class="text-danger">*</span></label>
+
+                            {{ p_form.nationality }}
+
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <label for="{{ p_form.religion.id_for_label }}" class="form-label">Religion</label>
+
+                            {{ p_form.religion }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.father_name.id_for_label }}" class="form-label">Father's name</label>
+
+                            {{ p_form.father_name }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.mother_name.id_for_label }}" class="form-label">Mother's name</label>
+
+                            {{ p_form.mother_name }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-section-title"><i class="fas fa-passport me-2"></i>Passport</div>
+
+                    <div class="row g-2 mb-4">
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.passport_number.id_for_label }}" class="form-label">Passport number <span class="text-danger">*</span></label>
+
+                            {{ p_form.passport_number }}
+
+                            {% if p_form.passport_number.errors %}<div class="invalid-feedback d-block">{{ p_form.passport_number.errors }}</div>{% endif %}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.place_of_issue.id_for_label }}" class="form-label">Place of issue</label>
+
+                            {{ p_form.place_of_issue }}
+
+                            {% if p_form.place_of_issue.errors %}<div class="invalid-feedback d-block">{{ p_form.place_of_issue.errors }}</div>{% endif %}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.passport_issue_date.id_for_label }}" class="form-label">Issue date <span class="text-danger">*</span></label>
+
+                            {{ p_form.passport_issue_date }}
+
+                            {% if p_form.passport_issue_date.errors %}<div class="invalid-feedback d-block">{{ p_form.passport_issue_date.errors }}</div>{% endif %}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.passport_expiry_date.id_for_label }}" class="form-label">Expiry date <span class="text-danger">*</span></label>
+
+                            {{ p_form.passport_expiry_date }}
+
+                            {% if p_form.passport_expiry_date.errors %}<div class="invalid-feedback d-block">{{ p_form.passport_expiry_date.errors }}</div>{% endif %}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-section-title"><i class="fas fa-graduation-cap me-2"></i>Academic</div>
+
+                    <div class="row g-2 mb-4">
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.highest_education_level.id_for_label }}" class="form-label">Education level</label>
+
+                            {{ p_form.highest_education_level }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.field_of_study.id_for_label }}" class="form-label">Course</label>
+
+                            {{ p_form.field_of_study }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.graduation_year.id_for_label }}" class="form-label">Graduation year</label>
+
+                            {{ p_form.graduation_year }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.year_graduated.id_for_label }}" class="form-label">Year graduated</label>
+
+                            {{ p_form.year_graduated }}
+
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <label for="{{ p_form.university.id_for_label }}" class="form-label">University <span class="text-danger">*</span></label>
+
+                            {{ p_form.university }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.specialization.id_for_label }}" class="form-label">Primary Spec. <span class="text-danger">*</span></label>
+
+                            {{ p_form.specialization }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.secondary_specialization.id_for_label }}" class="form-label">Secondary Spec.</label>
+
+                            {{ p_form.secondary_specialization }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-section-title"><i class="fas fa-heart-pulse me-2"></i>Additional</div>
+
+                    <div class="row g-2 mb-4">
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.health_condition.id_for_label }}" class="form-label">Health status</label>
+
+                            {{ p_form.health_condition }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.health_remarks.id_for_label }}" class="form-label">Remarks</label>
+
+                            {{ p_form.health_remarks }}
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <label for="{{ p_form.smokes.id_for_label }}" class="form-label">Smoking</label>
+
+                            {{ p_form.smokes }}
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <label for="{{ p_form.shirt_size.id_for_label }}" class="form-label">Shirt size</label>
+
+                            {{ p_form.shirt_size }}
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <label for="{{ p_form.shoes_size.id_for_label }}" class="form-label">Shoes size</label>
+
+                            {{ p_form.shoes_size }}
+
+                        </div>
+
+                        {% if not user.is_staff %}
+
+                        <div class="col-md-12">
+
+                            <label for="{{ p_form.license_scan.id_for_label }}" class="form-label">License scan</label>
+
+                            <div class="document-input-wrapper">{{ p_form.license_scan }}</div>
+
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <div class="form-check">
+
+                                {{ p_form.has_international_license }}
+
+                                <label for="{{ p_form.has_international_license.id_for_label }}" class="form-check-label small">I have international license</label>
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    {% if not user.is_staff %}
+
+                    <div class="d-flex flex-column flex-md-row flex-md-wrap justify-content-md-between align-items-md-center gap-2 mb-2">
+
+                        <div class="form-section-title mb-0 border-0 pb-0"><i class="fas fa-file-upload me-2"></i>Documents</div>
+
+                        <button type="button" class="btn btn-sm btn-outline-danger align-self-start" data-bs-toggle="modal" data-bs-target="#clearAllDocsModal">
+
+                            <i class="fas fa-trash-alt me-1"></i>Clear all
+
+                        </button>
+
+                    </div>
+
+                    <div class="row g-2">
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.tor.id_for_label }}" class="form-label">TOR <span class="text-danger">*</span></label>
+
+                            <div class="document-input-wrapper">{{ p_form.tor }}</div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.nc2_tesda.id_for_label }}" class="form-label">NC2 TESDA</label>
+
+                            <div class="document-input-wrapper">{{ p_form.nc2_tesda }}</div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.diploma.id_for_label }}" class="form-label">Diploma <span class="text-danger">*</span></label>
+
+                            <div class="document-input-wrapper">{{ p_form.diploma }}</div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.good_moral.id_for_label }}" class="form-label">Good moral <span class="text-danger">*</span></label>
+
+                            <div class="document-input-wrapper">{{ p_form.good_moral }}</div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.nbi_clearance.id_for_label }}" class="form-label">NBI <span class="text-danger">*</span></label>
+
+                            <div class="document-input-wrapper">{{ p_form.nbi_clearance }}</div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label for="{{ p_form.passport_scan.id_for_label }}" class="form-label">Passport scan <span class="text-danger">*</span></label>
+
+                            <div class="document-input-wrapper">{{ p_form.passport_scan }}</div>
+
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <label for="{{ p_form.academic_certificate.id_for_label }}" class="form-label">Academic certificate</label>
+
+                            <div class="document-input-wrapper">{{ p_form.academic_certificate }}</div>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <div class="profile-card-actions mt-4 pt-3 border-top d-flex flex-column flex-sm-row gap-2">
+
+                        <button type="submit" class="btn btn-edit-profile flex-grow-1">
+
+                            <i class="fas fa-save me-2"></i>Save all changes
+
+                        </button>
+
+                        <button type="button" class="btn btn-outline-secondary flex-grow-1" id="btnProfileEditCancel">Cancel</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+

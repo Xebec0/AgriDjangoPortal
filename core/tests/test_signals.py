@@ -69,7 +69,7 @@ class SignalTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=university,
+            university=university.name,
             specialization='Agronomy',
             status=Candidate.DRAFT,
             program=program,

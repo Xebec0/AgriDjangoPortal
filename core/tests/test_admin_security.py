@@ -207,6 +207,11 @@ class AdminPermissionIntegrationTests(TestCase):
         self.staff_user.is_staff = True
         self.staff_user.save()
         
+        from django.contrib.auth.models import Permission
+        view_perm = Permission.objects.get(codename='view_agricultureprogram')
+        change_perm = Permission.objects.get(codename='change_agricultureprogram')
+        self.staff_user.user_permissions.add(view_perm, change_perm)
+        
     def test_staff_user_sees_readonly_warning(self):
         """Test that staff users see admin-only warning"""
         self.client.login(username='staff', password='StaffPass123!')

@@ -141,7 +141,7 @@ class CandidateStatusTests(TestCase):
                 country_of_birth='Philippines',
                 nationality='Filipino',
                 gender='Male',
-                university=self.university,
+                university=self.university.name,
                 specialization='Agronomy',
                 status=status,
                 created_by=self.user
@@ -159,7 +159,7 @@ class CandidateStatusTests(TestCase):
             country_of_birth='Philippines',
             nationality='Filipino',
             gender='Male',
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             created_by=self.user
         )
@@ -291,7 +291,7 @@ class CandidateValidationTests(TestCase):
             country_of_birth='Philippines',
             nationality='Filipino',
             gender='Male',
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             program=self.program,
             created_by=self.user
@@ -326,7 +326,7 @@ class CandidateValidationTests(TestCase):
             country_of_birth='Philippines',
             nationality='Filipino',
             gender='Male',
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             program=self.program,
             created_by=self.user,
@@ -334,13 +334,26 @@ class CandidateValidationTests(TestCase):
             tor=pdf_file,
             diploma=pdf_file,
             good_moral=pdf_file,
-            nbi_clearance=pdf_file
+            nbi_clearance=pdf_file,
+            academic_certificate=pdf_file,
+            nc2_tesda=pdf_file,
+            license_scan=pdf_file,
+            profile_image=pdf_file,
+            phone_number='09123456789',
+            address='Test Address',
+            health_condition='Excellent',
+            shirt_size='L',
+            shoes_size='10',
+            field_of_study='Agronomy',
+            graduation_year=2015,
+            passport_issue_date=date(2020, 1, 1),
+            passport_expiry_date=date(2030, 1, 1),
+            place_of_issue='Manila'
         )
         
         is_valid, missing_items = candidate.validate_application()
-        
         self.assertTrue(is_valid)
-        self.assertEqual(candidate.status, Candidate.VALIDATED)
+        self.assertEqual(candidate.status, Candidate.APPROVED)
         self.assertEqual(len(missing_items), 0)
 
 
@@ -527,7 +540,7 @@ class RegistrationWorkflowTests(TestCase):
             code='DEFAULT',
             defaults={'name': 'Test University', 'country': 'Philippines'}
         )[0]
-        profile.university = self.university
+        profile.university = self.university.name
         profile.save()
         
         self.program = AgricultureProgram.objects.create(
@@ -565,7 +578,7 @@ class RegistrationWorkflowTests(TestCase):
             country_of_birth='Philippines',
             nationality='Filipino',
             gender='Male',
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             status=Candidate.VALIDATED,
             created_by=self.staff_user

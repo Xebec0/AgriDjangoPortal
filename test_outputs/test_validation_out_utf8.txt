@@ -1,0 +1,119 @@
+﻿python : Creating test database for alias 'default' 
+('file:memorydb_default?mode=memory&cache=shared')...
+At line:1 char:1
++ python manage.py test core.tests.test_registration_comprehensive.Cand ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Creating test d...che=shared')...:Strin 
+   g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[EMAIL CONFIG] SMTP: smtp.gmail.com:587 User: merlielatosa@gmail.com
+Found 1 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: allauth, cachalot, debug_toolbar, django_crontab, facebook, google, messages, microsoft, sslserver, staticfiles, unfold, unfold_filters, unfold_forms
+  Apply all migrations: account, admin, auth, contenttypes, core, sessions, sites, socialaccount
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying account.0001_initial... OK
+  Applying account.0002_email_max_length... OK
+  Applying account.0003_alter_emailaddress_create_unique_verified_email... OK
+  Applying account.0004_alter_emailaddress_drop_unique_email... OK
+  Applying account.0005_emailaddress_idx_upper_email... OK
+  Applying account.0006_emailaddress_lower... OK
+  Applying account.0007_emailaddress_idx_email... OK
+  Applying account.0008_emailaddress_unique_primary_email_fixup... OK
+  Applying account.0009_emailaddress_unique_primary_email... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying core.0002_university_candidate... OK
+  Applying core.0003_remove_candidate_health_statement_ayalon_and_more... OK
+  Applying core.0004_candidate_year_graduated... OK
+  Applying core.0005_profile_email_verified_profile_phone_number_and_more... OK
+  Applying core.0006_registration_additional_document_and_more... OK
+  Applying core.0007_remove_registration_additional_document_and_more... OK
+  Applying core.0008_candidate_program_registration_processed... OK
+  Applying core.0009_remove_agricultureprogram_end_date... OK
+  Applying core.0010_profile_country_of_birth_profile_date_of_birth_and_more... OK
+  Applying core.0011_activitylog... OK
+  Applying core.0012_rename_core_activ_user_id_2a2fba_idx_core_activi_user_id_ae0b38_idx_and_more... OK
+  Applying core.0013_agricultureprogram_required_gender_and_more... OK
+  Applying core.0014_profile_has_international_license... OK
+  Applying core.0015_profile_license_scan... OK
+  Applying core.0016_add_program_image_and_featured... OK
+  Applying core.0017_candidate_is_complete_candidate_user_and_more... OK
+  Applying core.0018_remove_candidate_is_complete_remove_candidate_user_and_more... OK
+  Applying core.0019_profile_passport_number... OK
+  Applying core.0020_profile_secondary_specialization_profile_shirt_size_and_more... OK
+  Applying core.0017_add_program_deadline_and_country... OK
+  Applying core.0021_merge_20251024_0750... OK
+  Applying core.0022_populate_program_country... OK
+  Applying core.0023_add_document_fields_to_profile... OK
+  Applying core.0024_add_profile_fields... OK
+  Applying core.0025_uploadedfile... OK
+  Applying core.0026_make_candidate_fields_optional... OK
+  Applying core.0027_remove_candidate_unique_constraint... OK
+  Applying core.0028_allow_blank_names_in_candidate... OK
+  Applying core.0029_add_missing_candidate_fields... OK
+  Applying core.0030_profile_oauth_id_profile_oauth_picture_url_and_more... OK
+  Applying core.0031_add_validation_deadline_fields... OK
+  Applying core.0032_add_job_experience_field... OK
+  Applying core.0033_add_required_experience_years... OK
+  Applying core.0034_candidate_health_condition_candidate_health_remarks_and_more... OK
+  Applying core.0035_remove_profile_institution_name... OK
+  Applying core.0036_alter_profile_university... OK
+  Applying core.0037_alter_candidate_university... OK
+  Applying core.0038_candidate_address_candidate_field_of_study_and_more... OK
+  Applying core.0039_candidate_phone_number... OK
+  Applying sessions.0001_initial... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+  Applying socialaccount.0001_initial... OK
+  Applying socialaccount.0002_token_max_lengths... OK
+  Applying socialaccount.0003_extra_data_default_dict... OK
+  Applying socialaccount.0004_app_provider_id_settings... OK
+  Applying socialaccount.0005_socialtoken_nullable_app... OK
+test_candidate_with_all_documents (core.tests.test_registration_comprehensive.Candida
+teValidationTests.test_candidate_with_all_documents)
+Test validation of candidate with all required documents ... FAIL
+
+======================================================================
+FAIL: test_candidate_with_all_documents (core.tests.test_registration_comprehensive.C
+andidateValidationTests.test_candidate_with_all_documents)
+Test validation of candidate with all required documents
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Arvin\Documents\AgriDjangoPortal\core\tests\test_registration_compre
+hensive.py", line 344, in test_candidate_with_all_documents
+    self.assertTrue(is_valid)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.528s
+
+FAILED (failures=1)
+Destroying test database for alias 'default' 
+('file:memorydb_default?mode=memory&cache=shared')...
+
+  Applying socialaccount.0006_alter_socialaccount_extra_data... OK
+System check identified no issues (0 silenced).
+MISSING ITEMS: ['Profile Photograph', 'Phone Number', 'Home Address', 'Health Condition', 'Shirt Size', 'Shoes Size', 'Course / Field of Study', 'Graduation Year', 'Passport Issue Date', 'Passport Expiry Date', 'Passport Place of Issue']

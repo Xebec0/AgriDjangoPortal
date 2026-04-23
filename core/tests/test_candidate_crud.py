@@ -55,7 +55,7 @@ class CandidateCRUDTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             status=Candidate.APPROVED,
             program=self.program,
@@ -119,7 +119,7 @@ class CandidateCRUDTests(TestCase):
             gender='Male',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Agronomy',
             program=program,
             created_by=self.regular_user
@@ -172,7 +172,7 @@ class CandidateCRUDTests(TestCase):
             gender='Female',
             passport_issue_date=date.today(),
             passport_expiry_date=date.today() + timedelta(days=3650),
-            university=self.university,
+            university=self.university.name,
             specialization='Horticulture',
             status=Candidate.DRAFT,
             created_by=self.staff_user
