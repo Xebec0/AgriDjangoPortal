@@ -28,9 +28,17 @@ services:
         generateValue: true  # More secure - Render will generate a random password
       - key: PYTHON_VERSION
         value: "3.11"  # Specify Python version for consistency
+      # ── OAuth ─────────────────────────────────────────────────────────────────
+      # Set these in the Render Dashboard → Environment (do NOT commit real values)
+      - key: SITE_DOMAIN
+        value: agridjangoportal.onrender.com
+      - key: GOOGLE_OAUTH_CLIENT_ID
+        sync: false   # Set manually in Render Dashboard
+      - key: GOOGLE_OAUTH_CLIENT_SECRET
+        sync: false   # Set manually in Render Dashboard
 
     # Fixed: Use && to chain commands properly
-    postDeployCommand: python manage.py migrate --noinput && python manage.py createsu
+    postDeployCommand: python manage.py migrate --noinput && python manage.py createsu && python manage.py setup_oauth
 
     # Health check configuration
     healthCheckPath: /

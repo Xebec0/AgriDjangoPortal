@@ -6291,63 +6291,23 @@ def social_register(request):
 
     import logging
 
-    from django.conf import settings
-
-    from allauth.socialaccount.models import SocialApp
-
-    
+    from .oauth_utils import ensure_social_app
 
     logger = logging.getLogger(__name__)
 
-    
+    # Get OAuth credentials (auto-creates from env vars if DB record is missing)
 
-    # Get OAuth credentials from database (django-allauth SocialApp)
+    google_app = ensure_social_app('google')
 
-    try:
+    google_client_id = google_app.client_id if google_app else ''
 
-        google_app = SocialApp.objects.get(provider='google')
+    facebook_app = ensure_social_app('facebook')
 
-        google_client_id = google_app.client_id
+    facebook_client_id = facebook_app.client_id if facebook_app else ''
 
-        logger.info(f"Google OAuth loaded: {google_client_id[:30]}...")
+    microsoft_app = ensure_social_app('microsoft')
 
-    except SocialApp.DoesNotExist:
-
-        google_client_id = ''
-
-        logger.error("Google SocialApp not found in database")
-
-    
-
-    try:
-
-        facebook_app = SocialApp.objects.get(provider='facebook')
-
-        facebook_client_id = facebook_app.client_id
-
-        logger.info(f"Facebook OAuth loaded: {facebook_client_id[:30]}...")
-
-    except SocialApp.DoesNotExist:
-
-        facebook_client_id = ''
-
-        logger.warning("Facebook SocialApp not found in database")
-
-    
-
-    try:
-
-        microsoft_app = SocialApp.objects.get(provider='microsoft')
-
-        microsoft_client_id = microsoft_app.client_id
-
-        logger.info(f"Microsoft OAuth loaded: {microsoft_client_id[:30]}...")
-
-    except SocialApp.DoesNotExist:
-
-        microsoft_client_id = ''
-
-        logger.warning("Microsoft SocialApp not found in database")
+    microsoft_client_id = microsoft_app.client_id if microsoft_app else ''
 
     
 
@@ -6393,7 +6353,7 @@ def oauth_initiate(request, provider):
 
     import secrets
 
-    from allauth.socialaccount.models import SocialApp
+    from .oauth_utils import ensure_social_app
 
     from urllib.parse import urlencode
 
@@ -6415,89 +6375,83 @@ def oauth_initiate(request, provider):
 
     
 
-    # Get OAuth config based on provider
+    # Get or auto-create SocialApp from environment variables
 
-    try:
+    app = ensure_social_app(provider)
 
-        if provider == 'google':
-
-            app = SocialApp.objects.get(provider='google')
-
-            auth_url = 'https://accounts.google.com/o/oauth2/v2/auth'
-
-            params = {
-
-                'client_id': app.client_id,
-
-                'redirect_uri': redirect_uri,
-
-                'response_type': 'code',
-
-                'scope': 'openid email profile',
-
-                'state': state,
-
-                'access_type': 'online',
-
-                'prompt': 'consent'
-
-            }
-
-        elif provider == 'facebook':
-
-            app = SocialApp.objects.get(provider='facebook')
-
-            auth_url = 'https://www.facebook.com/v15.0/dialog/oauth'
-
-            params = {
-
-                'client_id': app.client_id,
-
-                'redirect_uri': redirect_uri,
-
-                'response_type': 'code',
-
-                'scope': 'email,public_profile',
-
-                'state': state,
-
-            }
-
-        elif provider == 'microsoft':
-
-            app = SocialApp.objects.get(provider='microsoft')
-
-            auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
-
-            params = {
-
-                'client_id': app.client_id,
-
-                'redirect_uri': redirect_uri,
-
-                'response_type': 'code',
-
-                'scope': 'openid profile email',
-
-                'state': state,
-
-                'response_mode': 'query'
-
-            }
-
-        else:
-
-            messages.error(request, f"Unknown OAuth provider: {provider}")
-
-            return redirect('social_register')
-
-            
-
-    except SocialApp.DoesNotExist:
+    if not app:
 
         logger.error(f"SocialApp not found for provider: {provider}")
 
         messages.error(request, f"{provider.title()} sign-in is not configured. Please use email registration.")
+
+        return redirect('social_register')
+
+    
+
+    if provider == 'google':
+
+        auth_url = 'https://accounts.google.com/o/oauth2/v2/auth'
+
+        params = {
+
+            'client_id': app.client_id,
+
+            'redirect_uri': redirect_uri,
+
+            'response_type': 'code',
+
+            'scope': 'openid email profile',
+
+            'state': state,
+
+            'access_type': 'online',
+
+            'prompt': 'consent'
+
+        }
+
+    elif provider == 'facebook':
+
+        auth_url = 'https://www.facebook.com/v15.0/dialog/oauth'
+
+        params = {
+
+            'client_id': app.client_id,
+
+            'redirect_uri': redirect_uri,
+
+            'response_type': 'code',
+
+            'scope': 'email,public_profile',
+
+            'state': state,
+
+        }
+
+    elif provider == 'microsoft':
+
+        auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
+
+        params = {
+
+            'client_id': app.client_id,
+
+            'redirect_uri': redirect_uri,
+
+            'response_type': 'code',
+
+            'scope': 'openid profile email',
+
+            'state': state,
+
+            'response_mode': 'query'
+
+        }
+
+    else:
+
+        messages.error(request, f"Unknown OAuth provider: {provider}")
 
         return redirect('social_register')
 

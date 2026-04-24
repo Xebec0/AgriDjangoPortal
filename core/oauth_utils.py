@@ -122,7 +122,6 @@ class OAuthTokenExchanger:
     """Exchanges authorization codes for access tokens"""
     
     @staticmethod
-    @staticmethod
     def exchange_google_code(code, redirect_uri):
         """Exchange Google authorization code for access token"""
         try:
@@ -180,7 +179,6 @@ class OAuthTokenExchanger:
             logger.error(f"Error exchanging Facebook code: {e}")
             return None, None
     
-    @staticmethod
     @staticmethod
     def exchange_microsoft_code(code, redirect_uri):
         """Exchange Microsoft authorization code for access token"""
@@ -289,3 +287,65 @@ def clear_oauth_session_data(request):
     if 'oauth_data' in request.session:
         del request.session['oauth_data']
         request.session.modified = True
+
+
+def ensure_social_app(provider):
+    """
+    Get or create a SocialApp for the given provider using environment variables.
+    Returns the SocialApp instance or None if credentials aren't configured.
+    This acts as a self-healing fallback when DB records are missing.
+    """
+    import os
+
+    ENV_KEYS = {
+        'google': ('GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET'),
+        'facebook': ('FACEBOOK_OAUTH_CLIENT_ID', 'FACEBOOK_OAUTH_CLIENT_SECRET'),
+        'microsoft': ('MICROSOFT_OAUTH_CLIENT_ID', 'MICROSOFT_OAUTH_CLIENT_SECRET'),
+    }
+
+    # First, try to get from database
+    try:
+        from allauth.socialaccount.models import SocialApp
+        return SocialApp.objects.get(provider=provider)
+    except SocialApp.DoesNotExist:
+        pass
+    except Exception as e:
+        logger.warning(f"[OAuth] DB lookup failed for {provider}: {e}")
+        return None
+
+    # Not in DB — try to auto-create from environment variables
+    keys = ENV_KEYS.get(provider)
+    if not keys:
+        logger.warning(f"[OAuth] Unknown provider: {provider}")
+        return None
+
+    client_id = os.getenv(keys[0], '')
+    client_secret = os.getenv(keys[1], '')
+
+    if not client_id or not client_secret:
+        logger.error(f"[OAuth] {provider} env vars ({keys[0]}, {keys[1]}) not set")
+        return None
+
+    try:
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+
+        app = SocialApp.objects.create(
+            provider=provider,
+            name=provider.title(),
+            client_id=client_id,
+            secret=client_secret,
+        )
+
+        # Associate with default site
+        try:
+            site = Site.objects.get(id=1)
+            app.sites.add(site)
+        except Site.DoesNotExist:
+            pass
+
+        logger.info(f"[OAuth] Auto-created {provider} SocialApp from environment")
+        return app
+    except Exception as e:
+        logger.error(f"[OAuth] Failed to auto-create {provider} SocialApp: {e}")
+        return None
