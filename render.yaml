@@ -26,10 +26,19 @@ services:
         value: admin@example.com
       - key: DJANGO_SUPERUSER_PASSWORD
         value: admin123
+      # ── OAuth ─────────────────────────────────────────────────────────────────
+      # Set these in the Render Dashboard → Environment (do NOT commit real values)
+      - key: SITE_DOMAIN
+        value: agridjangoportal.onrender.com
+      - key: GOOGLE_OAUTH_CLIENT_ID
+        sync: false   # Set manually in Render Dashboard
+      - key: GOOGLE_OAUTH_CLIENT_SECRET
+        sync: false   # Set manually in Render Dashboard
 
     postDeployCommand: |
-      python manage.py migrate   # Run migrations after deploy
-      python manage.py createsu  # Run custom superuser creation script
+      python manage.py migrate        # Run migrations after deploy
+      python manage.py createsu       # Create superuser if not exists
+      python manage.py setup_oauth    # Register OAuth providers in DB
 
   # Redis service for caching
   - type: redis
