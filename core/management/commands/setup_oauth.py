@@ -43,8 +43,8 @@ class Command(BaseCommand):
 
         # Setup Google OAuth
         # Credentials MUST be set as environment variables — no hardcoded fallbacks
-        google_client_id = os.getenv('GOOGLE_OAUTH_CLIENT_ID', '105868296186-0mrgu1eh9ior46oqgmgvgctdfde31v64.apps.googleusercontent.com')
-        google_secret = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', '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')
+        google_client_id = os.getenv('GOOGLE_OAUTH_CLIENT_ID', '')
+        google_secret = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', '')
 
         if not google_client_id or not google_secret:
             self.stdout.write(self.style.ERROR(

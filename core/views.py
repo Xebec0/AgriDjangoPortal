@@ -334,6 +334,37 @@ def health_check(request):
 
 
 
+# TEMPORARY: OAuth debug endpoint — REMOVE after debugging
+@require_GET
+def oauth_debug(request):
+    """Temporary endpoint to diagnose OAuth configuration on Render"""
+    import os
+    from allauth.socialaccount.models import SocialApp
+    from django.contrib.sites.models import Site
+
+    data = {
+        'env_vars': {
+            'GOOGLE_OAUTH_CLIENT_ID': bool(os.getenv('GOOGLE_OAUTH_CLIENT_ID')),
+            'GOOGLE_OAUTH_CLIENT_ID_length': len(os.getenv('GOOGLE_OAUTH_CLIENT_ID', '')),
+            'GOOGLE_OAUTH_CLIENT_SECRET': bool(os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')),
+            'SITE_DOMAIN': os.getenv('SITE_DOMAIN', 'NOT SET'),
+            'DEBUG': os.getenv('DEBUG', 'NOT SET'),
+        },
+        'database': {
+            'social_apps': list(SocialApp.objects.values('provider', 'name', 'client_id')),
+            'sites': list(Site.objects.values('id', 'domain', 'name')),
+        },
+        'site_id_setting': settings.SITE_ID,
+    }
+
+    # Mask client_id (show first 15 chars only)
+    for app in data['database']['social_apps']:
+        cid = app.get('client_id', '')
+        app['client_id'] = cid[:15] + '...' if len(cid) > 15 else cid
+
+    return JsonResponse(data)
+
+
 
 
 def index(request):
