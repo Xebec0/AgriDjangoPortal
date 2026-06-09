@@ -1177,6 +1177,8 @@ def profile(request):
 
                     candidate.smokes = request.user.profile.smokes
 
+                    candidate.job_experience = request.user.profile.job_experience
+
                     
 
                     # Sync files as well if they were updated in the profile
@@ -2688,6 +2690,8 @@ def apply_candidate(request, program_id):
 
                 candidate.smokes = profile.smokes or 'Never'
 
+                candidate.job_experience = profile.job_experience or ''
+
                 
 
                 # Documents - Copy ALL documents from profile to candidate
@@ -2973,8 +2977,6 @@ AgroStudies Team
             
 
             # Show detailed error in development
-
-            from django.conf import settings
 
             if settings.DEBUG:
 

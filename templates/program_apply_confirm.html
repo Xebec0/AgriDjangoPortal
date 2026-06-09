@@ -1047,7 +1047,37 @@
                     </div>
 
                     
+                    <div class="info-row grid-full-width">
 
+                        <div class="info-label">Job Experience:</div>
+
+                        <div class="info-value">
+
+                            <span class="display-value">
+
+                                {% if profile.job_experience %}
+
+                                    <div style="white-space: pre-wrap;">{{ profile.job_experience }}</div>
+
+                                {% else %}
+
+                                    <span class="missing-info">Not provided</span>
+
+                                {% endif %}
+
+                            </span>
+
+                            <div class="edit-input d-none">
+
+                                <textarea name="job_experience" class="form-control form-control-sm" rows="4" placeholder="Describe your relevant work/job experience...">{{ profile.job_experience }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
                     <div class="info-row grid-full-width">
 
                         <div class="info-label">Parents:</div>

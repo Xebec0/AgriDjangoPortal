@@ -136,7 +136,12 @@ class Profile(models.Model):
 
     shirt_size = models.CharField(max_length=10, blank=True, null=True, verbose_name="Shirt Size")
 
-    
+    job_experience = models.TextField(
+        blank=True, 
+        null=True, 
+        verbose_name="Job Experience",
+        help_text="Describe your relevant work/job experience"
+    )
 
     preferred_country = models.CharField(max_length=100, blank=True, null=True, verbose_name="Preferred Country")
 

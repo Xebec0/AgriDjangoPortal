@@ -208,7 +208,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
                   'university', 'specialization', 'secondary_specialization', 'year_graduated',
 
-                  'smokes', 'shirt_size', 'shoes_size',
+                  'smokes', 'shirt_size', 'shoes_size', 'job_experience',
 
                   'passport_scan', 'academic_certificate', 'tor', 'nc2_tesda', 'diploma', 'good_moral', 'nbi_clearance']
 
@@ -263,6 +263,8 @@ class ProfileUpdateForm(forms.ModelForm):
             'shirt_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., S, M, L, XL, XXL'}),
 
             'shoes_size': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 8, 9, 10, 42, 43'}),
+
+            'job_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Describe your relevant work/job experience...'}),
 
         }
 
